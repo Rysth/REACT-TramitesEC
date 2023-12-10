@@ -1,1 +1,44 @@
-/* Global Styles */
+@import url('https://fonts.cdnfonts.com/css/tilt-warp');
+@import url('https://fonts.cdnfonts.com/css/belanosima');
+
+:root {
+  --CL-blue-light: #0575e6;
+  --CL-blue-dark: #02298a;
+  --CL-blue-darker: #021b79;
+  --CL-purple: #3f37c9;
+}
+
+.bg-blue-light {
+  @apply bg-[var(--CL-blue-light)];
+}
+
+.bg-blue-dark {
+  @apply bg-[var(--CL-blue-dark)];
+}
+
+.bg-blue-darker {
+  @apply bg-[var(--CL-blue-darker)];
+}
+
+.bg-purple {
+  @apply bg-[var(--CL-purple)];
+}
+
+/* NavLinks */
+
+.active {
+  @apply text-white rounded-lg bg-purple;
+}
+
+body {
+  font-family: 'Belanosima', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Tilt Warp', sans-serif;
+}
