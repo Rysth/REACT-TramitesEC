@@ -1,15 +1,16 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { FaBarsStaggered } from 'react-icons/fa6'
 import { MdSpaceDashboard, MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
 import BrandLogo from '../../assets/images/brands/brand.svg'
-import { AuthenticationActions } from '../../redux/slices/AuthenticationSlice'
+import { destroySession } from '../../redux/slices/AuthenticationSlice'
 
 function Sidebar() {
   const dispatch = useDispatch()
-  const destroySession = () => {
-    dispatch(AuthenticationActions.destroySession())
+  const { activeToken } = useSelector((store) => store.authentication)
+  const userLogout = () => {
+    dispatch(destroySession(activeToken))
   }
 
   return (
@@ -55,7 +56,7 @@ function Sidebar() {
             </li>
           </ul>
           <button
-            onClick={destroySession}
+            onClick={userLogout}
             type="button"
             className="flex items-center justify-center gap-1 p-2.5 px-5 text-xs font-medium text-white bg-red-600 rounded-lg sm:text-sm focus:outline-none hover:bg-red-700 md:hover:shadow-md md:active:scale-95 md:transition"
           >

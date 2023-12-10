@@ -1,18 +1,15 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { AuthenticationActions } from '../../redux/slices/AuthenticationSlice'
+import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function Login() {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
   const onSubmit = (userData) => {
-    const { email, password } = userData
-
-    if (email === 'admin@test.com' && password === 'administrador') {
-      dispatch(AuthenticationActions.createSession())
-    }
+    dispatch(createSession(userData))
   }
+
   return (
     <section className="w-full h-screen">
       <div className="flex flex-col sm:grid sm:grid-cols-[60%_1fr] h-full ">
