@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { FaBarsStaggered } from 'react-icons/fa6'
-import { MdSpaceDashboard, MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
+import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
 import BrandLogo from '../../assets/images/brands/brand.svg'
