@@ -45,10 +45,7 @@ function Sidebar() {
               </NavLink>
             </li> */}
             <li>
-              <NavLink
-                to="/clientes"
-                className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition"
-              >
+              <NavLink to="/" className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition">
                 <FaUser className="flex-shrink-0 w-5 h-5 transition duration-75" />
                 <span className="flex-1 ms-3">Clientes</span>
                 <MdKeyboardArrowRight className="w-5 h-5 transition duration-75" />

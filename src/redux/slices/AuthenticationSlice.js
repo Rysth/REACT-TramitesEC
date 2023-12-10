@@ -18,7 +18,6 @@ export const createSession = createAsyncThunk('authentication/createSession', as
       },
       withCredentials: true,
     })
-    toast.success('¡Bienvenido!', { autoClose: 2000 })
     return response.data
   } catch (error) {
     if (error.response.status === 401) {
@@ -41,7 +40,6 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
       },
       withCredentials: true,
     })
-    toast.info('¡Muchas Gracias!', { autoClose: 2000 })
   } catch (error) {
     console.log(error)
     throw new Error(error)
@@ -69,6 +67,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.setItem('active', state.active)
       sessionStorage.setItem('activeUser', JSON.stringify(action.payload.resource_owner))
       sessionStorage.setItem('activeToken', action.payload.token)
+      toast.success('¡Bienvenido!', { autoClose: 2000 })
     })
     builder.addCase(destroySession.fulfilled, (state) => {
       state.active = false
@@ -77,6 +76,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
+      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
     })
   },
 })
