@@ -2,11 +2,13 @@ import './App.css'
 import { createContext } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
 import Login from './pages/Session/Login'
-import Home from './pages/Home/Home'
+/* import Home from './pages/Home/Home' */
 import Customer from './pages/Customer/Customer'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const DispatchContext = createContext()
 
@@ -17,6 +19,7 @@ function App() {
     <BrowserRouter>
       {active && <Sidebar />}
       <main className="">
+        <ToastContainer position="top-right" />
         <Routes>
           <Route
             path="/login"
@@ -30,7 +33,7 @@ function App() {
             path="/"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/login">
-                <Home />
+                <Customer />
               </ProtectedRoute>
             }
           />

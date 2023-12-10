@@ -37,13 +37,13 @@ function Sidebar() {
             <span className="self-center text-2xl font-semibold whitespace-nowrap ">TrámitesEC</span>
           </a>
           <ul className="flex-1 mt-5 space-y-2 font-medium">
-            <li>
+            {/* <li>
               <NavLink to="/" className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition">
                 <MdSpaceDashboard className="flex-shrink-0 w-5 h-5 transition duration-75" />
                 <span className="flex-1 ms-3">Dashboard</span>
                 <MdKeyboardArrowRight className="w-5 h-5 transition duration-75" />
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink
                 to="/clientes"

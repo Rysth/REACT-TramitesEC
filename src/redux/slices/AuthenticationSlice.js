@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL
 const getActiveUser = JSON.parse(sessionStorage.getItem('activeUser'))
@@ -17,10 +18,17 @@ export const createSession = createAsyncThunk('authentication/createSession', as
       },
       withCredentials: true,
     })
-
+    toast.success('¡Bienvenido!', { autoClose: 2000 })
     return response.data
   } catch (error) {
-    console.log(error)
+    if (error.response.status === 401) {
+      toast.error('¡Email/Contraseña Incorrectas!')
+    }
+
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!')
+    }
+
     throw new Error(error)
   }
 })
@@ -33,6 +41,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
       },
       withCredentials: true,
     })
+    toast.info('¡Muchas Gracias!', { autoClose: 2000 })
   } catch (error) {
     console.log(error)
     throw new Error(error)
