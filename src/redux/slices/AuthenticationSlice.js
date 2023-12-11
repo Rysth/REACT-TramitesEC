@@ -18,7 +18,15 @@ export const createSession = createAsyncThunk('authentication/createSession', as
       },
       withCredentials: true,
     })
-    return response.data
+
+    const userResponse = await axios.get(`${API_URL}/api/v1/user`, {
+      headers: {
+        Authorization: response.data.token,
+      },
+      withCredentials: true,
+    })
+
+    return [response.data, userResponse.data]
   } catch (error) {
     if (error.response.status === 401) {
       toast.error('¡Email/Contraseña Incorrectas!')
@@ -46,6 +54,24 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
   }
 })
 
+export const getActualUser = createAsyncThunk('authentication/getActualUser', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/user`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!')
+    }
+
+    throw new Error(error)
+  }
+})
+
 export const AuthenticationSlice = createSlice({
   name: 'authentication',
   initialState,
@@ -66,13 +92,17 @@ export const AuthenticationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getActualUser.fulfilled, (state) => {
+      state.activeUser = action.payload
+      sessionStorage.setItem('activeUser', JSON.stringify(action.payload))
+    })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
-      state.activeUser = action.payload.resource_owner
-      state.activeToken = action.payload.token
+      state.activeUser = action.payload[1]
+      state.activeToken = action.payload[0].token
       sessionStorage.setItem('active', state.active)
-      sessionStorage.setItem('activeUser', JSON.stringify(action.payload.resource_owner))
-      sessionStorage.setItem('activeToken', action.payload.token)
+      sessionStorage.setItem('activeToken', action.payload[0].token)
+      sessionStorage.setItem('activeUser', JSON.stringify(action.payload[1]))
       toast.success('¡Bienvenido!', { autoClose: 2000 })
     })
     builder.addCase(destroySession.fulfilled, (state) => {

@@ -10,6 +10,7 @@ function Sidebar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { activeToken } = useSelector((store) => store.authentication)
+
   const userLogout = () => {
     dispatch(destroySession(activeToken))
       .then(() => navigate('/login'))
