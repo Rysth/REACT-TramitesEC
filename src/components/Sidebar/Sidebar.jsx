@@ -4,13 +4,13 @@ import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
 import BrandLogo from '../../assets/images/brands/brand.svg'
-import { AuthenticationActions } from '../../redux/slices/AuthenticationSlice'
+import { destroySession } from '../../redux/slices/AuthenticationSlice'
 
 function Sidebar() {
   const dispatch = useDispatch()
-  // const { activeToken } = useSelector((store) => store.authentication)
+  const { activeToken } = useSelector((store) => store.authentication)
   const userLogout = () => {
-    dispatch(AuthenticationActions.destroySession())
+    dispatch(destroySession(activeToken))
   }
 
   return (

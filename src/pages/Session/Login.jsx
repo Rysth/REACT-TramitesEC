@@ -1,13 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { AuthenticationActions } from '../../redux/slices/AuthenticationSlice'
+import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function Login() {
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
 
-  const onSubmit = () => {
-    dispatch(AuthenticationActions.createSession())
+  const onSubmit = (userData) => {
+    dispatch(createSession(userData))
   }
 
   return (

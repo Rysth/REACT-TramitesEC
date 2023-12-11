@@ -1,5 +1,5 @@
 import './App.css'
-import { createContext } from 'react'
+import { createContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -14,6 +14,8 @@ export const DispatchContext = createContext()
 
 function App() {
   const active = useSelector((state) => state.authentication.active)
+
+  useEffect(() => {}, [active])
 
   return (
     <BrowserRouter>
