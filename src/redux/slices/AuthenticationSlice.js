@@ -50,6 +50,11 @@ export const AuthenticationSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
+    createSession(state) {
+      state.active = true
+      sessionStorage.setItem('active', state.active)
+      toast.success('¡Bienvenido!', { autoClose: 2000 })
+    },
     destroySession(state) {
       state.active = false
       state.activeUser = {}
@@ -57,6 +62,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
+      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
     },
   },
   extraReducers: (builder) => {
