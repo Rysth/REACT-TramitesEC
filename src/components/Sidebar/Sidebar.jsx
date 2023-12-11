@@ -1,16 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { FaBarsStaggered } from 'react-icons/fa6'
 import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import { destroySession } from '../../redux/slices/AuthenticationSlice'
 
 function Sidebar() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { activeToken } = useSelector((store) => store.authentication)
   const userLogout = () => {
     dispatch(destroySession(activeToken))
+      .then(() => navigate('/login'))
+      .then(() =>
+        setTimeout(() => {
+          window.location.reload()
+        }, 500),
+      )
   }
 
   return (

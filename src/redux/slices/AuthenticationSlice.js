@@ -7,7 +7,7 @@ const getActiveUser = JSON.parse(sessionStorage.getItem('activeUser'))
 const getActiveSession = sessionStorage.getItem('active')
 const initialState = {
   activeUser: getActiveUser || {},
-  active: getActiveSession || false,
+  active: getActiveSession === 'true',
 }
 
 export const createSession = createAsyncThunk('authentication/createSession', async (userData) => {
