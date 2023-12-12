@@ -7,6 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL
 const initialState = {
   customersArray: [],
   customersFilter: [],
+  customerStats: [],
   loading: true,
 }
 
@@ -55,6 +56,29 @@ const customerSlice = createSlice({
       state.loading = false
       state.customersArray = action.payload
       state.customersFilter = action.payload
+
+      /* Customer Stats */
+      const customersQuantity = state.customersFilter.length
+      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+
+      state.customerStats = [
+        {
+          title: 'Clientes Registrados',
+          metric: customersQuantity,
+          color: 'bg-indigo-700',
+        },
+        {
+          title: 'Activos',
+          metric: customersActive,
+          color: 'bg-green-500',
+        },
+        {
+          title: 'Inactivos',
+          metric: customersInactive,
+          color: 'bg-red-700',
+        },
+      ]
     })
   },
 })
