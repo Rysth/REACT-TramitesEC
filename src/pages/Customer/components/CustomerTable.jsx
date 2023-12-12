@@ -6,11 +6,11 @@ import { getClientes } from '../../../redux/slices/CustomerSlice'
 
 function CustomerTable() {
   const dispatch = useDispatch()
+  const [records, setRecords] = useState(12)
   const activeToken = useSelector((store) => store.authentication.activeToken)
   const { customersFilter, loading } = useSelector((store) => store.customer)
-  const [records, setRecords] = useState(12)
+
   const increaseDisplayCount = () => {
-    console.log('Im in')
     setRecords(records + 12)
   }
 

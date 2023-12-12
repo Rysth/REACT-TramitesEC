@@ -37,6 +37,11 @@ const customerSlice = createSlice({
   reducers: {
     searchCustomer: (state, action) => {
       const searchData = action.payload
+
+      if (searchData === '') {
+        state.customersFilter = state.customersArray
+      }
+
       state.customersFilter = state.customersArray.filter(
         (customer) =>
           customer.cedula.toLowerCase().includes(searchData) ||
@@ -45,10 +50,16 @@ const customerSlice = createSlice({
           customer.celular.toLowerCase().includes(searchData) ||
           customer.email.toLowerCase().includes(searchData),
       )
+    },
+    statusCustomer: (state, action) => {
+      const searchData = action.payload === 'true'
 
-      if (searchData === '') {
+      if (action.payload === '') {
         state.customersFilter = state.customersArray
+        return
       }
+
+      state.customersFilter = state.customersArray.filter((customer) => customer.active === searchData)
     },
   },
   extraReducers: (builder) => {

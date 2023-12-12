@@ -2,15 +2,20 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 
-function TableSearch({ title, searchElement }) {
+function TableSearch({ title, searchElement, statusElement }) {
   const dispatch = useDispatch()
-  const [searchData, setSearchData] = useState('')
 
   const onChangeSearchData = (event) => {
     setTimeout(() => {
       const inputData = event.target.value.toLowerCase()
-      setSearchData(inputData)
       dispatch(searchElement(inputData))
+    }, 500)
+  }
+
+  const onChangeStatusData = (event) => {
+    setTimeout(() => {
+      const inputData = event.target.value
+      dispatch(statusElement(inputData))
     }, 500)
   }
 
@@ -19,17 +24,31 @@ function TableSearch({ title, searchElement }) {
       <header>
         <h3 className="text-xl">{title}</h3>
       </header>
-      <label htmlFor="search" className="flex items-center justify-end gap-3">
-        <span className="sr-only">Buscar: </span>
-        <input
-          type="text"
-          id="table-search"
-          defaultValue={searchData}
-          onChange={onChangeSearchData}
-          className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Buscar..."
-        />
-      </label>
+      <fieldset className="flex gap-2">
+        <label htmlFor="search" className="flex items-center justify-end gap-3">
+          <span className="sr-only">Buscar: </span>
+          <input
+            type="text"
+            id="table-search"
+            onChange={onChangeSearchData}
+            className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar..."
+          />
+        </label>
+        <label htmlFor="status" className="flex items-center justify-end gap-3">
+          <span className="sr-only">Estado: </span>
+          <select
+            name="status"
+            id="status"
+            onChange={onChangeStatusData}
+            className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="">---Seleccionar---</option>
+            <option value={true}>Activo</option>
+            <option value={false}>Inactivo</option>
+          </select>
+        </label>
+      </fieldset>
     </div>
   )
 }

@@ -21,7 +21,11 @@ function Customer() {
         ))}
       </Grid>
       <div className="relative sm:rounded-2xl">
-        <TableSearch title="Listado de Clientes" searchElement={customerActions.searchCustomer} />
+        <TableSearch
+          title="Listado de Clientes"
+          searchElement={customerActions.searchCustomer}
+          statusElement={customerActions.statusCustomer}
+        />
         <CustomerTable />
       </div>
     </section>
