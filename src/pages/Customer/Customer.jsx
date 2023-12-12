@@ -73,8 +73,8 @@ function Customer() {
                     {index + 1}
                   </th>
                   <td className="px-6 py-4">{customer.cedula}</td>
-                  <td className="px-6 py-4">{customer.fullName}</td>
-                  <td className="px-6 py-4">{customer.cellphone}</td>
+                  <td className="px-6 py-4">{`${customer.nombres} ${customer.apellidos}`}</td>
+                  <td className="px-6 py-4">{customer.celular}</td>
                   <td className="px-6 py-4">
                     <a
                       href="mailto:johnpalacios.t@gmail.com"

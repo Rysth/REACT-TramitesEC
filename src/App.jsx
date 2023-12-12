@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 export const DispatchContext = createContext()
 
 function App() {
-  const active = useSelector((state) => state.authentication.active)
+  const active = useSelector((state) => state.authentication)
 
   useEffect(() => {}, [active])
 
