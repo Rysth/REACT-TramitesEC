@@ -4,9 +4,11 @@ import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL
 const getActiveUser = JSON.parse(sessionStorage.getItem('activeUser'))
+const getActiveToken = sessionStorage.getItem('activeToken')
 const getActiveSession = sessionStorage.getItem('active')
 const initialState = {
   activeUser: getActiveUser || {},
+  activeToken: getActiveToken || '',
   active: getActiveSession === 'true',
 }
 
@@ -32,6 +34,10 @@ export const createSession = createAsyncThunk('authentication/createSession', as
       toast.error('¡Email/Contraseña Incorrectas!')
     }
 
+    if (error.response.status === 400) {
+      toast.error('¡Cuenta no Existe!')
+    }
+
     if (error.response.status === 500) {
       toast.error('¡Problema en el Servidor!')
     }
@@ -44,7 +50,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
   try {
     await axios.post(`${API_URL}/users/tokens/revoke`, {
       headers: {
-        Authorization: activeToken,
+        Authorization: atob(activeToken),
       },
       withCredentials: true,
     })
@@ -58,7 +64,7 @@ export const getActualUser = createAsyncThunk('authentication/getActualUser', as
   try {
     const response = await axios.get(`${API_URL}/api/v1/user`, {
       headers: {
-        Authorization: activeToken,
+        Authorization: atob(activeToken),
       },
       withCredentials: true,
     })
@@ -99,9 +105,9 @@ export const AuthenticationSlice = createSlice({
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
       state.activeUser = action.payload[1]
-      state.activeToken = action.payload[0].token
+      state.activeToken = btoa(action.payload[0].token)
       sessionStorage.setItem('active', state.active)
-      sessionStorage.setItem('activeToken', action.payload[0].token)
+      sessionStorage.setItem('activeToken', btoa(action.payload[0].token))
       sessionStorage.setItem('activeUser', JSON.stringify(action.payload[1]))
       toast.success('¡Bienvenido!', { autoClose: 2000 })
     })
