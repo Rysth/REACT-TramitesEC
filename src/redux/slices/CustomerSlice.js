@@ -1,196 +1,34 @@
-// customerSlice.js
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
-  customersArray: [
-    // Initial customer data goes here if any
-    {
-      id: 1,
-      cedula: '0931237663',
-      nombres: 'John Andrés Palacios Tutiven',
-      apellidos: 'George White',
-      celular: '0988949117',
-      email: 'johnpalacios.t@gmail.com',
-      active: true,
-    },
-    {
-      id: 2,
-      cedula: '0931237663',
-      nombres: 'Another Customer',
-      apellidos: 'George White',
-      celular: '123456789',
-      email: 'another.customer@example.com',
-      active: false,
-    },
-    {
-      id: 3,
-      cedula: '0931237663',
-      nombres: 'Jane Doe',
-      apellidos: 'George White',
-      celular: '987654321',
-      email: 'jane.doe@example.com',
-      active: true,
-    },
-    {
-      id: 4,
-      cedula: '0931237663',
-      nombres: 'Bob Johnson',
-      apellidos: 'George White',
-      celular: '555555555',
-      email: 'bob.johnson@example.com',
-      active: false,
-    },
-    {
-      id: 5,
-      cedula: '0931237663',
-      nombres: 'Alice Smith',
-      apellidos: 'George White',
-      celular: '123123123',
-      email: 'alice.smith@example.com',
-      active: true,
-    },
-    {
-      id: 6,
-      cedula: '0931237663',
-      nombres: 'Charlie Brown',
-      apellidos: 'George White',
-      celular: '987987987',
-      email: 'charlie.brown@example.com',
-      active: false,
-    },
-    {
-      id: 7,
-      cedula: '0931237663',
-      nombres: 'Eve Johnson',
-      apellidos: 'George White',
-      celular: '456456456',
-      email: 'eve.johnson@example.com',
-      active: true,
-    },
-    {
-      id: 8,
-      cedula: '0931237663',
-      nombres: 'George White',
-      apellidos: 'George White',
-      celular: '789789789',
-      email: 'george.white@example.com',
-      active: false,
-    },
-    {
-      id: 9,
-      cedula: '0931237663',
-      nombres: 'Olivia Brown',
-      apellidos: 'George White',
-      celular: '111222333',
-      email: 'olivia.brown@example.com',
-      active: true,
-    },
-    {
-      id: 10,
-      cedula: '0931237663',
-      nombres: 'Michael Davis',
-      apellidos: 'George White',
-      celular: '444555666',
-      email: 'michael.davis@example.com',
-      active: false,
-    },
-    // Add more customers as needed
-  ],
-  customersFilter: [
-    // Initial customer data goes here if any
-    {
-      id: 1,
-      cedula: '0931237663',
-      nombres: 'John Andrés Palacios Tutiven',
-      apellidos: 'George White',
-      celular: '0988949117',
-      email: 'johnpalacios.t@gmail.com',
-      active: true,
-    },
-    {
-      id: 2,
-      cedula: '0931237663',
-      nombres: 'Another Customer',
-      apellidos: 'George White',
-      celular: '123456789',
-      email: 'another.customer@example.com',
-      active: false,
-    },
-    {
-      id: 3,
-      cedula: '0931237663',
-      nombres: 'Jane Doe',
-      apellidos: 'George White',
-      celular: '987654321',
-      email: 'jane.doe@example.com',
-      active: true,
-    },
-    {
-      id: 4,
-      cedula: '0931237663',
-      nombres: 'Bob Johnson',
-      apellidos: 'George White',
-      celular: '555555555',
-      email: 'bob.johnson@example.com',
-      active: false,
-    },
-    {
-      id: 5,
-      cedula: '0931237663',
-      nombres: 'Alice Smith',
-      apellidos: 'George White',
-      celular: '123123123',
-      email: 'alice.smith@example.com',
-      active: true,
-    },
-    {
-      id: 6,
-      cedula: '0931237663',
-      nombres: 'Charlie Brown',
-      apellidos: 'George White',
-      celular: '987987987',
-      email: 'charlie.brown@example.com',
-      active: false,
-    },
-    {
-      id: 7,
-      cedula: '0931237663',
-      nombres: 'Eve Johnson',
-      apellidos: 'George White',
-      celular: '456456456',
-      email: 'eve.johnson@example.com',
-      active: true,
-    },
-    {
-      id: 8,
-      cedula: '0931237663',
-      nombres: 'George White',
-      apellidos: 'George White',
-      celular: '789789789',
-      email: 'george.white@example.com',
-      active: false,
-    },
-    {
-      id: 9,
-      cedula: '0931237663',
-      nombres: 'Olivia Brown',
-      apellidos: 'George White',
-      celular: '111222333',
-      email: 'olivia.brown@example.com',
-      active: true,
-    },
-    {
-      id: 10,
-      cedula: '0931237663',
-      nombres: 'Michael Davis',
-      apellidos: 'George White',
-      celular: '444555666',
-      email: 'michael.davis@example.com',
-      active: false,
-    },
-    // Add more customers as needed
-  ],
+  customersArray: [],
+  customersFilter: [],
+  loading: true,
 }
+
+// GET Clientes#index
+export const getClientes = createAsyncThunk('customer/getClientes', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/clientes`, {
+      headers: {
+        Authorization: atob(activeToken),
+      },
+      withCredentials: true,
+    })
+
+    return response.data
+  } catch (error) {
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!')
+    }
+
+    throw new Error(error)
+  }
+})
 
 const customerSlice = createSlice({
   name: 'customers',
@@ -203,6 +41,7 @@ const customerSlice = createSlice({
           customer.cedula.toLowerCase().includes(searchData) ||
           customer.nombres.toLowerCase().includes(searchData) ||
           customer.apellidos.toLowerCase().includes(searchData) ||
+          customer.celular.toLowerCase().includes(searchData) ||
           customer.email.toLowerCase().includes(searchData),
       )
 
@@ -210,6 +49,13 @@ const customerSlice = createSlice({
         state.customersFilter = state.customersArray
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getClientes.fulfilled, (state, action) => {
+      state.loading = false
+      state.customersArray = action.payload
+      state.customersFilter = action.payload
+    })
   },
 })
 

@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 export const DispatchContext = createContext()
 
 function App() {
-  const active = useSelector((state) => state.authentication)
+  const active = useSelector((state) => state.authentication.active)
 
   useEffect(() => {}, [active])
 
@@ -33,14 +33,6 @@ function App() {
           />
           <Route
             path="/"
-            element={
-              <ProtectedRoute isAllowed={active} redirectTo="/login">
-                <Customer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/clientes"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/login">
                 <Customer />

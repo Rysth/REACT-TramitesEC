@@ -3,15 +3,17 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL
+
 const getActiveUser = JSON.parse(sessionStorage.getItem('activeUser'))
 const getActiveToken = sessionStorage.getItem('activeToken')
 const getActiveSession = sessionStorage.getItem('active')
+
 const initialState = {
   activeUser: getActiveUser || {},
   activeToken: getActiveToken || '',
   active: getActiveSession === 'true',
 }
-
+// Login
 export const createSession = createAsyncThunk('authentication/createSession', async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/users/tokens/sign_in`, userData, {
@@ -46,6 +48,7 @@ export const createSession = createAsyncThunk('authentication/createSession', as
   }
 })
 
+// Logout
 export const destroySession = createAsyncThunk('authentication/destroySession', async (activeToken) => {
   try {
     await axios.post(`${API_URL}/users/tokens/revoke`, {
@@ -55,7 +58,10 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
       withCredentials: true,
     })
   } catch (error) {
-    console.log(error)
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!')
+    }
+
     throw new Error(error)
   }
 })
