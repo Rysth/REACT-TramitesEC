@@ -1,18 +1,16 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 
-function TableSearch({ title }) {
+function TableSearch({ title, searchElement }) {
+  const dispatch = useDispatch()
   const [searchData, setSearchData] = useState('')
 
   const onChangeSearchData = (event) => {
     setTimeout(() => {
       const inputData = event.target.value.toLowerCase()
-      if (!inputData) {
-        setSearchData('')
-        return
-      }
-
       setSearchData(inputData)
+      dispatch(searchElement(inputData))
     }, 500)
   }
 
@@ -38,6 +36,7 @@ function TableSearch({ title }) {
 
 TableSearch.propTypes = {
   title: PropTypes.string.isRequired,
+  searchElement: PropTypes.func.isRequired,
 }
 
 export default TableSearch
