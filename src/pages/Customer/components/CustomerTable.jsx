@@ -11,9 +11,9 @@ function CustomerTable() {
     dispatch(getClientes(activeToken))
   }, [dispatch])
 
-  if (!loading) {
+  if (loading) {
     return (
-      <header className="py-12 text-center bg-indigo-700">
+      <header className="py-12 text-center bg-indigo-700 rounded-lg">
         <h3 className="text-2xl text-white sm:text-3xl">Cargando...</h3>
       </header>
     )

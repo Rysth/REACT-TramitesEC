@@ -15,7 +15,7 @@ function TableSearch({ title, searchElement }) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-between gap-2 p-4 sm:flex-row">
+    <div className="flex flex-col items-center justify-between gap-2 py-4 sm:flex-row">
       <header>
         <h3 className="text-xl">{title}</h3>
       </header>
