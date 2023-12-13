@@ -12,18 +12,16 @@ function TableSearch({ title, searchElement }) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-between gap-2 py-2 sm:flex-row">
-      <header>
-        <h3 className="text-xl">{title}</h3>
-      </header>
-      <fieldset className="flex flex-col gap-2 sm:flex-row">
-        <label htmlFor="search" className="flex items-center justify-end gap-3">
+    <div className="flex flex-col items-center justify-between gap-2 my-5 sm:flex-row">
+      <h3 className="text-xl">{title}</h3>
+      <fieldset>
+        <label htmlFor="search">
           <span className="sr-only">Buscar: </span>
           <input
             type="text"
             id="table-search"
             onChange={onChangeSearchData}
-            className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="p-2 text-sm border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Buscar..."
           />
         </label>

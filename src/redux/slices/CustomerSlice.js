@@ -34,6 +34,8 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
 // DELETE Clientes#destroy
 export const destroyCliente = createAsyncThunk('customer/destroyCliente', async ({ activeToken, customerID }) => {
   try {
+    console.log(activeToken)
+    console.log(customerID)
     await axios.delete(`${API_URL}/api/v1/clientes/${customerID}`, {
       headers: {
         Authorization: atob(activeToken),
@@ -41,6 +43,7 @@ export const destroyCliente = createAsyncThunk('customer/destroyCliente', async 
       withCredentials: true,
     })
   } catch (error) {
+    console.log(error)
     if (error.response.status === 500) {
       toast.error('¡Problema en el Servidor!')
       return
