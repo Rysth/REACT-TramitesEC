@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { Table } from 'flowbite-react'
+import { Badge, Button } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { destroyCliente } from '../../../redux/slices/CustomerSlice'
-import { Badge, Button } from '@tremor/react'
 
 function CustomerTable() {
   const dispatch = useDispatch()
@@ -22,7 +23,7 @@ function CustomerTable() {
   const onDeleteCustomer = () => dispatch(destroyCliente({ activeToken, customerID })).then(() => hideShowModal())
 
   return (
-    <article className="overflow-auto max-h-96">
+    <article>
       {showModal && (
         <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center  md:inset-0 h-[calc(100%)] max-h-full grid place-items-center bg-black/50">
           <div className="relative w-full max-w-md max-h-full p-4">
@@ -42,68 +43,53 @@ function CustomerTable() {
           </div>
         </div>
       )}
-      <table className="w-full overflow-auto text-sm text-left text-gray-500">
-        <thead className="w-full text-xs text-gray-700 uppercase bg-gray-100">
-          <tr>
-            <th scope="col" className="w-12 px-6 py-3">
-              #
-            </th>
-            <th scope="col" className="w-32 px-6 py-3">
-              Cédula
-            </th>
-            <th scope="col" className="w-40 px-6 py-3">
-              Nombre Completo
-            </th>
-            <th scope="col" className="w-32 px-6 py-3">
-              Celular
-            </th>
-            <th scope="col" className="w-40 px-6 py-3">
-              Email
-            </th>
-            <th scope="col" className="w-16 px-6 py-3">
-              Estado
-            </th>
-            <th scope="col" className="w-32 px-6 py-3">
-              Acciones
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {customersFilter.map((customer, index) => (
-            <tr className="bg-white border-b hover:bg-gray-50" key={customer.id}>
-              <th scope="row" className="px-6 py-2 text-gray-900">
-                {index + 1}
-              </th>
-              <td className="px-6 py-2 truncate">{customer.cedula}</td>
-              <td className="px-6 py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</td>
-              <td className="px-6 py-2 truncate">{customer.celular}</td>
-              <td className="px-6 py-2 truncate">
-                <a
-                  href="mailto:johnpalacios.t@gmail.com"
-                  className="inline-block text-blue-500 underline md:hover:text-gray-900"
-                >
-                  {customer.email}
-                </a>
-              </td>
-              <td className="px-6 py-2 text-center">
-                {customer.active ? (
-                  <Badge className="text-gray-700 bg-green-100">Activo</Badge>
-                ) : (
-                  <Badge className="text-gray-700 bg-slate-100">Inactivo</Badge>
-                )}
-              </td>
-              <td className="flex items-center gap-2 px-6 py-4">
-                <Button size="xs" variant="primary">
-                  Editar
-                </Button>
-                <Button size="xs" variant="primary" color="red" onClick={() => activeShowModal(customer.id)}>
-                  Eliminar
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <main className="overflow-x-auto max-h-96">
+        <Table hoverable className="relative z-30">
+          <Table.Head className="sticky top-0">
+            <Table.HeadCell className="w-12">#</Table.HeadCell>
+            <Table.HeadCell className="w-24">Cédula</Table.HeadCell>
+            <Table.HeadCell className="w-48">Nombre Completo</Table.HeadCell>
+            <Table.HeadCell className="w-24">Celular</Table.HeadCell>
+            <Table.HeadCell className="w-48">Email</Table.HeadCell>
+            <Table.HeadCell className="w-32">Estado</Table.HeadCell>
+            <Table.HeadCell className="w-48">Acciones</Table.HeadCell>
+          </Table.Head>
+          <Table.Body className="bg-opacity-100 divide-y">
+            {customersFilter.map((customer, index) => (
+              <Table.Row key={customer.id}>
+                <Table.Cell className="font-medium text-gray-900 whitespace-nowrap">{index + 1}</Table.Cell>
+                <Table.Cell className="truncate">{customer.cedula}</Table.Cell>
+                <Table.Cell className="truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
+                <Table.Cell className="truncate">{customer.celular}</Table.Cell>
+                <Table.Cell className="truncate">
+                  {' '}
+                  <a
+                    href="mailto:johnpalacios.t@gmail.com"
+                    className="inline-block text-blue-500 underline md:hover:text-gray-900"
+                  >
+                    {customer.email}
+                  </a>
+                </Table.Cell>
+                <Table.Cell>
+                  {customer.active ? (
+                    <Badge className="text-gray-700 bg-green-100">Activo</Badge>
+                  ) : (
+                    <Badge className="text-gray-700 bg-slate-100">Inactivo</Badge>
+                  )}
+                </Table.Cell>
+                <Table.Cell className="flex items-center justify-center gap-2">
+                  <Button size="xs" variant="primary">
+                    Editar
+                  </Button>
+                  <Button size="xs" variant="primary" color="red" onClick={() => activeShowModal(customer.id)}>
+                    Eliminar
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </main>
     </article>
   )
 }
