@@ -21,7 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       {active && <Sidebar />}
-      <main className="">
+      <main className="h-full">
         <ToastContainer position="top-right" />
         <Routes>
           <Route

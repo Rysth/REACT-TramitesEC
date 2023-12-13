@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import NavBar from '../../components/NavBar/NavBar'
+import TableHeading from '../../components/Table/TableHeading'
 import TableSearch from '../../components/Table/TableSearch'
 import CustomerStats from './components/CustomerStats'
 import CustomerTable from './components/CustomerTable'
@@ -15,9 +15,9 @@ function Customer() {
   }, [dispatch, activeToken])
 
   return (
-    <section className="px-4 sm:px-8 sm:pb-4 sm:ml-64" id="customerSection">
+    <section className="h-full px-4 sm:px-8 sm:pb-4 sm:ml-64" id="customerSection">
       <header>
-        <NavBar />
+        <TableHeading />
         <CustomerStats />
         <TableSearch title="Listado de Clientes" searchElement={customerActions.searchCustomer} />
       </header>

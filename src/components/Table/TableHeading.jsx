@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-function NavBar() {
+function TableHeading() {
   const { activeUser } = useSelector((store) => store.authentication)
 
   return (
@@ -11,4 +11,4 @@ function NavBar() {
   )
 }
 
-export default NavBar
+export default TableHeading
