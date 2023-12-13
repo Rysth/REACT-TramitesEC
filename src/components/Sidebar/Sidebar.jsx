@@ -3,6 +3,7 @@ import { FaBarsStaggered } from 'react-icons/fa6'
 import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
+import { Button } from 'flowbite-react'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import { destroySession } from '../../redux/slices/AuthenticationSlice'
 
@@ -23,16 +24,17 @@ function Sidebar() {
 
   return (
     <section>
-      <button
+      <Button
         data-drawer-target="logo-sidebar"
         data-drawer-toggle="logo-sidebar"
         aria-controls="logo-sidebar"
         type="button"
-        className="inline-flex items-center p-2.5 mt-2 text-xl text-white border rounded-lg bg-purple ms-3 sm:hidden hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        color="dark"
+        className="mt-3 button ms-3 sm:hidden"
       >
         <span className="sr-only">Open sidebar</span>
         <FaBarsStaggered />
-      </button>
+      </Button>
 
       <aside
         id="logo-sidebar"
@@ -53,14 +55,10 @@ function Sidebar() {
               </NavLink>
             </li>
           </ul>
-          <button
-            onClick={userLogout}
-            type="button"
-            className="flex items-center justify-center gap-1 p-2.5 px-5 text-xs font-medium text-white bg-red-600 rounded-lg sm:text-sm focus:outline-none hover:bg-red-700 md:hover:shadow-md md:active:scale-95 md:transition"
-          >
-            Cerrar Sesión
+          <Button color="failure" onClick={userLogout} className="button" size="sm">
             <MdLogout className="flex-shrink-0 w-5 h-5 transition duration-75" />
-          </button>
+            Cerrar Sesión
+          </Button>
         </div>
       </aside>
     </section>
