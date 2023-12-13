@@ -10,12 +10,14 @@ function Customer() {
     <section className="px-4 sm:px-8 sm:pb-4 sm:ml-64" id="customerSection">
       <NavBar />
       <CustomerStats />
-      <TableSearch
-        title="Listado de Clientes"
-        searchElement={customerActions.searchCustomer}
-        statusElement={customerActions.statusCustomer}
-      />
-      <CustomerTable />
+      <main>
+        <TableSearch
+          title="Listado de Clientes"
+          searchElement={customerActions.searchCustomer}
+          statusElement={customerActions.statusCustomer}
+        />
+        <CustomerTable />
+      </main>
     </section>
   )
 }

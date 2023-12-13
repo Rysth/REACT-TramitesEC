@@ -30,7 +30,7 @@ function CustomerTable() {
   }
 
   return (
-    <div className="relative mb-10 overflow-auto shadow max-h-96" id="scrollableDiv">
+    <div className="relative mb-10" id="scrollableDiv">
       {showModal && (
         <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full  grid place-items-center bg-black/50">
           <div className="relative w-full max-w-md max-h-full p-4">
@@ -64,9 +64,10 @@ function CustomerTable() {
         hasMore={records < customersFilter.length}
         loader={<Loading />}
         scrollableTarget="scrollableDiv"
+        className="overflow-auto max-h-96"
       >
-        <table className="w-full text-sm text-left text-gray-500 ">
-          <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-100">
+        <table className="relative w-full text-sm text-left text-gray-500">
+          <thead className="sticky top-0 w-full text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
               <th scope="col" className="w-12 px-6 py-3">
                 #
