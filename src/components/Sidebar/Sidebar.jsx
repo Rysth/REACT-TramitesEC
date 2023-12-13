@@ -42,7 +42,7 @@ function Sidebar() {
         <div className="flex flex-col h-full px-3 py-4 overflow-y-auto shadow-xl text-slate-400">
           <a href="/" className="flex items-center justify-center h-16 mb-1 text-center text-black">
             <img src={BrandLogo} alt="TramitesEC's logo" className="w-10 h-10" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap ">TrámitesEC</span>
+            <h2 className="self-center text-3xl whitespace-nowrap">TrámitesEC</h2>
           </a>
           <ul className="flex-1 mt-5 space-y-2 font-medium">
             {/* <li>
