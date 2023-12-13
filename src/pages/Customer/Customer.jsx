@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import TableHeading from '../../components/Table/TableHeading'
 import TableSearch from '../../components/Table/TableSearch'
 import CustomerStats from './components/CustomerStats'
-/* import CustomerTable from './components/CustomerTable' */
+import CustomerTable from './components/CustomerTable'
 /* import CustomerFooter from './components/CustomerFooter' */
 import { getClientes, customerActions } from '../../redux/slices/CustomerSlice'
 
@@ -31,10 +31,10 @@ function Customer() {
         <CustomerStats />
         <TableSearch title="Listado de Clientes" searchElement={customerActions.searchCustomer} />
       </header>
-      {/*  <main>
+      <main>
         <CustomerTable />
       </main>
-      <footer>
+      {/* <footer>
         <CustomerFooter />
       </footer> */}
     </section>

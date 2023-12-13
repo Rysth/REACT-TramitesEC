@@ -1,9 +1,19 @@
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Table, Button, Badge, Modal } from 'flowbite-react'
-import { TiWarningOutline } from 'react-icons/ti'
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Card,
+  Typography,
+  Chip,
+} from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { destroyCliente } from '../../../redux/slices/CustomerSlice'
+
+const TABLE_HEAD = ['#', 'Cédula', 'Nombre Completo', 'Celular', 'Email', 'Estado', 'Acciones']
 
 function CustomerTable() {
   const dispatch = useDispatch()
@@ -28,30 +38,23 @@ function CustomerTable() {
 
   return (
     <article className="mb-5">
-      <Modal
-        show={showModal}
-        onClose={() => hideShowModal()}
-        popup
-        dismissible
-        position={'center'}
-        className="z-50 bg-black/50"
-      >
-        <Modal.Body className="max-w-xl mx-auto bg-black">
-          <TiWarningOutline className="w-32 h-32 mx-auto mb-2 text-gray-900" />
-          <div className="text-center">
-            <h3 className="mb-5 text-lg sm:text-2xl">¿Estás seguro/a de querer eliminarlo?</h3>
-            <div className="flex justify-center gap-2">
-              <Button color="failure" size="sm" className="button" onClick={() => onDeleteCustomer()}>
-                Confirmar
-              </Button>
-              <Button color="gray" size="sm" className="button" onClick={() => hideShowModal()}>
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-      <main className="overflow-x-auto max-h-96">
+      <Dialog open={showModal} handler={hideShowModal} size="xs">
+        <DialogHeader className="grid gap-1 text-center">
+          <Typography variant="h3" className="leading-9">
+            ¿Estas seguro/a que quieres eliminarlo?
+          </Typography>
+          <Typography color="gray">Esta acción es irreversible.</Typography>
+        </DialogHeader>
+        <DialogFooter className="justify-center pt-0 mt-0">
+          <Button color="gray" onClick={hideShowModal} className="mr-1">
+            <span>Cancelar</span>
+          </Button>
+          <Button variant="gradient" color="red" onClick={onDeleteCustomer}>
+            <span>Confirmar</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      <main className="relative overflow-x-auto max-h-96">
         <InfiniteScroll
           pageStart={0}
           loadMore={increaseRecords}
@@ -63,54 +66,70 @@ function CustomerTable() {
           }
           useWindow={false}
         >
-          <Table hoverable className="relative z-30 rounded-2xl">
-            <Table.Head className="sticky top-0 z-20 ">
-              <Table.HeadCell className="w-12">#</Table.HeadCell>
-              <Table.HeadCell className="w-24">Cédula</Table.HeadCell>
-              <Table.HeadCell className="w-48">Nombre Completo</Table.HeadCell>
-              <Table.HeadCell className="w-24">Celular</Table.HeadCell>
-              <Table.HeadCell className="w-48">Email</Table.HeadCell>
-              <Table.HeadCell className="w-32">Estado</Table.HeadCell>
-              <Table.HeadCell className="w-48">Acciones</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="bg-opacity-100 divide-y">
-              {customersFilter.slice(0, records).map((customer, index) => (
-                <Table.Row key={customer.id}>
-                  <Table.Cell className="font-medium text-gray-900 whitespace-nowrap">{index + 1}</Table.Cell>
-                  <Table.Cell className="truncate">{customer.cedula}</Table.Cell>
-                  <Table.Cell className="truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
-                  <Table.Cell className="truncate">{customer.celular}</Table.Cell>
-                  <Table.Cell className="truncate">
-                    <a
-                      href="mailto:johnpalacios.t@gmail.com"
-                      className="inline-block text-blue-500 underline md:hover:text-gray-900"
-                    >
-                      {customer.email}
-                    </a>
-                  </Table.Cell>
-                  <Table.Cell>
-                    {customer.active ? (
-                      <Badge color="success" size="xs" className="grid place-items-center">
-                        Activo
-                      </Badge>
-                    ) : (
-                      <Badge color="gray" size="xs" className="grid place-items-center">
-                        Inactivo
-                      </Badge>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell className="flex items-center justify-center gap-2">
-                    <Button size="xs" color="blue" className="button">
-                      Editar
-                    </Button>
-                    <Button size="xs" color="failure" className="button" onClick={() => activeShowModal(customer.id)}>
-                      Eliminar
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
+          <Card className="w-full h-full overflow-scroll ">
+            <table className="w-full text-left table-auto min-w-max">
+              <thead className="sticky top-0">
+                {TABLE_HEAD.map((head) => (
+                  <th key={head} className="p-4 font-bold bg-gray-200 border-b border-blue-gray-100">
+                    <Typography variant="small" color="blue-gray" className="font-bold leading-none">
+                      {head}
+                    </Typography>
+                  </th>
+                ))}
+              </thead>
+              <tbody>
+                {customersFilter.slice(0, records).map((customer, index) => (
+                  <tr key={customer.id} className=" even:bg-blue-gray-50/50">
+                    <td className="p-4">
+                      <Typography variant="small" color="blue-gray" className="font-bold">
+                        {index + 1}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography variant="small" color="blue-gray" className="font-normal">
+                        {customer.cedula}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography variant="small" color="blue-gray" className="font-normal">
+                        {`${customer.nombres} ${customer.apellidos}`}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography variant="small" color="blue-gray" className="font-normal">
+                        {customer.celular}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography variant="small">
+                        <a
+                          href="mailto:johnpalacios.t@gmail.com"
+                          className="inline-block underline md:hover:text-gray-900"
+                        >
+                          {customer.email}
+                        </a>
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      {customer.active ? (
+                        <Chip color="green" value="Activo" className="grid place-items-center" size="sm" />
+                      ) : (
+                        <Chip color="gray" value="Inactivo" className="grid place-items-center" size="sm" />
+                      )}
+                    </td>
+                    <td className="flex items-center gap-2 p-4">
+                      <Button size="sm" color="indigo" className="button">
+                        Editar
+                      </Button>
+                      <Button size="sm" color="red" className="button" onClick={() => activeShowModal(customer.id)}>
+                        Eliminar
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
         </InfiniteScroll>
       </main>
     </article>

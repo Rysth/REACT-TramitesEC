@@ -58,7 +58,7 @@ export function Sidebar() {
                 </ListItem>
               </NavLink>
             </List>
-            <Button color="red" size="xs" onClick={onDestroySession}>
+            <Button color="red" size="md" onClick={onDestroySession}>
               Cerrar Sesión
             </Button>
           </Card>
