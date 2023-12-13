@@ -23,6 +23,16 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
 
     return response.data
   } catch (error) {
+    if (error.response.status === 401) {
+      toast.error('¡Sesión Caducada!', { autoClose: 2000, theme: 'colored' })
+
+      setTimeout(() => {
+        sessionStorage.removeItem('active')
+        sessionStorage.removeItem('activeUser')
+        sessionStorage.removeItem('activeToken')
+      }, 1000)
+    }
+
     if (error.response.status === 500) {
       toast.error('¡Problema en el Servidor!')
     }

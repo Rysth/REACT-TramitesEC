@@ -4,6 +4,7 @@ import TableHeading from '../../components/Table/TableHeading'
 import TableSearch from '../../components/Table/TableSearch'
 import CustomerStats from './components/CustomerStats'
 import CustomerTable from './components/CustomerTable'
+import CustomerFooter from './components/CustomerFooter'
 import { getClientes, customerActions } from '../../redux/slices/CustomerSlice'
 import { Spinner } from 'flowbite-react'
 
@@ -34,6 +35,9 @@ function Customer() {
       <main>
         <CustomerTable />
       </main>
+      <footer>
+        <CustomerFooter />
+      </footer>
     </section>
   )
 }

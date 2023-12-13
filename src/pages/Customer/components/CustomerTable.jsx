@@ -30,13 +30,13 @@ function CustomerTable() {
     <article className="mb-5">
       <Modal
         show={showModal}
-        size="md"
         onClose={() => hideShowModal()}
         popup
+        dismissible
         position={'center'}
-        className="bg-black/50"
+        className="z-50 bg-black/50"
       >
-        <Modal.Body>
+        <Modal.Body className="max-w-xl mx-auto bg-black">
           <TiWarningOutline className="w-32 h-32 mx-auto mb-2 text-gray-900" />
           <div className="text-center">
             <h3 className="mb-5 text-lg sm:text-2xl">¿Estás seguro/a de querer eliminarlo?</h3>
