@@ -1,14 +1,15 @@
-import './App.css'
+import 'flowbite'
 import { createContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
 import Login from './pages/Session/Login'
-/* import Home from './pages/Home/Home' */
 import Customer from './pages/Customer/Customer'
-import 'react-toastify/dist/ReactToastify.css'
+/* import Home from './pages/Home/Home' */
+import './App.css'
 
 export const DispatchContext = createContext()
 
