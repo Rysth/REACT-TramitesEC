@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import TableHeading from '../../components/Table/TableHeading'
 import TableSearch from '../../components/Table/TableSearch'
 import CustomerStats from './components/CustomerStats'
-import CustomerTable from './components/CustomerTable'
-import CustomerFooter from './components/CustomerFooter'
+/* import CustomerTable from './components/CustomerTable' */
+/* import CustomerFooter from './components/CustomerFooter' */
 import { getClientes, customerActions } from '../../redux/slices/CustomerSlice'
-import { Spinner } from 'flowbite-react'
 
 function Customer() {
   const dispatch = useDispatch()
@@ -20,7 +19,7 @@ function Customer() {
   if (loading) {
     return (
       <div className="grid h-screen px-4 text-center place-items-center sm:px-8 sm:pb-4 sm:ml-64">
-        <Spinner aria-label="Center-aligned spinner example" size="xl" className="w-20 h-20" color="purple" />
+        <h2>Loading</h2>
       </div>
     )
   }
@@ -32,12 +31,12 @@ function Customer() {
         <CustomerStats />
         <TableSearch title="Listado de Clientes" searchElement={customerActions.searchCustomer} />
       </header>
-      <main>
+      {/*  <main>
         <CustomerTable />
       </main>
       <footer>
         <CustomerFooter />
-      </footer>
+      </footer> */}
     </section>
   )
 }

@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import Customer from './pages/Customer/Customer'
 import Sidebar from './components/Sidebar/Sidebar'
 import Session from './pages/Session/Session'
 import './App.css'
@@ -18,14 +19,22 @@ function App() {
   return (
     <BrowserRouter>
       {active && <Sidebar />}
+      <ToastContainer />
       <main className="h-full">
-        <ToastContainer position="top-right" />
         <Routes>
           <Route
             path="/session"
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
                 <Session />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/">
+                <Customer />
               </ProtectedRoute>
             }
           />
