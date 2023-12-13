@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import { Table, Button, Badge } from 'flowbite-react'
+import { Table, Button, Badge, Modal } from 'flowbite-react'
+import { TiWarningOutline } from 'react-icons/ti'
 import { useDispatch, useSelector } from 'react-redux'
 import { destroyCliente } from '../../../redux/slices/CustomerSlice'
 
@@ -26,26 +27,30 @@ function CustomerTable() {
   const onDeleteCustomer = () => dispatch(destroyCliente({ activeToken, customerID })).then(() => hideShowModal())
 
   return (
-    <article>
-      {showModal && (
-        <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center  md:inset-0 h-[calc(100%)] max-h-full grid place-items-center bg-black/50">
-          <div className="relative w-full max-w-md max-h-full p-4">
-            <div className="relative bg-white rounded-lg shadow">
-              <div className="p-4 text-center md:p-5+">
-                <h3 className="mb-3 font-normal text-gray-900 sm:text-2xl">¿Estas seguro/a de querer eliminarlo?</h3>
-                <div className="flex items-center justify-center gap-1">
-                  <Button size="xs" color="failure" className="button" onClick={() => onDeleteCustomer()}>
-                    Confirmar
-                  </Button>
-                  <Button size="xs" color="gray" className="button" onClick={() => hideShowModal(false)}>
-                    Cancelar
-                  </Button>
-                </div>
-              </div>
+    <article className="mb-5">
+      <Modal
+        show={showModal}
+        size="md"
+        onClose={() => hideShowModal()}
+        popup
+        position={'center'}
+        className="bg-black/50"
+      >
+        <Modal.Body>
+          <TiWarningOutline className="w-32 h-32 mx-auto mb-2 text-gray-900" />
+          <div className="text-center">
+            <h3 className="mb-5 text-lg sm:text-2xl">¿Estás seguro/a de querer eliminarlo?</h3>
+            <div className="flex justify-center gap-2">
+              <Button color="failure" size="sm" className="button" onClick={() => onDeleteCustomer()}>
+                Confirmar
+              </Button>
+              <Button color="gray" size="sm" className="button" onClick={() => hideShowModal()}>
+                Cancelar
+              </Button>
             </div>
           </div>
-        </div>
-      )}
+        </Modal.Body>
+      </Modal>
       <main className="overflow-x-auto max-h-96">
         <InfiniteScroll
           pageStart={0}
@@ -58,8 +63,8 @@ function CustomerTable() {
           }
           useWindow={false}
         >
-          <Table hoverable className="relative z-30">
-            <Table.Head className="sticky top-0 z-20">
+          <Table hoverable className="relative z-30 rounded-2xl">
+            <Table.Head className="sticky top-0 z-20 ">
               <Table.HeadCell className="w-12">#</Table.HeadCell>
               <Table.HeadCell className="w-24">Cédula</Table.HeadCell>
               <Table.HeadCell className="w-48">Nombre Completo</Table.HeadCell>
