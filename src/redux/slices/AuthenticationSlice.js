@@ -33,17 +33,17 @@ export const createSession = createAsyncThunk('authentication/createSession', as
     return [response.data, userResponse.data]
   } catch (error) {
     if (error.response.status === 401) {
-      toast.error('¡Email/Contraseña Incorrectas!')
+      toast.error('¡Email/Contraseña Incorrectas!', { theme: 'colored' })
       return
     }
 
     if (error.response.status === 400) {
-      toast.error('¡Cuenta no Existe!')
+      toast.error('¡Cuenta no Existe!', { theme: 'colored' })
       return
     }
 
     if (error.response.status === 500) {
-      toast.error('¡Problema en el Servidor!')
+      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
       return
     }
 
@@ -62,7 +62,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
     })
   } catch (error) {
     if (error.response.status === 500) {
-      toast.error('¡Problema en el Servidor!')
+      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
       return
     }
 
@@ -95,7 +95,7 @@ export const AuthenticationSlice = createSlice({
     createSession(state) {
       state.active = true
       sessionStorage.setItem('active', state.active)
-      toast.success('¡Bienvenido!', { autoClose: 2000 })
+      toast.success('¡Bienvenido!', { autoClose: 2000, theme: 'colored' })
     },
     destroySession(state) {
       state.active = false
@@ -104,7 +104,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
-      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
     },
   },
   extraReducers: (builder) => {
@@ -119,7 +119,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.setItem('active', state.active)
       sessionStorage.setItem('activeToken', btoa(action.payload[0].token))
       sessionStorage.setItem('activeUser', JSON.stringify(action.payload[1]))
-      toast.success('¡Bienvenido!', { autoClose: 2000 })
+      toast.success('¡Bienvenido!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(destroySession.fulfilled, (state) => {
       state.active = false
@@ -128,7 +128,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
-      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })

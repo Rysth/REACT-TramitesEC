@@ -45,7 +45,7 @@ export const destroyCliente = createAsyncThunk('customer/destroyCliente', async 
   } catch (error) {
     console.log(error)
     if (error.response.status === 500) {
-      toast.error('¡Problema en el Servidor!')
+      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
       return
     }
     throw new Error(error)
@@ -139,7 +139,7 @@ const customerSlice = createSlice({
         },
       ]
 
-      toast.success('¡Cliente Eliminado!', { autoClose: 2000 })
+      toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })
