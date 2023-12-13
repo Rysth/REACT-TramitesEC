@@ -2,13 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { createSession } from '../../redux/slices/AuthenticationSlice'
 
-function Login() {
-  const { register, handleSubmit } = useForm()
+function Session() {
   const dispatch = useDispatch()
+  const { register, handleSubmit } = useForm()
 
-  const onSubmit = (userData) => {
-    dispatch(createSession(userData))
-  }
+  const onSubmit = (userData) => dispatch(createSession(userData))
 
   return (
     <section className="w-full h-screen">
@@ -56,4 +54,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Session

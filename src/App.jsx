@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
-import Login from './pages/Session/Login'
+import Session from './pages/Session/Session'
 import Customer from './pages/Customer/Customer'
 /* import Home from './pages/Home/Home' */
 import './App.css'
@@ -25,17 +25,17 @@ function App() {
         <ToastContainer position="top-right" />
         <Routes>
           <Route
-            path="/login"
+            path="/session"
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
-                <Login />
+                <Session />
               </ProtectedRoute>
             }
           />
           <Route
             path="/"
             element={
-              <ProtectedRoute isAllowed={active} redirectTo="/login">
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <Customer />
               </ProtectedRoute>
             }
