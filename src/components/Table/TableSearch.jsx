@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 
@@ -24,7 +23,7 @@ function TableSearch({ title, searchElement, statusElement }) {
       <header>
         <h3 className="text-xl">{title}</h3>
       </header>
-      <fieldset className="flex gap-2">
+      <fieldset className="flex flex-col gap-2 sm:flex-row">
         <label htmlFor="search" className="flex items-center justify-end gap-3">
           <span className="sr-only">Buscar: </span>
           <input
@@ -41,7 +40,7 @@ function TableSearch({ title, searchElement, statusElement }) {
             name="status"
             id="status"
             onChange={onChangeStatusData}
-            className="p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg sm:w-max bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="">---Seleccionar---</option>
             <option value={true}>Activo</option>

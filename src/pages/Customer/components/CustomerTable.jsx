@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Loading from '../../../components/Loading/Loading'
-import { getClientes } from '../../../redux/slices/CustomerSlice'
+import { getClientes, destroyCliente } from '../../../redux/slices/CustomerSlice'
 
 function CustomerTable() {
   const dispatch = useDispatch()
   const [records, setRecords] = useState(12)
-  const activeToken = useSelector((store) => store.authentication.activeToken)
   const { customersFilter, loading } = useSelector((store) => store.customer)
+  const activeToken = useSelector((store) => store.authentication.activeToken)
 
   const increaseDisplayCount = () => {
     setRecords(records + 12)
+  }
+
+  const onDeleteCustomer = (customerID) => {
+    dispatch(destroyCliente({ activeToken, customerID }))
   }
 
   useEffect(() => {
@@ -95,6 +99,7 @@ function CustomerTable() {
                   <button
                     type="button"
                     className="px-3 py-1 text-sm font-medium text-center text-white bg-red-700 rounded-md hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 md:active:scale-95"
+                    onClick={() => onDeleteCustomer(customer.id)}
                   >
                     Eliminar
                   </button>

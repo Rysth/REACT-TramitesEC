@@ -31,6 +31,24 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
   }
 })
 
+// DELETE Clientes#destroy
+export const destroyCliente = createAsyncThunk('customer/destroyCliente', async ({ activeToken, customerID }) => {
+  try {
+    await axios.delete(`${API_URL}/api/v1/clientes/${customerID}`, {
+      headers: {
+        Authorization: atob(activeToken),
+      },
+      withCredentials: true,
+    })
+  } catch (error) {
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!')
+      return
+    }
+    throw new Error(error)
+  }
+})
+
 const customerSlice = createSlice({
   name: 'customers',
   initialState,
@@ -61,6 +79,11 @@ const customerSlice = createSlice({
 
       state.customersFilter = state.customersArray.filter((customer) => customer.active === searchData)
     },
+    removeCustomer(state, action) {
+      const customerIdToRemove = action.payload
+      state.customersArray = state.customersArray.filter((customer) => customer.id !== customerIdToRemove)
+      state.customersFilter = state.customersArray
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getClientes.fulfilled, (state, action) => {
@@ -90,6 +113,36 @@ const customerSlice = createSlice({
           color: 'bg-red-700',
         },
       ]
+    })
+    builder.addCase(destroyCliente.fulfilled, (state, action) => {
+      const deletedCustomerId = action.meta.arg.customerID
+      state.customersArray = state.customersArray.filter((customer) => customer.id !== deletedCustomerId)
+      state.customersFilter = state.customersArray
+
+      /* Customer Stats */
+      const customersQuantity = state.customersFilter.length
+      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+
+      state.customerStats = [
+        {
+          title: 'Clientes Registrados',
+          metric: customersQuantity,
+          color: 'bg-indigo-700',
+        },
+        {
+          title: 'Activos',
+          metric: customersActive,
+          color: 'bg-green-500',
+        },
+        {
+          title: 'Inactivos',
+          metric: customersInactive,
+          color: 'bg-red-700',
+        },
+      ]
+
+      toast.success('¡Cliente Eliminado!', { autoClose: 2000 })
     })
   },
 })

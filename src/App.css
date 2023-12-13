@@ -1,5 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/tilt-warp');
 @import url('https://fonts.cdnfonts.com/css/belanosima');
+@import url('https://fonts.cdnfonts.com/css/henry-sans');
 
 :root {
   --CL-blue-light: #0575e6;
@@ -45,7 +46,7 @@
 }
 
 body {
-  font-family: 'Belanosima', sans-serif;
+  font-family: 'Henry Sans', sans-serif;
 }
 
 h1,

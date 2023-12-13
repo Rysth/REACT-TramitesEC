@@ -34,14 +34,17 @@ export const createSession = createAsyncThunk('authentication/createSession', as
   } catch (error) {
     if (error.response.status === 401) {
       toast.error('¡Email/Contraseña Incorrectas!')
+      return
     }
 
     if (error.response.status === 400) {
       toast.error('¡Cuenta no Existe!')
+      return
     }
 
     if (error.response.status === 500) {
       toast.error('¡Problema en el Servidor!')
+      return
     }
 
     throw new Error(error)
@@ -60,6 +63,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
   } catch (error) {
     if (error.response.status === 500) {
       toast.error('¡Problema en el Servidor!')
+      return
     }
 
     throw new Error(error)
