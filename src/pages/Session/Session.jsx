@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { Input, Button } from '@material-tailwind/react'
+import { MdKey } from 'react-icons/md'
 import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function Session() {
@@ -21,32 +23,31 @@ function Session() {
             onSubmit={handleSubmit(onSubmit)}
           >
             <h2 className="w-full mb-5 text-3xl font-bold text-left md:text-4xl">Iniciar Sesión</h2>
-            <label htmlFor="email" className="grid w-full gap-2 text-sm">
-              <span className="font-semibold">Correo Electrónico:</span>
-              <input
-                type="email"
-                required
-                {...register('email')}
-                className="p-3 px-5 border border-gray-200 rounded-full"
-                placeholder="username@example.com"
-              />
-            </label>
-            <label htmlFor="email" className="grid w-full gap-2 mt-5 text-sm">
-              <span className="font-semibold">Contraseña:</span>
-              <input
+            <fieldset className="mb-4 w-72">
+              <Input color="indigo" variant="standard" label="Correo Electrónico" {...register('email')} required />
+            </fieldset>
+            <fieldset className="mb-4 w-72">
+              <Input
                 type="password"
-                required
+                variant="standard"
+                color="indigo"
+                label="Contraseña"
                 {...register('password')}
-                className="p-3 px-5 border border-gray-200 rounded-full"
-                placeholder="*********"
+                required
               />
-            </label>
-            <button
-              type="submit"
-              className="w-full p-3 mt-5 text-sm text-white rounded-full bg-blue-light md:hover:scale-105 md:hover:shadow-lg md:transition md:active:scale-95"
-            >
-              Ingresar
-            </button>
+            </fieldset>
+            <fieldset className="mt-4 w-72">
+              <Button
+                variant="gradient"
+                className="flex items-center justify-center gap-1 rounded-full"
+                type="submit"
+                color="blue"
+                fullWidth
+              >
+                Ingresar
+                <MdKey className="text-xl" />
+              </Button>
+            </fieldset>
           </form>
         </div>
       </div>

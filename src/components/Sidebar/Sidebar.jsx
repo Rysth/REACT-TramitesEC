@@ -1,67 +1,56 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { FaBarsStaggered } from 'react-icons/fa6'
-import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { FaUser } from 'react-icons/fa'
-import { Button } from 'flowbite-react'
-import BrandLogo from '../../assets/images/brands/brand.svg'
-import { destroySession } from '../../redux/slices/AuthenticationSlice'
+import { useState } from 'react'
+import { Card, Typography, List, ListItem, Button } from '@material-tailwind/react'
+import { HiMiniUserGroup, HiDocumentText } from 'react-icons/hi2'
+import { NavLink } from 'react-router-dom'
+import BrandImage from '../../assets/images/brands/brand.svg'
 
-function Sidebar() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { activeToken } = useSelector((store) => store.authentication)
+export function Sidebar() {
+  const [showSidebar, setShowSidebar] = useState(false)
 
-  const userLogout = () => {
-    dispatch(destroySession(activeToken))
-      .then(() => navigate('/session'))
-      .then(() =>
-        setTimeout(() => {
-          window.location.reload()
-        }, 500),
-      )
-  }
+  const toggleSidebar = () => setShowSidebar(!showSidebar)
 
   return (
-    <section>
-      <Button
-        data-drawer-target="logo-sidebar"
-        data-drawer-toggle="logo-sidebar"
-        aria-controls="logo-sidebar"
-        type="button"
-        color="dark"
-        className="mt-3 button ms-3 sm:hidden"
-      >
-        <span className="sr-only">Open sidebar</span>
-        <FaBarsStaggered />
+    <>
+      <Button onClick={toggleSidebar} className="mt-2 sm:hidden sm:ml-64 ms-2" color="indigo">
+        Toggle
       </Button>
-
-      <aside
-        id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white sm:translate-x-0"
-        aria-label="Sidebar"
-      >
-        <div className="flex flex-col h-full px-3 py-4 overflow-y-auto shadow-xl text-slate-400">
-          <a href="/" className="flex items-center justify-center h-16 mb-1 text-center text-black">
-            <img src={BrandLogo} alt="TramitesEC's logo" className="w-10 h-10" />
-            <h2 className="self-center text-3xl whitespace-nowrap">TrámitesEC</h2>
-          </a>
-          <ul className="flex-1 mt-5 space-y-2 font-medium">
-            <li>
-              <NavLink to="/" className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition">
-                <FaUser className="flex-shrink-0 w-5 h-5 transition duration-75" />
-                <span className="flex-1 ms-3">Clientes</span>
-                <MdKeyboardArrowRight className="w-5 h-5 transition duration-75" />
+      <aside className={`w-0 ${showSidebar && 'fixed bg-black/50 transition w-full sm:w-64 left-0 right-0 top-0'}`}>
+        <div
+          className={`w-full h-screen sm:block sm:relative ${
+            showSidebar && 'fixed bg-black/50 transition w-full left-0 right-0 top-0'
+          }`}
+          onClick={toggleSidebar}
+        >
+          <Card
+            className={`fixed top-0 sm:left-0 w-64 -translate-x-64 sm:translate-x-0 h-screen p-4 rounded-none shadow-xl bg-white shadow-black/15 ${
+              showSidebar && 'translate-x-0 transition'
+            }`}
+          >
+            <div className="flex items-center px-4 py-1 pointer-events-none">
+              <img src={BrandImage} alt="" className="w-12 h-12" />
+              <Typography variant="h4" color="black">
+                TrámitesEC
+              </Typography>
+            </div>
+            <List className="p-0">
+              <hr className="my-2" />
+              <NavLink to="/" className="!rounded-r-none">
+                <ListItem className="flex items-center gap-2 text-sm !rounded-r-none focus:bg-opacity-0 focus:text-white">
+                  <HiMiniUserGroup className="text-xl" />
+                  Clientes
+                </ListItem>
               </NavLink>
-            </li>
-          </ul>
-          <Button color="failure" onClick={userLogout} className="button" size="sm">
-            <MdLogout className="flex-shrink-0 w-5 h-5 transition duration-75" />
-            Cerrar Sesión
-          </Button>
+              <NavLink to="/tramites" className="!rounded-r-none">
+                <ListItem className="flex items-center gap-2 text-sm !rounded-r-none focus:bg-opacity-0 focus:text-white">
+                  <HiDocumentText className="text-xl" />
+                  Trámites
+                </ListItem>
+              </NavLink>
+            </List>
+          </Card>
         </div>
       </aside>
-    </section>
+    </>
   )
 }
 

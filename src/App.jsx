@@ -1,4 +1,3 @@
-import 'flowbite'
 import { createContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -7,8 +6,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
 import Session from './pages/Session/Session'
-import Customer from './pages/Customer/Customer'
-/* import Home from './pages/Home/Home' */
 import './App.css'
 
 export const DispatchContext = createContext()
@@ -29,14 +26,6 @@ function App() {
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
                 <Session />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute isAllowed={active} redirectTo="/session">
-                <Customer />
               </ProtectedRoute>
             }
           />
