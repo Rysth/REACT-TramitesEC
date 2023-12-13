@@ -13,7 +13,7 @@ function Sidebar() {
 
   const userLogout = () => {
     dispatch(destroySession(activeToken))
-      .then(() => navigate('/login'))
+      .then(() => navigate('/session'))
       .then(() =>
         setTimeout(() => {
           window.location.reload()

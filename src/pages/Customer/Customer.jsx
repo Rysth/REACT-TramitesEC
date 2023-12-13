@@ -7,17 +7,15 @@ import CustomerStats from './components/CustomerStats'
 
 function Customer() {
   return (
-    <section className="px-4 sm:px-8 sm:py-2 sm:ml-64">
+    <section className="px-4 sm:px-8 sm:pb-4 sm:ml-64" id="customerSection">
       <NavBar />
       <CustomerStats />
-      <div className="relative sm:rounded-2xl">
-        <TableSearch
-          title="Listado de Clientes"
-          searchElement={customerActions.searchCustomer}
-          statusElement={customerActions.statusCustomer}
-        />
-        <CustomerTable />
-      </div>
+      <TableSearch
+        title="Listado de Clientes"
+        searchElement={customerActions.searchCustomer}
+        statusElement={customerActions.statusCustomer}
+      />
+      <CustomerTable />
     </section>
   )
 }

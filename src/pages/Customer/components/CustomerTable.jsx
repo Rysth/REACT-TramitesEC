@@ -100,7 +100,7 @@ function CustomerTable() {
                 <td className="px-6 py-4 truncate">{customer.cedula}</td>
                 <td className="px-6 py-4 truncate">{`${customer.nombres} ${customer.apellidos}`}</td>
                 <td className="px-6 py-4 truncate">{customer.celular}</td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 truncate">
                   <a
                     href="mailto:johnpalacios.t@gmail.com"
                     className="inline-block text-blue-500 underline md:hover:scale-105 md:transition"

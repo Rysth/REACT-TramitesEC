@@ -65,7 +65,6 @@ const customerSlice = createSlice({
           customer.cedula.toLowerCase().includes(searchData) ||
           customer.nombres.toLowerCase().includes(searchData) ||
           customer.apellidos.toLowerCase().includes(searchData) ||
-          customer.celular.toLowerCase().includes(searchData) ||
           customer.email.toLowerCase().includes(searchData),
       )
     },
@@ -78,11 +77,6 @@ const customerSlice = createSlice({
       }
 
       state.customersFilter = state.customersArray.filter((customer) => customer.active === searchData)
-    },
-    removeCustomer(state, action) {
-      const customerIdToRemove = action.payload
-      state.customersArray = state.customersArray.filter((customer) => customer.id !== customerIdToRemove)
-      state.customersFilter = state.customersArray
     },
   },
   extraReducers: (builder) => {
