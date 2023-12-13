@@ -9,6 +9,8 @@ function CustomerTable() {
   const [records, setRecords] = useState(12)
   const { customersFilter, loading } = useSelector((store) => store.customer)
   const activeToken = useSelector((store) => store.authentication.activeToken)
+  const [customerID, setCustomerID] = useState(null)
+  const [showModal, setShowModal] = useState(false)
 
   const increaseDisplayCount = () => {
     setRecords(records + 12)
@@ -16,6 +18,7 @@ function CustomerTable() {
 
   const onDeleteCustomer = (customerID) => {
     dispatch(destroyCliente({ activeToken, customerID }))
+    setShowModal(false)
   }
 
   useEffect(() => {
@@ -28,6 +31,33 @@ function CustomerTable() {
 
   return (
     <div className="relative mb-10 overflow-auto shadow max-h-96" id="scrollableDiv">
+      {showModal && (
+        <div className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full  grid place-items-center bg-black/50">
+          <div className="relative w-full max-w-md max-h-full p-4">
+            <div className="relative bg-white rounded-lg shadow">
+              <div className="p-4 text-center md:p-5">
+                <h3 className="mb-3 font-normal text-gray-900 sm:text-2xl">¿Estas seguro/a de querer eliminarlo?</h3>
+                <button
+                  type="button"
+                  className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2"
+                  onClick={() => {
+                    onDeleteCustomer(customerID)
+                  }}
+                >
+                  Confirmar
+                </button>
+                <button
+                  type="button"
+                  className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <InfiniteScroll
         dataLength={records}
         next={increaseDisplayCount}
@@ -99,7 +129,10 @@ function CustomerTable() {
                   <button
                     type="button"
                     className="px-3 py-1 text-sm font-medium text-center text-white bg-red-700 rounded-md hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 md:active:scale-95"
-                    onClick={() => onDeleteCustomer(customer.id)}
+                    onClick={() => {
+                      setShowModal(true)
+                      setCustomerID(customer.id)
+                    }}
                   >
                     Eliminar
                   </button>
