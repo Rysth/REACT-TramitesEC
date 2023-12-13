@@ -44,7 +44,8 @@
   @apply text-white rounded-lg bg-purple;
 }
 
-body {
+body,
+html {
   font-family: 'Larsseit', sans-serif;
 }
 
