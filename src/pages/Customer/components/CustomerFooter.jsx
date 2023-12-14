@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Button } from 'flowbite-react'
-import CustomerDrawer from './CustomerDrawer'
+import { Button } from '@material-tailwind/react'
+import CustomerDialog from './CustomerDialog'
 
 function CustomerFooter() {
   const [showDrawer, setShowDrawer] = useState(false)
@@ -10,9 +10,9 @@ function CustomerFooter() {
 
   return (
     <main>
-      {showDrawer && <CustomerDrawer title="Nuevo Cliente" closeDrawer={closeDrawer} />}
+      {showDrawer && <CustomerDialog title="Nuevo Cliente" closeDrawer={closeDrawer} />}
       <div className="flex justify-end">
-        <Button size="xs" color="success" className="bg-green-500" onClick={() => openDrawer()}>
+        <Button size="sm" color="green" onClick={openDrawer}>
           Crear
         </Button>
       </div>

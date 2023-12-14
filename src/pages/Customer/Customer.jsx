@@ -4,7 +4,8 @@ import TableHeading from '../../components/Table/TableHeading'
 import TableSearch from '../../components/Table/TableSearch'
 import CustomerStats from './components/CustomerStats'
 import CustomerTable from './components/CustomerTable'
-/* import CustomerFooter from './components/CustomerFooter' */
+import CustomerFooter from './components/CustomerFooter'
+import { Spinner } from '@material-tailwind/react'
 import { getClientes, customerActions } from '../../redux/slices/CustomerSlice'
 
 function Customer() {
@@ -19,7 +20,7 @@ function Customer() {
   if (loading) {
     return (
       <div className="grid h-screen px-4 text-center place-items-center sm:px-8 sm:pb-4 sm:ml-64">
-        <h2>Loading</h2>
+        <Spinner className="w-12 h-12 sm:w-16 sm:h-16" color="indigo" />
       </div>
     )
   }
@@ -34,9 +35,9 @@ function Customer() {
       <main>
         <CustomerTable />
       </main>
-      {/* <footer>
+      <footer>
         <CustomerFooter />
-      </footer> */}
+      </footer>
     </section>
   )
 }

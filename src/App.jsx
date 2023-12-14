@@ -33,7 +33,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute isAllowed={active} redirectTo="/">
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <Customer />
               </ProtectedRoute>
             }

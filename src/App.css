@@ -1,10 +1,15 @@
 @import url('https://fonts.cdnfonts.com/css/tilt-warp');
+@import url('https://fonts.cdnfonts.com/css/larsseit-font-family');
 
 :root {
   --CL-blue-light: #0575e6;
   --CL-blue-dark: #02298a;
   --CL-blue-darker: #021b79;
   --CL-purple: #3f37c9;
+}
+
+body {
+  font-family: 'Larsseit', sans-serif;
 }
 
 /* For WebKit browsers (Chrome, Safari) */
