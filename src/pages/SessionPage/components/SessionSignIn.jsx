@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { MdKey } from 'react-icons/md'
-import { Input, Button } from '@material-tailwind/react'
+import { HiMail } from 'react-icons/hi'
+import { Button, TextInput, Label } from 'flowbite-react'
+import { RiLockPasswordFill } from 'react-icons/ri'
 import { createSession } from '../../../redux/slices/AuthenticationSlice'
 
 function SessionSignIn() {
@@ -15,18 +16,22 @@ function SessionSignIn() {
       className="flex flex-col items-center justify-center h-full gap-5 w-72 sm:rounded-l-3xl"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="w-full mb-5 text-3xl font-bold text-center md:text-4xl">Iniciar Sesión</h2>
-      <Input color="indigo" variant="standard" label="Correo Electrónico" {...register('email')} required />
-      <Input type="password" variant="standard" color="indigo" label="Contraseña" {...register('password')} required />
+      <h2 className="w-full mb-3 text-3xl font-bold text-center md:text-4xl">Iniciar Sesión</h2>
+      <fieldset className="w-full">
+        <Label htmlFor="email" value="Correo Electrónico" className="block mb-2" />
+        <TextInput icon={HiMail} placeholder="username@example.com" {...register('email')} required />
+      </fieldset>
+      <fieldset className="w-full">
+        <Label htmlFor="email1" className="block mb-2" value="Your email" />
+        <TextInput icon={RiLockPasswordFill} type="password" placeholder="******" {...register('password')} required />
+      </fieldset>
       <Button
-        variant="gradient"
-        className="flex items-center justify-center gap-1 rounded-full"
+        className="flex items-center justify-center w-full gap-2 rounded-full"
         type="submit"
         color="blue"
         fullWidth
       >
-        Ingresar
-        <MdKey className="text-xl" />
+        <span>Ingresar</span>
       </Button>
     </form>
   )

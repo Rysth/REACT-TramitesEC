@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import Sidebar from './components/Sidebar/Sidebar'
 import SessionPage from './pages/SessionPage/SessionPage'
 import './App.css'
 
@@ -15,7 +14,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      {active && <Sidebar />}
       <ToastContainer />
       <main className="h-full">
         <Routes>
