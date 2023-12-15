@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { IoSearch } from 'react-icons/io5'
@@ -6,12 +5,10 @@ import { TextInput } from 'flowbite-react'
 
 function TableHeader({ title, searchMethod }) {
   const dispatch = useDispatch()
-  const [searchData, setSearchData] = useState('')
 
   const handleSearchData = (event) => {
     setTimeout(() => {
       const input = event.target.value.toLowerCase().trim()
-      setSearchData(input)
       dispatch(searchMethod(input))
     }, 400)
   }

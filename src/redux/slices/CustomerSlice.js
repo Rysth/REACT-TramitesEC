@@ -93,6 +93,7 @@ const customerSlice = createSlice({
 
       if (searchData === '') {
         state.customersArray = state.customersOriginal
+        return
       }
 
       state.customersArray = state.customersOriginal.filter(
