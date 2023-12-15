@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Sidebar from './components/Sidebar/Sidebar'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import SessionPage from './pages/SessionPage/SessionPage'
 import './App.css'
@@ -15,10 +16,11 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
+      {active && <Sidebar />}
       <main className="h-full">
         <Routes>
           <Route
-            path="/session"
+            path="/"
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
                 <SessionPage />

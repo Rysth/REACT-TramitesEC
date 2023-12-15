@@ -58,5 +58,5 @@ h6 {
 }
 
 button {
-  @apply md:hover:scale-105 md:hover:shadow md:transition md:active:scale-95;
+  @apply transition md:hover:scale-105 md:hover:shadow active:scale-95;
 }

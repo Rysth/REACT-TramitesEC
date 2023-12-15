@@ -1,68 +1,53 @@
 import { useState } from 'react'
-import { Card, Typography, List, ListItem, Button } from '@material-tailwind/react'
-import { HiMiniUserGroup, HiDocumentText } from 'react-icons/hi2'
-import { NavLink, useNavigate } from 'react-router-dom'
-import BrandImage from '../../assets/images/brands/brand.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { destroySession } from '../../redux/slices/AuthenticationSlice'
+import { IoClose, IoPerson, IoMenu } from 'react-icons/io5'
+import { Button } from 'flowbite-react'
+import { NavLink } from 'react-router-dom'
+import BrandLogo from '../../assets/images/brands/brand.svg'
+import SidebarLogout from './components/SidebarLogout'
 
-export function Sidebar() {
-  const dispatch = useDispatch()
-  const navigator = useNavigate()
-  const activeToken = useSelector((store) => store.authentication.activeToken)
-  const [showSidebar, setShowSidebar] = useState(false)
+function Sidebar() {
+  const [open, setOpen] = useState()
 
-  const toggleSidebar = () => setShowSidebar(!showSidebar)
-
-  const onDestroySession = () => dispatch(destroySession(activeToken)).then(() => navigator('/session'))
+  const toggleSideBar = () => setOpen(!open)
 
   return (
     <>
-      <Button onClick={toggleSidebar} className="mt-2 sm:hidden sm:ml-64 ms-2" color="indigo">
-        Toggle
+      <Button
+        type="button"
+        className="float-right mt-3 me-2 sm:hidden"
+        size="xs"
+        gradientDuoTone={`${open ? 'pinkToOrange' : 'greenToBlue'}`}
+        onClick={toggleSideBar}
+      >
+        <span className="sr-only">Open sidebar</span>
+        {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
+
       <aside
-        className={`w-0 fixed ${
-          showSidebar && 'fixed bg-black/50 transition w-full sm:w-64 left-0 right-0 top-0 z-40'
+        className={`fixed w-64 -translate-x-64 transition inset-0 z-50 bg-white shadow-lg shadow-gray-300 sm:translate-x-0 ${
+          open && 'translate-x-0'
         }`}
       >
-        <div
-          className={`w-full h-screen sm:block sm:relative z-50 ${
-            showSidebar && 'fixed bg-black/50 transition w-full left-0 right-0 top-0'
-          }`}
-          onClick={toggleSidebar}
-        >
-          <Card
-            className={`fixed top-0 sm:left-0 w-64 -translate-x-64 sm:translate-x-0 h-screen p-4 rounded-none shadow-xl bg-white shadow-black/15 ${
-              showSidebar && 'translate-x-0 transition'
-            }`}
-          >
-            <header className="flex items-center px-4 py-1 pointer-events-none">
-              <img src={BrandImage} alt="" className="w-12 h-12" />
-              <Typography variant="h4" color="black">
-                TrámitesEC
-              </Typography>
-            </header>
-            <List className="flex-1 p-0">
-              <hr className="my-2" />
-              <NavLink to="/" className="!rounded-r-none">
-                <ListItem className="flex items-center gap-2 text-sm !rounded-r-none focus:bg-opacity-0 focus:text-white">
-                  <HiMiniUserGroup className="text-xl" />
-                  Clientes
-                </ListItem>
+        <nav className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-gray-">
+          <a href="/" className="flex items-center justify-center h-12">
+            <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
+            <h2 className="text-2xl font-semibold whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
+          </a>
+          <ul className="flex-1 mt-5 text-sm">
+            <li>
+              <NavLink
+                to="/clientes"
+                className="flex items-center gap-2 p-2.5 text-gray-900 rounded-lg hover:bg-gray-100group"
+              >
+                <IoPerson className="text-xl" />
+                <span>Clientes</span>
               </NavLink>
-              <NavLink to="/tramites" className="!rounded-r-none">
-                <ListItem className="flex items-center gap-2 text-sm !rounded-r-none focus:bg-opacity-0 focus:text-white">
-                  <HiDocumentText className="text-xl" />
-                  Trámites
-                </ListItem>
-              </NavLink>
-            </List>
-            <Button color="red" size="md" onClick={onDestroySession}>
-              Cerrar Sesión
-            </Button>
-          </Card>
-        </div>
+            </li>
+          </ul>
+          <footer>
+            <SidebarLogout />
+          </footer>
+        </nav>
       </aside>
     </>
   )
