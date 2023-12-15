@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getClientes } from '../../redux/slices/CustomerSlice'
 import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
 import HeaderLayout from '../../layouts/HeaderLayout'
-import { Button, Table, TextInput } from 'flowbite-react'
-import { IoSearch } from 'react-icons/io5'
-import { FaUserGroup } from 'react-icons/fa6'
+import MainLayout from '../../layouts/MainLayout'
+import TableHeader from '../../components/Table/TableHeader'
+import { Button, Table } from 'flowbite-react'
+import { customerActions } from '../../redux/slices/CustomerSlice'
+
 import ReactPaginate from 'react-paginate'
 
 function CustomerPage() {
@@ -34,15 +36,9 @@ function CustomerPage() {
   return (
     <SectionLayout>
       <HeaderLayout />
-      <main className="flex flex-col mt-5 mb-10 shadow-md sm:gap-0 shadow-black/25 rounded-2xl">
-        <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 sm:flex-row bg-purple rounded-t-2xl">
-          <header className="flex items-center gap-1.5 text-white">
-            <FaUserGroup className="text-lg" />
-            <h3 className="text-lg">Listado de Clientes</h3>
-          </header>
-          <TextInput id="search" type="text" icon={IoSearch} placeholder="Buscar..." color="purple" required />
-        </article>
-        <div className="overflow-auto max-h-[30rem]" id="scrollableDiv">
+      <MainLayout>
+        <TableHeader title="Listado de Clientes" searchMethod={customerActions.searchCustomer} />
+        <div className="overflow-auto h-[30rem]" id="scrollableDiv">
           <Table striped>
             <Table.Head className="sticky top-0 z-50 text-gray-700 border border-t-0 border-l-0 shadow">
               <Table.HeadCell className="!rounded-none w-10">#</Table.HeadCell>
@@ -88,15 +84,13 @@ function CustomerPage() {
             marginPagesDisplayed={1}
             pageRangeDisplayed={2}
             onPageChange={handlePageChange}
-            containerClassName={
-              'flex items-center gap-1 justify-center mx-auto text-sm mt-3 p-4 w-[20rem] sm:ms-auto sm:mr-0'
-            }
+            containerClassName={'flex items-center gap-1 justify-center sm:justify-end mx-auto text-sm mt-3 p-4'}
             subContainerClassName={'mx-2'}
             activeClassName={'active'}
             pageLinkClassName="p-2 outline-1 block sm:px-3" // Adjust padding for different screen sizes
           />
         </footer>
-      </main>
+      </MainLayout>
     </SectionLayout>
   )
 }
