@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Sidebar from './components/Sidebar/Sidebar'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import SessionPage from './pages/SessionPage/SessionPage'
+import CustomerPage from './pages/CustomerPage/CustomerPage'
 import './App.css'
 
 function App() {
@@ -20,10 +21,18 @@ function App() {
       <main className="h-full">
         <Routes>
           <Route
-            path="/"
+            path="/session"
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
                 <SessionPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <CustomerPage />
               </ProtectedRoute>
             }
           />
