@@ -29,21 +29,32 @@ function CustomerPage() {
 
   const currentItems = customersArray.slice(startIndex, endIndex)
 
+  const restartCurrentPage = () => setCurrentPage(0)
+
   useEffect(() => {
     dispatch(getClientes(activeToken))
   }, [dispatch, activeToken])
+
+  useEffect(() => {
+    console.log(currentPage)
+  }, [currentItems])
 
   return (
     <SectionLayout>
       <HeaderLayout />
       <MainLayout>
-        <TableHeader title="Listado de Clientes" searchMethod={customerActions.searchCustomer} />
+        <TableHeader
+          title="Listado de Clientes"
+          searchMethod={customerActions.searchCustomer}
+          restartCurrentPage={restartCurrentPage}
+        />
         <TableLayout>
           <CustomerTable currentItems={currentItems} />
         </TableLayout>
-        <footer className="overflow-x-auto">
+        <footer>
           <ReactPaginate
             previousLabel={'<<'}
+            forcePage={currentPage}
             nextLabel={'>>'}
             breakLabel={'...'}
             pageCount={pageCount}
@@ -53,7 +64,7 @@ function CustomerPage() {
             containerClassName={'flex items-center gap-1 justify-center sm:justify-end mx-auto text-sm p-4'}
             subContainerClassName={'mx-2'}
             activeClassName={'active'}
-            pageLinkClassName="p-2 outline-1 block px-3" // Adjust padding for different screen sizes
+            pageLinkClassName="p-2 outline-1 block px-3"
           />
         </footer>
       </MainLayout>

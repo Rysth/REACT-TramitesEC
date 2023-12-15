@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux'
 import { IoSearch } from 'react-icons/io5'
 import { TextInput } from 'flowbite-react'
 
-function TableHeader({ title, searchMethod }) {
+function TableHeader({ title, searchMethod, restartCurrentPage }) {
   const dispatch = useDispatch()
 
   const handleSearchData = (event) => {
     setTimeout(() => {
       const input = event.target.value.toLowerCase().trim()
+      restartCurrentPage()
       dispatch(searchMethod(input))
     }, 400)
   }
@@ -35,6 +36,7 @@ function TableHeader({ title, searchMethod }) {
 TableHeader.propTypes = {
   title: PropTypes.string.isRequired,
   searchMethod: PropTypes.func.isRequired,
+  restartCurrentPage: PropTypes.func.isRequired,
 }
 
 export default TableHeader
