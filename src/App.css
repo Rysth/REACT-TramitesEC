@@ -19,7 +19,6 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--CL-purple); /* Set the color of the scrollbar thumb */
-  border-radius: 6px; /* Set the border radius of the thumb */
 }
 
 ::-webkit-scrollbar-track {

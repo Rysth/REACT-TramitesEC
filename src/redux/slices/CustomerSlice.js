@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
+  customersOriginal: [],
   customersArray: [],
-  customersFilter: [],
   customerStats: [],
   loading: true,
 }
@@ -92,10 +92,10 @@ const customerSlice = createSlice({
       const searchData = action.payload
 
       if (searchData === '') {
-        state.customersFilter = state.customersArray
+        state.customersArray = state.customersOriginal
       }
 
-      state.customersFilter = state.customersArray.filter(
+      state.customersArray = state.customersOriginal.filter(
         (customer) =>
           customer.cedula.toLowerCase().includes(searchData) ||
           customer.nombres.toLowerCase().includes(searchData) ||
@@ -107,23 +107,23 @@ const customerSlice = createSlice({
       const searchData = action.payload === 'true'
 
       if (action.payload === '') {
-        state.customersFilter = state.customersArray
+        state.customersArray = state.customersOriginal
         return
       }
 
-      state.customersFilter = state.customersArray.filter((customer) => customer.active === searchData)
+      state.customersArray = state.customersOriginal.filter((customer) => customer.active === searchData)
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getClientes.fulfilled, (state, action) => {
       state.loading = false
+      state.customersOriginal = action.payload
       state.customersArray = action.payload
-      state.customersFilter = action.payload
 
       /* Customer Stats */
-      const customersQuantity = state.customersFilter.length
-      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+      const customersQuantity = state.customersArray.length
+      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
 
       state.customerStats = [
         {
@@ -145,13 +145,13 @@ const customerSlice = createSlice({
     })
     builder.addCase(destroyCliente.fulfilled, (state, action) => {
       const deletedCustomerId = action.meta.arg.customerID
-      state.customersArray = state.customersArray.filter((customer) => customer.id !== deletedCustomerId)
-      state.customersFilter = state.customersArray
+      state.customersOriginal = state.customersOriginal.filter((customer) => customer.id !== deletedCustomerId)
+      state.customersArray = state.customersOriginal
 
       /* Customer Stats */
-      const customersQuantity = state.customersFilter.length
-      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+      const customersQuantity = state.customersArray.length
+      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
 
       state.customerStats = [
         {
@@ -174,12 +174,12 @@ const customerSlice = createSlice({
       toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(createCliente.fulfilled, (state, action) => {
-      state.customersArray = [...state.customersArray, action.payload]
-      state.customersFilter = state.customersArray
+      state.customersOriginal = [...state.customersOriginal, action.payload]
+      state.customersArray = state.customersOriginal
       /* Customer Stats */
-      const customersQuantity = state.customersFilter.length
-      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+      const customersQuantity = state.customersArray.length
+      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
 
       state.customerStats = [
         {
