@@ -1,17 +1,24 @@
 import React from 'react'
-import {
-  Button,
-  Dialog,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Input,
-  Checkbox,
-} from '@material-tailwind/react'
+import { Button, Dialog, Card, CardHeader, CardBody, CardFooter, Typography, Input } from '@material-tailwind/react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { createCliente } from '../../../redux/slices/CustomerSlice'
 
 export function CustomerDialog({ title, closeDrawer }) {
+  const dispatch = useDispatch()
+  const { activeToken, activeUser } = useSelector((store) => store.authentication)
+  const { register, handleSubmit } = useForm()
+
+  const onSubmit = (customerData) => {
+    const newCustomer = {
+      cliente: {
+        ...customerData,
+        user_id: activeUser.id,
+      },
+    }
+    dispatch(createCliente({ activeToken, newCustomer })).then(() => closeDrawer())
+  }
+
   return (
     <>
       <Dialog size="sm" open={open} handler={closeDrawer} className="bg-transparent shadow-none">
@@ -21,43 +28,44 @@ export function CustomerDialog({ title, closeDrawer }) {
               {title}
             </Typography>
           </CardHeader>
-          <CardBody className="grid gap-4 sm:gap-6">
+          <CardBody className="grid gap-4 my-5 sm:gap-10">
             <fieldset className="grid gap-4 sm:grid-cols-2">
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Cédula
-                <Input size="sm" variant="static" placeholder="0985642634" />
-              </Typography>
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Nombres
-                <Input size="sm" variant="static" placeholder="John Doe" />
-              </Typography>
+              <Input label="Cédula" variant="static" placeholder="0985642634" {...register('cedula')} required />
+              <Input label="Nombres" variant="static" placeholder="John Doe" {...register('nombres')} required />
             </fieldset>
             <fieldset className="grid gap-4 sm:grid-cols-2">
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Apellidos
-                <Input size="sm" variant="static" placeholder="Sanchéz Rodríguez" />
-              </Typography>
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Celular
-                <Input size="sm" variant="static" placeholder="0985643652" />
-              </Typography>
+              <Input
+                label="Apellidos"
+                variant="static"
+                placeholder="Sanchéz Rodríguez"
+                {...register('apellidos')}
+                required
+              />
+              <Input label="Celular" variant="static" placeholder="0985643652" {...register('celular')} required />
             </fieldset>
             <fieldset className="grid gap-4 sm:grid-cols-2">
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Dirección
-                <Input size="sm" variant="static" placeholder="Av. Delta Central" />
-              </Typography>
-              <Typography className="-mb-3 font-bold" variant="small" color="black">
-                Email
-                <Input size="sm" type="email" variant="static" placeholder="username@example.com" />
-              </Typography>
+              <Input
+                label="Dirección"
+                variant="static"
+                placeholder="Av. Delta Central"
+                {...register('direccion')}
+                required
+              />
+              <Input
+                label="Email"
+                type="email"
+                variant="static"
+                placeholder="username@example.com"
+                {...register('email')}
+                required
+              />
             </fieldset>
           </CardBody>
-          <CardFooter className="flex items-center gap-2 pt-4">
+          <CardFooter className="flex items-center gap-2 pt-0">
             <Button color="red" onClick={closeDrawer} fullWidth>
               Cancelar
             </Button>
-            <Button onClick={closeDrawer} fullWidth color="indigo">
+            <Button fullWidth color="indigo" type="submit" onClick={handleSubmit(onSubmit)}>
               Registrar
             </Button>
           </CardFooter>

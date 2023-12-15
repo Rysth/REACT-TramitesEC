@@ -41,6 +41,31 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
   }
 })
 
+// CREATE Clientes#create
+export const createCliente = createAsyncThunk('customer/createCliente', async ({ activeToken, newCustomer }) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/v1/clientes/`, newCustomer, {
+      headers: {
+        Authorization: atob(activeToken),
+      },
+      withCredentials: true,
+    })
+
+    return response.data
+  } catch (error) {
+    if (error.response.status === 422) {
+      toast.error('¡Cliente ya Registrado!', { theme: 'colored' })
+      return
+    }
+
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+      return
+    }
+    throw new Error(error)
+  }
+})
+
 // DELETE Clientes#destroy
 export const destroyCliente = createAsyncThunk('customer/destroyCliente', async ({ activeToken, customerID }) => {
   try {
@@ -147,6 +172,34 @@ const customerSlice = createSlice({
       ]
 
       toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
+    })
+    builder.addCase(createCliente.fulfilled, (state, action) => {
+      state.customersArray = [...state.customersArray, action.payload]
+      state.customersFilter = state.customersArray
+      /* Customer Stats */
+      const customersQuantity = state.customersFilter.length
+      const customersActive = state.customersFilter.filter((customer) => customer.active === true).length
+      const customersInactive = state.customersFilter.filter((customer) => customer.active === false).length
+
+      state.customerStats = [
+        {
+          title: 'Clientes Registrados',
+          metric: customersQuantity,
+          color: 'bg-indigo-700',
+        },
+        {
+          title: 'Activos',
+          metric: customersActive,
+          color: 'bg-green-500',
+        },
+        {
+          title: 'Inactivos',
+          metric: customersInactive,
+          color: 'bg-red-700',
+        },
+      ]
+
+      toast.success('¡Cliente Registrado!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })
