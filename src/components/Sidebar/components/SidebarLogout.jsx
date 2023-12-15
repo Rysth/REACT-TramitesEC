@@ -8,7 +8,7 @@ function SidebarLogout() {
   const navigator = useNavigate()
   const activeToken = useSelector((store) => store.authentication.activeToken)
 
-  const closeUserSession = () => dispatch(destroySession(activeToken)).then(() => navigator('/'))
+  const closeUserSession = () => dispatch(destroySession(activeToken)).then(() => navigator('/session'))
 
   return (
     <Button color="failure" className="w-full" onClick={closeUserSession}>
