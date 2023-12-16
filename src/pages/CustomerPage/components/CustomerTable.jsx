@@ -27,7 +27,7 @@ function CustomerTable({ currentItems }) {
       </Table.Head>
       <Table.Body className="divide-y">
         {currentItems.map((customer) => (
-          <CustomerItem customer={customer} />
+          <CustomerItem key={customer.id} customer={customer} />
         ))}
       </Table.Body>
     </Table>

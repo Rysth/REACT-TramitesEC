@@ -9,7 +9,7 @@ function SectionLayout({ children }) {
 }
 
 SectionLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
 }
 
 export default SectionLayout

@@ -55,7 +55,7 @@ function CustomerModal({ openModal, closeModal }) {
 }
 
 CustomerModal.propTypes = {
-  showModal: PropTypes.bool.isRequired,
+  openModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 }
 

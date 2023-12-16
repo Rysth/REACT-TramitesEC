@@ -5,7 +5,7 @@ function MainLayout({ children }) {
 }
 
 MainLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
 }
 
 export default MainLayout
