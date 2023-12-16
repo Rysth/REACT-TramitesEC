@@ -158,8 +158,9 @@ const customerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getClientes.fulfilled, (state, action) => {
       state.loading = false
-      state.customersOriginal = action.payload.customers
-      state.customersArray = action.payload.customers
+      const customers = action.payload.customers
+      state.customersOriginal = customers
+      state.customersArray = customers
 
       /* Customer Stats */
       state.customerStats = [
@@ -179,36 +180,11 @@ const customerSlice = createSlice({
           color: 'bg-red-700',
         },
       ]
-    })
-    builder.addCase(destroyCliente.fulfilled, (state, action) => {
-      const deletedCustomerId = action.meta.arg.customerID
-      state.customersOriginal = state.customersOriginal.filter((customer) => customer.id !== deletedCustomerId)
-      state.customersArray = state.customersOriginal
-
-      /* Customer Stats */
-      state.customerStats = [
-        {
-          title: 'Clientes Registrados',
-          metric: action.payload.stats.customers_quantity,
-          color: 'bg-indigo-700',
-        },
-        {
-          title: 'Activos',
-          metric: action.payload.stats.customers_active,
-          color: 'bg-green-500',
-        },
-        {
-          title: 'Inactivos',
-          metric: action.payload.stats.customers_inactive,
-          color: 'bg-red-700',
-        },
-      ]
-
-      toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(createCliente.fulfilled, (state, action) => {
-      state.customersOriginal = [...state.customersOriginal, action.payload.customer]
-      state.customersArray = state.customersOriginal
+      const customers = action.payload.customers
+      state.customersOriginal = customers
+      state.customersArray = customers
 
       /* Customer Stats */
       state.customerStats = [
@@ -232,6 +208,10 @@ const customerSlice = createSlice({
       toast.success('¡Cliente Registrado!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(updateCliente.fulfilled, (state, action) => {
+      const customers = action.payload.customers
+      state.customersOriginal = customers
+      state.customersArray = customers
+
       /* Customer Stats */
       state.customerStats = [
         {
@@ -251,6 +231,32 @@ const customerSlice = createSlice({
         },
       ]
       toast.success('¡Cliente Actualizado!', { autoClose: 2000, theme: 'colored' })
+    })
+    builder.addCase(destroyCliente.fulfilled, (state, action) => {
+      const customers = action.payload.customers
+      state.customersOriginal = customers
+      state.customersArray = customers
+
+      /* Customer Stats */
+      state.customerStats = [
+        {
+          title: 'Clientes Registrados',
+          metric: action.payload.stats.customers_quantity,
+          color: 'bg-indigo-700',
+        },
+        {
+          title: 'Activos',
+          metric: action.payload.stats.customers_active,
+          color: 'bg-green-500',
+        },
+        {
+          title: 'Inactivos',
+          metric: action.payload.stats.customers_inactive,
+          color: 'bg-red-700',
+        },
+      ]
+
+      toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })
