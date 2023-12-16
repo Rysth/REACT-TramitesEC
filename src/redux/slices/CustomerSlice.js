@@ -47,7 +47,7 @@ const createAsyncThunkWrapper = (type, requestFn) =>
     }
   })
 
-// Thunk for retrieving clients
+// Thunk for retrieving clients (GET)
 export const getClientes = createAsyncThunkWrapper('getClientes', async (activeToken) => {
   return axios.get(`${API_URL}/api/v1/clientes`, {
     headers: {
@@ -57,7 +57,7 @@ export const getClientes = createAsyncThunkWrapper('getClientes', async (activeT
   })
 })
 
-// Thunk for creating a new client
+// Thunk for creating a new client (POST)
 export const createCliente = createAsyncThunkWrapper('createCliente', async ({ activeToken, newCustomer }) => {
   return axios.post(`${API_URL}/api/v1/clientes/`, newCustomer, {
     headers: {
@@ -67,7 +67,7 @@ export const createCliente = createAsyncThunkWrapper('createCliente', async ({ a
   })
 })
 
-// Thunk for updating an existing client
+// Thunk for updating an existing client (PUT)
 export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ activeToken, oldCustomer }) => {
   return axios.put(`${API_URL}/api/v1/clientes/${oldCustomer.id}`, oldCustomer, {
     headers: {
@@ -77,7 +77,7 @@ export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ a
   })
 })
 
-// Thunk for deleting a client
+// Thunk for deleting a client (DELETE)
 export const destroyCliente = createAsyncThunkWrapper('destroyCliente', async ({ activeToken, customerID }) => {
   return axios.delete(`${API_URL}/api/v1/clientes/${customerID}`, {
     headers: {
