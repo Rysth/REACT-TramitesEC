@@ -8,7 +8,7 @@ const initialState = {
   customersOriginal: [],
   customersArray: [],
   customerStats: [],
-  customerSelected: {},
+  customerSelected: null,
   loading: true,
 }
 
@@ -48,6 +48,30 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
 export const createCliente = createAsyncThunk('customer/createCliente', async ({ activeToken, newCustomer }) => {
   try {
     const response = await axios.post(`${API_URL}/api/v1/clientes/`, newCustomer, {
+      headers: {
+        Authorization: atob(activeToken),
+      },
+      withCredentials: true,
+    })
+
+    return response.data
+  } catch (error) {
+    if (error.response.status === 422) {
+      toast.error('¡Cliente ya Registrado!', { theme: 'colored' })
+      return
+    }
+
+    if (error.response.status === 500) {
+      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+      return
+    }
+    throw new Error(error)
+  }
+})
+// UPDATE Clientes#create
+export const updateCliente = createAsyncThunk('customer/updateCliente', async ({ activeToken, oldCustomer }) => {
+  try {
+    const response = await axios.put(`${API_URL}/api/v1/clientes/${oldCustomer.id}`, oldCustomer, {
       headers: {
         Authorization: atob(activeToken),
       },
@@ -119,7 +143,14 @@ const customerSlice = createSlice({
       state.customersArray = state.customersOriginal.filter((customer) => customer.active === searchData)
     },
     setCustomerSelected: (state, action) => {
-      const customerID = parseInt(action.payload)
+      const content = action.payload
+
+      if (content === '') {
+        state.customerSelected = null
+        return
+      }
+
+      const customerID = parseInt(content)
       const customerFound = state.customersOriginal.find((customer) => customer.id === customerID)
       state.customerSelected = customerFound
     },
@@ -155,24 +186,20 @@ const customerSlice = createSlice({
       state.customersArray = state.customersOriginal
 
       /* Customer Stats */
-      const customersQuantity = state.customersArray.length
-      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
-
       state.customerStats = [
         {
           title: 'Clientes Registrados',
-          metric: customersQuantity,
+          metric: action.payload.stats.customers_quantity,
           color: 'bg-indigo-700',
         },
         {
           title: 'Activos',
-          metric: customersActive,
+          metric: action.payload.stats.customers_active,
           color: 'bg-green-500',
         },
         {
           title: 'Inactivos',
-          metric: customersInactive,
+          metric: action.payload.stats.customers_inactive,
           color: 'bg-red-700',
         },
       ]
@@ -180,32 +207,50 @@ const customerSlice = createSlice({
       toast.success('¡Cliente Eliminado!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(createCliente.fulfilled, (state, action) => {
-      state.customersOriginal = [...state.customersOriginal, action.payload]
+      state.customersOriginal = [...state.customersOriginal, action.payload.customer]
       state.customersArray = state.customersOriginal
-      /* Customer Stats */
-      const customersQuantity = state.customersArray.length
-      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
 
+      /* Customer Stats */
       state.customerStats = [
         {
           title: 'Clientes Registrados',
-          metric: customersQuantity,
+          metric: action.payload.stats.customers_quantity,
           color: 'bg-indigo-700',
         },
         {
           title: 'Activos',
-          metric: customersActive,
+          metric: action.payload.stats.customers_active,
           color: 'bg-green-500',
         },
         {
           title: 'Inactivos',
-          metric: customersInactive,
+          metric: action.payload.stats.customers_inactive,
           color: 'bg-red-700',
         },
       ]
 
       toast.success('¡Cliente Registrado!', { autoClose: 2000, theme: 'colored' })
+    })
+    builder.addCase(updateCliente.fulfilled, (state, action) => {
+      /* Customer Stats */
+      state.customerStats = [
+        {
+          title: 'Clientes Registrados',
+          metric: action.payload.stats.customers_quantity,
+          color: 'bg-indigo-700',
+        },
+        {
+          title: 'Activos',
+          metric: action.payload.stats.customers_active,
+          color: 'bg-green-500',
+        },
+        {
+          title: 'Inactivos',
+          metric: action.payload.stats.customers_inactive,
+          color: 'bg-red-700',
+        },
+      ]
+      toast.success('¡Cliente Actualizado!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })

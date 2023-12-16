@@ -3,7 +3,7 @@ import { Button, Label, Modal, TextInput } from 'flowbite-react'
 import { HiIdentification, HiMiniEnvelope, HiMiniUserCircle, HiMiniDevicePhoneMobile, HiMapPin } from 'react-icons/hi2'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCliente } from '../../../redux/slices/CustomerSlice'
+import { createCliente, updateCliente, customerActions } from '../../../redux/slices/CustomerSlice'
 import { useEffect } from 'react'
 
 function CustomerModal({ openModal, closeModal }) {
@@ -14,7 +14,15 @@ function CustomerModal({ openModal, closeModal }) {
   const { register, handleSubmit, reset } = useForm()
 
   const handleCreate = (newCustomer) => {
-    dispatch(createCliente({ activeToken, newCustomer })).then(() => reset())
+    dispatch(createCliente({ activeToken, newCustomer })).then(() => closeModal())
+  }
+
+  const handleUpdate = (newCustomer) => {
+    const oldCustomer = {
+      id: customerSelected.id,
+      ...newCustomer,
+    }
+    dispatch(updateCliente({ activeToken, oldCustomer })).then(() => closeModal())
   }
 
   const onSubmit = (customerData) => {
@@ -27,10 +35,13 @@ function CustomerModal({ openModal, closeModal }) {
       handleCreate(newCustomer)
       return
     }
+
+    handleUpdate(newCustomer)
   }
 
   useEffect(() => {
     reset()
+    if (!openModal) dispatch(customerActions.setCustomerSelected(''))
   }, [openModal])
 
   return (
