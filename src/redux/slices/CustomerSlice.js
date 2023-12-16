@@ -89,20 +89,21 @@ const customerSlice = createSlice({
   initialState,
   reducers: {
     searchCustomer: (state, action) => {
-      const searchData = action.payload
+      const searchData = action.payload.toLowerCase()
 
       if (searchData === '') {
         state.customersArray = state.customersOriginal
         return
       }
 
-      state.customersArray = state.customersOriginal.filter(
-        (customer) =>
-          customer.cedula.toLowerCase().includes(searchData) ||
-          customer.nombres.toLowerCase().includes(searchData) ||
-          customer.apellidos.toLowerCase().includes(searchData) ||
-          customer.email.toLowerCase().includes(searchData),
-      )
+      const filteredCustomers = state.customersOriginal.filter((customer) => {
+        const fullName = `${customer.nombres} ${customer.apellidos}`.toLowerCase()
+        return (
+          customer.cedula.includes(searchData) || fullName.includes(searchData) || customer.email.includes(searchData)
+        )
+      })
+
+      state.customersArray = filteredCustomers
     },
     statusCustomer: (state, action) => {
       const searchData = action.payload === 'true'
@@ -118,28 +119,24 @@ const customerSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getClientes.fulfilled, (state, action) => {
       state.loading = false
-      state.customersOriginal = action.payload
-      state.customersArray = action.payload
+      state.customersOriginal = action.payload.customers
+      state.customersArray = action.payload.customers
 
       /* Customer Stats */
-      const customersQuantity = state.customersArray.length
-      const customersActive = state.customersArray.filter((customer) => customer.active === true).length
-      const customersInactive = state.customersArray.filter((customer) => customer.active === false).length
-
       state.customerStats = [
         {
           title: 'Clientes Registrados',
-          metric: customersQuantity,
+          metric: action.payload.stats.customers_quantity,
           color: 'bg-indigo-700',
         },
         {
           title: 'Activos',
-          metric: customersActive,
+          metric: action.payload.stats.customers_active,
           color: 'bg-green-500',
         },
         {
           title: 'Inactivos',
-          metric: customersInactive,
+          metric: action.payload.stats.customers_inactive,
           color: 'bg-red-700',
         },
       ]

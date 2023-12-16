@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { IoSearch, IoCreateSharp } from 'react-icons/io5'
 import { Button, TextInput } from 'flowbite-react'
 
-function TableHeader({ title, searchMethod, restartCurrentPage }) {
+function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const dispatch = useDispatch()
 
   const handleSearchData = (event) => {
@@ -30,7 +30,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage }) {
           color="purple"
           required
         />
-        <Button size="md" gradientDuoTone="greenToBlue">
+        <Button size="md" gradientDuoTone="greenToBlue" onClick={showModal}>
           Crear
           <IoCreateSharp className="ml-1 text-xl" />
         </Button>
