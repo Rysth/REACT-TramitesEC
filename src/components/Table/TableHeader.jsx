@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { IoSearch } from 'react-icons/io5'
-import { TextInput } from 'flowbite-react'
+import { IoSearch, IoCreateSharp } from 'react-icons/io5'
+import { Button, TextInput } from 'flowbite-react'
 
 function TableHeader({ title, searchMethod, restartCurrentPage }) {
   const dispatch = useDispatch()
@@ -19,16 +19,22 @@ function TableHeader({ title, searchMethod, restartCurrentPage }) {
       <header className="flex items-center gap-1.5 text-white text-xl">
         <h3>{title}</h3>
       </header>
-      <TextInput
-        id="search"
-        type="text"
-        className="w-full sm:w-max"
-        icon={IoSearch}
-        placeholder="Buscar..."
-        onChange={handleSearchData}
-        color="purple"
-        required
-      />
+      <fieldset className="flex items-center gap-1">
+        <TextInput
+          id="search"
+          type="text"
+          className="w-full sm:w-max !p-0"
+          icon={IoSearch}
+          placeholder="Buscar..."
+          onChange={handleSearchData}
+          color="purple"
+          required
+        />
+        <Button size="md" gradientDuoTone="greenToBlue">
+          Crear
+          <IoCreateSharp className="ml-1 text-xl" />
+        </Button>
+      </fieldset>
     </article>
   )
 }

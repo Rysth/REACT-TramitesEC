@@ -15,7 +15,7 @@ function TablePaginate({ currentPage, pageCount, handlePageChange }) {
         containerClassName={'flex items-center gap-1 justify-center sm:justify-end mx-auto text-sm p-4'}
         subContainerClassName={'mx-2'}
         activeClassName={'active'}
-        pageLinkClassName="p-2 outline-1 block px-3"
+        pageLinkClassName="p-2 outline-1 block px-4"
       />
     </footer>
   )
