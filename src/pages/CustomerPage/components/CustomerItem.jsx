@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types'
 import { Table, Button } from 'flowbite-react'
+import { useDispatch } from 'react-redux'
+import { customerActions } from '../../../redux/slices/CustomerSlice'
 
-function CustomerItem({ customer }) {
+function CustomerItem({ customer, showModal }) {
+  const dispatch = useDispatch()
+  const handleCustomerSelected = (customerID) => {
+    dispatch(customerActions.setCustomerSelected(customerID))
+    showModal()
+  }
+
   return (
     <Table.Row key={customer.id}>
       <Table.Cell className="py-2 font-medium text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
@@ -14,7 +22,7 @@ function CustomerItem({ customer }) {
         </a>
       </Table.Cell>
       <Table.Cell className="flex items-center w-full gap-1 py-2">
-        <Button size="xs" color="blue">
+        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
         <Button size="xs" color="failure">
@@ -34,6 +42,7 @@ CustomerItem.propTypes = {
     celular: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
   }),
+  showModal: PropTypes.func.isRequired,
 }
 
 export default CustomerItem

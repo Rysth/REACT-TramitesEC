@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
 import { RiErrorWarningFill } from 'react-icons/ri'
 
-function CustomerTable({ currentItems }) {
+function CustomerTable({ currentItems, showModal }) {
   const quantity = currentItems.length
 
   if (quantity === 0) {
@@ -27,7 +27,7 @@ function CustomerTable({ currentItems }) {
       </Table.Head>
       <Table.Body className="divide-y">
         {currentItems.map((customer) => (
-          <CustomerItem key={customer.id} customer={customer} />
+          <CustomerItem key={customer.id} customer={customer} showModal={showModal} />
         ))}
       </Table.Body>
     </Table>
@@ -36,6 +36,7 @@ function CustomerTable({ currentItems }) {
 
 CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
+  showModal: PropTypes.func.isRequired,
 }
 
 export default CustomerTable

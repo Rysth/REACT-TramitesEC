@@ -8,6 +8,7 @@ const initialState = {
   customersOriginal: [],
   customersArray: [],
   customerStats: [],
+  customerSelected: {},
   loading: true,
 }
 
@@ -31,8 +32,8 @@ export const getClientes = createAsyncThunk('customer/getClientes', async (activ
         sessionStorage.removeItem('activeUser')
         sessionStorage.removeItem('activeToken')
 
-        window.location.href = '/login'
-      }, 1000)
+        window.location.href = '/session'
+      }, 3000)
     }
 
     if (error.response.status === 500) {
@@ -116,6 +117,11 @@ const customerSlice = createSlice({
       }
 
       state.customersArray = state.customersOriginal.filter((customer) => customer.active === searchData)
+    },
+    setCustomerSelected: (state, action) => {
+      const customerID = parseInt(action.payload)
+      const customerFound = state.customersOriginal.find((customer) => customer.id === customerID)
+      state.customerSelected = customerFound
     },
   },
   extraReducers: (builder) => {

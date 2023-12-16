@@ -38,7 +38,7 @@ function CustomerPage() {
           showModal={showModal}
         />
         <TableLayout>
-          <CustomerTable currentItems={currentItems} />
+          <CustomerTable currentItems={currentItems} showModal={showModal} />
         </TableLayout>
         <TablePaginate
           currentPage={currentPage}

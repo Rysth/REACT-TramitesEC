@@ -4,29 +4,37 @@ import { HiIdentification, HiMiniEnvelope, HiMiniUserCircle, HiMiniDevicePhoneMo
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { createCliente } from '../../../redux/slices/CustomerSlice'
+import { useEffect } from 'react'
 
 function CustomerModal({ openModal, closeModal }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { id: user_id } = useSelector((store) => store.authentication.activeUser)
+  const { customerSelected } = useSelector((store) => store.customer)
   const { register, handleSubmit, reset } = useForm()
 
-  const resetForm = () => {
-    reset()
-    closeModal()
+  const handleCreate = (newCustomer) => {
+    dispatch(createCliente({ activeToken, newCustomer })).then(() => reset())
   }
 
   const onSubmit = (customerData) => {
-    const user_id = id
     const newCustomer = {
       ...customerData,
       user_id,
     }
-    dispatch(createCliente({ activeToken, newCustomer })).then(() => reset())
+
+    if (!customerSelected) {
+      handleCreate(newCustomer)
+      return
+    }
   }
 
+  useEffect(() => {
+    reset()
+  }, [openModal])
+
   return (
-    <Modal show={openModal} position="center" onClose={closeModal} className="z-[9000]" size="lg">
+    <Modal show={openModal} position="center" onClose={closeModal} className="z-[9000]" size="lg" dismissible>
       <header className="p-4 border-b">
         <h3 className="text-xl sm:text-2xl">Nuevo Cliente</h3>
       </header>
@@ -38,6 +46,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="cedula"
                 placeholder="0985736265"
+                defaultValue={customerSelected && customerSelected.cedula}
                 icon={HiIdentification}
                 {...register('cedula')}
                 required
@@ -48,6 +57,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="nombres"
                 placeholder="John Doe"
+                defaultValue={customerSelected && customerSelected.nombres}
                 icon={HiMiniUserCircle}
                 {...register('nombres')}
                 required
@@ -60,6 +70,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="apellidos"
                 placeholder="Sánchez Castro"
+                defaultValue={customerSelected && customerSelected.apellidos}
                 icon={HiMiniUserCircle}
                 {...register('apellidos')}
                 required
@@ -70,6 +81,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="celular"
                 placeholder="0966553564"
+                defaultValue={customerSelected && customerSelected.celular}
                 icon={HiMiniDevicePhoneMobile}
                 {...register('celular')}
                 required
@@ -82,6 +94,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="direccion"
                 placeholder="Av. de las Américas"
+                defaultValue={customerSelected && customerSelected.direccion}
                 icon={HiMapPin}
                 {...register('direccion')}
                 required
@@ -92,6 +105,7 @@ function CustomerModal({ openModal, closeModal }) {
               <TextInput
                 id="email"
                 placeholder="username@example.com"
+                defaultValue={customerSelected && customerSelected.email}
                 icon={HiMiniEnvelope}
                 {...register('email')}
                 required
@@ -102,7 +116,7 @@ function CustomerModal({ openModal, closeModal }) {
             <Button color="blue" type="submit" className="mt-3">
               Guardar
             </Button>
-            <Button color="failure" onClick={resetForm} className="mt-3">
+            <Button color="failure" onClick={closeModal} className="mt-3">
               Cancelar
             </Button>
           </fieldset>
