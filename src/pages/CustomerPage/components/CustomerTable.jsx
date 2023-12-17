@@ -1,10 +1,20 @@
-import { Table } from 'flowbite-react'
+import { Table, Spinner } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
 import { RiErrorWarningFill } from 'react-icons/ri'
+import { useSelector } from 'react-redux'
 
 function CustomerTable({ currentItems, showModal }) {
   const quantity = currentItems.length
+  const { loading } = useSelector((store) => store.customer)
+
+  if (loading) {
+    return (
+      <header className="flex flex-col items-center justify-center h-full text-xl text-center sm:text-2xl ">
+        <Spinner aria-label="Default status example" color="purple" className="w-20 h-20 fill-[var(--CL-purple)]" />
+      </header>
+    )
+  }
 
   if (quantity === 0) {
     return (
