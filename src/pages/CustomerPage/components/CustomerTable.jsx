@@ -28,12 +28,12 @@ function CustomerTable({ currentItems, showModal }) {
   return (
     <Table striped>
       <Table.Head className="sticky top-0 z-50 text-gray-700 border border-t-0 border-l-0 shadow">
-        <Table.HeadCell className="!rounded-none w-1/12">#</Table.HeadCell>
-        <Table.HeadCell className="!rounded-none w-1/12">Cédula</Table.HeadCell>
-        <Table.HeadCell className="!rounded-none w-3/12">Nombre Completo</Table.HeadCell>
-        <Table.HeadCell className="!rounded-none w-1/12">Celular</Table.HeadCell>
-        <Table.HeadCell className="!rounded-none w-4/12">Email</Table.HeadCell>
-        <Table.HeadCell className="!rounded-none w-2/12">Acciones</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-1/12 bg-white">Cédula</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-3/12 bg-white">Nombre Completo</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-1/12 bg-white">Celular</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-4/12 bg-white">Email</Table.HeadCell>
+        <Table.HeadCell className="!rounded-none w-2/12 bg-white">Acciones</Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
         {currentItems.map((customer) => (

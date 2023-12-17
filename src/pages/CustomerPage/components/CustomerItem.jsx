@@ -12,7 +12,7 @@ function CustomerItem({ customer, showModal }) {
 
   return (
     <Table.Row key={customer.id}>
-      <Table.Cell className="py-2 font-medium text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
+      <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.cedula}</Table.Cell>
       <Table.Cell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.celular}</Table.Cell>

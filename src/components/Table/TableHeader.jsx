@@ -32,7 +32,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
         />
         <Button size="md" gradientDuoTone="greenToBlue" onClick={showModal}>
           Crear
-          <IoCreateSharp className="ml-1 text-xl" />
+          <IoCreateSharp className="ml-1" />
         </Button>
       </fieldset>
     </article>
