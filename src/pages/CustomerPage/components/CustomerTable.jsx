@@ -1,8 +1,8 @@
 import { Table, Modal, Button } from 'flowbite-react'
 import Loading from '../../../components/Loading/Loading'
+import Error from '../../../components/Error/Error'
 import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
-import { RiErrorWarningFill } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
@@ -24,12 +24,7 @@ function CustomerTable({ currentItems, showModal }) {
   }
 
   if (quantity === 0) {
-    return (
-      <header className="flex flex-col items-center justify-center h-full text-xl text-center sm:text-2xl ">
-        <RiErrorWarningFill className="w-32 h-32 text-red-700 sm:h-40 sm:w-40" />
-        <h3>¡Cliente no Encontrado!</h3>
-      </header>
-    )
+    return <Error />
   }
 
   return (
