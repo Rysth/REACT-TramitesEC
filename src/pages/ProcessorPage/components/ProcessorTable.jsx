@@ -16,9 +16,8 @@ function ProcessorTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id })).then(() =>
-      processorActions.setProcessorSelected(''),
-    )
+    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id }))
+    dispatch(processorActions.setProcessorSelected(''))
   }
 
   if (loading) {
