@@ -133,9 +133,7 @@ const processorslice = createSlice({
 
       const filteredprocessors = state.processorOriginal.filter((processor) => {
         const fullName = `${processor.nombres} ${processor.apellidos}`.toLowerCase()
-        return (
-          processor.cedula.includes(searchData) || fullName.includes(searchData) || processor.email.includes(searchData)
-        )
+        return processor.cedula.includes(searchData) || fullName.includes(searchData)
       })
 
       state.processorsArray = filteredprocessors

@@ -7,7 +7,10 @@ import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
 import { processorActions } from '../../redux/slices/ProcessorSlice'
 import { getProcessors } from '../../redux/slices/ProcessorSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import ProcessorTable from './components/ProcessorTable'
 import usePagination from '../../hooks/usePagination'
+import TableLayout from '../../layouts/TableLayout'
+import ProcessorModal from './components/ProcessorModal'
 
 function ProcessorPage() {
   const dispatch = useDispatch()
@@ -27,6 +30,7 @@ function ProcessorPage() {
     <SectionLayout>
       <HeaderLayout />
       <MainLayout>
+        <ProcessorModal openModal={openModal} closeModal={closeModal} />
         <TableHeader
           title="Listado de Trámitadores"
           searchMethod={processorActions.searchProcessor}
@@ -34,7 +38,7 @@ function ProcessorPage() {
           showModal={showModal}
         />
         <TableLayout>
-          <ProcessorTable />
+          <ProcessorTable currentItems={currentItems} showModal={showModal} />
         </TableLayout>
         <TablePaginate
           currentPage={currentPage}
