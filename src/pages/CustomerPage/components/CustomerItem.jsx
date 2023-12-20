@@ -15,6 +15,7 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
     <Table.Row key={customer.id}>
       <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.cedula}</Table.Cell>
+      <Table.Cell className="py-2 truncate">{`${customer.processor.nombres} ${customer.processor.apellidos}`}</Table.Cell>
       <Table.Cell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.celular}</Table.Cell>
       <Table.Cell className="py-2 text-blue-500 truncate">
