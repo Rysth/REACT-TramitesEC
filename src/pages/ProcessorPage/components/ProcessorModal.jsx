@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Modal } from 'flowbite-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
+import ProcessorForm from './ProcessorForm'
 
 function ProcessorModal({ openModal, closeModal }) {
   const dispatch = useDispatch()
@@ -19,7 +20,9 @@ function ProcessorModal({ openModal, closeModal }) {
       <header className="p-2 py-4 text-center text-white border-b rounded-t-lg bg-gradient-to-l from-blue-700 to-indigo-700">
         <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
       </header>
-      <Modal.Body>Hello</Modal.Body>
+      <Modal.Body>
+        <ProcessorForm closeModal={closeModal} />
+      </Modal.Body>
     </Modal>
   )
 }
