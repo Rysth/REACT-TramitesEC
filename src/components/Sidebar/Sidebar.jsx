@@ -42,7 +42,7 @@ function Sidebar() {
                   className="flex items-center gap-2 p-2.5 text-[#9197B3] rounded-lg hover:bg-gray-100group"
                 >
                   <IoPerson className="text-xl" />
-                  <span>Clientes</span>
+                  <span>Trámitadores</span>
                 </NavLink>
               </li>
             </ul>
