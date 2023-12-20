@@ -1,7 +1,12 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Table } from 'flowbite-react'
+import ProcessorItem from './ProcessorItem'
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
+import TableDelete from '../../../components/Table/TableDelete'
+import { destroyProcessor } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
@@ -11,7 +16,7 @@ function ProcessorTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyCliente({ activeToken, processorID: processorSelected.id }))
+    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id }))
   }
 
   if (loading) {

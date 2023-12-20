@@ -1,12 +1,12 @@
-import { Table } from 'flowbite-react'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Table } from 'flowbite-react'
+import CustomerItem from './CustomerItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { destroyCliente } from '../../../redux/slices/CustomerSlice'
 import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
-import PropTypes from 'prop-types'
-import CustomerItem from './CustomerItem'
 import TableDelete from '../../../components/Table/TableDelete'
+import { destroyCliente } from '../../../redux/slices/CustomerSlice'
 
 function CustomerTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
