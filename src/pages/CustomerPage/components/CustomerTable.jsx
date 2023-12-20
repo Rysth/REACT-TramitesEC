@@ -24,7 +24,7 @@ function CustomerTable({ currentItems, showModal }) {
   }
 
   if (quantity === 0) {
-    return <Error />
+    return <Error title="¡Cliente no Encontrado!" />
   }
 
   return (

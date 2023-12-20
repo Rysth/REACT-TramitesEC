@@ -2,7 +2,6 @@ import TableHeader from '../../components/Table/TableHeader'
 import HeaderLayout from '../../layouts/HeaderLayout'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
-import TableLayout from '../../layouts/TableLayout'
 
 function ProcessorPage() {
   return (
