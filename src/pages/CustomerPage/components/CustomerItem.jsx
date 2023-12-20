@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Table, Button } from 'flowbite-react'
+import { Table, Button, Badge } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
@@ -16,7 +16,11 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
       <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.cedula}</Table.Cell>
       <Table.Cell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{`${customer.processor.nombres} ${customer.processor.apellidos}`}</Table.Cell>
+      <Table.Cell className="py-2 truncate">
+        <Badge color="info" className="grid place-items-center">
+          {`${customer.processor.nombres} ${customer.processor.apellidos}`}
+        </Badge>
+      </Table.Cell>
       <Table.Cell className="py-2 truncate">{customer.celular}</Table.Cell>
       <Table.Cell className="py-2 text-blue-500 truncate">
         <a href={`mailto:${customer.email}`} className="text-blue-500 md:hover:text-black">

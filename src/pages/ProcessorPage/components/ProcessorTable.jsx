@@ -36,10 +36,11 @@ function ProcessorTable({ currentItems, showModal }) {
         confirmDelete={confirmDelete}
       />
       <Table striped>
-        <Table.Head className="sticky top-0 z-50 text-gray-700 border border-t-0 border-l-0 shadow">
+        <Table.Head className="sticky top-0 z-50 border border-x-0">
           <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Cédula</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-4/12 bg-white">Nombre Completo</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Usuario</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Celular</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-3/12 bg-white">Acciones</Table.HeadCell>
         </Table.Head>

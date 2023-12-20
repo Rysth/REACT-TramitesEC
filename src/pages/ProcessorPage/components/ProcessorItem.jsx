@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Table, Button } from 'flowbite-react'
+import { Table, Button, Badge } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
@@ -16,6 +16,11 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
       <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</Table.Cell>
       <Table.Cell className="py-2 truncate">{processor.cedula}</Table.Cell>
       <Table.Cell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</Table.Cell>
+      <Table.Cell className="py-2 truncate">
+        <Badge color="info" className="grid place-items-center">
+          {processor.user.username}
+        </Badge>
+      </Table.Cell>
       <Table.Cell className="py-2 truncate">{processor.celular}</Table.Cell>
       <Table.Cell className="flex items-center w-full gap-1 py-2">
         <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
