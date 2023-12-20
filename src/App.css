@@ -1,16 +1,20 @@
 @import url('https://fonts.cdnfonts.com/css/tilt-warp');
-@import url('https://fonts.cdnfonts.com/css/larsseit-font-family');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+/* @import url('https://fonts.cdnfonts.com/css/larsseit-font-family'); */
 
 :root {
   --CL-blue-light: #0575e6;
   --CL-blue-dark: #02298a;
   --CL-blue-darker: #021b79;
-  --CL-purple: #0f0cc7;
+
+  /* Pattern */
+  --CL-primary-gray: #eae9fc;
+  --CL-primary-indigo: #3532e4;
 }
 
 body {
-  font-family: 'Larsseit', sans-serif;
-  background-color: #fafbff;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f3fa;
 }
 
 /* For WebKit browsers (Chrome, Safari) */
@@ -38,14 +42,10 @@ body {
   @apply bg-[var(--CL-blue-darker)];
 }
 
-.bg-purple {
-  @apply bg-[var(--CL-purple)];
-}
-
 /* NavLinks */
 
 .active {
-  @apply text-white rounded-lg bg-purple;
+  @apply text-[var(--CL-primary-indigo)] rounded-lg bg-[var(--CL-primary-gray)];
 }
 
 h1,

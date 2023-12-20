@@ -35,7 +35,7 @@ function ProcessorTable({ currentItems, showModal }) {
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table striped>
+      <Table hoverable>
         <Table.Head className="sticky top-0 z-50 border border-x-0">
           <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Cédula</Table.HeadCell>

@@ -21,7 +21,11 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
           {`${customer.processor.nombres} ${customer.processor.apellidos}`}
         </Badge>
       </Table.Cell>
-      <Table.Cell className="py-2 truncate">{customer.celular}</Table.Cell>
+      <Table.Cell className="py-2 truncate">
+        <Badge color="indigo" className="grid place-items-center">
+          {customer.processor.user.username}
+        </Badge>
+      </Table.Cell>
       <Table.Cell className="py-2 text-blue-500 truncate">
         <a href={`mailto:${customer.email}`} className="text-blue-500 md:hover:text-black">
           {customer.email}

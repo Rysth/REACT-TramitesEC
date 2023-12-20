@@ -34,13 +34,13 @@ function CustomerTable({ currentItems, showModal }) {
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table className="shadow-none">
+      <Table hoverable>
         <Table.Head className="sticky top-0 z-50 border border-x-0">
           <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-1/12 bg-white">Cédula</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-4/12 bg-white">Cliente</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Trámitador</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-1/12 bg-white">Celular</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Usuario</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Email</Table.HeadCell>
           <Table.HeadCell className="!rounded-none w-2/12 bg-white">Acciones</Table.HeadCell>
         </Table.Head>

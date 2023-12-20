@@ -8,7 +8,7 @@ function SessionPage() {
           <h2 className="text-4xl font-bold md:text-6xl">¡Bienvenido!</h2>
           <p className="">Sistema de Trámites</p>
         </header>
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full bg-white">
           <SessionSignIn />
         </div>
       </div>
