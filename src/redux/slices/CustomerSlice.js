@@ -57,6 +57,16 @@ export const getCustomers = createAsyncThunkWrapper('getCustomers', async (activ
   })
 })
 
+// Thunk for retrieving clients (GET)
+export const getCustomersByProcessor = createAsyncThunkWrapper('getCustomersByProcessor', async (activeToken) => {
+  return axios.get(`${API_URL}/api/v1/customers`, {
+    headers: {
+      Authorization: activeToken,
+    },
+    withCredentials: true,
+  })
+})
+
 // Thunk for creating a new client (POST)
 export const createCliente = createAsyncThunkWrapper('createCliente', async ({ activeToken, newCustomer }) => {
   return axios.post(`${API_URL}/api/v1/customers/`, newCustomer, {
