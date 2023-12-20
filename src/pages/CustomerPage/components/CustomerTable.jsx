@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import { HiOutlineExclamationCircle } from 'react-icons/hi'
 import { destroyCliente } from '../../../redux/slices/CustomerSlice'
+import TableDelete from '../../../components/Table/TableDelete'
 
 function CustomerTable({ currentItems, showModal }) {
   const quantity = currentItems.length
@@ -29,31 +29,11 @@ function CustomerTable({ currentItems, showModal }) {
 
   return (
     <>
-      <Modal show={confirmationModal} size="md" onClose={() => setConfirmationModal(false)} className="z-[9000]" popup>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 text-gray-800 h-14 w-14 sm:h-32 sm:w-32 dark:text-gray-200" />
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              ¿Estas seguro/a de querer eliminarlo?
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button
-                color="failure"
-                onClick={() => {
-                  confirmDelete()
-                  setConfirmationModal(false)
-                }}
-              >
-                Confirmar
-              </Button>
-              <Button color="gray" onClick={() => setConfirmationModal(false)}>
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <TableDelete
+        confirmationModal={confirmationModal}
+        setConfirmationModal={setConfirmationModal}
+        confirmDelete={confirmDelete}
+      />
       <Table striped>
         <Table.Head className="sticky top-0 z-50 text-gray-700 border border-t-0 border-l-0 shadow">
           <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
