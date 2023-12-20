@@ -55,7 +55,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
       {},
       {
         headers: {
-          Authorization: atob(activeToken),
+          Authorization: activeToken,
         },
         withCredentials: true,
       },
@@ -73,7 +73,7 @@ export const getActualUser = createAsyncThunk('authentication/getActualUser', as
   try {
     const response = await axios.get(`${API_URL}/api/v1/user`, {
       headers: {
-        Authorization: atob(activeToken),
+        Authorization: activeToken,
       },
       withCredentials: true,
     })
@@ -89,7 +89,7 @@ export const getActualUser = createAsyncThunk('authentication/getActualUser', as
 
 const updateSessionStorage = (state) => {
   sessionStorage.setItem('active', state.active)
-  sessionStorage.setItem('activeToken', btoa(state.activeToken))
+  sessionStorage.setItem('activeToken', state.activeToken)
   sessionStorage.setItem('activeUser', JSON.stringify(state.activeUser))
 }
 
@@ -115,7 +115,7 @@ export const AuthenticationSlice = createSlice({
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
       state.activeUser = action.payload[1]
-      state.activeToken = btoa(action.payload[0].token)
+      state.activeToken = action.payload[0].token
       updateSessionStorage(state)
       toast.success('¡Bienvenido!', { autoClose: 2000, theme: 'colored' })
     })

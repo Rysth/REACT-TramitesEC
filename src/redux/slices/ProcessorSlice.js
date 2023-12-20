@@ -24,6 +24,11 @@ const handleRequestError = (error) => {
     }, 3000)
   }
 
+  if (error.response.status === 409) {
+    toast.error('¡Trámitador Tiene Clientes!', { theme: 'colored' })
+    return
+  }
+
   if (error.response.status === 422) {
     toast.error('¡Trámitador ya Registrado!', { theme: 'colored' })
     return
@@ -51,7 +56,7 @@ const createAsyncThunkWrapper = (type, requestFn) =>
 export const getProcessors = createAsyncThunkWrapper('getProcessors', async (activeToken) => {
   return axios.get(`${API_URL}/api/v1/processors`, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -61,7 +66,7 @@ export const getProcessors = createAsyncThunkWrapper('getProcessors', async (act
 export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, newProcessor }) => {
   return axios.post(`${API_URL}/api/v1/processors/`, newProcessor, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -71,7 +76,7 @@ export const createProcessor = createAsyncThunkWrapper('createProcessor', async 
 export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, oldProcessor }) => {
   return axios.put(`${API_URL}/api/v1/processors/${oldProcessor.id}`, oldProcessor, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -81,7 +86,7 @@ export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async 
 export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', async ({ activeToken, processorID }) => {
   return axios.delete(`${API_URL}/api/v1/processors/${processorID}`, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })

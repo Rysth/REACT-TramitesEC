@@ -51,7 +51,7 @@ const createAsyncThunkWrapper = (type, requestFn) =>
 export const getClientes = createAsyncThunkWrapper('getClientes', async (activeToken) => {
   return axios.get(`${API_URL}/api/v1/clientes`, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -61,7 +61,7 @@ export const getClientes = createAsyncThunkWrapper('getClientes', async (activeT
 export const createCliente = createAsyncThunkWrapper('createCliente', async ({ activeToken, newCustomer }) => {
   return axios.post(`${API_URL}/api/v1/clientes/`, newCustomer, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -71,7 +71,7 @@ export const createCliente = createAsyncThunkWrapper('createCliente', async ({ a
 export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ activeToken, oldCustomer }) => {
   return axios.put(`${API_URL}/api/v1/clientes/${oldCustomer.id}`, oldCustomer, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })
@@ -81,7 +81,7 @@ export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ a
 export const destroyCliente = createAsyncThunkWrapper('destroyCliente', async ({ activeToken, customerID }) => {
   return axios.delete(`${API_URL}/api/v1/clientes/${customerID}`, {
     headers: {
-      Authorization: atob(activeToken),
+      Authorization: activeToken,
     },
     withCredentials: true,
   })

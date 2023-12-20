@@ -7,7 +7,6 @@ import Sidebar from './components/Sidebar/Sidebar'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import SessionPage from './pages/SessionPage/SessionPage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
-/* import CustomerPage from './pages/CustomerPage/CustomerPage' */
 import './App.css'
 
 function App() {
@@ -15,9 +14,6 @@ function App() {
 
   useEffect(() => {}, [active])
 
-  // TODO
-  // - Create Tramitadores Page
-  // - Improve Customers Page
   return (
     <BrowserRouter>
       <ToastContainer />

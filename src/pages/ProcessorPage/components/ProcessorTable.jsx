@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
 import TableDelete from '../../../components/Table/TableDelete'
-import { destroyProcessor } from '../../../redux/slices/ProcessorSlice'
+import { destroyProcessor, processorActions } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
@@ -16,7 +16,9 @@ function ProcessorTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id }))
+    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id })).then(() =>
+      processorActions.setProcessorSelected(''),
+    )
   }
 
   if (loading) {
