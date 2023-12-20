@@ -1,9 +1,9 @@
-import React from 'react'
+import { Spinner } from 'flowbite-react'
 
 function Loading() {
   return (
-    <header className="py-3 text-center bg-indigo-700 rounded-lg">
-      <h3 className="text-2xl text-white ">Cargando...</h3>
+    <header className="flex flex-col items-center justify-center h-full text-xl text-center sm:text-2xl ">
+      <Spinner aria-label="Default status example" color="purple" className="w-20 h-20 fill-[var(--CL-purple)]" />
     </header>
   )
 }

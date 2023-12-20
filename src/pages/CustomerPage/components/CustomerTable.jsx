@@ -1,4 +1,5 @@
-import { Table, Spinner, Modal, Button } from 'flowbite-react'
+import { Table, Modal, Button } from 'flowbite-react'
+import Loading from '../../../components/Loading/Loading'
 import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
 import { RiErrorWarningFill } from 'react-icons/ri'
@@ -19,11 +20,7 @@ function CustomerTable({ currentItems, showModal }) {
   }
 
   if (loading) {
-    return (
-      <header className="flex flex-col items-center justify-center h-full text-xl text-center sm:text-2xl ">
-        <Spinner aria-label="Default status example" color="purple" className="w-20 h-20 fill-[var(--CL-purple)]" />
-      </header>
-    )
+    return <Loading />
   }
 
   if (quantity === 0) {
