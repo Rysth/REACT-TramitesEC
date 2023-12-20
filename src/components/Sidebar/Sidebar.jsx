@@ -26,7 +26,7 @@ function Sidebar() {
 
       <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] sm:w-64'}`} onClick={closeSideBar}>
         <aside
-          className={`fixed w-64 -translate-x-64 transition inset-0 z-[9000] bg-white shadow-lg  sm:translate-x-0 ${
+          className={`fixed w-64 -translate-x-64 transition inset-0 z-[9000] bg-white shadow-lg  sm:translate-x-0  ${
             open && 'translate-x-0'
           }`}
         >
@@ -39,19 +39,10 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/"
-                  className="flex items-center gap-2 p-2.5 text-gray-900 rounded-lg hover:bg-gray-100group"
+                  className="flex items-center gap-2 p-2.5 text-[#9197B3] rounded-lg hover:bg-gray-100group"
                 >
                   <IoPerson className="text-xl" />
                   <span>Clientes</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/tramites"
-                  className="flex items-center gap-2 p-2.5 text-gray-900 rounded-lg hover:bg-gray-100group"
-                >
-                  <IoPerson className="text-xl" />
-                  <span>Trámites</span>
                 </NavLink>
               </li>
             </ul>

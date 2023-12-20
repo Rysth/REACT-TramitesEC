@@ -3,8 +3,9 @@ import { Table, Button } from 'flowbite-react'
 import { useDispatch } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
-function CustomerItem({ customer, showModal }) {
+function CustomerItem({ customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
+
   const handleCustomerSelected = (customerID) => {
     dispatch(customerActions.setCustomerSelected(customerID))
     showModal()
@@ -25,7 +26,14 @@ function CustomerItem({ customer, showModal }) {
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
-        <Button size="xs" color="failure">
+        <Button
+          size="xs"
+          color="failure"
+          onClick={() => {
+            dispatch(customerActions.setCustomerSelected(customer.id))
+            showConfirmation(true)
+          }}
+        >
           Eliminar
         </Button>
       </Table.Cell>
@@ -43,6 +51,7 @@ CustomerItem.propTypes = {
     email: PropTypes.string.isRequired,
   }),
   showModal: PropTypes.func.isRequired,
+  showConfirmation: PropTypes.func.isRequired,
 }
 
 export default CustomerItem

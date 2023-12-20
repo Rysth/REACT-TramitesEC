@@ -25,12 +25,7 @@ function SessionSignIn() {
         <Label htmlFor="email1" className="block mb-2" value="Your email" />
         <TextInput icon={RiLockPasswordFill} type="password" placeholder="******" {...register('password')} required />
       </fieldset>
-      <Button
-        className="flex items-center justify-center w-full gap-2 rounded-full"
-        type="submit"
-        color="blue"
-        fullWidth
-      >
+      <Button className="flex items-center justify-center w-full gap-2 rounded-full" type="submit" color="blue">
         <span>Ingresar</span>
       </Button>
     </form>
