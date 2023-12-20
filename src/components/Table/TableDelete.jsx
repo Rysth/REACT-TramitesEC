@@ -1,4 +1,5 @@
 import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import { Modal, Button } from 'flowbite-react'
 import PropTypes from 'prop-types'
 
 function TableDelete({ confirmationModal, setConfirmationModal, confirmDelete }) {

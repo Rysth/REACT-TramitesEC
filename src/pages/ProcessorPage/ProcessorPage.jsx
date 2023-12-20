@@ -33,6 +33,9 @@ function ProcessorPage() {
           restartCurrentPage={restartCurrentPage}
           showModal={showModal}
         />
+        <TableLayout>
+          <ProcessorTable />
+        </TableLayout>
         <TablePaginate
           currentPage={currentPage}
           pageCount={pageCount}

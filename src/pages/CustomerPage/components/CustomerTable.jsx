@@ -1,18 +1,18 @@
-import { Table, Modal, Button } from 'flowbite-react'
+import { Table } from 'flowbite-react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { destroyCliente } from '../../../redux/slices/CustomerSlice'
 import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
 import PropTypes from 'prop-types'
 import CustomerItem from './CustomerItem'
-import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
-import { destroyCliente } from '../../../redux/slices/CustomerSlice'
 import TableDelete from '../../../components/Table/TableDelete'
 
 function CustomerTable({ currentItems, showModal }) {
+  const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
   const { loading, customerSelected } = useSelector((store) => store.customer)
-  const dispatch = useDispatch()
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
