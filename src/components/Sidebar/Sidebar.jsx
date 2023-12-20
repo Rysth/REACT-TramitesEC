@@ -35,7 +35,7 @@ function Sidebar() {
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
             </a>
-            <ul className="flex-1 mt-5 text-sm">
+            <ul className="flex flex-col flex-1 mt-5 text-sm">
               <li>
                 <NavLink
                   to="/"
@@ -43,6 +43,15 @@ function Sidebar() {
                 >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/clientes"
+                  className="flex items-center gap-2 p-2.5 text-[#9197B3] rounded-lg hover:bg-gray-100group"
+                >
+                  <IoPerson className="text-xl" />
+                  <span>Clientes</span>
                 </NavLink>
               </li>
             </ul>

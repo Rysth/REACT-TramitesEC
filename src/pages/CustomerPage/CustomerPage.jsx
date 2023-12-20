@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getClientes } from '../../redux/slices/CustomerSlice'
+import { getCustomers } from '../../redux/slices/CustomerSlice'
 import { customerActions } from '../../redux/slices/CustomerSlice'
 import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
 import HeaderLayout from '../../layouts/HeaderLayout'
@@ -23,7 +23,7 @@ function CustomerPage() {
   const closeModal = () => setOpenModal(false)
 
   useEffect(() => {
-    dispatch(getClientes(activeToken))
+    dispatch(getCustomers(activeToken))
   }, [dispatch, activeToken])
 
   return (

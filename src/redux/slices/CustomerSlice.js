@@ -25,7 +25,7 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado!', { theme: 'colored' })
+    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'colored' })
     return
   }
 
@@ -48,8 +48,8 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving clients (GET)
-export const getClientes = createAsyncThunkWrapper('getClientes', async (activeToken) => {
-  return axios.get(`${API_URL}/api/v1/clientes`, {
+export const getCustomers = createAsyncThunkWrapper('getCustomers', async (activeToken) => {
+  return axios.get(`${API_URL}/api/v1/customers`, {
     headers: {
       Authorization: activeToken,
     },
@@ -59,7 +59,7 @@ export const getClientes = createAsyncThunkWrapper('getClientes', async (activeT
 
 // Thunk for creating a new client (POST)
 export const createCliente = createAsyncThunkWrapper('createCliente', async ({ activeToken, newCustomer }) => {
-  return axios.post(`${API_URL}/api/v1/clientes/`, newCustomer, {
+  return axios.post(`${API_URL}/api/v1/customers/`, newCustomer, {
     headers: {
       Authorization: activeToken,
     },
@@ -69,7 +69,7 @@ export const createCliente = createAsyncThunkWrapper('createCliente', async ({ a
 
 // Thunk for updating an existing client (PUT)
 export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ activeToken, oldCustomer }) => {
-  return axios.put(`${API_URL}/api/v1/clientes/${oldCustomer.id}`, oldCustomer, {
+  return axios.put(`${API_URL}/api/v1/customers/${oldCustomer.id}`, oldCustomer, {
     headers: {
       Authorization: activeToken,
     },
@@ -79,7 +79,7 @@ export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ a
 
 // Thunk for deleting a client (DELETE)
 export const destroyCliente = createAsyncThunkWrapper('destroyCliente', async ({ activeToken, customerID }) => {
-  return axios.delete(`${API_URL}/api/v1/clientes/${customerID}`, {
+  return axios.delete(`${API_URL}/api/v1/customers/${customerID}`, {
     headers: {
       Authorization: activeToken,
     },
@@ -96,7 +96,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   /* Customer Stats */
   state.customerStats = [
     {
-      title: 'Clientes Registrados',
+      title: 'customers Registrados',
       metric: action.payload.stats.customers_quantity,
       color: 'bg-indigo-700',
     },
@@ -156,8 +156,8 @@ const customerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Handle API response for getClientes
-    builder.addCase(getClientes.fulfilled, (state, action) => {
+    // Handle API response for getcustomers
+    builder.addCase(getCustomers.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)
     })
