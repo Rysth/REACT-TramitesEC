@@ -18,7 +18,7 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
       <Table.Cell className="py-2 truncate">{processor.cedula}</Table.Cell>
       <Table.Cell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</Table.Cell>
       <Table.Cell className="py-2 truncate">
-        <Badge color="info" className="grid place-items-center">
+        <Badge color="indigo" className="grid place-items-center" href="/">
           {processor.user.username}
         </Badge>
       </Table.Cell>
