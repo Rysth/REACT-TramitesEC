@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
 import TableDelete from '../../../components/Table/TableDelete'
-import { destroyCliente } from '../../../redux/slices/CustomerSlice'
+import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
 
 function CustomerTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
@@ -17,6 +17,7 @@ function CustomerTable({ currentItems, showModal }) {
 
   const confirmDelete = () => {
     dispatch(destroyCliente({ activeToken, customerID: customerSelected.id }))
+    dispatch(customerActions.setCustomerSelected(''))
   }
 
   if (loading) {
