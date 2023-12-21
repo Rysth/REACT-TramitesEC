@@ -16,7 +16,6 @@ function ProcessorForm({ closeModal }) {
   const handleCreateOrUpdate = (newProcessor) => {
     const processorData = {
       ...newProcessor,
-      user_id,
     }
 
     if (processorSelected) {
@@ -28,7 +27,12 @@ function ProcessorForm({ closeModal }) {
       return
     }
 
-    dispatch(createProcessor({ activeToken, newProcessor: processorData })).then(() => closeModal())
+    const newProccessorData = {
+      ...newProcessor,
+      user_id,
+    }
+
+    dispatch(createProcessor({ activeToken, newProcessor: newProccessorData })).then(() => closeModal())
   }
 
   const onSubmit = (processorData) => {
