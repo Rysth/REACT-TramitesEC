@@ -43,6 +43,7 @@ TableHeader.propTypes = {
   title: PropTypes.string.isRequired,
   searchMethod: PropTypes.func.isRequired,
   restartCurrentPage: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
 }
 
 export default TableHeader

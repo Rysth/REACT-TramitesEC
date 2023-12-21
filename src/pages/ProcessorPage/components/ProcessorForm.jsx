@@ -37,7 +37,7 @@ function ProcessorForm({ closeModal }) {
 
   useEffect(() => {
     reset()
-  }, [])
+  }, [reset])
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>

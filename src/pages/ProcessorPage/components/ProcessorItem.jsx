@@ -48,6 +48,9 @@ ProcessorItem.propTypes = {
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     celular: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+    }),
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,

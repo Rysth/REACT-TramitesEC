@@ -1,4 +1,5 @@
 import ReactPaginate from 'react-paginate'
+import PropTypes from 'prop-types'
 
 function TablePaginate({ currentPage, pageCount, handlePageChange }) {
   return (
@@ -19,6 +20,12 @@ function TablePaginate({ currentPage, pageCount, handlePageChange }) {
       />
     </footer>
   )
+}
+
+TablePaginate.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  pageCount: PropTypes.number.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
 }
 
 export default TablePaginate

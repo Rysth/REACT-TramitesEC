@@ -13,7 +13,7 @@ function CustomerModal({ openModal, closeModal }) {
 
   useEffect(() => {
     if (!openModal) dispatch(customerActions.setCustomerSelected(''))
-  }, [openModal])
+  }, [openModal, dispatch])
 
   return (
     <Modal show={openModal} position="center" onClose={closeModal} className="z-[9000]" size="lg" dismissible>

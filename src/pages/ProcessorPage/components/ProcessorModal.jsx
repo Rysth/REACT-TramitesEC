@@ -13,7 +13,7 @@ function ProcessorModal({ openModal, closeModal }) {
 
   useEffect(() => {
     if (!openModal) dispatch(processorActions.setProcessorSelected(''))
-  }, [openModal])
+  }, [openModal, dispatch])
 
   return (
     <Modal show={openModal} position="center" onClose={closeModal} className="z-[9000]" size="lg" dismissible>
