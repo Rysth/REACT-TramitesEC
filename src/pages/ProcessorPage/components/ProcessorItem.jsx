@@ -32,7 +32,7 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
             size="xs"
             color="failure"
             onClick={() => {
-              dispatch(customerActions.setCustomerSelected(customer.id))
+              dispatch(processorActions.setCustomerSelected(customer.id))
               showConfirmation(true)
             }}
           >
