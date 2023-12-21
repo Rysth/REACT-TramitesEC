@@ -9,7 +9,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--CL-primary-indigo); /* Set the color of the scrollbar thumb */
+  background-color: var(--CL-primary); /* Set the color of the scrollbar thumb */
 }
 
 ::-webkit-scrollbar-track {
@@ -22,7 +22,7 @@
   --CL-blue-darker: #021b79;
 
   /* Pattern */
-  --CL-primary: #120e1e;
+  --CL-primary: #161125;
   --CL-secondary: #3b38ff;
 }
 

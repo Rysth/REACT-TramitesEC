@@ -36,14 +36,14 @@ function CustomerTable({ currentItems, showModal }) {
         confirmDelete={confirmDelete}
       />
       <Table hoverable>
-        <Table.Head className="sticky top-0 z-50 border border-x-0">
-          <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-1/12 bg-white">Cédula</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-4/12 bg-white">Cliente</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Trámitador</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Usuario</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Email</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Acciones</Table.HeadCell>
+        <Table.Head className="sticky top-0 z-50 border-b border-x-0">
+          <Table.HeadCell className="!rounded-none bg-gray-100">#</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Cédula</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Cliente</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Trámitador</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Usuario</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Email</Table.HeadCell>
+          <Table.HeadCell className="!rounded-none bg-gray-100">Acciones</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {currentItems.map((customer) => (
