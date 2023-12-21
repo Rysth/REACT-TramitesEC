@@ -161,7 +161,6 @@ const processorslice = createSlice({
   extraReducers: (builder) => {
     // Handle API response for getProcessors
     builder.addCase(getProcessors.fulfilled, (state, action) => {
-      console.log(action)
       state.loading = false
       updateStateAndStats(state, action)
     })
