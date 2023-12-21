@@ -106,19 +106,19 @@ const updateStateAndStats = (state, action, successMessage) => {
   /* Customer Stats */
   state.customerStats = [
     {
-      title: 'Clientes Registrados',
+      title: 'Total de Clientes',
       metric: action.payload.stats.customers_quantity,
       color: 'bg-indigo-700',
     },
     {
-      title: 'Activos',
-      metric: action.payload.stats.customers_active,
-      color: 'bg-green-500',
+      title: 'Agregados (Últimos 30 días)',
+      metric: action.payload.stats.customers_added_last_month,
+      color: 'bg-purple-700',
     },
     {
-      title: 'Inactivos',
-      metric: action.payload.stats.customers_inactive,
-      color: 'bg-gray-700',
+      title: 'Agregados (Últimos 7 días)',
+      metric: action.payload.stats.customers_added_last_7_days,
+      color: 'bg-blue-700',
     },
   ]
 
