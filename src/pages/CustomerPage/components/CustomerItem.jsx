@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import { Table, Button, Badge } from 'flowbite-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
 function CustomerItem({ customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
+  const { id } = useSelector((store) => store.authentication.activeUser)
 
   const handleCustomerSelected = (customerID) => {
     dispatch(customerActions.setCustomerSelected(customerID))
@@ -35,16 +36,18 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
-        <Button
-          size="xs"
-          color="failure"
-          onClick={() => {
-            dispatch(customerActions.setCustomerSelected(customer.id))
-            showConfirmation(true)
-          }}
-        >
-          Eliminar
-        </Button>
+        {customer.processor.user.id === id && (
+          <Button
+            size="xs"
+            color="failure"
+            onClick={() => {
+              dispatch(customerActions.setCustomerSelected(customer.id))
+              showConfirmation(true)
+            }}
+          >
+            Eliminar
+          </Button>
+        )}
       </Table.Cell>
     </Table.Row>
   )
@@ -62,6 +65,7 @@ CustomerItem.propTypes = {
       nombres: PropTypes.string.isRequired,
       apellidos: PropTypes.string.isRequired,
       user: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         username: PropTypes.string.isRequired,
       }),
     }),

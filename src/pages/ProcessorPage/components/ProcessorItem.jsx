@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 import { Table, Button, Badge } from 'flowbite-react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorItem({ processor, showModal, showConfirmation }) {
   const dispatch = useDispatch()
+  const { id } = useSelector((store) => store.authentication.activeUser)
 
   const handleProcessorSelected = (processorID) => {
     dispatch(processorActions.setProcessorSelected(processorID))
@@ -26,16 +27,18 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
         <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
           Editar
         </Button>
-        <Button
-          size="xs"
-          color="failure"
-          onClick={() => {
-            dispatch(processorActions.setProcessorSelected(processor.id))
-            showConfirmation(true)
-          }}
-        >
-          Eliminar
-        </Button>
+        {processor.user.id === id && (
+          <Button
+            size="xs"
+            color="failure"
+            onClick={() => {
+              dispatch(customerActions.setCustomerSelected(customer.id))
+              showConfirmation(true)
+            }}
+          >
+            Eliminar
+          </Button>
+        )}
       </Table.Cell>
     </Table.Row>
   )
@@ -49,6 +52,7 @@ ProcessorItem.propTypes = {
     apellidos: PropTypes.string.isRequired,
     celular: PropTypes.string.isRequired,
     user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
     }),
   }),
