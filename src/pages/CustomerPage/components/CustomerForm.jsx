@@ -2,21 +2,20 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
-import { Button, Label, TextInput } from 'flowbite-react'
+import { Button, Label, Select, TextInput } from 'flowbite-react'
 import { HiIdentification, HiMiniEnvelope, HiMiniUserCircle, HiMiniDevicePhoneMobile, HiMapPin } from 'react-icons/hi2'
 import { createCliente, updateCliente } from '../../../redux/slices/CustomerSlice'
 
 function CustomerForm({ closeModal }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { id: user_id } = useSelector((store) => store.authentication.activeUser)
+  const { processorOriginal } = useSelector((store) => store.processor)
   const { customerSelected } = useSelector((store) => store.customer)
   const { register, handleSubmit, reset } = useForm()
 
   const handleCreateOrUpdate = (newCustomer) => {
     const customerData = {
       ...newCustomer,
-      user_id,
     }
 
     if (customerSelected) {
@@ -41,6 +40,21 @@ function CustomerForm({ closeModal }) {
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className="grid">
+        <div>
+          <Label htmlFor="processor_id" value="Trámitador" />
+          <Select
+            id="processor_id"
+            {...register('processor_id')}
+            defaultValue={customerSelected && customerSelected.processor.id}
+            required
+          >
+            {processorOriginal.map((processor) => (
+              <option value={processor.id}>{`${processor.cedula}: ${processor.nombres} ${processor.apellidos}`}</option>
+            ))}
+          </Select>
+        </div>
+      </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="cedula" value="Cédula" />

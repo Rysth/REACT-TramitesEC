@@ -23,7 +23,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--CL-purple); /* Set the color of the scrollbar thumb */
+  background-color: var(--CL-primary-indigo); /* Set the color of the scrollbar thumb */
 }
 
 ::-webkit-scrollbar-track {

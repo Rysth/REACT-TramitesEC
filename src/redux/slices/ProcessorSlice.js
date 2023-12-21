@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
-  processorOriginal: [],
+  processorOriginal: {},
   processorsArray: [],
   processorStats: [],
   processorSelected: null,
@@ -161,6 +161,7 @@ const processorslice = createSlice({
   extraReducers: (builder) => {
     // Handle API response for getProcessors
     builder.addCase(getProcessors.fulfilled, (state, action) => {
+      console.log(action)
       state.loading = false
       updateStateAndStats(state, action)
     })
