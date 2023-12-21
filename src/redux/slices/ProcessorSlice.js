@@ -113,7 +113,7 @@ const updateStateAndStats = (state, action, successMessage) => {
     {
       title: 'Inactivos',
       metric: action.payload.stats.processors_inactive,
-      color: 'bg-red-700',
+      color: 'bg-gray-700',
     },
   ]
 

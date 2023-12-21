@@ -11,11 +11,12 @@ import ProcessorTable from './components/ProcessorTable'
 import usePagination from '../../hooks/usePagination'
 import TableLayout from '../../layouts/TableLayout'
 import ProcessorModal from './components/ProcessorModal'
+import TableStats from '../../components/Table/TableStats'
 
 function ProcessorPage() {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorsArray } = useSelector((store) => store.processor)
+  const { processorsArray, processorStats } = useSelector((store) => store.processor)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(processorsArray)
 
   const [openModal, setOpenModal] = useState(false)
@@ -29,6 +30,7 @@ function ProcessorPage() {
   return (
     <SectionLayout>
       <HeaderLayout />
+      <TableStats categories={processorStats} />
       <MainLayout>
         <ProcessorModal openModal={openModal} closeModal={closeModal} />
         <TableHeader

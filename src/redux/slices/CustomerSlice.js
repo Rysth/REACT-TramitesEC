@@ -106,7 +106,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   /* Customer Stats */
   state.customerStats = [
     {
-      title: 'customers Registrados',
+      title: 'Clientes Registrados',
       metric: action.payload.stats.customers_quantity,
       color: 'bg-indigo-700',
     },
@@ -118,7 +118,7 @@ const updateStateAndStats = (state, action, successMessage) => {
     {
       title: 'Inactivos',
       metric: action.payload.stats.customers_inactive,
-      color: 'bg-red-700',
+      color: 'bg-gray-700',
     },
   ]
 

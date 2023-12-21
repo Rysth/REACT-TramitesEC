@@ -11,11 +11,12 @@ import TablePaginate from '../../components/Table/TablePaginate'
 import CustomerTable from './components/CustomerTable'
 import CustomerModal from './components/CustomerModal'
 import usePagination from '../../hooks/usePagination'
+import TableStats from '../../components/Table/TableStats'
 
 function CustomerPage() {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { customersArray } = useSelector((store) => store.customer)
+  const { customersArray, customerStats } = useSelector((store) => store.customer)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(customersArray)
 
   const [openModal, setOpenModal] = useState(false)
@@ -29,6 +30,7 @@ function CustomerPage() {
   return (
     <SectionLayout>
       <HeaderLayout />
+      <TableStats categories={customerStats} />
       <MainLayout>
         <CustomerModal openModal={openModal} closeModal={closeModal} />
         <TableHeader
