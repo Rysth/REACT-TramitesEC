@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IoClose, IoPerson, IoMenu } from 'react-icons/io5'
+import { IoClose, IoPerson, IoMenu, IoPeople } from 'react-icons/io5'
 import { Button } from 'flowbite-react'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -50,7 +50,7 @@ function Sidebar() {
                   to="/clientes"
                   className="flex items-center gap-2 p-2.5 text-[#A1A0BD] rounded-lg hover:scale-105 transition"
                 >
-                  <IoPerson className="text-xl" />
+                  <IoPeople className="text-xl" />
                   <span>Clientes</span>
                 </NavLink>
               </li>
