@@ -13,20 +13,14 @@ function Sidebar() {
 
   return (
     <>
-      <Button
-        type="button"
-        className="mt-3 ms-4 sm:hidden"
-        size="xs"
-        gradientDuoTone="greenToBlue"
-        onClick={openSideBar}
-      >
+      <Button type="button" className="mt-3 ms-4 md:hidden" size="xs" color="dark" onClick={openSideBar}>
         <span className="sr-only">Open sidebar</span>
         {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
 
-      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] sm:w-60'}`} onClick={closeSideBar}>
+      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] md:w-64'}`} onClick={closeSideBar}>
         <aside
-          className={`fixed w-60 -translate-x-60 transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  sm:translate-x-0  ${
+          className={`fixed w-64 -translate-x-64 transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
             open && 'translate-x-0'
           }`}
         >
@@ -35,7 +29,7 @@ function Sidebar() {
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl text-white whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
             </a>
-            <ul className="flex flex-col flex-1 mt-5 text-sm font-semibold">
+            <ul className="flex flex-col flex-1 mt-5 text-sm">
               <li>
                 <NavLink
                   to="/"
