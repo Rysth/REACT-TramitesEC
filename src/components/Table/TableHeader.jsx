@@ -15,7 +15,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   }
 
   return (
-    <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary-indigo)] sm:flex-row rounded-t-2xl">
+    <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary)] sm:flex-row rounded-t-2xl">
       <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl ">
         <h3>{title}</h3>
       </header>
@@ -30,7 +30,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
           color="purple"
           required
         />
-        <Button size="md" gradientDuoTone="greenToBlue" onClick={showModal}>
+        <Button size="md" color="dark" className="bg-[var(--CL-secondary)]" onClick={showModal}>
           Crear
           <IoCreateSharp className="ml-1" />
         </Button>

@@ -22,13 +22,13 @@
   --CL-blue-darker: #021b79;
 
   /* Pattern */
-  --CL-primary-gray: #eae9fc;
-  --CL-primary-indigo: #3532e4;
+  --CL-primary: #120e1e;
+  --CL-secondary: #3b38ff;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f4f3fa;
+  background-color: #f8f9fa;
 }
 
 .bg-blue-light {
@@ -46,7 +46,7 @@ body {
 /* NavLinks */
 
 .active {
-  @apply text-[var(--CL-primary-indigo)] rounded-lg bg-[var(--CL-primary-gray)];
+  @apply text-white rounded-md bg-[var(--CL-secondary)];
 }
 
 h1,
