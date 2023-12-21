@@ -1,11 +1,34 @@
 @import url('https://fonts.cdnfonts.com/css/tilt-warp');
-@import url('https://fonts.cdnfonts.com/css/belanosima');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+/* @import url('https://fonts.cdnfonts.com/css/larsseit-font-family'); */
+
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 10px; /* Adjust the width as needed */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--CL-primary-indigo); /* Set the color of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Set the color of the scrollbar track */
+}
 
 :root {
   --CL-blue-light: #0575e6;
   --CL-blue-dark: #02298a;
   --CL-blue-darker: #021b79;
-  --CL-purple: #3f37c9;
+
+  /* Pattern */
+  --CL-primary-gray: #eae9fc;
+  --CL-primary-indigo: #3532e4;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f3fa;
 }
 
 .bg-blue-light {
@@ -20,18 +43,10 @@
   @apply bg-[var(--CL-blue-darker)];
 }
 
-.bg-purple {
-  @apply bg-[var(--CL-purple)];
-}
-
 /* NavLinks */
 
 .active {
-  @apply text-white rounded-lg bg-purple;
-}
-
-body {
-  font-family: 'Belanosima', sans-serif;
+  @apply text-[var(--CL-primary-indigo)] rounded-lg bg-[var(--CL-primary-gray)];
 }
 
 h1,
@@ -41,4 +56,8 @@ h4,
 h5,
 h6 {
   font-family: 'Tilt Warp', sans-serif;
+}
+
+button {
+  @apply transition md:hover:scale-105 md:hover:shadow md:active:scale-95;
 }

@@ -1,16 +1,14 @@
-import './App.css'
-import { createContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import Sidebar from './components/Sidebar/Sidebar'
-import Login from './pages/Session/Login'
-/* import Home from './pages/Home/Home' */
-import Customer from './pages/Customer/Customer'
 import 'react-toastify/dist/ReactToastify.css'
-
-export const DispatchContext = createContext()
+import Sidebar from './components/Sidebar/Sidebar'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import SessionPage from './pages/SessionPage/SessionPage'
+import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
+import CustomerPage from './pages/CustomerPage/CustomerPage'
+import './App.css'
 
 function App() {
   const active = useSelector((state) => state.authentication.active)
@@ -19,31 +17,31 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ToastContainer />
       {active && <Sidebar />}
-      <main className="">
-        <ToastContainer position="top-right" />
+      <main className="h-full">
         <Routes>
           <Route
-            path="/login"
+            path="/session"
             element={
               <ProtectedRoute isAllowed={!active} redirectTo="/">
-                <Login />
+                <SessionPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="/"
             element={
-              <ProtectedRoute isAllowed={active} redirectTo="/login">
-                <Customer />
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <ProcessorPage />
               </ProtectedRoute>
             }
           />
           <Route
             path="/clientes"
             element={
-              <ProtectedRoute isAllowed={active} redirectTo="/login">
-                <Customer />
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <CustomerPage />
               </ProtectedRoute>
             }
           />

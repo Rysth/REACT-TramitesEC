@@ -1,68 +1,67 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { FaBarsStaggered } from 'react-icons/fa6'
-import { MdKeyboardArrowRight, MdLogout } from 'react-icons/md'
+import { useState } from 'react'
+import { IoClose, IoPerson, IoMenu } from 'react-icons/io5'
+import { Button } from 'flowbite-react'
 import { NavLink } from 'react-router-dom'
-import { FaUser } from 'react-icons/fa'
 import BrandLogo from '../../assets/images/brands/brand.svg'
-import { destroySession } from '../../redux/slices/AuthenticationSlice'
+import SidebarLogout from './components/SidebarLogout'
 
 function Sidebar() {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
-  const userLogout = () => {
-    dispatch(destroySession(activeToken))
-  }
+  const [open, setOpen] = useState()
+
+  const openSideBar = () => setOpen(true)
+  const closeSideBar = () => setOpen(false)
 
   return (
-    <section>
-      <button
-        data-drawer-target="logo-sidebar"
-        data-drawer-toggle="logo-sidebar"
-        aria-controls="logo-sidebar"
+    <>
+      <Button
         type="button"
-        className="inline-flex items-center p-2.5 mt-2 text-xl text-white border rounded-lg bg-purple ms-3 sm:hidden hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        className="mt-3 ms-4 sm:hidden"
+        size="xs"
+        gradientDuoTone="greenToBlue"
+        onClick={openSideBar}
       >
         <span className="sr-only">Open sidebar</span>
-        <FaBarsStaggered />
-      </button>
+        {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
+      </Button>
 
-      <aside
-        id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white sm:translate-x-0"
-        aria-label="Sidebar"
-      >
-        <div className="flex flex-col h-full px-3 py-4 overflow-y-auto shadow-xl text-slate-400">
-          <a href="/" className="flex items-center justify-center h-16 mb-1 text-center text-black">
-            <img src={BrandLogo} alt="TramitesEC's logo" className="w-10 h-10" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap ">TrámitesEC</span>
-          </a>
-          <ul className="flex-1 mt-5 space-y-2 font-medium">
-            {/* <li>
-              <NavLink to="/" className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition">
-                <MdSpaceDashboard className="flex-shrink-0 w-5 h-5 transition duration-75" />
-                <span className="flex-1 ms-3">Dashboard</span>
-                <MdKeyboardArrowRight className="w-5 h-5 transition duration-75" />
-              </NavLink>
-            </li> */}
-            <li>
-              <NavLink to="/" className="flex items-center p-2.5 text-sm rounded-lg md:hover:shadow-lg md:transition">
-                <FaUser className="flex-shrink-0 w-5 h-5 transition duration-75" />
-                <span className="flex-1 ms-3">Clientes</span>
-                <MdKeyboardArrowRight className="w-5 h-5 transition duration-75" />
-              </NavLink>
-            </li>
-          </ul>
-          <button
-            onClick={userLogout}
-            type="button"
-            className="flex items-center justify-center gap-1 p-2.5 px-5 text-xs font-medium text-white bg-red-600 rounded-lg sm:text-sm focus:outline-none hover:bg-red-700 md:hover:shadow-md md:active:scale-95 md:transition"
-          >
-            Cerrar Sesión
-            <MdLogout className="flex-shrink-0 w-5 h-5 transition duration-75" />
-          </button>
-        </div>
-      </aside>
-    </section>
+      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] sm:w-64'}`} onClick={closeSideBar}>
+        <aside
+          className={`fixed w-64 -translate-x-64 transition inset-0 z-[9000] bg-white shadow-lg  sm:translate-x-0  ${
+            open && 'translate-x-0'
+          }`}
+        >
+          <nav className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-gray-">
+            <a href="/" className="flex items-center justify-center h-12 sm:h-16">
+              <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
+              <h2 className="text-2xl whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
+            </a>
+            <ul className="flex flex-col flex-1 mt-5 text-sm font-semibold">
+              <li>
+                <NavLink
+                  to="/"
+                  className="flex items-center gap-2 p-2.5 text-[#A1A0BD] rounded-lg hover:scale-105 transition"
+                >
+                  <IoPerson className="text-xl" />
+                  <span>Trámitadores</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/clientes"
+                  className="flex items-center gap-2 p-2.5 text-[#A1A0BD] rounded-lg hover:scale-105 transition"
+                >
+                  <IoPerson className="text-xl" />
+                  <span>Clientes</span>
+                </NavLink>
+              </li>
+            </ul>
+            <footer>
+              <SidebarLogout />
+            </footer>
+          </nav>
+        </aside>
+      </div>
+    </>
   )
 }
 
