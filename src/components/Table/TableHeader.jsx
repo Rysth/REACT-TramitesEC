@@ -1,17 +1,20 @@
+import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
+import { Button } from 'flowbite-react'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { IoPerson, IoCreateSharp, IoSearch } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
-import { IoSearch, IoCreateSharp } from 'react-icons/io5'
-import { Button, TextInput } from 'flowbite-react'
 
 function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const dispatch = useDispatch()
+  const [value, setValue] = useState('')
 
   const handleSearchData = (event) => {
     setTimeout(() => {
       const input = event.target.value.toLowerCase().trim()
       restartCurrentPage()
       dispatch(searchMethod(input))
-    }, 400)
+    }, 500)
   }
 
   return (
@@ -20,6 +23,17 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
         <h3>{title}</h3>
       </header>
       <fieldset className="flex items-center gap-1">
+        <SearchSelect value={value} onValueChange={setValue} className="z-50 w-48" placeholder="Usuario">
+          <SearchSelectItem value="1" icon={IoPerson}>
+            Kilometers
+          </SearchSelectItem>
+          <SearchSelectItem value="2" icon={IoPerson}>
+            Meters
+          </SearchSelectItem>
+          <SearchSelectItem value="3" icon={IoPerson}>
+            Miles
+          </SearchSelectItem>
+        </SearchSelect>
         <TextInput
           id="search"
           type="text"

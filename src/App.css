@@ -57,7 +57,3 @@ h5,
 h6 {
   font-family: 'Tilt Warp', sans-serif;
 }
-
-button {
-  @apply transition md:hover:scale-105 md:hover:shadow md:active:scale-95;
-}

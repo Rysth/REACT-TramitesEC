@@ -35,7 +35,7 @@ export const createSession = createAsyncThunk('authentication/createSession', as
       withCredentials: true,
     })
 
-    const userResponse = await axios.get(`${API_URL}/api/v1/user`, {
+    const userResponse = await axios.get(`${API_URL}/api/v1/users/1`, {
       headers: {
         Authorization: response.data.token,
       },
@@ -71,7 +71,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
 
 export const getActualUser = createAsyncThunk('authentication/getActualUser', async (activeToken) => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/user`, {
+    const response = await axios.get(`${API_URL}/api/v1/users/1`, {
       headers: {
         Authorization: activeToken,
       },

@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
 import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
-import ProcessorItem from './ProcessorItem'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
+import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcessor, processorActions } from '../../../redux/slices/ProcessorSlice'
+import ProcessorItem from './ProcessorItem'
 
 function ProcessorTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
@@ -36,8 +36,8 @@ function ProcessorTable({ currentItems, showModal }) {
         confirmDelete={confirmDelete}
       />
       <Table>
-        <TableHead className="sticky top-0 z-50 border-b border-x-0">
-          <TableRow>
+        <TableHead>
+          <TableRow className="sticky top-0 z-40 border-b border-x-0">
             <TableHeaderCell className="!rounded-none bg-gray-100">#</TableHeaderCell>
             <TableHeaderCell className="!rounded-none bg-gray-100">Cédula</TableHeaderCell>
             <TableHeaderCell className="!rounded-none bg-gray-100">Nombre Completo</TableHeaderCell>
