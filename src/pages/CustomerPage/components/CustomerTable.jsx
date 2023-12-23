@@ -1,18 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  Badge,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  Title,
-} from '@tremor/react'
+import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import CustomerItem from './CustomerItem'
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../../components/Loading/Loading'

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import { Table, Button, Badge } from 'flowbite-react'
+import { Badge } from 'flowbite-react'
+import { Button, TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
@@ -13,24 +14,24 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
   }
 
   return (
-    <Table.Row key={processor.id}>
-      <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{processor.cedula}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</Table.Cell>
-      <Table.Cell className="py-2 truncate">
+    <TableRow key={processor.id}>
+      <TableCell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</TableCell>
+      <TableCell className="py-2 truncate">{processor.cedula}</TableCell>
+      <TableCell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
+      <TableCell className="py-2 truncate">
         <Badge color="indigo" className="grid place-items-center" href="/">
           {processor.user.username}
         </Badge>
-      </Table.Cell>
-      <Table.Cell className="py-2 truncate">{processor.celular}</Table.Cell>
-      <Table.Cell className="flex items-center w-full gap-1 py-2">
-        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
+      </TableCell>
+      <TableCell className="py-2 truncate">{processor.celular}</TableCell>
+      <TableCell className="flex items-center w-full gap-1 py-2">
+        <Button size="xs" onClick={() => handleProcessorSelected(processor.id)}>
           Editar
         </Button>
         {processor.user.id === id && (
           <Button
             size="xs"
-            color="failure"
+            color="red"
             onClick={() => {
               dispatch(processorActions.setProcessorSelected(processor.id))
               showConfirmation(true)
@@ -39,8 +40,8 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
             Eliminar
           </Button>
         )}
-      </Table.Cell>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   )
 }
 
