@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import { Table, Button, Badge } from 'flowbite-react'
+import { Badge } from 'flowbite-react'
+import { Button, TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
@@ -13,33 +14,33 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
   }
 
   return (
-    <Table.Row key={customer.id}>
-      <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{customer.cedula}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</Table.Cell>
-      <Table.Cell className="py-2 truncate">
+    <TableRow key={customer.id}>
+      <TableCell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</TableCell>
+      <TableCell className="py-2 truncate">{customer.cedula}</TableCell>
+      <TableCell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
+      <TableCell className="py-2 truncate">
         <Badge color="info" className="grid place-items-center" href="/">
           {`${customer.processor.nombres} ${customer.processor.apellidos}`}
         </Badge>
-      </Table.Cell>
-      <Table.Cell className="py-2 truncate">
+      </TableCell>
+      <TableCell className="py-2 truncate">
         <Badge color="indigo" className="grid place-items-center" href="/">
           {customer.processor.user.username}
         </Badge>
-      </Table.Cell>
-      <Table.Cell className="py-2 text-blue-500 truncate">
+      </TableCell>
+      <TableCell className="py-2 text-blue-500 truncate">
         <a href={`mailto:${customer.email}`} className="text-blue-500 md:hover:text-black">
           {customer.email}
         </a>
-      </Table.Cell>
-      <Table.Cell className="flex items-center w-full gap-1 py-2">
-        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
+      </TableCell>
+      <TableCell className="flex items-center w-full gap-1 py-2">
+        <Button size="xs" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
         {customer.processor.user.id === id && (
           <Button
             size="xs"
-            color="failure"
+            color="red"
             onClick={() => {
               dispatch(customerActions.setCustomerSelected(customer.id))
               showConfirmation(true)
@@ -48,8 +49,8 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
             Eliminar
           </Button>
         )}
-      </Table.Cell>
-    </Table.Row>
+      </TableCell>
+    </TableRow>
   )
 }
 

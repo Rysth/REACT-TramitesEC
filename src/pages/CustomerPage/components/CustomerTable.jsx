@@ -1,6 +1,18 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Table } from 'flowbite-react'
+
+import {
+  Badge,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Text,
+  Title,
+} from '@tremor/react'
 import CustomerItem from './CustomerItem'
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from '../../../components/Loading/Loading'
@@ -35,17 +47,19 @@ function CustomerTable({ currentItems, showModal }) {
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table hoverable>
-        <Table.Head className="sticky top-0 z-50 border-b border-x-0">
-          <Table.HeadCell className="!rounded-none bg-gray-100">#</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Cédula</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Cliente</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Trámitador</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Usuario</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Email</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none bg-gray-100">Acciones</Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
+      <Table>
+        <TableHead className="sticky top-0 z-50 border-b border-x-0">
+          <TableRow>
+            <TableHeaderCell className="!rounded-none bg-gray-100">#</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Cédula</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Cliente</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Trámitador</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Usuario</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Email</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody className="divide-y">
           {currentItems.map((customer) => (
             <CustomerItem
               key={customer.id}
@@ -54,7 +68,7 @@ function CustomerTable({ currentItems, showModal }) {
               showConfirmation={setConfirmationModal}
             />
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
     </>
   )
