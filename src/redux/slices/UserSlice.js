@@ -4,8 +4,6 @@ import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-const getCurrentUserStorage = JSON.parse(sessionStorage.getItem('currentUser'))
-
 const initialState = {
   usersArray: [],
 }
@@ -20,7 +18,7 @@ const handleRequestError = (error) => {
 
 export const getUsers = createAsyncThunk('users/getUsers', async (activeToken) => {
   try {
-    const response = await axios.get(`${API_URL}/users`, {
+    const response = await axios.get(`${API_URL}/api/v1/users`, {
       headers: {
         Authorization: activeToken,
       },

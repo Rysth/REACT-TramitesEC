@@ -127,23 +127,26 @@ const processorslice = createSlice({
   name: 'processors',
   initialState,
   reducers: {
-    // Search for a processor based on input
+    // Search for a processor based on input and selected user
     searchProcessor: (state, action) => {
-      const searchData = action.payload.toLowerCase()
+      const searchData = action.payload.searchData.toLowerCase()
+      const selectedUserId = action.payload.selectedUserId
 
-      if (searchData === '') {
+      if (searchData === '' && !selectedUserId) {
         state.processorsArray = state.processorOriginal
         return
       }
 
-      const filteredprocessors = state.processorOriginal.filter((processor) => {
+      const filteredProcessors = state.processorOriginal.filter((processor) => {
         const fullName = `${processor.nombres} ${processor.apellidos}`.toLowerCase()
-        return processor.cedula.includes(searchData) || fullName.includes(searchData)
+        return (
+          (processor.cedula.includes(searchData) || fullName.includes(searchData)) &&
+          (!selectedUserId || processor.user.id === selectedUserId)
+        )
       })
 
-      state.processorsArray = filteredprocessors
+      state.processorsArray = filteredProcessors
     },
-
     // Set the selected processor based on ID
     setProcessorSelected: (state, action) => {
       const content = action.payload

@@ -132,11 +132,12 @@ const customerSlice = createSlice({
   name: 'customers',
   initialState,
   reducers: {
-    // Search for a customer based on input
+    // Search for a customer based on input and selected user
     searchCustomer: (state, action) => {
-      const searchData = action.payload.toLowerCase()
+      const searchData = action.payload.searchData.toLowerCase()
+      const selectedUserId = action.payload.selectedUserId
 
-      if (searchData === '') {
+      if (searchData === '' && !selectedUserId) {
         state.customersArray = state.customersOriginal
         return
       }
@@ -144,7 +145,10 @@ const customerSlice = createSlice({
       const filteredCustomers = state.customersOriginal.filter((customer) => {
         const fullName = `${customer.nombres} ${customer.apellidos}`.toLowerCase()
         return (
-          customer.cedula.includes(searchData) || fullName.includes(searchData) || customer.email.includes(searchData)
+          (customer.cedula.includes(searchData) ||
+            fullName.includes(searchData) ||
+            customer.email.includes(searchData)) &&
+          (!selectedUserId || customer.processor.user.id === selectedUserId)
         )
       })
 
