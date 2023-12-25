@@ -10,6 +10,7 @@ import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import CustomerPage from './pages/CustomerPage/CustomerPage'
 import { getProcessors } from './redux/slices/ProcessorSlice'
 import { getCustomers } from './redux/slices/CustomerSlice'
+import { getUsers } from './redux/slices/UserSlice'
 import './App.css'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
     if (active) {
       dispatch(getProcessors(activeToken))
       dispatch(getCustomers(activeToken))
+      dispatch(getUsers(activeToken))
     }
   }, [dispatch, activeToken, active])
 

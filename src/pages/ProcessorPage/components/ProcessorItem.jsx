@@ -23,7 +23,11 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
           {processor.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-2 truncate">{processor.celular}</TableCell>
+      <TableCell className="py-2 text-blue-500 truncate">
+        <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:text-black">
+          {processor.celular}
+        </a>
+      </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-2">
         <Button size="xs" onClick={() => handleProcessorSelected(processor.id)}>
           Editar

@@ -29,8 +29,8 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-2 text-blue-500 truncate">
-        <a href={`mailto:${customer.email}`} className="text-blue-500 md:hover:text-black">
-          {customer.email}
+        <a href={`tel:+593${customer.celular}`} className="text-blue-500 md:hover:text-black">
+          {customer.celular}
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-2">

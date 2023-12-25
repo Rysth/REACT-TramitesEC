@@ -43,7 +43,7 @@ function CustomerTable({ currentItems, showModal }) {
             <TableHeaderCell className="!rounded-none bg-gray-100">Cliente</TableHeaderCell>
             <TableHeaderCell className="!rounded-none bg-gray-100">Trámitador</TableHeaderCell>
             <TableHeaderCell className="!rounded-none bg-gray-100">Usuario</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Email</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Celular</TableHeaderCell>
             <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>

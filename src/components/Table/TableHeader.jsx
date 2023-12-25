@@ -1,16 +1,14 @@
 import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
 import { Button } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { IoPerson, IoCreateSharp, IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers } from '../../redux/slices/UserSlice'
 
 function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
-  const { activeToken } = useSelector((store) => store.authentication)
 
   const handleSearchData = (event) => {
     setTimeout(() => {
@@ -25,17 +23,18 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
     dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
   }
 
-  useEffect(() => {
-    dispatch(getUsers(activeToken))
-  }, [])
-
   return (
     <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary)] sm:flex-row rounded-t-2xl">
       <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl truncate">
         <h3>{title}</h3>
       </header>
-      <fieldset className="flex items-center gap-1">
-        <SearchSelect value={value} onValueChange={handleSelectChange} className="z-50 w-48" placeholder="Usuario">
+      <fieldset className="grid items-center gap-1 sm:flex">
+        <SearchSelect
+          value={value}
+          onValueChange={handleSelectChange}
+          className="z-50 w-full sm:w-48"
+          placeholder="Usuario"
+        >
           {usersArray.map((user) => (
             <SearchSelectItem value={user.id} icon={IoPerson}>
               {user.username}

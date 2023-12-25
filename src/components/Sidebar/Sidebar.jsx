@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
 import { useSelector } from 'react-redux'
-import { Badge } from 'flowbite-react'
 
 function Sidebar() {
   const [open, setOpen] = useState()
@@ -23,7 +22,7 @@ function Sidebar() {
 
       <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] md:w-64'}`} onClick={closeSideBar}>
         <aside
-          className={`fixed w-64 -translate-x-64 transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
+          className={`fixed w-64 -translate-x-64 h-screen transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
             open && 'translate-x-0'
           }`}
         >
@@ -52,10 +51,11 @@ function Sidebar() {
                 </NavLink>
               </li>
             </ul>
+
             <footer className="grid gap-2">
-              <Badge href="/" className="grid py-2.5 place-items-center" color="indigo" size="sm">
+              <Button href="/" className="py-1" color="indigo" size="sm">
                 {username}
-              </Badge>
+              </Button>
               <SidebarLogout />
             </footer>
           </nav>
