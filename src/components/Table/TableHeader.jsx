@@ -21,10 +21,8 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   }
 
   const handleSelectChange = (selectedValue) => {
-    const value = selectedValue
-    console.log(value)
     setValue(selectedValue)
-    dispatch(searchMethod({ searchData: '', selectedUserId: value }))
+    dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
   }
 
   useEffect(() => {

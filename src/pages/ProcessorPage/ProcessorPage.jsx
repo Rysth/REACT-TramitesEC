@@ -5,8 +5,7 @@ import HeaderLayout from '../../layouts/HeaderLayout'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
 import { processorActions } from '../../redux/slices/ProcessorSlice'
-import { getProcessors } from '../../redux/slices/ProcessorSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import ProcessorTable from './components/ProcessorTable'
 import usePagination from '../../hooks/usePagination'
 import TableLayout from '../../layouts/TableLayout'
@@ -14,18 +13,12 @@ import ProcessorModal from './components/ProcessorModal'
 import TableStats from '../../components/Table/TableStats'
 
 function ProcessorPage() {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
   const { processorsArray, processorStats } = useSelector((store) => store.processor)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(processorsArray)
 
   const [openModal, setOpenModal] = useState(false)
   const showModal = () => setOpenModal(true)
   const closeModal = () => setOpenModal(false)
-
-  useEffect(() => {
-    dispatch(getProcessors(activeToken))
-  }, [dispatch, activeToken])
 
   return (
     <SectionLayout>

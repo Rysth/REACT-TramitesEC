@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -8,12 +8,16 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import SessionPage from './pages/SessionPage/SessionPage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import CustomerPage from './pages/CustomerPage/CustomerPage'
+import { getProcessors } from './redux/slices/ProcessorSlice'
 import './App.css'
 
 function App() {
-  const active = useSelector((state) => state.authentication.active)
+  const dispatch = useDispatch()
+  const { active, activeToken } = useSelector((state) => state.authentication)
 
-  useEffect(() => {}, [active])
+  useEffect(() => {
+    if (active) dispatch(getProcessors(activeToken))
+  }, [dispatch, activeToken, active])
 
   return (
     <BrowserRouter>
