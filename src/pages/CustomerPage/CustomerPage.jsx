@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getCustomers } from '../../redux/slices/CustomerSlice'
+import { useSelector } from 'react-redux'
 import { customerActions } from '../../redux/slices/CustomerSlice'
 import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
 import HeaderLayout from '../../layouts/HeaderLayout'
@@ -14,18 +13,12 @@ import usePagination from '../../hooks/usePagination'
 import TableStats from '../../components/Table/TableStats'
 
 function CustomerPage() {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
   const { customersArray, customerStats } = useSelector((store) => store.customer)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(customersArray)
 
   const [openModal, setOpenModal] = useState(false)
   const showModal = () => setOpenModal(true)
   const closeModal = () => setOpenModal(false)
-
-  useEffect(() => {
-    dispatch(getCustomers(activeToken))
-  }, [dispatch, activeToken])
 
   return (
     <SectionLayout>

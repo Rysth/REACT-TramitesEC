@@ -9,6 +9,7 @@ import SessionPage from './pages/SessionPage/SessionPage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import CustomerPage from './pages/CustomerPage/CustomerPage'
 import { getProcessors } from './redux/slices/ProcessorSlice'
+import { getCustomers } from './redux/slices/CustomerSlice'
 import './App.css'
 
 function App() {
@@ -16,7 +17,10 @@ function App() {
   const { active, activeToken } = useSelector((state) => state.authentication)
 
   useEffect(() => {
-    if (active) dispatch(getProcessors(activeToken))
+    if (active) {
+      dispatch(getProcessors(activeToken))
+      dispatch(getCustomers(activeToken))
+    }
   }, [dispatch, activeToken, active])
 
   return (
