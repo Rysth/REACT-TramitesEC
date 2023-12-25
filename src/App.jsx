@@ -27,7 +27,7 @@ function App() {
     <BrowserRouter>
       <ToastContainer />
       {active && <Sidebar />}
-      <main className="h-full">
+      <main className="h-screen">
         <Routes>
           <Route
             path="/session"

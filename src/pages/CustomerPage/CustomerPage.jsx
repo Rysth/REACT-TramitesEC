@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { customerActions } from '../../redux/slices/CustomerSlice'
-import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
-import HeaderLayout from '../../layouts/HeaderLayout'
+import SectionLayout from '../../layouts/SectionLayout'
 import MainLayout from '../../layouts/MainLayout'
 import TableLayout from '../../layouts/TableLayout'
 import TableHeader from '../../components/Table/TableHeader'
@@ -22,7 +21,6 @@ function CustomerPage() {
 
   return (
     <SectionLayout>
-      <HeaderLayout />
       <TableStats categories={customerStats} />
       <MainLayout>
         <CustomerModal openModal={openModal} closeModal={closeModal} />

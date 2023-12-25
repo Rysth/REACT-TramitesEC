@@ -4,9 +4,12 @@ import { Button } from 'flowbite-react'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
+import { useSelector } from 'react-redux'
+import { Badge } from 'flowbite-react'
 
 function Sidebar() {
   const [open, setOpen] = useState()
+  const { username } = useSelector((store) => store.authentication.activeUser)
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
@@ -49,7 +52,10 @@ function Sidebar() {
                 </NavLink>
               </li>
             </ul>
-            <footer>
+            <footer className="grid gap-2">
+              <Badge href="/" className="grid py-2.5 place-items-center" color="indigo" size="sm">
+                {username}
+              </Badge>
               <SidebarLogout />
             </footer>
           </nav>

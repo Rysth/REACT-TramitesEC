@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import TableHeader from '../../components/Table/TableHeader'
 import TablePaginate from '../../components/Table/TablePaginate'
-import HeaderLayout from '../../layouts/HeaderLayout'
 import MainLayout from '../../layouts/MainLayout'
-import SectionLayout from '../../layouts/SectionLayout/SectionLayout'
+import SectionLayout from '../../layouts/SectionLayout'
 import { processorActions } from '../../redux/slices/ProcessorSlice'
 import { useSelector } from 'react-redux'
 import ProcessorTable from './components/ProcessorTable'
@@ -22,7 +21,6 @@ function ProcessorPage() {
 
   return (
     <SectionLayout>
-      <HeaderLayout />
       <TableStats categories={processorStats} />
       <MainLayout>
         <ProcessorModal openModal={openModal} closeModal={closeModal} />
