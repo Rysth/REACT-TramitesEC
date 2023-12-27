@@ -167,35 +167,27 @@ const processorslice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Handle API response for getProcessors
     builder.addCase(getProcessors.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)
     })
-
-    // Handle API response for getProcessors
-    builder.addCase(createProcessor.pending, (state) => {
-      state.loading = true
+    builder.addCase(createProcessor.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for createProcessor
     builder.addCase(createProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
-
-    // Handle API response for getProcessors
-    builder.addCase(updateProcessor.pending, (state) => {
-      state.loading = true
+    builder.addCase(updateProcessor.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for updateProcessor
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
-
-    // Handle API response for destroyProcessor
+    builder.addCase(destroyProcessor.pending, () => {
+      showLoadingMessage()
+    })
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
