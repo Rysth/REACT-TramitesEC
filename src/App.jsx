@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/profile"
+            path="/profiles/:id"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <UserProfile />

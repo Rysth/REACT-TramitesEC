@@ -1,37 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import SectionLayout from '../../layouts/SectionLayout'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { HiUserCircle } from 'react-icons/hi2'
 import { Card, Title, Text, Grid, Col, BarChart } from '@tremor/react'
 import axios from 'axios'
+import { getProfileStats } from '../../redux/slices/ProfileSlice'
+import { useParams } from 'react-router-dom'
 
 function UserProfile() {
-  const API_URL = import.meta.env.VITE_API_URL
-
+  const dispatch = useDispatch()
   const {
     activeToken,
     activeUser: { username },
   } = useSelector((store) => store.authentication)
-  const [userData, setUserData] = useState([])
+  const { userData } = useSelector((store) => store.profile)
+  const params = useParams()
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/v1/processors/1`, {
-          headers: {
-            Authorization: activeToken,
-          },
-          withCredentials: true,
-        })
-        setUserData(response.data)
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
+    dispatch(getProfileStats({ activeToken, userID: params.id }))
+  }, [dispatch, activeToken])
 
   return (
     <SectionLayout>
@@ -40,7 +27,6 @@ function UserProfile() {
         <h2 className="text-2xl sm:text-4xl ">{username}</h2>
       </header>
       <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
-        {/* Main section */}
         <Col numColSpanLg={4}>
           <Card className="h-full">
             <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
@@ -50,13 +36,12 @@ function UserProfile() {
               data={userData}
               index="Meses"
               categories={['Trámitadores', 'Clientes']}
-              colors={['indigo', 'fuchsia']}
+              colors={['blue', 'indigo']}
               stack={false}
               yAxisWidth={60}
             />
           </Card>
         </Col>
-        {/* KPI sidebar */}
         <Col numColSpanLg={2}>
           <div className="space-y-6">
             <Card>

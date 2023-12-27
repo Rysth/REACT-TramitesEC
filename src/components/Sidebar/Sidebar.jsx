@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 
 function Sidebar() {
   const [open, setOpen] = useState()
-  const { username } = useSelector((store) => store.authentication.activeUser)
+  const { username, id } = useSelector((store) => store.authentication.activeUser)
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
@@ -53,7 +53,7 @@ function Sidebar() {
             </ul>
 
             <footer className="grid gap-2">
-              <Button href="/profile" className="py-1" color="indigo" size="sm">
+              <Button href={`/profiles/${id}`} className="py-1" color="indigo" size="sm">
                 {username}
               </Button>
               <SidebarLogout />
