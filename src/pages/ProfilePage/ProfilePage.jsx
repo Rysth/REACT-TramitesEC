@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import SectionLayout from '../../layouts/SectionLayout'
-import { useDispatch, useSelector } from 'react-redux'
+import { BarChart, Card, Col, Grid, Text, Title } from '@tremor/react'
+import React, { useEffect } from 'react'
 import { HiUserCircle } from 'react-icons/hi2'
-import { Card, Title, Text, Grid, Col, BarChart } from '@tremor/react'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import SectionLayout from '../../layouts/SectionLayout'
 import { getProfileStats } from '../../redux/slices/ProfileSlice'
-import { useParams } from 'react-router-dom'
 
-function UserProfile() {
+function ProfilePage() {
   const dispatch = useDispatch()
   const {
     activeToken,
-    activeUser: { username },
+    activeUser: { username, id },
   } = useSelector((store) => store.authentication)
   const { userData } = useSelector((store) => store.profile)
-  const params = useParams()
 
   useEffect(() => {
-    dispatch(getProfileStats({ activeToken, userID: params.id }))
+    dispatch(getProfileStats({ activeToken, userID: id }))
   }, [dispatch, activeToken])
 
   return (
@@ -60,4 +57,4 @@ function UserProfile() {
   )
 }
 
-export default UserProfile
+export default ProfilePage

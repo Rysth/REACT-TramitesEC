@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import { IoClose, IoPerson, IoMenu, IoPeople } from 'react-icons/io5'
 import { Button } from 'flowbite-react'
+import { useState } from 'react'
+import { IoClose, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
+import { MdAccountCircle } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
-import { useSelector } from 'react-redux'
 
 function Sidebar() {
   const [open, setOpen] = useState()
-  const { username, id } = useSelector((store) => store.authentication.activeUser)
+  const { id } = useSelector((store) => store.authentication.activeUser)
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
@@ -50,12 +51,21 @@ function Sidebar() {
                   <span>Clientes</span>
                 </NavLink>
               </li>
+              <li className="mt-3 mb-3">
+                <hr />
+              </li>
+              <li>
+                <NavLink
+                  to={`/profiles/${id}`}
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
+                >
+                  <MdAccountCircle className="text-xl" />
+                  <span>Perfil</span>
+                </NavLink>
+              </li>
             </ul>
 
             <footer className="grid gap-2">
-              <Button href={`/profiles/${id}`} className="py-1" color="indigo" size="sm">
-                {username}
-              </Button>
               <SidebarLogout />
             </footer>
           </nav>
