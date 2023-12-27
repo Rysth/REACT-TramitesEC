@@ -12,6 +12,7 @@ import { getProcessors } from './redux/slices/ProcessorSlice'
 import { getCustomers } from './redux/slices/CustomerSlice'
 import { getUsers } from './redux/slices/UserSlice'
 import './App.css'
+import UserProfile from './pages/ProfilePage/UserProfile'
 
 function App() {
   const dispatch = useDispatch()
@@ -52,6 +53,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <CustomerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <UserProfile />
               </ProtectedRoute>
             }
           />
