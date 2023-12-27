@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -123,8 +123,12 @@ const updateStateAndStats = (state, action, successMessage) => {
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
   }
+}
+
+const showLoadingMessage = () => {
+  toast.info('Cargando...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing customer state
@@ -171,23 +175,46 @@ const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Handle API response for getcustomers
+    builder.addCase(getCustomers.pending, (state, action) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for getcustomers
     builder.addCase(getCustomers.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)
     })
 
     // Handle API response for createCliente
+    builder.addCase(createCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for createCliente
     builder.addCase(createCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
 
     // Handle API response for updateCliente
+    builder.addCase(updateCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for updateCliente
     builder.addCase(updateCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
     })
 
     // Handle API response for destroyCliente
+    builder.addCase(destroyCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for destroyCliente
     builder.addCase(destroyCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Eliminado!')
     })
   },
