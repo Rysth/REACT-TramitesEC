@@ -1,11 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SectionLayout from '../../layouts/SectionLayout'
 import { useSelector } from 'react-redux'
 import { HiUserCircle } from 'react-icons/hi2'
-import { Card, Title, Text, Grid, Col } from '@tremor/react'
+import { Card, Title, Text, Grid, Col, BarChart } from '@tremor/react'
+import axios from 'axios'
 
 function UserProfile() {
-  const { username } = useSelector((store) => store.authentication.activeUser)
+  const API_URL = import.meta.env.VITE_API_URL
+
+  const {
+    activeToken,
+    activeUser: { username },
+  } = useSelector((store) => store.authentication)
+  const [userData, setUserData] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/v1/processors/1`, {
+          headers: {
+            Authorization: activeToken,
+          },
+          withCredentials: true,
+        })
+        setUserData(response.data)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <SectionLayout>
@@ -17,7 +43,17 @@ function UserProfile() {
         {/* Main section */}
         <Col numColSpanLg={4}>
           <Card className="h-full">
-            <div className="h-60" />
+            <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
+            <Text>Comparación entre Trámitadores y Clientes</Text>
+            <BarChart
+              className="mt-4 h-80"
+              data={userData}
+              index="Meses"
+              categories={['Trámitadores', 'Clientes']}
+              colors={['indigo', 'fuchsia']}
+              stack={false}
+              yAxisWidth={60}
+            />
           </Card>
         </Col>
         {/* KPI sidebar */}

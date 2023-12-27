@@ -53,7 +53,7 @@ function Sidebar() {
             </ul>
 
             <footer className="grid gap-2">
-              <Button href="/" className="py-1" color="indigo" size="sm">
+              <Button href="/profile" className="py-1" color="indigo" size="sm">
                 {username}
               </Button>
               <SidebarLogout />
