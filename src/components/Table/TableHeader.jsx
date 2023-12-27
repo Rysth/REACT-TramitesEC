@@ -21,6 +21,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const handleSelectChange = (selectedValue) => {
     setValue(selectedValue)
     dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
+    restartCurrentPage()
   }
 
   return (

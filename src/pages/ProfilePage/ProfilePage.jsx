@@ -1,4 +1,4 @@
-import { BarChart, Card, Col, Grid, Text, Title } from '@tremor/react'
+import { BarChart, Card, Col, Grid, Metric, Text, Title } from '@tremor/react'
 import React, { useEffect } from 'react'
 import { HiUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,7 +32,7 @@ function ProfilePage() {
               className="mt-4 h-80"
               data={userData}
               index="Meses"
-              categories={['Trámitadores', 'Clientes']}
+              categories={['Tramitadores', 'Clientes']}
               colors={['blue', 'indigo']}
               stack={false}
               yAxisWidth={60}
@@ -40,15 +40,18 @@ function ProfilePage() {
           </Card>
         </Col>
         <Col numColSpanLg={2}>
-          <div className="space-y-6">
-            <Card>
-              <div className="h-24" />
+          <div className="flex flex-col justify-between h-full space-y-2">
+            <Card decoration="top" decorationColor="indigo">
+              <Text>Sales</Text>
+              <Metric>$ 34,743</Metric>
             </Card>
-            <Card>
-              <div className="h-24" />
+            <Card decoration="top" decorationColor="purple">
+              <Text>Sales</Text>
+              <Metric>$ 34,743</Metric>
             </Card>
-            <Card>
-              <div className="h-24" />
+            <Card decoration="top" decorationColor="blue">
+              <Text>Sales</Text>
+              <Metric>$ 34,743</Metric>
             </Card>
           </div>
         </Col>
