@@ -124,7 +124,7 @@ const updateStateAndStats = (state, action, successMessage) => {
 }
 
 const showLoadingMessage = () => {
-  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
+  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing processor state

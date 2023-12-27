@@ -7,8 +7,9 @@ import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
 import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
 import CustomerItem from './CustomerItem'
+import { CSVLink } from 'react-csv'
 
-function CustomerTable({ currentItems, showModal }) {
+function CustomerTable({ currentItems, showModal, originalItems }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -30,6 +31,9 @@ function CustomerTable({ currentItems, showModal }) {
 
   return (
     <>
+      <CSVLink data={originalItems} filename={'your-file.csv'}>
+        Download CSV
+      </CSVLink>
       <TableDelete
         confirmationModal={confirmationModal}
         setConfirmationModal={setConfirmationModal}
@@ -65,6 +69,7 @@ function CustomerTable({ currentItems, showModal }) {
 CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
+  originalItems: PropTypes.array.isRequired,
 }
 
 export default CustomerTable

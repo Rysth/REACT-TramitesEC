@@ -13,7 +13,7 @@ import CustomerForm from './components/CustomerForm'
 import CustomerTable from './components/CustomerTable'
 
 function CustomerPage() {
-  const { customersArray, customerStats } = useSelector((store) => store.customer)
+  const { customersArray, customerStats, customersOriginal } = useSelector((store) => store.customer)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(customersArray)
 
   const [openModal, setOpenModal] = useState(false)
@@ -39,7 +39,7 @@ function CustomerPage() {
           showModal={showModal}
         />
         <TableLayout>
-          <CustomerTable currentItems={currentItems} showModal={showModal} />
+          <CustomerTable currentItems={currentItems} showModal={showModal} originalItems={customersOriginal} />
         </TableLayout>
         <TablePaginate
           currentPage={currentPage}
