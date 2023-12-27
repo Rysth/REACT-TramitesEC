@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
+import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
+import TableStats from '../../components/Table/TableStats'
+import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
-import { processorActions } from '../../redux/slices/ProcessorSlice'
-import { useSelector } from 'react-redux'
-import ProcessorTable from './components/ProcessorTable'
-import usePagination from '../../hooks/usePagination'
 import TableLayout from '../../layouts/TableLayout'
-import ProcessorModal from './components/ProcessorModal'
-import TableStats from '../../components/Table/TableStats'
+import { processorActions } from '../../redux/slices/ProcessorSlice'
+import ProcessorForm from './components/ProcessorForm'
+import ProcessorTable from './components/ProcessorTable'
 
 function ProcessorPage() {
   const { processorsArray, processorStats } = useSelector((store) => store.processor)
@@ -23,7 +24,13 @@ function ProcessorPage() {
     <SectionLayout>
       <TableStats categories={processorStats} />
       <MainLayout>
-        <ProcessorModal openModal={openModal} closeModal={closeModal} />
+        <TableModal
+          openModal={openModal}
+          closeModal={closeModal}
+          formComponent={ProcessorForm}
+          slice="processor"
+          setEntitySelected={processorActions.setProcessorSelected}
+        />
         <TableHeader
           title="Listado de Trámitadores"
           searchMethod={processorActions.searchProcessor}

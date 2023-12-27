@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { customerActions } from '../../redux/slices/CustomerSlice'
-import SectionLayout from '../../layouts/SectionLayout'
-import MainLayout from '../../layouts/MainLayout'
-import TableLayout from '../../layouts/TableLayout'
 import TableHeader from '../../components/Table/TableHeader'
+import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import CustomerTable from './components/CustomerTable'
-import CustomerModal from './components/CustomerModal'
-import usePagination from '../../hooks/usePagination'
 import TableStats from '../../components/Table/TableStats'
+import usePagination from '../../hooks/usePagination'
+import MainLayout from '../../layouts/MainLayout'
+import SectionLayout from '../../layouts/SectionLayout'
+import TableLayout from '../../layouts/TableLayout'
+import { customerActions } from '../../redux/slices/CustomerSlice'
+import CustomerForm from './components/CustomerForm'
+import CustomerTable from './components/CustomerTable'
 
 function CustomerPage() {
   const { customersArray, customerStats } = useSelector((store) => store.customer)
@@ -23,7 +24,13 @@ function CustomerPage() {
     <SectionLayout>
       <TableStats categories={customerStats} />
       <MainLayout>
-        <CustomerModal openModal={openModal} closeModal={closeModal} />
+        <TableModal
+          openModal={openModal}
+          closeModal={closeModal}
+          formComponent={CustomerForm}
+          slice="customer"
+          setEntitySelected={customerActions.setCustomerSelected}
+        />
         <TableHeader
           title="Listado de Clientes"
           searchMethod={customerActions.searchCustomer}
