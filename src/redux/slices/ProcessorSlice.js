@@ -119,8 +119,12 @@ const updateStateAndStats = (state, action, successMessage) => {
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
   }
+}
+
+const showLoadingMessage = () => {
+  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing processor state
@@ -169,18 +173,36 @@ const processorslice = createSlice({
       updateStateAndStats(state, action)
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(createProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for createProcessor
     builder.addCase(createProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(updateProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for updateProcessor
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(destroyProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for destroyProcessor
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
     })
   },

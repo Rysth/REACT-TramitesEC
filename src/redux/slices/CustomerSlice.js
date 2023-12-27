@@ -128,7 +128,7 @@ const updateStateAndStats = (state, action, successMessage) => {
 }
 
 const showLoadingMessage = () => {
-  toast.info('Cargando...', { autoClose: 2000, theme: 'dark' })
+  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing customer state
@@ -174,11 +174,6 @@ const customerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Handle API response for getcustomers
-    builder.addCase(getCustomers.pending, (state, action) => {
-      state.loading = true
-      showLoadingMessage()
-    })
     // Handle API response for getcustomers
     builder.addCase(getCustomers.fulfilled, (state, action) => {
       state.loading = false
