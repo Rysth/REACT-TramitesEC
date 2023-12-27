@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
-import { Table, Button, Badge } from 'flowbite-react'
-import { useDispatch } from 'react-redux'
+import { Badge } from 'flowbite-react'
+import { Button, TableCell, TableRow } from '@tremor/react'
+import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorItem({ processor, showModal, showConfirmation }) {
   const dispatch = useDispatch()
+  const { id } = useSelector((store) => store.authentication.activeUser)
 
   const handleProcessorSelected = (processorID) => {
     dispatch(processorActions.setProcessorSelected(processorID))
@@ -12,32 +14,38 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
   }
 
   return (
-    <Table.Row key={processor.id}>
-      <Table.Cell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{processor.cedula}</Table.Cell>
-      <Table.Cell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</Table.Cell>
-      <Table.Cell className="py-2 truncate">
-        <Badge color="info" className="grid place-items-center">
+    <TableRow key={processor.id}>
+      <TableCell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</TableCell>
+      <TableCell className="py-2 truncate">{processor.cedula}</TableCell>
+      <TableCell className="py-2 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
+      <TableCell className="py-2 truncate">
+        <Badge color="indigo" className="grid place-items-center" href="/">
           {processor.user.username}
         </Badge>
-      </Table.Cell>
-      <Table.Cell className="py-2 truncate">{processor.celular}</Table.Cell>
-      <Table.Cell className="flex items-center w-full gap-1 py-2">
-        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
+      </TableCell>
+      <TableCell className="py-2 text-blue-500 truncate">
+        <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:text-black">
+          {processor.celular}
+        </a>
+      </TableCell>
+      <TableCell className="flex items-center w-full gap-1 py-2">
+        <Button size="xs" onClick={() => handleProcessorSelected(processor.id)}>
           Editar
         </Button>
-        <Button
-          size="xs"
-          color="failure"
-          onClick={() => {
-            dispatch(processorActions.setProcessorSelected(processor.id))
-            showConfirmation(true)
-          }}
-        >
-          Eliminar
-        </Button>
-      </Table.Cell>
-    </Table.Row>
+        {processor.user.id === id && (
+          <Button
+            size="xs"
+            color="red"
+            onClick={() => {
+              dispatch(processorActions.setProcessorSelected(processor.id))
+              showConfirmation(true)
+            }}
+          >
+            Eliminar
+          </Button>
+        )}
+      </TableCell>
+    </TableRow>
   )
 }
 
@@ -49,6 +57,7 @@ ProcessorItem.propTypes = {
     apellidos: PropTypes.string.isRequired,
     celular: PropTypes.string.isRequired,
     user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
     }),
   }),

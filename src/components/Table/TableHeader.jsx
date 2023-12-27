@@ -1,25 +1,46 @@
+import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
+import { Button } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { IoSearch, IoCreateSharp } from 'react-icons/io5'
-import { Button, TextInput } from 'flowbite-react'
+import { useState } from 'react'
+import { IoPerson, IoCreateSharp, IoSearch } from 'react-icons/io5'
+import { useDispatch, useSelector } from 'react-redux'
 
 function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const dispatch = useDispatch()
+  const [value, setValue] = useState('')
+  const { usersArray } = useSelector((store) => store.users)
 
   const handleSearchData = (event) => {
     setTimeout(() => {
       const input = event.target.value.toLowerCase().trim()
       restartCurrentPage()
-      dispatch(searchMethod(input))
-    }, 400)
+      dispatch(searchMethod({ searchData: input, selectedUserId: value }))
+    }, 500)
+  }
+
+  const handleSelectChange = (selectedValue) => {
+    setValue(selectedValue)
+    dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
   }
 
   return (
-    <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary-indigo)] sm:flex-row rounded-t-2xl">
-      <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl ">
+    <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary)] lg:flex-row rounded-t-2xl">
+      <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl truncate">
         <h3>{title}</h3>
       </header>
-      <fieldset className="flex items-center gap-1">
+      <fieldset className="grid items-center gap-1 sm:flex">
+        <SearchSelect
+          value={value}
+          onValueChange={handleSelectChange}
+          className="z-50 w-full sm:w-48"
+          placeholder="Usuario"
+        >
+          {usersArray.map((user) => (
+            <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
+              {user.username}
+            </SearchSelectItem>
+          ))}
+        </SearchSelect>
         <TextInput
           id="search"
           type="text"
@@ -28,6 +49,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
           placeholder="Buscar..."
           onChange={handleSearchData}
           color="purple"
+          sizing="md"
           required
         />
         <Button size="md" gradientDuoTone="greenToBlue" onClick={showModal}>

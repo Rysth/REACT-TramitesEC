@@ -94,32 +94,37 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const processors = action.payload.processors
+  const { payload } = action
+  const processors = payload.processors
   state.processorOriginal = processors
   state.processorsArray = processors
 
   /* processor Stats */
   state.processorStats = [
     {
-      title: 'Trámitadores Registrados',
-      metric: action.payload.stats.processors_quantity,
+      title: 'Total de Trámitadores',
+      metric: payload.stats.processors_quantity,
       color: 'bg-indigo-700',
     },
     {
-      title: 'Activos',
-      metric: action.payload.stats.processors_active,
-      color: 'bg-green-500',
+      title: 'Agregados (Últimos 30 días)',
+      metric: payload.stats.processors_added_last_month,
+      color: 'bg-purple-700',
     },
     {
-      title: 'Inactivos',
-      metric: action.payload.stats.processors_inactive,
-      color: 'bg-red-700',
+      title: 'Agregados (Últimos 7 días)',
+      metric: payload.stats.processors_added_last_7_days,
+      color: 'bg-blue-700',
     },
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
   }
+}
+
+const showLoadingMessage = () => {
+  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing processor state
@@ -127,23 +132,26 @@ const processorslice = createSlice({
   name: 'processors',
   initialState,
   reducers: {
-    // Search for a processor based on input
+    // Search for a processor based on input and selected user
     searchProcessor: (state, action) => {
-      const searchData = action.payload.toLowerCase()
+      const searchData = action.payload.searchData.toLowerCase()
+      const selectedUserId = action.payload.selectedUserId
 
-      if (searchData === '') {
+      if (searchData === '' && !selectedUserId) {
         state.processorsArray = state.processorOriginal
         return
       }
 
-      const filteredprocessors = state.processorOriginal.filter((processor) => {
+      const filteredProcessors = state.processorOriginal.filter((processor) => {
         const fullName = `${processor.nombres} ${processor.apellidos}`.toLowerCase()
-        return processor.cedula.includes(searchData) || fullName.includes(searchData)
+        return (
+          (processor.cedula.includes(searchData) || fullName.includes(searchData)) &&
+          (!selectedUserId || processor.user.id === selectedUserId)
+        )
       })
 
-      state.processorsArray = filteredprocessors
+      state.processorsArray = filteredProcessors
     },
-
     // Set the selected processor based on ID
     setProcessorSelected: (state, action) => {
       const content = action.payload
@@ -161,23 +169,40 @@ const processorslice = createSlice({
   extraReducers: (builder) => {
     // Handle API response for getProcessors
     builder.addCase(getProcessors.fulfilled, (state, action) => {
-      console.log(action)
       state.loading = false
       updateStateAndStats(state, action)
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(createProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for createProcessor
     builder.addCase(createProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(updateProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for updateProcessor
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
 
+    // Handle API response for getProcessors
+    builder.addCase(destroyProcessor.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
     // Handle API response for destroyProcessor
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
     })
   },

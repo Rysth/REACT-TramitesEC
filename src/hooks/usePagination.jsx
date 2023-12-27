@@ -1,7 +1,7 @@
 // usePagination.js
 import { useState } from 'react'
 
-function usePagination(dataArray, itemsPerPage = 30) {
+function usePagination(dataArray, itemsPerPage = 20) {
   const [currentPage, setCurrentPage] = useState(0)
   const pageCount = Math.ceil(dataArray.length / itemsPerPage)
 

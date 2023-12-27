@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types'
 
 function MainLayout({ children }) {
-  return (
-    <main className="flex flex-col mt-5 mb-10 bg-white shadow-md sm:gap-0 shadow-black/15 rounded-2xl">{children}</main>
-  )
+  return <main className="flex flex-col mt-5 mb-10 bg-white shadow sm:gap-0 rounded-xl">{children}</main>
 }
 
 MainLayout.propTypes = {

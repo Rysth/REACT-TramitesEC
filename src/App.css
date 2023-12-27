@@ -9,7 +9,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--CL-primary-indigo); /* Set the color of the scrollbar thumb */
+  background-color: var(--CL-primary); /* Set the color of the scrollbar thumb */
 }
 
 ::-webkit-scrollbar-track {
@@ -22,13 +22,13 @@
   --CL-blue-darker: #021b79;
 
   /* Pattern */
-  --CL-primary-gray: #eae9fc;
-  --CL-primary-indigo: #3532e4;
+  --CL-primary: #161125;
+  --CL-secondary: #3b38ff;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f4f3fa;
+  background-color: #f8f9fa;
 }
 
 .bg-blue-light {
@@ -46,7 +46,7 @@ body {
 /* NavLinks */
 
 .active {
-  @apply text-[var(--CL-primary-indigo)] rounded-lg bg-[var(--CL-primary-gray)];
+  @apply text-white rounded-md bg-[var(--CL-secondary)];
 }
 
 h1,
@@ -56,8 +56,4 @@ h4,
 h5,
 h6 {
   font-family: 'Tilt Warp', sans-serif;
-}
-
-button {
-  @apply transition md:hover:scale-105 md:hover:shadow md:active:scale-95;
 }

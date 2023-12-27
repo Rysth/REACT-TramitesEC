@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -106,25 +106,29 @@ const updateStateAndStats = (state, action, successMessage) => {
   /* Customer Stats */
   state.customerStats = [
     {
-      title: 'customers Registrados',
+      title: 'Total de Clientes',
       metric: action.payload.stats.customers_quantity,
       color: 'bg-indigo-700',
     },
     {
-      title: 'Activos',
-      metric: action.payload.stats.customers_active,
-      color: 'bg-green-500',
+      title: 'Agregados (Últimos 30 días)',
+      metric: action.payload.stats.customers_added_last_month,
+      color: 'bg-purple-700',
     },
     {
-      title: 'Inactivos',
-      metric: action.payload.stats.customers_inactive,
-      color: 'bg-red-700',
+      title: 'Agregados (Últimos 7 días)',
+      metric: action.payload.stats.customers_added_last_7_days,
+      color: 'bg-blue-700',
     },
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
   }
+}
+
+const showLoadingMessage = () => {
+  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing customer state
@@ -132,11 +136,12 @@ const customerSlice = createSlice({
   name: 'customers',
   initialState,
   reducers: {
-    // Search for a customer based on input
+    // Search for a customer based on input and selected user
     searchCustomer: (state, action) => {
-      const searchData = action.payload.toLowerCase()
+      const searchData = action.payload.searchData.toLowerCase()
+      const selectedUserId = action.payload.selectedUserId
 
-      if (searchData === '') {
+      if (searchData === '' && !selectedUserId) {
         state.customersArray = state.customersOriginal
         return
       }
@@ -144,7 +149,10 @@ const customerSlice = createSlice({
       const filteredCustomers = state.customersOriginal.filter((customer) => {
         const fullName = `${customer.nombres} ${customer.apellidos}`.toLowerCase()
         return (
-          customer.cedula.includes(searchData) || fullName.includes(searchData) || customer.email.includes(searchData)
+          (customer.cedula.includes(searchData) ||
+            fullName.includes(searchData) ||
+            customer.email.includes(searchData)) &&
+          (!selectedUserId || customer.processor.user.id === selectedUserId)
         )
       })
 
@@ -173,17 +181,35 @@ const customerSlice = createSlice({
     })
 
     // Handle API response for createCliente
+    builder.addCase(createCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for createCliente
     builder.addCase(createCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
 
     // Handle API response for updateCliente
+    builder.addCase(updateCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for updateCliente
     builder.addCase(updateCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
     })
 
     // Handle API response for destroyCliente
+    builder.addCase(destroyCliente.pending, (state) => {
+      state.loading = true
+      showLoadingMessage()
+    })
+    // Handle API response for destroyCliente
     builder.addCase(destroyCliente.fulfilled, (state, action) => {
+      state.loading = false
       updateStateAndStats(state, action, '¡Cliente Eliminado!')
     })
   },

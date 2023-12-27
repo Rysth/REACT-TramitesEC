@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Table } from 'flowbite-react'
-import CustomerItem from './CustomerItem'
+import { useState } from 'react'
+import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
-import Loading from '../../../components/Loading/Loading'
 import Error from '../../../components/Error/Error'
+import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
-import { destroyCliente } from '../../../redux/slices/CustomerSlice'
+import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
+import CustomerItem from './CustomerItem'
 
 function CustomerTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
@@ -17,6 +17,7 @@ function CustomerTable({ currentItems, showModal }) {
 
   const confirmDelete = () => {
     dispatch(destroyCliente({ activeToken, customerID: customerSelected.id }))
+    dispatch(customerActions.setCustomerSelected(''))
   }
 
   if (loading) {
@@ -34,17 +35,19 @@ function CustomerTable({ currentItems, showModal }) {
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table hoverable>
-        <Table.Head className="sticky top-0 z-50 border border-x-0">
-          <Table.HeadCell className="!rounded-none w-1/12 bg-white">#</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-1/12 bg-white">Cédula</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-4/12 bg-white">Cliente</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Trámitador</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Usuario</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Email</Table.HeadCell>
-          <Table.HeadCell className="!rounded-none w-2/12 bg-white">Acciones</Table.HeadCell>
-        </Table.Head>
-        <Table.Body className="divide-y">
+      <Table>
+        <TableHead>
+          <TableRow className="sticky top-0 z-40 border-b border-x-0">
+            <TableHeaderCell className="!rounded-none bg-gray-100">#</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Cédula</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Cliente</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Trámitador</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Usuario</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Celular</TableHeaderCell>
+            <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody className="divide-y">
           {currentItems.map((customer) => (
             <CustomerItem
               key={customer.id}
@@ -53,7 +56,7 @@ function CustomerTable({ currentItems, showModal }) {
               showConfirmation={setConfirmationModal}
             />
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
     </>
   )
