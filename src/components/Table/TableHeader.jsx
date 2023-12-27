@@ -75,6 +75,7 @@ TableHeader.propTypes = {
   restartCurrentPage: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   originalItems: PropTypes.array.isRequired,
+  fileName: PropTypes.string.isRequired,
 }
 
 export default TableHeader
