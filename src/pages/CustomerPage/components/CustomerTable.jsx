@@ -1,15 +1,14 @@
+import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
 import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
 import CustomerItem from './CustomerItem'
-import { CSVLink } from 'react-csv'
 
-function CustomerTable({ currentItems, showModal, originalItems }) {
+function CustomerTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -31,9 +30,6 @@ function CustomerTable({ currentItems, showModal, originalItems }) {
 
   return (
     <>
-      <CSVLink data={originalItems} filename={'your-file.csv'}>
-        Download CSV
-      </CSVLink>
       <TableDelete
         confirmationModal={confirmationModal}
         setConfirmationModal={setConfirmationModal}

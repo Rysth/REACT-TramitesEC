@@ -37,9 +37,11 @@ function CustomerPage() {
           searchMethod={customerActions.searchCustomer}
           restartCurrentPage={restartCurrentPage}
           showModal={showModal}
+          originalItems={customersOriginal}
+          fileName="TRAMITESEC-Clientes"
         />
         <TableLayout>
-          <CustomerTable currentItems={currentItems} showModal={showModal} originalItems={customersOriginal} />
+          <CustomerTable currentItems={currentItems} showModal={showModal} />
         </TableLayout>
         <TablePaginate
           currentPage={currentPage}

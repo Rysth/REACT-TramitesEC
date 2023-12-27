@@ -37,9 +37,11 @@ function ProcessorPage() {
           searchMethod={processorActions.searchProcessor}
           restartCurrentPage={restartCurrentPage}
           showModal={showModal}
+          originalItems={processorOriginal}
+          fileName="TRAMITESEC-Tramitadores"
         />
         <TableLayout>
-          <ProcessorTable currentItems={currentItems} showModal={showModal} originalItems={processorOriginal} />
+          <ProcessorTable currentItems={currentItems} showModal={showModal} />
         </TableLayout>
         <TablePaginate
           currentPage={currentPage}

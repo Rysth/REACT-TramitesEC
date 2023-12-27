@@ -7,9 +7,8 @@ import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcessor, processorActions } from '../../../redux/slices/ProcessorSlice'
 import ProcessorItem from './ProcessorItem'
-import { CSVLink } from 'react-csv'
 
-function ProcessorTable({ currentItems, showModal, originalItems }) {
+function ProcessorTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -31,9 +30,6 @@ function ProcessorTable({ currentItems, showModal, originalItems }) {
 
   return (
     <>
-      <CSVLink data={originalItems} filename={'your-file.csv'}>
-        Download CSV
-      </CSVLink>
       <TableDelete
         confirmationModal={confirmationModal}
         setConfirmationModal={setConfirmationModal}
@@ -68,7 +64,6 @@ function ProcessorTable({ currentItems, showModal, originalItems }) {
 ProcessorTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
-  originalItems: PropTypes.array.isRequired,
 }
 
 export default ProcessorTable

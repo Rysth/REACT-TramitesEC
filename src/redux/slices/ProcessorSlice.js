@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
-  processorOriginal: {},
+  processorOriginal: [],
   processorsArray: [],
   processorStats: [],
   processorSelected: null,
