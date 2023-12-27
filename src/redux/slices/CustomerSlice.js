@@ -25,12 +25,12 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'colored' })
+    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'dark' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('¡Problema en el Servidor!', { theme: 'dark' })
   }
 
   throw new Error(error)

@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -25,17 +25,17 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 409) {
-    toast.error('¡Trámitador Tiene Clientes!', { theme: 'colored' })
+    toast.error('¡Trámitador Tiene Clientes!', { theme: 'dark' })
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Trámitador ya Registrado!', { theme: 'colored' })
+    toast.error('¡Trámitador ya Registrado!', { theme: 'dark' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('¡Problema en el Servidor!', { theme: 'dark' })
   }
 
   throw new Error(error)
@@ -195,11 +195,6 @@ const processorslice = createSlice({
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
 
-    // Handle API response for getProcessors
-    builder.addCase(destroyProcessor.pending, (state) => {
-      state.loading = true
-      showLoadingMessage()
-    })
     // Handle API response for destroyProcessor
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
       state.loading = false
