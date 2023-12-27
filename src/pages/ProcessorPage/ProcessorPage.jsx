@@ -29,6 +29,7 @@ function ProcessorPage() {
           closeModal={closeModal}
           formComponent={ProcessorForm}
           slice="processor"
+          title="Trámitador"
           setEntitySelected={processorActions.setProcessorSelected}
         />
         <TableHeader

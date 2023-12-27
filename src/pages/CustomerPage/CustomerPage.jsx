@@ -29,6 +29,7 @@ function CustomerPage() {
           closeModal={closeModal}
           formComponent={CustomerForm}
           slice="customer"
+          title="Cliente"
           setEntitySelected={customerActions.setCustomerSelected}
         />
         <TableHeader
