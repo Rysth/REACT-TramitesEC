@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { Modal } from 'flowbite-react'
+import PropTypes from 'prop-types'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Loading from '../Loading/Loading'
 
 function TableModal({ openModal, closeModal, formComponent, slice, title, setEntitySelected }) {
   const dispatch = useDispatch()
