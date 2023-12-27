@@ -36,7 +36,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
           placeholder="Usuario"
         >
           {usersArray.map((user) => (
-            <SearchSelectItem value={user.id} icon={IoPerson}>
+            <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
               {user.username}
             </SearchSelectItem>
           ))}

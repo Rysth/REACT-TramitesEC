@@ -94,7 +94,8 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const processors = action.payload.processors
+  const { payload } = action
+  const processors = payload.processors
   state.processorOriginal = processors
   state.processorsArray = processors
 
@@ -102,17 +103,17 @@ const updateStateAndStats = (state, action, successMessage) => {
   state.processorStats = [
     {
       title: 'Total de Trámitadores',
-      metric: action.payload.stats.processors_quantity,
+      metric: payload.stats.processors_quantity,
       color: 'bg-indigo-700',
     },
     {
       title: 'Agregados (Últimos 30 días)',
-      metric: action.payload.stats.processors_added_last_month,
+      metric: payload.stats.processors_added_last_month,
       color: 'bg-purple-700',
     },
     {
       title: 'Agregados (Últimos 7 días)',
-      metric: action.payload.stats.processors_added_last_7_days,
+      metric: payload.stats.processors_added_last_7_days,
       color: 'bg-blue-700',
     },
   ]
