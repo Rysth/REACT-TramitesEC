@@ -13,7 +13,7 @@ import CustomerForm from './components/CustomerForm'
 import CustomerTable from './components/CustomerTable'
 
 function CustomerPage() {
-  const { customersArray, customerStats } = useSelector((store) => store.customer)
+  const { customersArray, customerStats, customersOriginal } = useSelector((store) => store.customer)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(customersArray)
 
   const [openModal, setOpenModal] = useState(false)
@@ -37,6 +37,8 @@ function CustomerPage() {
           searchMethod={customerActions.searchCustomer}
           restartCurrentPage={restartCurrentPage}
           showModal={showModal}
+          originalItems={customersOriginal}
+          fileName="TRAMITESEC-Clientes"
         />
         <TableLayout>
           <CustomerTable currentItems={currentItems} showModal={showModal} />

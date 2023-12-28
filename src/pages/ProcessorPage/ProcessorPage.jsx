@@ -13,7 +13,7 @@ import ProcessorForm from './components/ProcessorForm'
 import ProcessorTable from './components/ProcessorTable'
 
 function ProcessorPage() {
-  const { processorsArray, processorStats } = useSelector((store) => store.processor)
+  const { processorsArray, processorStats, processorOriginal } = useSelector((store) => store.processor)
   const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(processorsArray)
 
   const [openModal, setOpenModal] = useState(false)
@@ -37,6 +37,8 @@ function ProcessorPage() {
           searchMethod={processorActions.searchProcessor}
           restartCurrentPage={restartCurrentPage}
           showModal={showModal}
+          originalItems={processorOriginal}
+          fileName="TRAMITESEC-Tramitadores"
         />
         <TableLayout>
           <ProcessorTable currentItems={currentItems} showModal={showModal} />

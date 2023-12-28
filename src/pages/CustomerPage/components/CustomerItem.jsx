@@ -19,12 +19,12 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
       <TableCell className="py-2 truncate">{customer.cedula}</TableCell>
       <TableCell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
       <TableCell className="py-2 truncate">
-        <Badge color="info" className="grid place-items-center" href="/">
+        <Badge color="info" className="grid place-items-center">
           {`${customer.processor.nombres} ${customer.processor.apellidos}`}
         </Badge>
       </TableCell>
       <TableCell className="py-2 truncate">
-        <Badge color="indigo" className="grid place-items-center" href="/">
+        <Badge color="indigo" className="grid place-items-center">
           {customer.processor.user.username}
         </Badge>
       </TableCell>

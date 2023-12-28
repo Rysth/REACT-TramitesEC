@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -128,7 +128,7 @@ const updateStateAndStats = (state, action, successMessage) => {
 }
 
 const showLoadingMessage = () => {
-  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
+  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing customer state
@@ -174,40 +174,27 @@ const customerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Handle API response for getcustomers
     builder.addCase(getCustomers.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)
     })
-
-    // Handle API response for createCliente
-    builder.addCase(createCliente.pending, (state) => {
-      state.loading = true
+    builder.addCase(createCliente.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for createCliente
     builder.addCase(createCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
-
-    // Handle API response for updateCliente
-    builder.addCase(updateCliente.pending, (state) => {
-      state.loading = true
+    builder.addCase(updateCliente.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for updateCliente
     builder.addCase(updateCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
     })
-
-    // Handle API response for destroyCliente
-    builder.addCase(destroyCliente.pending, (state) => {
-      state.loading = true
+    builder.addCase(destroyCliente.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for destroyCliente
     builder.addCase(destroyCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Eliminado!')

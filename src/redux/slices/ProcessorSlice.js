@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
-  processorOriginal: {},
+  processorOriginal: [],
   processorsArray: [],
   processorStats: [],
   processorSelected: null,
@@ -124,7 +124,7 @@ const updateStateAndStats = (state, action, successMessage) => {
 }
 
 const showLoadingMessage = () => {
-  toast.info('Envíando...', { autoClose: 2000, theme: 'dark' })
+  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing processor state
@@ -167,35 +167,27 @@ const processorslice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Handle API response for getProcessors
     builder.addCase(getProcessors.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)
     })
-
-    // Handle API response for getProcessors
-    builder.addCase(createProcessor.pending, (state) => {
-      state.loading = true
+    builder.addCase(createProcessor.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for createProcessor
     builder.addCase(createProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
-
-    // Handle API response for getProcessors
-    builder.addCase(updateProcessor.pending, (state) => {
-      state.loading = true
+    builder.addCase(updateProcessor.pending, () => {
       showLoadingMessage()
     })
-    // Handle API response for updateProcessor
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
-
-    // Handle API response for destroyProcessor
+    builder.addCase(destroyProcessor.pending, () => {
+      showLoadingMessage()
+    })
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')

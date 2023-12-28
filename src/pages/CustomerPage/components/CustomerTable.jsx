@@ -1,6 +1,6 @@
+import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'

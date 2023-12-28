@@ -2,10 +2,11 @@ import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
 import { Button } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { IoPerson, IoCreateSharp, IoSearch } from 'react-icons/io5'
+import { IoPerson, IoCreateSharp, IoSearch, IoDownload } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
+import { CSVLink } from 'react-csv'
 
-function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
+function TableHeader({ title, searchMethod, restartCurrentPage, showModal, originalItems, fileName }) {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
@@ -21,6 +22,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
   const handleSelectChange = (selectedValue) => {
     setValue(selectedValue)
     dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
+    restartCurrentPage()
   }
 
   return (
@@ -52,9 +54,15 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal }) {
           sizing="md"
           required
         />
-        <Button size="md" gradientDuoTone="greenToBlue" onClick={showModal}>
+        <Button color="blue" onClick={showModal}>
           Crear
           <IoCreateSharp className="ml-1" />
+        </Button>
+        <Button color="success">
+          <CSVLink data={originalItems} filename={`${fileName}.csv`} className="flex items-center">
+            Excel
+            <IoDownload className="ml-1" />
+          </CSVLink>
         </Button>
       </fieldset>
     </article>
@@ -66,6 +74,8 @@ TableHeader.propTypes = {
   searchMethod: PropTypes.func.isRequired,
   restartCurrentPage: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
+  originalItems: PropTypes.array.isRequired,
+  fileName: PropTypes.string.isRequired,
 }
 
 export default TableHeader
