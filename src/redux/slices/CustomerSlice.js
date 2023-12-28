@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -178,21 +178,21 @@ const customerSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createCliente.pending, (state) => {
+    builder.addCase(createCliente.pending, () => {
       showLoadingMessage()
     })
     builder.addCase(createCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
-    builder.addCase(updateCliente.pending, (state) => {
+    builder.addCase(updateCliente.pending, () => {
       showLoadingMessage()
     })
     builder.addCase(updateCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
     })
-    builder.addCase(destroyCliente.pending, (state) => {
+    builder.addCase(destroyCliente.pending, () => {
       showLoadingMessage()
     })
     builder.addCase(destroyCliente.fulfilled, (state, action) => {

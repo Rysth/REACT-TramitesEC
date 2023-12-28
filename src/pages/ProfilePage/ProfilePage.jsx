@@ -15,7 +15,7 @@ function ProfilePage() {
 
   useEffect(() => {
     dispatch(getProfileStats({ activeToken, userID: id }))
-  }, [dispatch, activeToken])
+  }, [dispatch, activeToken, id])
 
   return (
     <SectionLayout>
