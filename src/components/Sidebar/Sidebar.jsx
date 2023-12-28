@@ -1,7 +1,7 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
 import { IoClose, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
-import { MdAccountCircle } from 'react-icons/md'
+import { MdAccountCircle, MdSpaceDashboard } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -33,6 +33,15 @@ function Sidebar() {
               <h2 className="text-2xl text-white whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
             </a>
             <ul className="flex flex-col flex-1 mt-5 text-sm">
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
+                >
+                  <MdSpaceDashboard className="text-xl" />
+                  <span>Dashboard</span>
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/"
