@@ -35,7 +35,7 @@ function Sidebar() {
             <ul className="flex flex-col flex-1 mt-5 text-sm">
               <li>
                 <NavLink
-                  to="/dashboard"
+                  to="/"
                   className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
                 >
                   <MdSpaceDashboard className="text-xl" />
@@ -44,7 +44,7 @@ function Sidebar() {
               </li>
               <li>
                 <NavLink
-                  to="/"
+                  to="/tramitadores"
                   className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
                 >
                   <IoPerson className="text-xl" />

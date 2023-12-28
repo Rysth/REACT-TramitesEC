@@ -45,15 +45,15 @@ function App() {
             path="/"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
-                <ProcessorPage />
+                <DashboardPage />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/dashboard"
+            path="/tramitadores"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
-                <DashboardPage />
+                <ProcessorPage />
               </ProtectedRoute>
             }
           />
