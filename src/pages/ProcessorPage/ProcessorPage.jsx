@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import TableStats from '../../components/Table/TableStats'
 import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
@@ -11,6 +10,8 @@ import TableLayout from '../../layouts/TableLayout'
 import { processorActions } from '../../redux/slices/ProcessorSlice'
 import ProcessorForm from './components/ProcessorForm'
 import ProcessorTable from './components/ProcessorTable'
+import { Card, Grid, Title, Text } from '@tremor/react'
+import TableStats from '../../components/Table/TableStats'
 
 function ProcessorPage() {
   const { processorsArray, processorStats, processorOriginal } = useSelector((store) => store.processor)
@@ -21,34 +22,36 @@ function ProcessorPage() {
   const closeModal = () => setOpenModal(false)
 
   return (
-    <SectionLayout>
-      <TableStats categories={processorStats} />
+    <SectionLayout title="Trámitadores" subtitle="Información General de los Trámitadores">
+      <TableModal
+        openModal={openModal}
+        closeModal={closeModal}
+        formComponent={ProcessorForm}
+        slice="processor"
+        title="Trámitador"
+        setEntitySelected={processorActions.setProcessorSelected}
+      />
       <MainLayout>
-        <TableModal
-          openModal={openModal}
-          closeModal={closeModal}
-          formComponent={ProcessorForm}
-          slice="processor"
-          title="Trámitador"
-          setEntitySelected={processorActions.setProcessorSelected}
-        />
-        <TableHeader
-          title="Listado de Trámitadores"
-          searchMethod={processorActions.searchProcessor}
-          restartCurrentPage={restartCurrentPage}
-          showModal={showModal}
-          originalItems={processorOriginal}
-          fileName="TRAMITESEC-Tramitadores"
-        />
-        <TableLayout>
-          <ProcessorTable currentItems={currentItems} showModal={showModal} />
-        </TableLayout>
-        <TablePaginate
-          currentPage={currentPage}
-          pageCount={pageCount}
-          handlePageChange={handlePageChange}
-          customArray={processorsArray}
-        />
+        <TableStats categories={processorStats} />
+        <Card className="p-0 mt-4">
+          <TableHeader
+            title="Listado de Trámitadores"
+            searchMethod={processorActions.searchProcessor}
+            restartCurrentPage={restartCurrentPage}
+            showModal={showModal}
+            originalItems={processorOriginal}
+            fileName="TRAMITESEC-Tramitadores"
+          />
+          <TableLayout>
+            <ProcessorTable currentItems={currentItems} showModal={showModal} />
+          </TableLayout>
+          <TablePaginate
+            currentPage={currentPage}
+            pageCount={pageCount}
+            handlePageChange={handlePageChange}
+            customArray={processorsArray}
+          />
+        </Card>
       </MainLayout>
     </SectionLayout>
   )
