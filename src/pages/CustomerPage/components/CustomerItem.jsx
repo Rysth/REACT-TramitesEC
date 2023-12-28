@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import { Badge } from 'flowbite-react'
-import { Button, TableCell, TableRow } from '@tremor/react'
+import { Badge, Button } from 'flowbite-react'
+import { TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
@@ -15,32 +15,32 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
 
   return (
     <TableRow key={customer.id}>
-      <TableCell className="py-2 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</TableCell>
-      <TableCell className="py-2 truncate">{customer.cedula}</TableCell>
-      <TableCell className="py-2 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
-      <TableCell className="py-2 truncate">
+      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</TableCell>
+      <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
+      <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
           {`${customer.processor.nombres} ${customer.processor.apellidos}`}
         </Badge>
       </TableCell>
-      <TableCell className="py-2 truncate">
+      <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.processor.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-2 text-blue-500 truncate">
+      <TableCell className="py-1 text-blue-500 truncate">
         <a href={`tel:+593${customer.celular}`} className="text-blue-500 md:hover:text-black">
           {customer.celular}
         </a>
       </TableCell>
-      <TableCell className="flex items-center w-full gap-1 py-2">
-        <Button size="xs" onClick={() => handleCustomerSelected(customer.id)}>
+      <TableCell className="flex items-center w-full gap-1 py-1">
+        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
         {customer.processor.user.id === id && (
           <Button
             size="xs"
-            color="red"
+            color="failure"
             onClick={() => {
               dispatch(customerActions.setCustomerSelected(customer.id))
               showConfirmation(true)
