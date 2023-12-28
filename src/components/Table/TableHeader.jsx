@@ -26,7 +26,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
   }
 
   return (
-    <article className="flex flex-col items-center justify-between gap-2 p-2 sm:px-4 py-4 bg-[var(--CL-primary)] lg:flex-row rounded-t-lg">
+    <article className="flex flex-col items-center justify-between gap-2 p-2 sm:px-4 py-3 bg-[var(--CL-primary)] lg:flex-row rounded-t-lg">
       <header className="flex items-center gap-1.5 text-white text-2xl sm:text-2xl truncate">
         <h3>{title}</h3>
       </header>

@@ -1,6 +1,7 @@
 import { AreaChart, Card, Grid, Metric, Tab, TabGroup, TabList, TabPanel, TabPanels, Text, Title } from '@tremor/react'
 import React from 'react'
 import SectionLayout from '../../layouts/SectionLayout'
+import MainLayout from '../../layouts/MainLayout'
 
 function DashboardPage() {
   const data = [
@@ -40,48 +41,48 @@ function DashboardPage() {
   const valueFormatter = (number) => `$${Intl.NumberFormat('us').format(number).toString()}`
 
   return (
-    <SectionLayout>
-      <Title className="text-xl font-bold sm:text-2xl md:text-4xl">Dashboard</Title>
-      <Text className="text-xl">Información Estadística General</Text>
-      <TabGroup className="pb-10 mt-6">
-        <TabList>
-          <Tab>Página 1</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Grid numItemsSm={2} numItemsLg={3} className="gap-6 mt-3">
-              {categories.map((item) => (
-                <Card key={item.title} decoration="top" decorationColor="indigo">
-                  <Text>{item.title}</Text>
-                  <Metric>{item.metric}</Metric>
+    <SectionLayout title="Dashboard" subtitle="Información Estadística General">
+      <MainLayout>
+        <TabGroup className="pb-10">
+          <TabList>
+            <Tab>Página 1</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Grid numItemsSm={2} numItemsLg={3} className="gap-6 mt-3">
+                {categories.map((item) => (
+                  <Card key={item.title} decoration="top" decorationColor="indigo">
+                    <Text>{item.title}</Text>
+                    <Metric>{item.metric}</Metric>
+                  </Card>
+                ))}
+              </Grid>
+              <div className="mt-6">
+                <Card>
+                  <Title>Rendimiento</Title>
+                  <Text>Comparación entre Trámites y Ganancias</Text>
+                  <AreaChart
+                    className="h-80"
+                    data={data}
+                    categories={['Sales', 'Profit']}
+                    index="Month"
+                    colors={['indigo', 'fuchsia']}
+                    yAxisWidth={60}
+                    valueFormatter={valueFormatter}
+                  />
                 </Card>
-              ))}
-            </Grid>
-            <div className="mt-6">
-              <Card>
-                <Title>Rendimiento</Title>
-                <Text>Comparación entre Trámites y Ganancias</Text>
-                <AreaChart
-                  className="h-80"
-                  data={data}
-                  categories={['Sales', 'Profit']}
-                  index="Month"
-                  colors={['indigo', 'fuchsia']}
-                  yAxisWidth={60}
-                  valueFormatter={valueFormatter}
-                />
-              </Card>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div className="m-6">
-              <Card>
-                <div className="h-96" />
-              </Card>
-            </div>
-          </TabPanel>
-        </TabPanels>
-      </TabGroup>
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <div className="m-6">
+                <Card>
+                  <div className="h-96" />
+                </Card>
+              </div>
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
+      </MainLayout>
     </SectionLayout>
   )
 }

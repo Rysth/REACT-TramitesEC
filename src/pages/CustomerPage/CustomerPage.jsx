@@ -11,6 +11,7 @@ import TableLayout from '../../layouts/TableLayout'
 import { customerActions } from '../../redux/slices/CustomerSlice'
 import CustomerForm from './components/CustomerForm'
 import CustomerTable from './components/CustomerTable'
+import { Card } from '@tremor/react'
 
 function CustomerPage() {
   const { customersArray, customerStats, customersOriginal } = useSelector((store) => store.customer)
@@ -21,34 +22,36 @@ function CustomerPage() {
   const closeModal = () => setOpenModal(false)
 
   return (
-    <SectionLayout>
-      <TableStats categories={customerStats} />
+    <SectionLayout title="Clientes" subtitle="Información General de los Clientes">
+      <TableModal
+        openModal={openModal}
+        closeModal={closeModal}
+        formComponent={CustomerForm}
+        slice="customer"
+        title="Cliente"
+        setEntitySelected={customerActions.setCustomerSelected}
+      />
       <MainLayout>
-        <TableModal
-          openModal={openModal}
-          closeModal={closeModal}
-          formComponent={CustomerForm}
-          slice="customer"
-          title="Cliente"
-          setEntitySelected={customerActions.setCustomerSelected}
-        />
-        <TableHeader
-          title="Listado de Clientes"
-          searchMethod={customerActions.searchCustomer}
-          restartCurrentPage={restartCurrentPage}
-          showModal={showModal}
-          originalItems={customersOriginal}
-          fileName="TRAMITESEC-Clientes"
-        />
-        <TableLayout>
-          <CustomerTable currentItems={currentItems} showModal={showModal} />
-        </TableLayout>
-        <TablePaginate
-          currentPage={currentPage}
-          pageCount={pageCount}
-          handlePageChange={handlePageChange}
-          customArray={customersArray}
-        />
+        <TableStats categories={customerStats} />
+        <Card className="p-0 mt-4">
+          <TableHeader
+            title="Listado de Clientes"
+            searchMethod={customerActions.searchCustomer}
+            restartCurrentPage={restartCurrentPage}
+            showModal={showModal}
+            originalItems={customersOriginal}
+            fileName="TRAMITESEC-Clientes"
+          />
+          <TableLayout>
+            <CustomerTable currentItems={currentItems} showModal={showModal} />
+          </TableLayout>
+          <TablePaginate
+            currentPage={currentPage}
+            pageCount={pageCount}
+            handlePageChange={handlePageChange}
+            customArray={customersArray}
+          />
+        </Card>
       </MainLayout>
     </SectionLayout>
   )
