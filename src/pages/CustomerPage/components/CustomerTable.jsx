@@ -65,7 +65,6 @@ function CustomerTable({ currentItems, showModal }) {
 CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
-  originalItems: PropTypes.array.isRequired,
 }
 
 export default CustomerTable
