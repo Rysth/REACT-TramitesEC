@@ -1,4 +1,4 @@
-import { Title, Text } from '@tremor/react'
+import { Text, Title } from '@tremor/react'
 import PropTypes from 'prop-types'
 
 function SectionLayout({ children, title, subtitle }) {
@@ -15,6 +15,8 @@ function SectionLayout({ children, title, subtitle }) {
 
 SectionLayout.propTypes = {
   children: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
 }
 
 export default SectionLayout

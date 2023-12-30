@@ -1,8 +1,10 @@
+import { Card } from '@tremor/react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
+import TableStats from '../../components/Table/TableStats'
 import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
@@ -10,8 +12,6 @@ import TableLayout from '../../layouts/TableLayout'
 import { processorActions } from '../../redux/slices/ProcessorSlice'
 import ProcessorForm from './components/ProcessorForm'
 import ProcessorTable from './components/ProcessorTable'
-import { Card, Grid, Title, Text } from '@tremor/react'
-import TableStats from '../../components/Table/TableStats'
 
 function ProcessorPage() {
   const { processorsArray, processorStats, processorOriginal } = useSelector((store) => store.processor)
