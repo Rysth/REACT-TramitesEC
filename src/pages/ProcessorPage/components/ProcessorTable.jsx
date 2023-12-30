@@ -37,13 +37,13 @@ function ProcessorTable({ currentItems, showModal }) {
       />
       <Table>
         <TableHead>
-          <TableRow className="sticky top-0 z-40 border-b border-x-0">
-            <TableHeaderCell className="!rounded-none bg-gray-100">#</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Cédula</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Usuario</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Celular</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
+          <TableRow className="border-b border-x-0">
+            <TableHeaderCell className="bg-gray-100">#</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Cédula</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Usuario</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Celular</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="divide-y">

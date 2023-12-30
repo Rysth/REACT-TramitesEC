@@ -26,17 +26,12 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
   }
 
   return (
-    <article className="flex flex-col items-center justify-between gap-2 px-4 py-3 bg-[var(--CL-primary)] lg:flex-row rounded-t-2xl">
-      <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl truncate">
+    <article className="flex flex-col items-center justify-between gap-2 p-2 sm:px-4 py-3 bg-[var(--CL-primary)] lg:flex-row rounded-t-lg">
+      <header className="flex items-center gap-1.5 text-white text-2xl sm:text-2xl truncate">
         <h3>{title}</h3>
       </header>
-      <fieldset className="grid items-center gap-1 sm:flex">
-        <SearchSelect
-          value={value}
-          onValueChange={handleSelectChange}
-          className="z-50 w-full sm:w-48"
-          placeholder="Usuario"
-        >
+      <fieldset className="grid items-center grid-cols-2 gap-1 sm:flex">
+        <SearchSelect value={value} onValueChange={handleSelectChange} className="z-50" placeholder="Usuario">
           {usersArray.map((user) => (
             <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
               {user.username}
@@ -46,7 +41,6 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
         <TextInput
           id="search"
           type="text"
-          className="w-full sm:w-max !p-0"
           icon={IoSearch}
           placeholder="Buscar..."
           onChange={handleSearchData}

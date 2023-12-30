@@ -1,7 +1,7 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
 import { IoClose, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
-import { MdAccountCircle } from 'react-icons/md'
+import { MdAccountCircle, MdSpaceDashboard } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -9,7 +9,7 @@ import SidebarLogout from './components/SidebarLogout'
 
 function Sidebar() {
   const [open, setOpen] = useState()
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { id, username } = useSelector((store) => store.authentication.activeUser)
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
@@ -32,11 +32,20 @@ function Sidebar() {
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl text-white whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
             </a>
-            <ul className="flex flex-col flex-1 mt-5 text-sm">
+            <ul className="flex flex-col flex-1 gap-1 mt-5 text-sm">
               <li>
                 <NavLink
                   to="/"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <MdSpaceDashboard className="text-xl" />
+                  <span>Dashboard</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/tramitadores"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
@@ -45,7 +54,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/clientes"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoPeople className="text-xl" />
                   <span>Clientes</span>
@@ -57,10 +66,10 @@ function Sidebar() {
               <li>
                 <NavLink
                   to={`/profiles/${id}`}
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:scale-105 transition"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <MdAccountCircle className="text-xl" />
-                  <span>Perfil</span>
+                  <span>{username}</span>
                 </NavLink>
               </li>
             </ul>

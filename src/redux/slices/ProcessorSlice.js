@@ -104,17 +104,17 @@ const updateStateAndStats = (state, action, successMessage) => {
     {
       title: 'Total de Trámitadores',
       metric: payload.stats.processors_quantity,
-      color: 'bg-indigo-700',
+      color: 'indigo',
     },
     {
       title: 'Agregados (Últimos 30 días)',
       metric: payload.stats.processors_added_last_month,
-      color: 'bg-purple-700',
+      color: 'purple',
     },
     {
       title: 'Agregados (Últimos 7 días)',
       metric: payload.stats.processors_added_last_7_days,
-      color: 'bg-blue-700',
+      color: 'blue',
     },
   ]
 
