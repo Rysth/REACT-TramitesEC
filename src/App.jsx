@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar/Sidebar'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import SessionPage from './pages/SessionPage/SessionPage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
+import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
 import CustomerPage from './pages/CustomerPage/CustomerPage'
 import { getProcessors } from './redux/slices/ProcessorSlice'
 import { getCustomers } from './redux/slices/CustomerSlice'
@@ -64,6 +65,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <CustomerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tramites"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <ProcedurePage />
               </ProtectedRoute>
             }
           />
