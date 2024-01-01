@@ -123,7 +123,7 @@ const proceduresSlice = createSlice({
   initialState,
   reducers: {
     // Search for a processor based on input and selected user
-    searchProcessor: (state, action) => {
+    searchProcedure: (state, action) => {
       const searchData = action.payload.searchData.toLowerCase()
       const selectedUserId = action.payload.selectedUserId
 
@@ -132,18 +132,18 @@ const proceduresSlice = createSlice({
         return
       }
 
-      const filteredprocedures = state.procedureOriginal.filter((processor) => {
-        const fullName = `${processor.nombres} ${processor.apellidos}`.toLowerCase()
+      const filteredProcedures = state.procedureOriginal.filter((procedure) => {
+        const fullName = `${procedure.customer.nombres} ${procedure.customer.apellidos}`.toLowerCase()
         return (
-          (processor.cedula.includes(searchData) || fullName.includes(searchData)) &&
-          (!selectedUserId || processor.user.id === selectedUserId)
+          (procedure.codigo.includes(searchData) || fullName.includes(searchData)) &&
+          (!selectedUserId || procedure.user.id === selectedUserId)
         )
       })
 
-      state.proceduresArray = filteredprocedures
+      state.proceduresArray = filteredProcedures
     },
     // Set the selected processor based on ID
-    setprocedureSelected: (state, action) => {
+    setProcedureSelected: (state, action) => {
       const content = action.payload
 
       if (content === '') {

@@ -8,7 +8,8 @@ import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
-import { processorActions } from '../../redux/slices/ProcessorSlice'
+import { procedureActions } from '../../redux/slices/ProcedureSlice'
+import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage() {
   const { proceduresArray, procedureStats, procedureOriginal } = useSelector((store) => store.procedure)
@@ -25,13 +26,15 @@ function ProcedurePage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámites"
-            searchMethod={processorActions.searchProcessor}
+            searchMethod={procedureActions.searchProcessor}
             restartCurrentPage={restartCurrentPage}
             showModal={showModal}
             originalItems={procedureOriginal}
             fileName="TRAMITESEC-Trámites"
           />
-          <TableLayout></TableLayout>
+          <TableLayout>
+            <ProcedureTable currentItems={currentItems} showModal={showModal} />
+          </TableLayout>
           <TablePaginate
             currentPage={currentPage}
             pageCount={pageCount}
