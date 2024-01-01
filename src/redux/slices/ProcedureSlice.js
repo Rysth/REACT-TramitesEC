@@ -133,10 +133,12 @@ const proceduresSlice = createSlice({
       }
 
       const filteredProcedures = state.procedureOriginal.filter((procedure) => {
-        const fullName = `${procedure.customer.nombres} ${procedure.customer.apellidos}`.toLowerCase()
+        const fullNameCustomer = `${procedure.customer.nombres} ${procedure.customer.apellidos}`.toLowerCase()
+        const fullNameProcessor = `${procedure.processor.nombres} ${procedure.processor.apellidos}`.toLowerCase()
         return (
-          (procedure.codigo.includes(searchData) || fullName.includes(searchData)) &&
-          (!selectedUserId || procedure.user.id === selectedUserId)
+          procedure.codigo.includes(searchData) ||
+          fullNameCustomer.includes(searchData) ||
+          (fullNameProcessor.includes(searchData) && (!selectedUserId || procedure.user.id === selectedUserId))
         )
       })
 

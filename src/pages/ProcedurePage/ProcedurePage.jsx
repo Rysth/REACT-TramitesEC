@@ -26,7 +26,7 @@ function ProcedurePage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámites"
-            searchMethod={procedureActions.searchProcessor}
+            searchMethod={procedureActions.searchProcedure}
             restartCurrentPage={restartCurrentPage}
             showModal={showModal}
             originalItems={procedureOriginal}

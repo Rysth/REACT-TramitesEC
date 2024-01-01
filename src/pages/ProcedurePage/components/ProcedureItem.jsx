@@ -14,7 +14,7 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
   }
 
   return (
-    <TableRow key={procedure.id}>
+    <TableRow key={procedure.id} className="text-xs">
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{procedure.id}</TableCell>
       <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
       <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
@@ -34,8 +34,7 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
-        {' '}
-        <Badge color="red" className="grid place-items-center">
+        <Badge color={`${procedure.valor_pendiente === 0 ? 'gray' : 'red'}`} className="grid place-items-center">
           ${procedure.valor_pendiente}
         </Badge>
       </TableCell>
