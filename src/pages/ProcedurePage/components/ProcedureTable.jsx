@@ -40,6 +40,7 @@ function ProcedureTable({ currentItems, showModal }) {
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="bg-gray-100">#</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Código</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Fecha</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Cliente</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Trámitador</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Usuario</TableHeaderCell>
@@ -48,7 +49,7 @@ function ProcedureTable({ currentItems, showModal }) {
             <TableHeaderCell className="bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody className="divide-y">
+        <TableBody className="divide-y text-xs">
           {currentItems.map((procedure) => (
             <ProcedureItem
               key={procedure.id}

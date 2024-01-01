@@ -14,9 +14,10 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
   }
 
   return (
-    <TableRow key={procedure.id} className="text-xs">
+    <TableRow key={procedure.id}>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{procedure.id}</TableCell>
       <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
+      <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
       <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
@@ -77,7 +78,8 @@ ProcedureItem.propTypes = {
     customer: PropTypes.shape({
       id: PropTypes.number.isRequired,
       cedula: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
+      nombres: PropTypes.string.isRequired,
+      apellidos: PropTypes.string.isRequired,
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,

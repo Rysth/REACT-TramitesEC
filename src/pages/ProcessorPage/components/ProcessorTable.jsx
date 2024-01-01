@@ -46,7 +46,7 @@ function ProcessorTable({ currentItems, showModal }) {
             <TableHeaderCell className="bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody className="divide-y">
+        <TableBody className="text-xs divide-y">
           {currentItems.map((processor) => (
             <ProcessorItem
               key={processor.id}
