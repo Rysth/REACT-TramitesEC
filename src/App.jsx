@@ -11,6 +11,7 @@ import CustomerPage from './pages/CustomerPage/CustomerPage'
 import { getProcessors } from './redux/slices/ProcessorSlice'
 import { getCustomers } from './redux/slices/CustomerSlice'
 import { getUsers } from './redux/slices/UserSlice'
+import { getProcedures } from './redux/slices/ProcedureSlice'
 import './App.css'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import DashboardPage from './pages/DashboardPage/DashboardPage'
@@ -24,6 +25,7 @@ function App() {
       dispatch(getProcessors(activeToken))
       dispatch(getCustomers(activeToken))
       dispatch(getUsers(activeToken))
+      dispatch(getProcedures(activeToken))
     }
   }, [dispatch, activeToken, active])
 
