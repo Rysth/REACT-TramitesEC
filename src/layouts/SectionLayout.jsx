@@ -6,7 +6,7 @@ function SectionLayout({ children, title, subtitle }) {
     <section className="h-full p-4 md:p-8 md:ml-64" id="customerSection">
       <article className="h-full">
         <Title className="text-2xl font-bold sm:text-4xl">{title}</Title>
-        <Text className="text-sm sm:text-lg">{subtitle}</Text>
+        <Text className="text-sm sm:text-base">{subtitle}</Text>
         {children}
       </article>
     </section>
@@ -15,8 +15,8 @@ function SectionLayout({ children, title, subtitle }) {
 
 SectionLayout.propTypes = {
   children: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
 }
 
 export default SectionLayout

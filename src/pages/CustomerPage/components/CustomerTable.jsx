@@ -47,7 +47,7 @@ function CustomerTable({ currentItems, showModal }) {
             <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody className="divide-y">
+        <TableBody className="text-xs divide-y">
           {currentItems.map((customer) => (
             <CustomerItem
               key={customer.id}

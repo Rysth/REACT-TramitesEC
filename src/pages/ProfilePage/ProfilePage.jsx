@@ -1,4 +1,4 @@
-import { BarChart, Card, Col, Grid, Metric, Text, Title } from '@tremor/react'
+import { BarChart, Card, Col, Grid, Text, Title } from '@tremor/react'
 import React, { useEffect } from 'react'
 import { HiUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,36 +24,20 @@ function ProfilePage() {
         <h2 className="text-2xl sm:text-4xl ">{username}</h2>
       </header>
       <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
-        <Col numColSpanLg={4}>
+        <Col numColSpanLg={6}>
           <Card className="h-full">
             <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
-            <Text>Comparación entre Trámitadores y Clientes</Text>
+            <Text>Comparación entre Trámitadores, Clientes y Trámites</Text>
             <BarChart
               className="mt-4 h-80"
               data={userData}
               index="Meses"
-              categories={['Tramitadores', 'Clientes']}
-              colors={['blue', 'indigo']}
+              categories={['Tramitadores', 'Clientes', 'Tramites']}
+              colors={['blue', 'indigo', 'purple']}
               stack={false}
               yAxisWidth={60}
             />
           </Card>
-        </Col>
-        <Col numColSpanLg={2}>
-          <div className="flex flex-col justify-between h-full space-y-2">
-            <Card decoration="top" decorationColor="indigo">
-              <Text>Sales</Text>
-              <Metric>$ 34,743</Metric>
-            </Card>
-            <Card decoration="top" decorationColor="purple">
-              <Text>Sales</Text>
-              <Metric>$ 34,743</Metric>
-            </Card>
-            <Card decoration="top" decorationColor="blue">
-              <Text>Sales</Text>
-              <Metric>$ 34,743</Metric>
-            </Card>
-          </div>
         </Col>
       </Grid>
     </SectionLayout>

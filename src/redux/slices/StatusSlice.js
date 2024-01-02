@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
-  userData: [],
+  statusOriginal: [],
 }
 
 const handleRequestError = (error) => {
@@ -16,9 +16,9 @@ const handleRequestError = (error) => {
   }
 }
 
-export const getProfileStats = createAsyncThunk('profile/getProfileStats', async ({ activeToken, userID }) => {
+export const getStatuses = createAsyncThunk('status/getStatuses', async (activeToken) => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/profiles/${userID}`, {
+    const response = await axios.get(`${API_URL}/api/v1/statuses`, {
       headers: {
         Authorization: activeToken,
       },
@@ -31,18 +31,17 @@ export const getProfileStats = createAsyncThunk('profile/getProfileStats', async
   }
 })
 
-export const ProfileSlice = createSlice({
-  name: 'profile',
+export const StatusSlice = createSlice({
+  name: 'status',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getProfileStats.fulfilled, (state, action) => {
-      state.userData = action.payload
-      console.log(state.userData)
+    builder.addCase(getStatuses.fulfilled, (state, action) => {
+      state.statusOriginal = action.payload
     })
   },
 })
 
-export const ProfileActions = ProfileSlice.actions
+export const StatusActions = StatusSlice.actions
 
-export default ProfileSlice.reducer
+export default StatusSlice.reducer

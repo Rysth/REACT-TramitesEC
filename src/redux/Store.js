@@ -4,6 +4,10 @@ import UserReducer from './slices/UserSlice'
 import CustomerReducer from './slices/CustomerSlice'
 import ProcessorReducer from './slices/ProcessorSlice'
 import ProfileReducer from './slices/ProfileSlice'
+import ProcedureReducer from './slices/ProcedureSlice'
+import TypeReducer from './slices/TypeSlice'
+import LicenseReducer from './slices/LicenseSlice'
+import StatusReducer from './slices/StatusSlice'
 
 const Store = configureStore({
   reducer: {
@@ -12,6 +16,10 @@ const Store = configureStore({
     customer: CustomerReducer,
     processor: ProcessorReducer,
     profile: ProfileReducer,
+    procedure: ProcedureReducer,
+    type: TypeReducer,
+    license: LicenseReducer,
+    status: StatusReducer,
   },
 })
 

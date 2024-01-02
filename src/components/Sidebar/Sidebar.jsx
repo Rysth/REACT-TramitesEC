@@ -1,6 +1,6 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
-import { IoClose, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
+import { IoClose, IoMenu, IoPeople, IoPerson, IoDocument } from 'react-icons/io5'
 import { MdAccountCircle, MdSpaceDashboard } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -58,6 +58,15 @@ function Sidebar() {
                 >
                   <IoPeople className="text-xl" />
                   <span>Clientes</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/tramites"
+                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <IoDocument className="text-xl" />
+                  <span>Trámites</span>
                 </NavLink>
               </li>
               <li className="mt-3 mb-3">

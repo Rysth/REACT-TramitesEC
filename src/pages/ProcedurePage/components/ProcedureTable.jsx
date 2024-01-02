@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
-import { destroyProcessor, processorActions } from '../../../redux/slices/ProcessorSlice'
-import ProcessorItem from './ProcessorItem'
+import { destroyProcedure, procedureActions } from '../../../redux/slices/ProcedureSlice'
+import ProcedureItem from './ProcedureItem'
 
-function ProcessorTable({ currentItems, showModal }) {
+function ProcedureTable({ currentItems, showModal }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
-  const { loading, processorSelected } = useSelector((store) => store.processor)
+  const { loading, procedureSelected } = useSelector((store) => store.procedure)
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id }))
-    dispatch(processorActions.setProcessorSelected(''))
+    dispatch(destroyProcedure({ activeToken, procedureID: procedureSelected.id }))
+    dispatch(procedureActions.setProcedureSelected(''))
   }
 
   if (loading) {
@@ -25,7 +25,7 @@ function ProcessorTable({ currentItems, showModal }) {
   }
 
   if (quantity === 0) {
-    return <Error title="¡Trámitador no Encontrado!" />
+    return <Error title="¡Trámite no Encontrado!" />
   }
 
   return (
@@ -39,18 +39,21 @@ function ProcessorTable({ currentItems, showModal }) {
         <TableHead>
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="bg-gray-100">#</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100">Cédula</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Código</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Fecha</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Cliente</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Trámitador</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Usuario</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100">Celular</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Valor</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Pendiente</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
-          {currentItems.map((processor) => (
-            <ProcessorItem
-              key={processor.id}
-              processor={processor}
+          {currentItems.map((procedure) => (
+            <ProcedureItem
+              key={procedure.id}
+              procedure={procedure}
               showModal={showModal}
               showConfirmation={setConfirmationModal}
             />
@@ -61,9 +64,9 @@ function ProcessorTable({ currentItems, showModal }) {
   )
 }
 
-ProcessorTable.propTypes = {
+ProcedureTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
 }
 
-export default ProcessorTable
+export default ProcedureTable
