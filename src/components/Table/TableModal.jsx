@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-function TableModal({ openModal, closeModal, formComponent, slice, title, setEntitySelected }) {
+function TableModal({ openModal, closeModal, formComponent, slice, title, setEntitySelected, modalSize }) {
   const dispatch = useDispatch()
   const { [`${slice}Selected`]: entitySelected, loading } = useSelector((store) => store[slice])
 
@@ -19,7 +19,7 @@ function TableModal({ openModal, closeModal, formComponent, slice, title, setEnt
       position="center"
       onClose={closeModal}
       className={`z-[9000] ${loading && 'pointer-events-none grayscale'}`}
-      size="lg"
+      size={modalSize ? modalSize : 'md'}
     >
       <header className="p-2 py-4 text-center text-white border-b rounded-t-md bg-[var(--CL-secondary)]">
         <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
@@ -36,6 +36,7 @@ TableModal.propTypes = {
   slice: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   setEntitySelected: PropTypes.func.isRequired,
+  modalSize: PropTypes.string,
 }
 
 export default TableModal

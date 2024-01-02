@@ -30,6 +30,7 @@ function ProcedurePage() {
         slice="procedure"
         title="Trámite"
         setEntitySelected={procedureActions.setProcedureSelected}
+        modalSize="2xl"
       />
       <MainLayout>
         <TableStats categories={procedureStats} />

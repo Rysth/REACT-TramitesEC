@@ -198,7 +198,7 @@ function CustomerForm({ closeModal }) {
           <TextInput
             id="ganancia_pendiente"
             placeholder="25"
-            defaultValue={procedureSelected && procedureSelected.ganancia}
+            defaultValue={procedureSelected && procedureSelected.ganancia_pendiente}
             icon={HiCurrencyDollar}
             {...register('ganancia_pendiente')}
             required
@@ -214,7 +214,6 @@ function CustomerForm({ closeModal }) {
             defaultValue={procedureSelected && procedureSelected.observaciones}
             icon={HiChatBubbleBottomCenterText}
             {...register('observaciones')}
-            required
           />
         </div>
       </fieldset>

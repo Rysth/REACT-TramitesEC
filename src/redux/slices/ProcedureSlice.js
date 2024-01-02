@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000 })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -63,8 +63,8 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, oldProcessor }) => {
-  return axios.put(`${API_URL}/api/v1/procedures/${oldProcessor.id}`, oldProcessor, {
+export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, oldProcedure }) => {
+  return axios.put(`${API_URL}/api/v1/procedures/${oldProcedure.id}`, oldProcedure, {
     headers: {
       Authorization: activeToken,
     },
@@ -109,12 +109,12 @@ const updateStateAndStats = (state, action, successMessage) => {
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
+    toast.success(successMessage, { autoClose: 2000 })
   }
 }
 
 const showLoadingMessage = () => {
-  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
+  toast.info('Espere...', { autoClose: 2000 })
 }
 
 // Redux Toolkit Slice for managing processor state
@@ -173,21 +173,21 @@ const proceduresSlice = createSlice({
     })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Trámitador Registrado!')
+      updateStateAndStats(state, action, '¡Trámite Registrado!')
     })
     builder.addCase(updateProcedure.pending, () => {
       showLoadingMessage()
     })
     builder.addCase(updateProcedure.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Trámitador Actualizado!')
+      updateStateAndStats(state, action, '¡Trámite Actualizado!')
     })
     builder.addCase(destroyProcedure.pending, () => {
       showLoadingMessage()
     })
     builder.addCase(destroyProcedure.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Trámitador Eliminado!')
+      updateStateAndStats(state, action, '¡Trámite Eliminado!')
     })
   },
 })
