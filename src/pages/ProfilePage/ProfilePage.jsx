@@ -1,4 +1,4 @@
-import { BarChart, Card, Col, Grid, Metric, Text, Title } from '@tremor/react'
+import { BarChart, Card, Col, Grid, Text, Title } from '@tremor/react'
 import React, { useEffect } from 'react'
 import { HiUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'

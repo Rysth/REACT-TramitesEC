@@ -55,13 +55,13 @@ function CustomerForm({ closeModal }) {
 
   useEffect(() => {
     dispatch(LicenseActions.filterLicenses(typeID))
-  }, [typeID])
+  }, [typeID, dispatch])
 
   useEffect(() => {
     if (procedureSelected) {
       dispatch(LicenseActions.filterLicenses(procedureSelected.type.id))
     }
-  }, [procedureSelected])
+  }, [procedureSelected, dispatch])
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
