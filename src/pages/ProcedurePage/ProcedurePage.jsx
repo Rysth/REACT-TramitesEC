@@ -10,6 +10,8 @@ import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
 import { procedureActions } from '../../redux/slices/ProcedureSlice'
 import ProcedureTable from './components/ProcedureTable'
+import TableModal from '../../components/Table/TableModal'
+import CustomerForm from '../CustomerPage/components/CustomerForm'
 
 function ProcedurePage() {
   const { proceduresArray, procedureStats, procedureOriginal } = useSelector((store) => store.procedure)
@@ -21,6 +23,14 @@ function ProcedurePage() {
 
   return (
     <SectionLayout title="Trámites" subtitle="Información General de los Trámites">
+      <TableModal
+        openModal={openModal}
+        closeModal={closeModal}
+        formComponent={CustomerForm}
+        slice="procedure"
+        title="Trámite"
+        setEntitySelected={procedureActions.setProcedureSelected}
+      />
       <MainLayout>
         <TableStats categories={procedureStats} />
         <Card className="p-0 mt-4">

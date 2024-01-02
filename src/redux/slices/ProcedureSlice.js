@@ -53,7 +53,7 @@ export const getProcedures = createAsyncThunkWrapper('getProcedures', async (act
 })
 
 // Thunk for creating a new processor (POST)
-export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, newProcessor }) => {
+export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcessor }) => {
   return axios.post(`${API_URL}/api/v1/procedures/`, newProcessor, {
     headers: {
       Authorization: activeToken,
@@ -73,8 +73,8 @@ export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async 
 })
 
 // Thunk for deleting a processor (DELETE)
-export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', async ({ activeToken, processorID }) => {
-  return axios.delete(`${API_URL}/api/v1/procedures/${processorID}`, {
+export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', async ({ activeToken, procedureID }) => {
+  return axios.delete(`${API_URL}/api/v1/procedures/${procedureID}`, {
     headers: {
       Authorization: activeToken,
     },
@@ -158,9 +158,9 @@ const proceduresSlice = createSlice({
         return
       }
 
-      const processorID = parseInt(content)
-      const processorFound = state.procedureOriginal.find((processor) => processor.id === processorID)
-      state.procedureSelected = processorFound
+      const procedureID = parseInt(content)
+      const procedureFound = state.procedureOriginal.find((procedure) => procedure.id === procedureID)
+      state.procedureSelected = procedureFound
     },
   },
   extraReducers: (builder) => {
@@ -168,10 +168,10 @@ const proceduresSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createProcessor.pending, () => {
+    builder.addCase(createProcedure.pending, () => {
       showLoadingMessage()
     })
-    builder.addCase(createProcessor.fulfilled, (state, action) => {
+    builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
