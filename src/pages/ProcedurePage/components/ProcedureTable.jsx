@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
-import { destroyProcessor, procedureActions } from '../../../redux/slices/ProcedureSlice'
+import { destroyProcedure, procedureActions } from '../../../redux/slices/ProcedureSlice'
 import ProcedureItem from './ProcedureItem'
 
 function ProcedureTable({ currentItems, showModal }) {
@@ -16,7 +16,7 @@ function ProcedureTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcessor({ activeToken, procedureID: procedureSelected.id }))
+    dispatch(destroyProcedure({ activeToken, procedureID: procedureSelected.id }))
     dispatch(procedureActions.setProcedureSelected(''))
   }
 
@@ -49,7 +49,7 @@ function ProcedureTable({ currentItems, showModal }) {
             <TableHeaderCell className="bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody className="divide-y text-xs">
+        <TableBody className="text-xs divide-y">
           {currentItems.map((procedure) => (
             <ProcedureItem
               key={procedure.id}

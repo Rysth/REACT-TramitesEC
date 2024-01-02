@@ -63,7 +63,7 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, oldProcessor }) => {
+export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, oldProcessor }) => {
   return axios.put(`${API_URL}/api/v1/procedures/${oldProcessor.id}`, oldProcessor, {
     headers: {
       Authorization: activeToken,
@@ -73,7 +73,7 @@ export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async 
 })
 
 // Thunk for deleting a processor (DELETE)
-export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', async ({ activeToken, procedureID }) => {
+export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', async ({ activeToken, procedureID }) => {
   return axios.delete(`${API_URL}/api/v1/procedures/${procedureID}`, {
     headers: {
       Authorization: activeToken,
@@ -175,17 +175,17 @@ const proceduresSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
-    builder.addCase(updateProcessor.pending, () => {
+    builder.addCase(updateProcedure.pending, () => {
       showLoadingMessage()
     })
-    builder.addCase(updateProcessor.fulfilled, (state, action) => {
+    builder.addCase(updateProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
     })
-    builder.addCase(destroyProcessor.pending, () => {
+    builder.addCase(destroyProcedure.pending, () => {
       showLoadingMessage()
     })
-    builder.addCase(destroyProcessor.fulfilled, (state, action) => {
+    builder.addCase(destroyProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
     })

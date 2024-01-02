@@ -6,6 +6,7 @@ import ProcessorReducer from './slices/ProcessorSlice'
 import ProfileReducer from './slices/ProfileSlice'
 import ProcedureReducer from './slices/ProcedureSlice'
 import TypeReducer from './slices/TypeSlice'
+import LicenseReducer from './slices/LicenseSlice'
 
 const Store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const Store = configureStore({
     profile: ProfileReducer,
     procedure: ProcedureReducer,
     type: TypeReducer,
+    license: LicenseReducer,
   },
 })
 

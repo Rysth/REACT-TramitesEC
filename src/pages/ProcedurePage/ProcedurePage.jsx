@@ -11,7 +11,7 @@ import TableLayout from '../../layouts/TableLayout'
 import { procedureActions } from '../../redux/slices/ProcedureSlice'
 import ProcedureTable from './components/ProcedureTable'
 import TableModal from '../../components/Table/TableModal'
-import CustomerForm from '../CustomerPage/components/CustomerForm'
+import ProcedureForm from './components/ProcedureForm'
 
 function ProcedurePage() {
   const { proceduresArray, procedureStats, procedureOriginal } = useSelector((store) => store.procedure)
@@ -26,7 +26,7 @@ function ProcedurePage() {
       <TableModal
         openModal={openModal}
         closeModal={closeModal}
-        formComponent={CustomerForm}
+        formComponent={ProcedureForm}
         slice="procedure"
         title="Trámite"
         setEntitySelected={procedureActions.setProcedureSelected}

@@ -12,6 +12,7 @@ function CustomerForm({ closeModal }) {
   const { processorOriginal } = useSelector((store) => store.processor)
   const { customersOriginal } = useSelector((store) => store.customer)
   const { typesOriginal } = useSelector((store) => store.type)
+  const { licensesOriginal } = useSelector((store) => store.license)
   const { procedureSelected } = useSelector((store) => store.procedure)
   const { register, handleSubmit, reset } = useForm()
 
@@ -63,14 +64,13 @@ function CustomerForm({ closeModal }) {
           <Select
             id="license_id"
             {...register('license_id')}
-            defaultValue={procedureSelected && procedureSelected.customer.id}
+            defaultValue={procedureSelected && procedureSelected.license.id}
             required
           >
-            {customersOriginal.map((customer) => (
-              <option
-                key={customer.id}
-                value={customer.id}
-              >{`${customer.cedula}: ${customer.nombres} ${customer.apellidos}`}</option>
+            {licensesOriginal.map((license) => (
+              <option key={license.id} value={license.id}>
+                {license.nombre}
+              </option>
             ))}
           </Select>
         </div>
@@ -111,72 +111,61 @@ function CustomerForm({ closeModal }) {
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="cedula" value="Cédula" />
+          <Label htmlFor="placa" value="Placa" />
           <TextInput
-            id="cedula"
-            placeholder="0985736265"
-            defaultValue={procedureSelected && procedureSelected.cedula}
+            id="placa"
+            placeholder="GJS-2050"
+            defaultValue={procedureSelected && procedureSelected.placa}
             icon={HiIdentification}
-            {...register('cedula')}
+            {...register('placa')}
             required
           />
         </div>
         <div>
-          <Label htmlFor="nombres" value="Nombres" />
+          <Label htmlFor="valor" value="Valor" />
           <TextInput
-            id="nombres"
-            placeholder="John Doe"
-            defaultValue={procedureSelected && procedureSelected.nombres}
+            id="valor"
+            placeholder="200"
+            defaultValue={procedureSelected && procedureSelected.valor}
             icon={HiMiniUserCircle}
-            {...register('nombres')}
+            {...register('valor')}
             required
           />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="apellidos" value="Apellidos" />
+          <Label htmlFor="valor_pendiente" value="Valor Pendiente" />
           <TextInput
-            id="apellidos"
-            placeholder="Sánchez Castro"
-            defaultValue={procedureSelected && procedureSelected.apellidos}
+            id="valor_pendiente"
+            placeholder="100"
+            defaultValue={procedureSelected && procedureSelected.valor_pendiente}
             icon={HiMiniUserCircle}
-            {...register('apellidos')}
+            {...register('valor_pendiente')}
             required
           />
         </div>
         <div>
-          <Label htmlFor="celular" value="Celular" />
+          <Label htmlFor="ganancia" value="Ganancia" />
           <TextInput
-            id="celular"
-            placeholder="0966553564"
-            defaultValue={procedureSelected && procedureSelected.celular}
+            id="ganancia"
+            placeholder="50"
+            defaultValue={procedureSelected && procedureSelected.ganancia}
             icon={HiMiniDevicePhoneMobile}
-            {...register('celular')}
+            {...register('ganancia')}
             required
           />
         </div>
       </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
+      <fieldset className="grid">
         <div>
-          <Label htmlFor="direccion" value="Dirección" />
+          <Label htmlFor="observaciones" value="Observaciones" />
           <TextInput
-            id="direccion"
-            placeholder="Av. de las Américas"
-            defaultValue={procedureSelected && procedureSelected.direccion}
+            id="observaciones"
+            placeholder="Lorem Ipsum"
+            defaultValue={procedureSelected && procedureSelected.observaciones}
             icon={HiMapPin}
-            {...register('direccion')}
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="email" value="Correo Electrónico" />
-          <TextInput
-            id="email"
-            placeholder="username@example.com"
-            defaultValue={procedureSelected && procedureSelected.email}
-            icon={HiMiniEnvelope}
-            {...register('email')}
+            {...register('observaciones')}
             required
           />
         </div>

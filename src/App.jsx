@@ -3,20 +3,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Sidebar from './components/Sidebar/Sidebar'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import SessionPage from './pages/SessionPage/SessionPage'
-import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
-import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
-import CustomerPage from './pages/CustomerPage/CustomerPage'
-import { getProcessors } from './redux/slices/ProcessorSlice'
-import { getCustomers } from './redux/slices/CustomerSlice'
-import { getUsers } from './redux/slices/UserSlice'
-import { getProcedures } from './redux/slices/ProcedureSlice'
-import { getTypes } from './redux/slices/TypeSlice'
 import './App.css'
-import ProfilePage from './pages/ProfilePage/ProfilePage'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import Sidebar from './components/Sidebar/Sidebar'
+import CustomerPage from './pages/CustomerPage/CustomerPage'
 import DashboardPage from './pages/DashboardPage/DashboardPage'
+import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
+import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
+import ProfilePage from './pages/ProfilePage/ProfilePage'
+import SessionPage from './pages/SessionPage/SessionPage'
+import { getCustomers } from './redux/slices/CustomerSlice'
+import { getLicenses } from './redux/slices/LicenseSlice'
+import { getProcedures } from './redux/slices/ProcedureSlice'
+import { getProcessors } from './redux/slices/ProcessorSlice'
+import { getTypes } from './redux/slices/TypeSlice'
+import { getUsers } from './redux/slices/UserSlice'
 
 function App() {
   const dispatch = useDispatch()
@@ -29,6 +30,7 @@ function App() {
       dispatch(getUsers(activeToken))
       dispatch(getProcedures(activeToken))
       dispatch(getTypes(activeToken))
+      dispatch(getLicenses(activeToken))
     }
   }, [dispatch, activeToken, active])
 
