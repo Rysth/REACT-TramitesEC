@@ -49,7 +49,7 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
             size="xs"
             color="failure"
             onClick={() => {
-              dispatch(procedureActions.setprocedureSelected(procedure.id))
+              dispatch(procedureActions.setProcedureSelected(procedure.id))
               showConfirmation(true)
             }}
           >
