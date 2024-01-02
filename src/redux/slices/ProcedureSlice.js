@@ -127,16 +127,15 @@ const proceduresSlice = createSlice({
         state.proceduresArray = state.procedureOriginal
         return
       }
+      console.log(searchData)
 
       // Fix Search system for Procedures
       const filteredProcedures = state.procedureOriginal.filter((procedure) => {
         const fullNameCustomer = `${procedure.customer.nombres} ${procedure.customer.apellidos}`.toLowerCase()
         const fullNameProcessor = `${procedure.processor.nombres} ${procedure.processor.apellidos}`.toLowerCase()
 
-        console.log(fullNameCustomer.includes(searchData))
-
         return (
-          (procedure.codigo.includes(searchData) ||
+          (procedure.codigo.toLowerCase().includes(searchData) ||
             fullNameCustomer.includes(searchData) ||
             fullNameProcessor.includes(searchData)) &&
           (!selectedUserId || procedure.user.id === selectedUserId)

@@ -33,7 +33,7 @@ function CustomerForm({ closeModal }) {
       dispatch(updateProcedure({ activeToken, oldProcedure })).then(() => closeModal())
       return
     }
-    dispatch(createProcedure({ activeToken, newProcedure: { user_id: activeUser.id, procedureData } })).then(() =>
+    dispatch(createProcedure({ activeToken, newProcedure: { user_id: activeUser.id, ...procedureData } })).then(() =>
       closeModal(),
     )
   }

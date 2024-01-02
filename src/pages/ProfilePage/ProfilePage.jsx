@@ -27,13 +27,13 @@ function ProfilePage() {
         <Col numColSpanLg={4}>
           <Card className="h-full">
             <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
-            <Text>Comparación entre Trámitadores y Clientes</Text>
+            <Text>Comparación entre Trámitadores, Clientes y Trámites</Text>
             <BarChart
               className="mt-4 h-80"
               data={userData}
               index="Meses"
-              categories={['Tramitadores', 'Clientes']}
-              colors={['blue', 'indigo']}
+              categories={['Tramitadores', 'Clientes', 'Tramites']}
+              colors={['blue', 'indigo', 'purple']}
               stack={false}
               yAxisWidth={60}
             />

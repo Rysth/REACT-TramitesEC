@@ -145,9 +145,9 @@ const customerSlice = createSlice({
       const filteredCustomers = state.customersOriginal.filter((customer) => {
         const fullName = `${customer.nombres} ${customer.apellidos}`.toLowerCase()
         return (
-          (customer.cedula.includes(searchData) ||
+          (customer.cedula.toLowerCase().includes(searchData) ||
             fullName.includes(searchData) ||
-            customer.email.includes(searchData)) &&
+            customer.email.toLowerCase().includes(searchData)) &&
           (!selectedUserId || customer.processor.user.id === selectedUserId)
         )
       })
