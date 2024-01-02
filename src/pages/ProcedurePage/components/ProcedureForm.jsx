@@ -65,7 +65,7 @@ function CustomerForm({ closeModal }) {
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
+      <fieldset className="grid gap-4 sm:grid-cols-3">
         <div>
           <Label htmlFor="type_id" value="Tipo Trámite" />
           <Select
@@ -99,53 +99,6 @@ function CustomerForm({ closeModal }) {
             ))}
           </Select>
         </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="processor_id" value="Trámitador" />
-          <Select
-            icon={HiUser}
-            id="processor_id"
-            {...register('processor_id')}
-            defaultValue={procedureSelected && procedureSelected.processor.id}
-            required
-          >
-            {processorOriginal.map((processor) => (
-              <option
-                key={processor.id}
-                value={processor.id}
-              >{`${processor.cedula}: ${processor.nombres} ${processor.apellidos}`}</option>
-            ))}
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="customer_id" value="Cliente" />
-          <Select
-            icon={HiUser}
-            id="customer_id"
-            {...register('customer_id')}
-            defaultValue={procedureSelected && procedureSelected.customer.id}
-            required
-          >
-            {customersOriginal.map((customer) => (
-              <option
-                key={customer.id}
-                value={customer.id}
-              >{`${customer.cedula}: ${customer.nombres} ${customer.apellidos}`}</option>
-            ))}
-          </Select>
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="placa" value="Placa (Opcional)" />
-          <TextInput
-            id="placa"
-            defaultValue={procedureSelected && procedureSelected.placa}
-            icon={HiIdentification}
-            {...register('placa')}
-          />
-        </div>
         <div>
           <Label htmlFor="status_id" value="Estado" />
           <Select
@@ -163,6 +116,37 @@ function CustomerForm({ closeModal }) {
           </Select>
         </div>
       </fieldset>
+      <fieldset className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="processor_id" value="Trámitador" />
+          <Select
+            icon={HiUser}
+            id="processor_id"
+            {...register('processor_id')}
+            defaultValue={procedureSelected && procedureSelected.processor.id}
+            required
+          >
+            {processorOriginal.map((processor) => (
+              <option key={processor.id} value={processor.id}>{`${processor.nombres} ${processor.apellidos}`}</option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="customer_id" value="Cliente" />
+          <Select
+            icon={HiUser}
+            id="customer_id"
+            {...register('customer_id')}
+            defaultValue={procedureSelected && procedureSelected.customer.id}
+            required
+          >
+            {customersOriginal.map((customer) => (
+              <option key={customer.id} value={customer.id}>{`${customer.nombres} ${customer.apellidos}`}</option>
+            ))}
+          </Select>
+        </div>
+      </fieldset>
+
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="valor" value="Valor" />
@@ -211,7 +195,16 @@ function CustomerForm({ closeModal }) {
           />
         </div>
       </fieldset>
-      <fieldset className="grid">
+      <fieldset className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <Label htmlFor="placa" value="Placa (Opcional)" />
+          <TextInput
+            id="placa"
+            defaultValue={procedureSelected && procedureSelected.placa}
+            icon={HiIdentification}
+            {...register('placa')}
+          />
+        </div>
         <div>
           <Label htmlFor="observaciones" value="Observaciones (Opcional)" />
           <TextInput
@@ -222,6 +215,7 @@ function CustomerForm({ closeModal }) {
           />
         </div>
       </fieldset>
+
       <fieldset className="flex items-center justify-end gap-2 mt-10">
         <Button color="blue" type="submit" className="mt-3">
           Guardar

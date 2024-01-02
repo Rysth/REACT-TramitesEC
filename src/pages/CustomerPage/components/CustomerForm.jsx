@@ -50,10 +50,7 @@ function CustomerForm({ closeModal }) {
             required
           >
             {processorOriginal.map((processor) => (
-              <option
-                key={processor.id}
-                value={processor.id}
-              >{`${processor.cedula}: ${processor.nombres} ${processor.apellidos}`}</option>
+              <option key={processor.id} value={processor.id}>{`${processor.nombres} ${processor.apellidos}`}</option>
             ))}
           </Select>
         </div>
