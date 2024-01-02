@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -25,12 +25,12 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'dark' })
+    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'dark' })
+    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
   }
 
   throw new Error(error)
@@ -123,12 +123,8 @@ const updateStateAndStats = (state, action, successMessage) => {
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }
-}
-
-const showLoadingMessage = () => {
-  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing customer state
@@ -178,22 +174,13 @@ const customerSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createCliente.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(createCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
-    builder.addCase(updateCliente.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(updateCliente.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
-    })
-    builder.addCase(destroyCliente.pending, () => {
-      showLoadingMessage()
     })
     builder.addCase(destroyCliente.fulfilled, (state, action) => {
       state.loading = false

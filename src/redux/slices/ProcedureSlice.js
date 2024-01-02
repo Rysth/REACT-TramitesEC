@@ -113,10 +113,6 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 }
 
-const showLoadingMessage = () => {
-  toast.info('Espere...', { autoClose: 2000 })
-}
-
 // Redux Toolkit Slice for managing processor state
 const proceduresSlice = createSlice({
   name: 'procedures',
@@ -168,22 +164,13 @@ const proceduresSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createProcedure.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámite Registrado!')
     })
-    builder.addCase(updateProcedure.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(updateProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámite Actualizado!')
-    })
-    builder.addCase(destroyProcedure.pending, () => {
-      showLoadingMessage()
     })
     builder.addCase(destroyProcedure.fulfilled, (state, action) => {
       state.loading = false

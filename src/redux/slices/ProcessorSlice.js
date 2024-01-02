@@ -14,7 +14,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'dark' })
+    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -25,17 +25,17 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 409) {
-    toast.error('¡Trámitador Tiene Clientes!', { theme: 'dark' })
+    toast.error('¡Trámitador Tiene Clientes!', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Trámitador ya Registrado!', { theme: 'dark' })
+    toast.error('¡Trámitador ya Registrado!', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'dark' })
+    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
   }
 
   throw new Error(error)
@@ -119,12 +119,8 @@ const updateStateAndStats = (state, action, successMessage) => {
   ]
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'dark' })
+    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }
-}
-
-const showLoadingMessage = () => {
-  toast.info('Espere...', { autoClose: 2000, theme: 'dark' })
 }
 
 // Redux Toolkit Slice for managing processor state
@@ -171,22 +167,13 @@ const processorslice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createProcessor.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(createProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Registrado!')
     })
-    builder.addCase(updateProcessor.pending, () => {
-      showLoadingMessage()
-    })
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Actualizado!')
-    })
-    builder.addCase(destroyProcessor.pending, () => {
-      showLoadingMessage()
     })
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
       state.loading = false

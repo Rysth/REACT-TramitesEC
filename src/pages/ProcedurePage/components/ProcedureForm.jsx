@@ -22,7 +22,6 @@ function CustomerForm({ closeModal }) {
 
   const handleCreateOrUpdate = (newProcedure) => {
     const procedureData = {
-      user_id: activeUser.id,
       ...newProcedure,
     }
 
@@ -34,8 +33,9 @@ function CustomerForm({ closeModal }) {
       dispatch(updateProcedure({ activeToken, oldProcedure })).then(() => closeModal())
       return
     }
-    console.table(procedureData)
-    dispatch(createProcedure({ activeToken, newProcedure: procedureData })).then(() => closeModal())
+    dispatch(createProcedure({ activeToken, newProcedure: { user_id: activeUser.id, procedureData } })).then(() =>
+      closeModal(),
+    )
   }
 
   const onSubmit = (procedureData) => {
