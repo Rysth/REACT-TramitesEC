@@ -132,13 +132,18 @@ const proceduresSlice = createSlice({
         return
       }
 
+      // Fix Search system for Procedures
       const filteredProcedures = state.procedureOriginal.filter((procedure) => {
         const fullNameCustomer = `${procedure.customer.nombres} ${procedure.customer.apellidos}`.toLowerCase()
         const fullNameProcessor = `${procedure.processor.nombres} ${procedure.processor.apellidos}`.toLowerCase()
+
+        console.log(fullNameCustomer.includes(searchData))
+
         return (
-          procedure.codigo.includes(searchData) ||
-          fullNameCustomer.includes(searchData) ||
-          (fullNameProcessor.includes(searchData) && (!selectedUserId || procedure.user.id === selectedUserId))
+          (procedure.codigo.includes(searchData) ||
+            fullNameCustomer.includes(searchData) ||
+            fullNameProcessor.includes(searchData)) &&
+          (!selectedUserId || procedure.user.id === selectedUserId)
         )
       })
 
