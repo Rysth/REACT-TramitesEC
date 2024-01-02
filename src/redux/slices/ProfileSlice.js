@@ -38,6 +38,7 @@ export const ProfileSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProfileStats.fulfilled, (state, action) => {
       state.userData = action.payload
+      console.log(state.userData)
     })
   },
 })
