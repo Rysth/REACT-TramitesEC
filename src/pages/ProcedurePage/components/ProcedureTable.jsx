@@ -42,7 +42,6 @@ function ProcedureTable({ currentItems, showModal }) {
             <TableHeaderCell className="bg-gray-100">Código</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Fecha</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Cliente</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100">Trámite</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Trámitador</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Usuario</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Valor</TableHeaderCell>

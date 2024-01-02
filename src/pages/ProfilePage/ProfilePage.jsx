@@ -24,29 +24,13 @@ function ProfilePage() {
         <h2 className="text-2xl sm:text-4xl ">{username}</h2>
       </header>
       <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
-        <Col numColSpanLg={2}>
-          <div className="flex flex-col justify-between h-full">
-            <Card decoration="top" decorationColor="indigo">
-              <Text>EN PROCESO</Text>
-              <Metric>{userData.status_counts.en_proceso}</Metric>
-            </Card>
-            <Card decoration="top" decorationColor="purple">
-              <Text>ENTREGADOS POR EL PROVEEDOR</Text>
-              <Metric>{userData.status_counts.entregado_proveedor}</Metric>
-            </Card>
-            <Card decoration="top" decorationColor="blue">
-              <Text>ENTREGADOS AL CLIENTE</Text>
-              <Metric>{userData.status_counts.entregado_cliente}</Metric>
-            </Card>
-          </div>
-        </Col>
-        <Col numColSpanLg={4}>
+        <Col numColSpanLg={6}>
           <Card className="h-full">
             <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
             <Text>Comparación entre Trámitadores, Clientes y Trámites</Text>
             <BarChart
               className="mt-4 h-80"
-              data={userData.quantity_and_months}
+              data={userData}
               index="Meses"
               categories={['Tramitadores', 'Clientes', 'Tramites']}
               colors={['blue', 'indigo', 'purple']}

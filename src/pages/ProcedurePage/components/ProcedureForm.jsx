@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
 import { Button, Label, Select, TextInput } from 'flowbite-react'
-import { HiIdentification, HiDocument, HiCurrencyDollar, HiChatBubbleBottomCenterText, HiUser } from 'react-icons/hi2'
+import {
+  HiIdentification,
+  HiDocument,
+  HiCurrencyDollar,
+  HiChatBubbleBottomCenterText,
+  HiUser,
+  HiListBullet,
+} from 'react-icons/hi2'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
 import { LicenseActions } from '../../../redux/slices/LicenseSlice'
 
@@ -134,7 +141,6 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="placa" value="Placa (Opcional)" />
           <TextInput
             id="placa"
-            placeholder="GJS-2050"
             defaultValue={procedureSelected && procedureSelected.placa}
             icon={HiIdentification}
             {...register('placa')}
@@ -143,7 +149,7 @@ function CustomerForm({ closeModal }) {
         <div>
           <Label htmlFor="status_id" value="Estado" />
           <Select
-            icon={HiIdentification}
+            icon={HiListBullet}
             id="status_id"
             {...register('status_id')}
             defaultValue={procedureSelected && procedureSelected.status.id}
@@ -162,10 +168,10 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="valor" value="Valor" />
           <TextInput
             id="valor"
-            placeholder="200"
             defaultValue={procedureSelected && procedureSelected.valor}
             icon={HiCurrencyDollar}
             {...register('valor')}
+            placeholder="1000"
             required
           />
         </div>
@@ -173,11 +179,11 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="valor_pendiente" value="Valor Pendiente" />
           <TextInput
             id="valor_pendiente"
-            placeholder="100"
             defaultValue={procedureSelected && procedureSelected.valor_pendiente}
             icon={HiCurrencyDollar}
             {...register('valor_pendiente')}
             required
+            placeholder="1000"
           />
         </div>
       </fieldset>
@@ -186,10 +192,10 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="ganancia" value="Ganancia" />
           <TextInput
             id="ganancia"
-            placeholder="50"
             defaultValue={procedureSelected && procedureSelected.ganancia}
             icon={HiCurrencyDollar}
             {...register('ganancia')}
+            placeholder="1000"
             required
           />
         </div>
@@ -197,20 +203,19 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="ganancia_pendiente" value="Ganancia Pendiente" />
           <TextInput
             id="ganancia_pendiente"
-            placeholder="25"
             defaultValue={procedureSelected && procedureSelected.ganancia_pendiente}
             icon={HiCurrencyDollar}
             {...register('ganancia_pendiente')}
+            placeholder="1000"
             required
           />
         </div>
       </fieldset>
       <fieldset className="grid">
         <div>
-          <Label htmlFor="observaciones" value="Observaciones" />
+          <Label htmlFor="observaciones" value="Observaciones (Opcional)" />
           <TextInput
             id="observaciones"
-            placeholder="Lorem Ipsum"
             defaultValue={procedureSelected && procedureSelected.observaciones}
             icon={HiChatBubbleBottomCenterText}
             {...register('observaciones')}
