@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const initialState = {
   licensesOriginal: [],
+  licensesArray: [],
 }
 
 const handleRequestError = (error) => {
@@ -34,10 +35,21 @@ export const getLicenses = createAsyncThunk('license/getLicenses', async (active
 export const LicenseSlice = createSlice({
   name: 'license',
   initialState,
-  reducers: {},
+  reducers: {
+    filterLicenses: (state, action) => {
+      const searchTypeID = action.payload
+      if (searchTypeID === 1) {
+        state.licensesArray = state.licensesOriginal
+        return
+      }
+
+      state.licensesArray = state.licensesOriginal.filter((license) => license.type.id === searchTypeID)
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getLicenses.fulfilled, (state, action) => {
       state.licensesOriginal = action.payload
+      state.licensesArray = state.licensesOriginal
     })
   },
 })

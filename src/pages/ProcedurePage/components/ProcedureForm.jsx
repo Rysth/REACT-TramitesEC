@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import PropTypes from 'prop-types'
 import { Button, Label, Select, TextInput } from 'flowbite-react'
-import { HiIdentification, HiMiniEnvelope, HiMiniUserCircle, HiMiniDevicePhoneMobile, HiMapPin } from 'react-icons/hi2'
+import { HiIdentification, HiDocument, HiCurrencyDollar, HiChatBubbleBottomCenterText, HiUser } from 'react-icons/hi2'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
+import { LicenseActions } from '../../../redux/slices/LicenseSlice'
 
 function CustomerForm({ closeModal }) {
   const dispatch = useDispatch()
@@ -12,9 +13,11 @@ function CustomerForm({ closeModal }) {
   const { processorOriginal } = useSelector((store) => store.processor)
   const { customersOriginal } = useSelector((store) => store.customer)
   const { typesOriginal } = useSelector((store) => store.type)
-  const { licensesOriginal } = useSelector((store) => store.license)
+  const { licensesArray } = useSelector((store) => store.license)
   const { procedureSelected } = useSelector((store) => store.procedure)
   const { register, handleSubmit, reset } = useForm()
+  //Form
+  const [typeID, setTypeID] = useState(1)
 
   const handleCreateOrUpdate = (newProcedure) => {
     const procedureData = {
@@ -41,15 +44,34 @@ function CustomerForm({ closeModal }) {
     reset()
   }, [reset])
 
+  useEffect(() => {
+    dispatch(LicenseActions.filterLicenses(typeID))
+  }, [typeID])
+
+  useEffect(() => {
+    if (procedureSelected) {
+      dispatch(LicenseActions.filterLicenses(procedureSelected.type.id))
+    }
+  }, [procedureSelected])
+
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="type_id" value="Tipo Trámite" />
+          {/* <SearchSelect value={typeID} onValueChange={setTypeID}>
+            {typesOriginal.map((type) => (
+              <SearchSelectItem key={type.id} value={type.id}>
+                {type.nombre}
+              </SearchSelectItem>
+            ))}
+          </SearchSelect> */}
           <Select
+            icon={HiDocument}
             id="type_id"
             {...register('type_id')}
             defaultValue={procedureSelected && procedureSelected.type.id}
+            onChange={(event) => setTypeID(parseInt(event.target.value))}
             required
           >
             {typesOriginal.map((type) => (
@@ -62,12 +84,13 @@ function CustomerForm({ closeModal }) {
         <div>
           <Label htmlFor="license_id" value="Licencia" />
           <Select
+            icon={HiIdentification}
             id="license_id"
             {...register('license_id')}
             defaultValue={procedureSelected && procedureSelected.license.id}
             required
           >
-            {licensesOriginal.map((license) => (
+            {licensesArray.map((license) => (
               <option key={license.id} value={license.id}>
                 {license.nombre}
               </option>
@@ -79,6 +102,7 @@ function CustomerForm({ closeModal }) {
         <div>
           <Label htmlFor="processor_id" value="Trámitador" />
           <Select
+            icon={HiUser}
             id="processor_id"
             {...register('processor_id')}
             defaultValue={procedureSelected && procedureSelected.processor.id}
@@ -95,6 +119,7 @@ function CustomerForm({ closeModal }) {
         <div>
           <Label htmlFor="customer_id" value="Cliente" />
           <Select
+            icon={HiUser}
             id="customer_id"
             {...register('customer_id')}
             defaultValue={procedureSelected && procedureSelected.customer.id}
@@ -109,9 +134,9 @@ function CustomerForm({ closeModal }) {
           </Select>
         </div>
       </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
+      <fieldset className="grid">
         <div>
-          <Label htmlFor="placa" value="Placa" />
+          <Label htmlFor="placa" value="Placa (Opcional)" />
           <TextInput
             id="placa"
             placeholder="GJS-2050"
@@ -121,38 +146,51 @@ function CustomerForm({ closeModal }) {
             required
           />
         </div>
+      </fieldset>
+      <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="valor" value="Valor" />
           <TextInput
             id="valor"
             placeholder="200"
             defaultValue={procedureSelected && procedureSelected.valor}
-            icon={HiMiniUserCircle}
+            icon={HiCurrencyDollar}
             {...register('valor')}
             required
           />
         </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="valor_pendiente" value="Valor Pendiente" />
           <TextInput
             id="valor_pendiente"
             placeholder="100"
             defaultValue={procedureSelected && procedureSelected.valor_pendiente}
-            icon={HiMiniUserCircle}
+            icon={HiCurrencyDollar}
             {...register('valor_pendiente')}
             required
           />
         </div>
+      </fieldset>
+      <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="ganancia" value="Ganancia" />
           <TextInput
             id="ganancia"
             placeholder="50"
             defaultValue={procedureSelected && procedureSelected.ganancia}
-            icon={HiMiniDevicePhoneMobile}
+            icon={HiCurrencyDollar}
             {...register('ganancia')}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="ganancia_pendiente" value="Ganancia Pendiente" />
+          <TextInput
+            id="ganancia_pendiente"
+            placeholder="25"
+            defaultValue={procedureSelected && procedureSelected.ganancia}
+            icon={HiCurrencyDollar}
+            {...register('ganancia_pendiente')}
             required
           />
         </div>
@@ -164,7 +202,7 @@ function CustomerForm({ closeModal }) {
             id="observaciones"
             placeholder="Lorem Ipsum"
             defaultValue={procedureSelected && procedureSelected.observaciones}
-            icon={HiMapPin}
+            icon={HiChatBubbleBottomCenterText}
             {...register('observaciones')}
             required
           />

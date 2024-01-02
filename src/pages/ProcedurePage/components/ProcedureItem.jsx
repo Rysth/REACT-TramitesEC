@@ -19,6 +19,7 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
       <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
       <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
       <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">{procedure.type.nombre}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
           {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
