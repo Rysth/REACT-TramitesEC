@@ -53,8 +53,8 @@ export const getProcedures = createAsyncThunkWrapper('getProcedures', async (act
 })
 
 // Thunk for creating a new processor (POST)
-export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcessor }) => {
-  return axios.post(`${API_URL}/api/v1/procedures/`, newProcessor, {
+export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcedure }) => {
+  return axios.post(`${API_URL}/api/v1/procedures/`, newProcedure, {
     headers: {
       Authorization: activeToken,
     },

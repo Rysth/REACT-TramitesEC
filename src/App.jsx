@@ -18,6 +18,7 @@ import { getProcedures } from './redux/slices/ProcedureSlice'
 import { getProcessors } from './redux/slices/ProcessorSlice'
 import { getTypes } from './redux/slices/TypeSlice'
 import { getUsers } from './redux/slices/UserSlice'
+import { getStatuses } from './redux/slices/StatusSlice'
 
 function App() {
   const dispatch = useDispatch()
@@ -31,6 +32,7 @@ function App() {
       dispatch(getProcedures(activeToken))
       dispatch(getTypes(activeToken))
       dispatch(getLicenses(activeToken))
+      dispatch(getStatuses(activeToken))
     }
   }, [dispatch, activeToken, active])
 

@@ -9,11 +9,12 @@ import { LicenseActions } from '../../../redux/slices/LicenseSlice'
 
 function CustomerForm({ closeModal }) {
   const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
+  const { activeToken, activeUser } = useSelector((store) => store.authentication)
   const { processorOriginal } = useSelector((store) => store.processor)
   const { customersOriginal } = useSelector((store) => store.customer)
   const { typesOriginal } = useSelector((store) => store.type)
   const { licensesArray } = useSelector((store) => store.license)
+  const { statusOriginal } = useSelector((store) => store.status)
   const { procedureSelected } = useSelector((store) => store.procedure)
   const { register, handleSubmit, reset } = useForm()
   //Form
@@ -21,18 +22,19 @@ function CustomerForm({ closeModal }) {
 
   const handleCreateOrUpdate = (newProcedure) => {
     const procedureData = {
+      user_id: activeUser.id,
       ...newProcedure,
     }
 
     if (procedureSelected) {
-      const oldCustomer = {
+      const oldProcedure = {
         id: procedureSelected.id,
         ...procedureData,
       }
-      dispatch(updateProcedure({ activeToken, oldCustomer })).then(() => closeModal())
+      dispatch(updateProcedure({ activeToken, oldProcedure })).then(() => closeModal())
       return
     }
-
+    console.table(procedureData)
     dispatch(createProcedure({ activeToken, newProcedure: procedureData })).then(() => closeModal())
   }
 
@@ -59,13 +61,6 @@ function CustomerForm({ closeModal }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="type_id" value="Tipo Trámite" />
-          {/* <SearchSelect value={typeID} onValueChange={setTypeID}>
-            {typesOriginal.map((type) => (
-              <SearchSelectItem key={type.id} value={type.id}>
-                {type.nombre}
-              </SearchSelectItem>
-            ))}
-          </SearchSelect> */}
           <Select
             icon={HiDocument}
             id="type_id"
@@ -134,7 +129,7 @@ function CustomerForm({ closeModal }) {
           </Select>
         </div>
       </fieldset>
-      <fieldset className="grid">
+      <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="placa" value="Placa (Opcional)" />
           <TextInput
@@ -143,8 +138,23 @@ function CustomerForm({ closeModal }) {
             defaultValue={procedureSelected && procedureSelected.placa}
             icon={HiIdentification}
             {...register('placa')}
-            required
           />
+        </div>
+        <div>
+          <Label htmlFor="status_id" value="Estado" />
+          <Select
+            icon={HiIdentification}
+            id="status_id"
+            {...register('status_id')}
+            defaultValue={procedureSelected && procedureSelected.status.id}
+            required
+          >
+            {statusOriginal.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.nombre}
+              </option>
+            ))}
+          </Select>
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
