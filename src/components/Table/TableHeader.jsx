@@ -45,14 +45,13 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
           placeholder="Buscar..."
           onChange={handleSearchData}
           color="purple"
-          sizing="md"
           required
         />
-        <Button color="blue" onClick={showModal}>
+        <Button color="blue" size="sm" onClick={showModal}>
           Crear
           <IoCreateSharp className="ml-1" />
         </Button>
-        <Button color="success">
+        <Button color="success" size="sm">
           <CSVLink data={originalItems} filename={`${fileName}.csv`} className="flex items-center">
             Excel
             <IoDownload className="ml-1" />
