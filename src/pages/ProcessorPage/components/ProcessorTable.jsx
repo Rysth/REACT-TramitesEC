@@ -47,9 +47,10 @@ function ProcessorTable({ currentItems, showModal }) {
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
-          {currentItems.map((processor) => (
+          {currentItems.map((processor, index) => (
             <ProcessorItem
-              key={processor.id}
+              key={index + 1}
+              index={index + 1}
               processor={processor}
               showModal={showModal}
               showConfirmation={setConfirmationModal}

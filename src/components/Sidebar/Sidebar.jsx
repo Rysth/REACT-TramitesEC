@@ -27,16 +27,16 @@ function Sidebar() {
         {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
 
-      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] md:w-64'}`} onClick={closeSideBar}>
+      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] md:w-60'}`} onClick={closeSideBar}>
         <aside
-          className={`fixed w-64 -translate-x-64 h-screen transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
+          className={`fixed w-60 -translate-x-60 h-screen transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
             open && 'translate-x-0'
           }`}
         >
-          <nav className="flex flex-col h-full p-4 overflow-y-auto">
+          <nav className="flex flex-col h-full p-3 overflow-y-auto">
             <a href="/" className="flex items-center justify-center h-12 sm:h-16">
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
-              <h2 className="text-2xl text-white whitespace-nowrap sm:text-3xl">TrámitesEC</h2>
+              <h2 className="text-2xl text-white whitespace-nowrap">TrámitesEC</h2>
             </a>
             <ul className="flex flex-col flex-1 gap-1 mt-5 text-sm">
               <li>

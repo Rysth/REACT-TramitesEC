@@ -40,7 +40,7 @@ function CustomerTable({ currentItems, showModal }) {
           <TableRow className="sticky top-0 z-40 border-b border-x-0">
             <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
             <TableHeaderCell className="w-1/12 bg-gray-100 ">Cédula</TableHeaderCell>
-            <TableHeaderCell className="w-3/12 bg-gray-100 ">Cliente</TableHeaderCell>
+            <TableHeaderCell className="w-3/12 bg-gray-100 ">Nombre Completo</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Usuario</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Celular</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Acciones</TableHeaderCell>

@@ -38,15 +38,15 @@ function ProcedureTable({ currentItems, showModal }) {
       <Table>
         <TableHead>
           <TableRow className="border-b border-x-0">
-            <TableHeaderCell className="bg-gray-100 ">Código</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">#</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Fecha</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Cliente</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Trámitador</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Usuario</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Valor</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Pendiente</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100 ">Acciones</TableHeaderCell>
+            <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Código</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Fecha</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Cliente</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Trámitador</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Valor</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Pendiente</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">

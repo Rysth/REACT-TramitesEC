@@ -103,25 +103,6 @@ const updateStateAndStats = (state, action, successMessage) => {
   state.customersOriginal = customers
   state.customersArray = customers
 
-  /* Customer Stats */
-  state.customerStats = [
-    {
-      title: 'Total de Clientes',
-      metric: action.payload.stats.customers_quantity,
-      color: 'indigo',
-    },
-    {
-      title: 'Agregados (Últimos 30 días)',
-      metric: action.payload.stats.customers_added_last_month,
-      color: 'purple',
-    },
-    {
-      title: 'Agregados (Últimos 7 días)',
-      metric: action.payload.stats.customers_added_last_7_days,
-      color: 'blue',
-    },
-  ]
-
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }

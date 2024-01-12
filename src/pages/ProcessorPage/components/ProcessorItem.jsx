@@ -4,7 +4,7 @@ import { TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
-function ProcessorItem({ processor, showModal, showConfirmation }) {
+function ProcessorItem({ index, processor, showModal, showConfirmation }) {
   const dispatch = useDispatch()
   const { id } = useSelector((store) => store.authentication.activeUser)
 
@@ -14,8 +14,8 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
   }
 
   return (
-    <TableRow key={processor.id}>
-      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</TableCell>
+    <TableRow>
+      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{processor.codigo}</TableCell>
       <TableCell className="py-1 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
@@ -50,6 +50,7 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
 }
 
 ProcessorItem.propTypes = {
+  index: PropTypes.number.isRequired,
   processor: PropTypes.shape({
     id: PropTypes.number.isRequired,
     codigo: PropTypes.string.isRequired,
