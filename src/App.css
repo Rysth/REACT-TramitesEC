@@ -20,13 +20,12 @@
   --CL-blue-dark: #001d7a;
 
   /* Pattern */
-  --CL-primary: #1d1a31;
+  --CL-primary: #26223f;
   --CL-secondary: #3b38ff;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f8f9fa;
 }
 
 .bg-blue-dark {

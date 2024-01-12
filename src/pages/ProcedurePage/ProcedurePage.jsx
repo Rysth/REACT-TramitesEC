@@ -2,16 +2,15 @@ import { Card } from '@tremor/react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
+import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import TableStats from '../../components/Table/TableStats'
 import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
 import { procedureActions } from '../../redux/slices/ProcedureSlice'
-import ProcedureTable from './components/ProcedureTable'
-import TableModal from '../../components/Table/TableModal'
 import ProcedureForm from './components/ProcedureForm'
+import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage() {
   const { proceduresArray, procedureStats, procedureOriginal } = useSelector((store) => store.procedure)
@@ -33,7 +32,6 @@ function ProcedurePage() {
         modalSize="2xl"
       />
       <MainLayout>
-        <TableStats categories={procedureStats} />
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámites"

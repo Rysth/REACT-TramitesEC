@@ -16,7 +16,13 @@ function Sidebar() {
 
   return (
     <>
-      <Button type="button" className="mt-3 ms-4 md:hidden" size="xs" color="dark" onClick={openSideBar}>
+      <Button
+        type="button"
+        className="mt-3 ms-4 md:hidden !bg-[var(--CL-primary)]"
+        size="xs"
+        color="dark"
+        onClick={openSideBar}
+      >
         <span className="sr-only">Open sidebar</span>
         {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
@@ -36,7 +42,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
@@ -45,7 +51,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/clientes"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoPeople className="text-xl" />
                   <span>Clientes</span>
@@ -54,7 +60,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/tramites"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoDocument className="text-xl" />
                   <span>Trámites</span>
@@ -66,7 +72,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to={`/profiles/${id}`}
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
                   <MdAccountCircle className="text-xl" />
                   <span>{username}</span>

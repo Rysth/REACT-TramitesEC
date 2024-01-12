@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import TableStats from '../../components/Table/TableStats'
 import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
@@ -32,7 +31,6 @@ function ProcessorPage() {
         setEntitySelected={processorActions.setProcessorSelected}
       />
       <MainLayout>
-        <TableStats categories={processorStats} />
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámitadores"

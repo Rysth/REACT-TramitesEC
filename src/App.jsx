@@ -15,9 +15,9 @@ import { getCustomers } from './redux/slices/CustomerSlice'
 import { getLicenses } from './redux/slices/LicenseSlice'
 import { getProcedures } from './redux/slices/ProcedureSlice'
 import { getProcessors } from './redux/slices/ProcessorSlice'
+import { getStatuses } from './redux/slices/StatusSlice'
 import { getTypes } from './redux/slices/TypeSlice'
 import { getUsers } from './redux/slices/UserSlice'
-import { getStatuses } from './redux/slices/StatusSlice'
 
 function App() {
   const dispatch = useDispatch()
