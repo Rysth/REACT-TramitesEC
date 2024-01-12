@@ -38,15 +38,6 @@ function Sidebar() {
                   to="/"
                   className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
                 >
-                  <MdSpaceDashboard className="text-xl" />
-                  <span>Dashboard</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/tramitadores"
-                  className="flex items-center gap-2 p-2.5 text-[#becaef] rounded-md hover:bg-[var(--CL-secondary)] transition"
-                >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
                 </NavLink>

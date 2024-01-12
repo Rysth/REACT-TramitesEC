@@ -112,6 +112,9 @@ export const AuthenticationSlice = createSlice({
       state.activeUser = action.payload
       updateSessionStorage(state)
     })
+    builder.addCase(createSession.pending, () => {
+      toast.info('Autentificando...', { autoClose: 2000, theme: 'colored' })
+    })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
       state.activeUser = action.payload[1]

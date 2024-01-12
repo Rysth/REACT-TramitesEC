@@ -7,7 +7,6 @@ import './App.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
 import CustomerPage from './pages/CustomerPage/CustomerPage'
-import DashboardPage from './pages/DashboardPage/DashboardPage'
 import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
@@ -52,14 +51,6 @@ function App() {
           />
           <Route
             path="/"
-            element={
-              <ProtectedRoute isAllowed={active} redirectTo="/session">
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tramitadores"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <ProcessorPage />

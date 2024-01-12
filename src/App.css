@@ -17,9 +17,7 @@
 }
 
 :root {
-  --CL-blue-light: #0575e6;
-  --CL-blue-dark: #02298a;
-  --CL-blue-darker: #021b79;
+  --CL-blue-dark: #001d7a;
 
   /* Pattern */
   --CL-primary: #1d1a31;
@@ -31,16 +29,8 @@ body {
   background-color: #f8f9fa;
 }
 
-.bg-blue-light {
-  @apply bg-[var(--CL-blue-light)];
-}
-
 .bg-blue-dark {
   @apply bg-[var(--CL-blue-dark)];
-}
-
-.bg-blue-darker {
-  @apply bg-[var(--CL-blue-darker)];
 }
 
 /* NavLinks */
