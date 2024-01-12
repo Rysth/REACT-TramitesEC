@@ -34,7 +34,7 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
 
   return (
     <article className="flex flex-col items-center justify-between gap-2 p-2 sm:px-4 py-3 bg-[var(--CL-primary)] lg:flex-row rounded-t-lg">
-      <header className="flex items-center gap-1.5 text-white text-xl truncate">
+      <header className="flex items-center gap-1.5 text-white text-xl sm:text-2xl truncate">
         <h3>{title}</h3>
       </header>
       <fieldset className="grid items-center grid-cols-2 gap-1 sm:flex">

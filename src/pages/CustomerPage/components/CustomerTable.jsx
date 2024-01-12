@@ -38,13 +38,12 @@ function CustomerTable({ currentItems, showModal }) {
       <Table>
         <TableHead>
           <TableRow className="sticky top-0 z-40 border-b border-x-0">
-            <TableHeaderCell className="!rounded-none bg-gray-100">#</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Cédula</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Cliente</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Trámitador</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Usuario</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Celular</TableHeaderCell>
-            <TableHeaderCell className="!rounded-none bg-gray-100">Acciones</TableHeaderCell>
+            <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100 ">Cédula</TableHeaderCell>
+            <TableHeaderCell className="w-3/12 bg-gray-100 ">Cliente</TableHeaderCell>
+            <TableHeaderCell className="w-2/12 bg-gray-100 ">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-2/12 bg-gray-100 ">Celular</TableHeaderCell>
+            <TableHeaderCell className="w-2/12 bg-gray-100 ">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
