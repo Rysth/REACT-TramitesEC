@@ -1,5 +1,4 @@
-import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
-import { Button } from 'flowbite-react'
+import { SearchSelect, SearchSelectItem, TextInput, Button } from '@tremor/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { IoPerson, IoCreateSharp, IoSearch, IoDownload } from 'react-icons/io5'
@@ -54,11 +53,11 @@ function TableHeader({ title, searchMethod, restartCurrentPage, showModal, origi
           color="purple"
           required
         />
-        <Button color="blue" size="sm" onClick={showModal}>
+        <Button color="blue" onClick={showModal} className="flex items-center">
           Crear
-          <IoCreateSharp className="ml-1" />
+          <IoCreateSharp className="inline-block ml-1" />
         </Button>
-        <Button color="success" size="sm">
+        <Button color="green">
           <CSVLink data={originalItems} filename={`${fileName}.csv`} className="flex items-center">
             Excel
             <IoDownload className="ml-1" />

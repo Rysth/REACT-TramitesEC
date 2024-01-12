@@ -1,9 +1,9 @@
+import { Button, TableCell, TableRow } from '@tremor/react'
+import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { Badge, Button } from 'flowbite-react'
-import { TableCell, TableRow } from '@tremor/react'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { procedureActions } from '../../../redux/slices/ProcedureSlice'
-import { HiPencilSquare, HiMiniTrash } from 'react-icons/hi2'
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -15,7 +15,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   }
 
   return (
-    <TableRow key={procedure.id}>
+    <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
       <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
@@ -42,19 +42,18 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="sm" color="blue" onClick={() => handleProcedureSelected(procedure.id)} className="px-0">
+        <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
         {procedure.user.id === id && (
           <Button
-            size="sm"
-            color="failure"
+            size="xs"
+            color="red"
             onClick={() => {
               dispatch(procedureActions.setProcedureSelected(procedure.id))
               showConfirmation(true)
             }}
-            className="px-0"
           >
             <span className="sr-only">Eliminar</span>
             <HiMiniTrash />

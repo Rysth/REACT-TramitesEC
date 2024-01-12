@@ -40,10 +40,10 @@ function ProcessorTable({ currentItems, showModal }) {
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
             <TableHeaderCell className="w-1/12 bg-gray-100">Código</TableHeaderCell>
-            <TableHeaderCell className="w-3/12 bg-gray-100">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="w-4/12 bg-gray-100">Nombre Completo</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100">Usuario</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100">Celular</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100">Acciones</TableHeaderCell>
+            <TableHeaderCell className="w-1/12 bg-gray-100">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">

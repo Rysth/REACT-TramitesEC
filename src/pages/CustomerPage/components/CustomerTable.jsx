@@ -48,9 +48,10 @@ function CustomerTable({ currentItems, showModal }) {
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
-          {currentItems.map((customer) => (
+          {currentItems.map((customer, index) => (
             <CustomerItem
-              key={customer.id}
+              key={index}
+              index={index + 1}
               customer={customer}
               showModal={showModal}
               showConfirmation={setConfirmationModal}

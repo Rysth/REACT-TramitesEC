@@ -1,11 +1,11 @@
-import { TableCell, TableRow } from '@tremor/react'
-import { Badge, Button } from 'flowbite-react'
+import { Button, TableCell, TableRow } from '@tremor/react'
+import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
 
-function CustomerItem({ customer, showModal, showConfirmation }) {
+function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
   const { id } = useSelector((store) => store.authentication.activeUser)
 
@@ -15,8 +15,8 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
   }
 
   return (
-    <TableRow key={customer.id}>
-      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</TableCell>
+    <TableRow>
+      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">{customer.direccion}</TableCell>
@@ -31,19 +31,18 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="sm" color="blue" onClick={() => handleCustomerSelected(customer.id)} className="px-0">
+        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
         {customer.user.id === id && (
           <Button
-            size="sm"
-            color="failure"
+            size="xs"
+            color="red"
             onClick={() => {
               dispatch(customerActions.setCustomerSelected(customer.id))
               showConfirmation(true)
             }}
-            className="px-0"
           >
             <span className="sr-only">Eliminar</span>
             <HiMiniTrash />
@@ -55,6 +54,7 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
 }
 
 CustomerItem.propTypes = {
+  index: PropTypes.number.isRequired,
   customer: PropTypes.shape({
     id: PropTypes.number.isRequired,
     cedula: PropTypes.string.isRequired,
@@ -65,10 +65,10 @@ CustomerItem.propTypes = {
     processor: PropTypes.shape({
       nombres: PropTypes.string.isRequired,
       apellidos: PropTypes.string.isRequired,
-      user: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        username: PropTypes.string.isRequired,
-      }),
+    }),
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
     }),
   }),
   showModal: PropTypes.func.isRequired,
