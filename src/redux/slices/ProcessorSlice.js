@@ -99,25 +99,6 @@ const updateStateAndStats = (state, action, successMessage) => {
   state.processorOriginal = processors
   state.processorsArray = processors
 
-  /* processor Stats */
-  state.processorStats = [
-    {
-      title: 'Total de Trámitadores',
-      metric: payload.stats.processors_quantity,
-      color: 'indigo',
-    },
-    {
-      title: 'Agregados (Últimos 30 días)',
-      metric: payload.stats.processors_added_last_month,
-      color: 'purple',
-    },
-    {
-      title: 'Agregados (Últimos 7 días)',
-      metric: payload.stats.processors_added_last_7_days,
-      color: 'blue',
-    },
-  ]
-
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }
@@ -141,7 +122,7 @@ const processorslice = createSlice({
       const filteredProcessors = state.processorOriginal.filter((processor) => {
         const fullName = `${processor.nombres} ${processor.apellidos}`.toLowerCase()
         return (
-          (processor.cedula.toLowerCase().includes(searchData) || fullName.includes(searchData)) &&
+          (processor.codigo.toLowerCase().includes(searchData) || fullName.includes(searchData)) &&
           (!selectedUserId || processor.user.id === selectedUserId)
         )
       })

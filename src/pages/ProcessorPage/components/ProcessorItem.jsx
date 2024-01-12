@@ -16,7 +16,7 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
   return (
     <TableRow key={processor.id}>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{processor.id}</TableCell>
-      <TableCell className="py-1 truncate">{processor.cedula}</TableCell>
+      <TableCell className="py-1 truncate">{processor.codigo}</TableCell>
       <TableCell className="py-1 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
@@ -52,7 +52,7 @@ function ProcessorItem({ processor, showModal, showConfirmation }) {
 ProcessorItem.propTypes = {
   processor: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    cedula: PropTypes.string.isRequired,
+    codigo: PropTypes.string.isRequired,
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     celular: PropTypes.string.isRequired,

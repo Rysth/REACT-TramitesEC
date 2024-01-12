@@ -2,12 +2,8 @@ import { Spinner } from 'flowbite-react'
 
 function Loading() {
   return (
-    <header className="flex flex-col items-center justify-center text-xl text-center h-96 sm:text-2xl ">
-      <Spinner
-        aria-label="Default status example"
-        color="purple"
-        className="w-20 h-20 fill-[var(--CL-primary-indigo)]"
-      />
+    <header className="grid justify-center min-h-[31.5rem] text-xl text-center place-items-center sm:text-2xl ">
+      <Spinner aria-label="Default status example" className="w-20 h-20 fill-[var(--CL-primary)]" />
     </header>
   )
 }

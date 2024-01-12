@@ -39,7 +39,7 @@ function ProcessorTable({ currentItems, showModal }) {
         <TableHead>
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="bg-gray-100">#</TableHeaderCell>
-            <TableHeaderCell className="bg-gray-100">Cédula</TableHeaderCell>
+            <TableHeaderCell className="bg-gray-100">Código</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Nombre Completo</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Usuario</TableHeaderCell>
             <TableHeaderCell className="bg-gray-100">Celular</TableHeaderCell>

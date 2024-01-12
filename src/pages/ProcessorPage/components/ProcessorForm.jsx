@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
-import PropTypes from 'prop-types'
 import { Button, Label, TextInput } from 'flowbite-react'
-import { HiIdentification, HiMiniUserCircle, HiMiniDevicePhoneMobile } from 'react-icons/hi2'
+import PropTypes from 'prop-types'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { HiMiniDevicePhoneMobile, HiMiniUserCircle } from 'react-icons/hi2'
+import { useDispatch, useSelector } from 'react-redux'
 import { createProcessor, updateProcessor } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorForm({ closeModal }) {
@@ -44,19 +44,8 @@ function ProcessorForm({ closeModal }) {
   }, [reset])
 
   return (
-    <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid space-y-2" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="cedula" value="Cédula" />
-          <TextInput
-            id="cedula"
-            placeholder="0985736265"
-            defaultValue={processorSelected && processorSelected.cedula}
-            icon={HiIdentification}
-            {...register('cedula')}
-            required
-          />
-        </div>
         <div>
           <Label htmlFor="nombres" value="Nombres" />
           <TextInput
@@ -68,8 +57,6 @@ function ProcessorForm({ closeModal }) {
             required
           />
         </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="apellidos" value="Apellidos" />
           <TextInput
@@ -81,6 +68,8 @@ function ProcessorForm({ closeModal }) {
             required
           />
         </div>
+      </fieldset>
+      <fieldset className="grid">
         <div>
           <Label htmlFor="celular" value="Celular" />
           <TextInput
@@ -94,7 +83,7 @@ function ProcessorForm({ closeModal }) {
         </div>
       </fieldset>
       <fieldset className="flex items-center justify-end gap-2 mt-10">
-        <Button color="blue" type="submit" className="mt-3">
+        <Button color="blue" type="submit" className="mt-3 ">
           Guardar
         </Button>
         <Button color="failure" onClick={closeModal} className="mt-3">

@@ -5,18 +5,25 @@ import { useState } from 'react'
 import { IoPerson, IoCreateSharp, IoSearch, IoDownload } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { CSVLink } from 'react-csv'
+import debounce from 'lodash/debounce'
+import { useCallback } from 'react'
 
 function TableHeader({ title, searchMethod, restartCurrentPage, showModal, originalItems, fileName }) {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
 
-  const handleSearchData = (event) => {
-    setTimeout(() => {
-      const input = event.target.value.toLowerCase().trim()
-      restartCurrentPage()
+  const debouncedSearch = useCallback(
+    debounce((input) => {
       dispatch(searchMethod({ searchData: input, selectedUserId: value }))
-    }, 500)
+    }, 500),
+    [dispatch, searchMethod, value], // Dependencias
+  )
+
+  const handleSearchData = (event) => {
+    const input = event.target.value.toLowerCase().trim()
+    restartCurrentPage()
+    debouncedSearch(input)
   }
 
   const handleSelectChange = (selectedValue) => {
