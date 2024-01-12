@@ -127,7 +127,6 @@ const proceduresSlice = createSlice({
         state.proceduresArray = state.procedureOriginal
         return
       }
-      console.log(searchData)
 
       // Fix Search system for Procedures
       const filteredProcedures = state.procedureOriginal.filter((procedure) => {

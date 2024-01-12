@@ -3,6 +3,7 @@ import { Button, Badge } from 'flowbite-react'
 import { TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { processorActions } from '../../../redux/slices/ProcessorSlice'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 
 function ProcessorItem({ index, processor, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -29,19 +30,22 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
-          Editar
+        <Button color="blue" size="sm" onClick={() => handleProcessorSelected(processor.id)} className="px-0">
+          <span className="sr-only">Editar</span>
+          <HiPencilSquare />
         </Button>
         {processor.user.id === id && (
           <Button
-            size="xs"
             color="failure"
+            size="sm"
             onClick={() => {
               dispatch(processorActions.setProcessorSelected(processor.id))
               showConfirmation(true)
             }}
+            className="px-0"
           >
-            Eliminar
+            <span className="sr-only">Eliminar</span>
+            <HiMiniTrash />
           </Button>
         )}
       </TableCell>

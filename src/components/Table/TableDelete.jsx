@@ -4,15 +4,15 @@ import PropTypes from 'prop-types'
 
 function TableDelete({ confirmationModal, setConfirmationModal, confirmDelete }) {
   return (
-    <Modal show={confirmationModal} size="sm" onClose={() => setConfirmationModal(false)} className="z-[9000]" popup>
+    <Modal show={confirmationModal} size="md" onClose={() => setConfirmationModal(false)} className="z-[9000]" popup>
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
           <HiOutlineExclamationCircle className="w-24 h-24 mx-auto text-gray-800 sm:h-32 sm:w-32 dark:text-gray-200" />
-          <h3 className="text-lg font-normal leading-5 text-gray-700 sm:text-xl md:text-2xl">
+          <h3 className="text-lg leading-5 text-gray-700 sm:text-xl md:text-2xl">
             ¿Estás seguro/a de querer eliminarlo?
           </h3>
-          <p className="text-xs text-gray-500">¡Es irreversible!</p>
+          <p className="text-sm text-gray-500">¡Es irreversible!</p>
           <div className="flex justify-center gap-2 mt-5">
             <Button
               color="failure"

@@ -1,7 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/tilt-warp');
 @import url('https://fonts.cdnfonts.com/css/poppins');
-
-/* @import url('https://fonts.cdnfonts.com/css/larsseit-font-family'); */
 
 /* For WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
@@ -44,5 +41,5 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Tilt Warp', sans-serif;
+  font-weight: bold;
 }

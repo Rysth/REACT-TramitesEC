@@ -197,7 +197,7 @@ function CustomerForm({ closeModal }) {
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
-          <Label htmlFor="placa" value="Placa (Opcional)" />
+          <Label htmlFor="placa" value="Placa" />
           <TextInput
             id="placa"
             defaultValue={procedureSelected && procedureSelected.placa}
@@ -206,7 +206,7 @@ function CustomerForm({ closeModal }) {
           />
         </div>
         <div>
-          <Label htmlFor="observaciones" value="Observaciones (Opcional)" />
+          <Label htmlFor="observaciones" value="Observaciones" />
           <TextInput
             id="observaciones"
             defaultValue={procedureSelected && procedureSelected.observaciones}

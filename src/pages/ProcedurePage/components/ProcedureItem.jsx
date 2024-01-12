@@ -3,8 +3,9 @@ import { Badge, Button } from 'flowbite-react'
 import { TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { procedureActions } from '../../../redux/slices/ProcedureSlice'
+import { HiPencilSquare, HiMiniTrash } from 'react-icons/hi2'
 
-function ProcedureItem({ procedure, showModal, showConfirmation }) {
+function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
   const { id } = useSelector((store) => store.authentication.activeUser)
 
@@ -15,19 +16,19 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
 
   return (
     <TableRow key={procedure.id}>
-      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{procedure.id}</TableCell>
+      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
       <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
       <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">
+        <Badge color="indigo" className="grid place-items-center">
+          {procedure.status.nombre}
+        </Badge>
+      </TableCell>
 
       <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
           {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
-        </Badge>
-      </TableCell>
-      <TableCell className="py-1 truncate">
-        <Badge color="indigo" className="grid place-items-center">
-          {procedure.user.username}
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
@@ -41,19 +42,22 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
-          Editar
+        <Button size="sm" color="blue" onClick={() => handleProcedureSelected(procedure.id)} className="px-0">
+          <span className="sr-only">Editar</span>
+          <HiPencilSquare />
         </Button>
         {procedure.user.id === id && (
           <Button
-            size="xs"
+            size="sm"
             color="failure"
             onClick={() => {
               dispatch(procedureActions.setProcedureSelected(procedure.id))
               showConfirmation(true)
             }}
+            className="px-0"
           >
-            Eliminar
+            <span className="sr-only">Eliminar</span>
+            <HiMiniTrash />
           </Button>
         )}
       </TableCell>
@@ -64,6 +68,7 @@ function ProcedureItem({ procedure, showModal, showConfirmation }) {
 // TODO: Display the Table and Items.
 
 ProcedureItem.propTypes = {
+  index: PropTypes.number.isRequired,
   procedure: PropTypes.shape({
     id: PropTypes.number.isRequired,
     codigo: PropTypes.string.isRequired,

@@ -41,6 +41,7 @@ function CustomerTable({ currentItems, showModal }) {
             <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
             <TableHeaderCell className="w-1/12 bg-gray-100 ">Cédula</TableHeaderCell>
             <TableHeaderCell className="w-3/12 bg-gray-100 ">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="w-2/12 bg-gray-100 ">Dirección</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Usuario</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Celular</TableHeaderCell>
             <TableHeaderCell className="w-2/12 bg-gray-100 ">Acciones</TableHeaderCell>

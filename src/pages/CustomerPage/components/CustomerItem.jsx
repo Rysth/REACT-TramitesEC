@@ -3,6 +3,7 @@ import { Badge, Button } from 'flowbite-react'
 import { TableCell, TableRow } from '@tremor/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 
 function CustomerItem({ customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -18,6 +19,7 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{customer.id}</TableCell>
       <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">{customer.direccion}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.user.username}
@@ -29,19 +31,22 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
-          Editar
+        <Button size="sm" color="blue" onClick={() => handleCustomerSelected(customer.id)} className="px-0">
+          <span className="sr-only">Editar</span>
+          <HiPencilSquare />
         </Button>
         {customer.user.id === id && (
           <Button
-            size="xs"
+            size="sm"
             color="failure"
             onClick={() => {
               dispatch(customerActions.setCustomerSelected(customer.id))
               showConfirmation(true)
             }}
+            className="px-0"
           >
-            Eliminar
+            <span className="sr-only">Eliminar</span>
+            <HiMiniTrash />
           </Button>
         )}
       </TableCell>
