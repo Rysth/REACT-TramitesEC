@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types'
-import { Badge, Button } from 'flowbite-react'
 import { TableCell, TableRow } from '@tremor/react'
+import { Badge, Button } from 'flowbite-react'
+import PropTypes from 'prop-types'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions } from '../../../redux/slices/CustomerSlice'
-import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 
 function CustomerItem({ customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()

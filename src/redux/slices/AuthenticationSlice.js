@@ -16,11 +16,11 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Email/Contraseña Incorrectas!', { theme: 'colored' })
+    toast.error('¡Email/Contraseña Incorrectas!')
   } else if (error.response.status === 400) {
-    toast.error('¡Cuenta no Existe!', { theme: 'colored' })
+    toast.error('¡Cuenta no Existe!')
   } else if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('¡Problema en el Servidor!')
   } else {
     throw new Error(error)
   }
@@ -62,7 +62,7 @@ export const destroySession = createAsyncThunk('authentication/destroySession', 
     )
   } catch (error) {
     if (error.response.status === 500) {
-      toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+      toast.error('¡Problema en el Servidor!')
     } else {
       throw new Error(error)
     }

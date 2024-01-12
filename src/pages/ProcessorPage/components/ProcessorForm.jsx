@@ -1,4 +1,5 @@
-import { Button, Label, TextInput } from 'flowbite-react'
+import { Button, TextInput } from '@tremor/react'
+import { Label } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -86,7 +87,7 @@ function ProcessorForm({ closeModal }) {
         <Button color="blue" type="submit" className="mt-3 ">
           Guardar
         </Button>
-        <Button color="failure" onClick={closeModal} className="mt-3">
+        <Button color="red" onClick={closeModal} className="mt-3">
           Cancelar
         </Button>
       </fieldset>

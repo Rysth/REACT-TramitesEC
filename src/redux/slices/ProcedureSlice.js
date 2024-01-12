@@ -25,7 +25,7 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'dark' })
+    toast.error('¡Problema en el Servidor!')
   }
 
   throw new Error(error)

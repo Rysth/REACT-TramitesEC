@@ -13,29 +13,18 @@ const initialState = {
 }
 
 const handleRequestError = (error) => {
-  if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
-
-    setTimeout(() => {
-      sessionStorage.removeItem('active')
-      sessionStorage.removeItem('activeUser')
-      sessionStorage.removeItem('activeToken')
-      window.location.href = '/session'
-    }, 3000)
-  }
-
   if (error.response.status === 409) {
-    toast.error('¡Trámitador Tiene Clientes!', { theme: 'colored' })
+    toast.error('¡Trámitador Tiene Clientes!')
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Trámitador ya Registrado!', { theme: 'colored' })
+    toast.error('¡Trámitador ya Registrado!')
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('¡Problema en el Servidor!')
   }
 
   throw new Error(error)
@@ -100,7 +89,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   state.processorsArray = processors
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000 })
   }
 }
 

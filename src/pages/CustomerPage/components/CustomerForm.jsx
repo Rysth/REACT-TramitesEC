@@ -1,9 +1,17 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { Button, TextInput } from '@tremor/react'
+import { Label, Select } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { Button, Label, Select, TextInput } from 'flowbite-react'
-import { HiIdentification, HiMiniEnvelope, HiMiniUserCircle, HiMiniDevicePhoneMobile, HiMapPin } from 'react-icons/hi2'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import {
+  HiIdentification,
+  HiMapPin,
+  HiMiniDevicePhoneMobile,
+  HiMiniEnvelope,
+  HiMiniUserCircle,
+  HiUser,
+} from 'react-icons/hi2'
+import { useDispatch, useSelector } from 'react-redux'
 import { createCliente, updateCliente } from '../../../redux/slices/CustomerSlice'
 
 function CustomerForm({ closeModal }) {
@@ -50,6 +58,7 @@ function CustomerForm({ closeModal }) {
         <div>
           <Label htmlFor="processor_id" value="Trámitador" />
           <Select
+            icon={HiUser}
             id="processor_id"
             {...register('processor_id')}
             defaultValue={customerSelected && customerSelected.processor.id}
@@ -66,7 +75,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="cedula" value="Cédula" />
           <TextInput
             id="cedula"
-            placeholder="0985736265"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.cedula}
             icon={HiIdentification}
             {...register('cedula')}
@@ -77,7 +86,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="nombres" value="Nombres" />
           <TextInput
             id="nombres"
-            placeholder="John Doe"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.nombres}
             icon={HiMiniUserCircle}
             {...register('nombres')}
@@ -90,7 +99,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="apellidos" value="Apellidos" />
           <TextInput
             id="apellidos"
-            placeholder="Sánchez Castro"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.apellidos}
             icon={HiMiniUserCircle}
             {...register('apellidos')}
@@ -101,7 +110,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="celular" value="Celular" />
           <TextInput
             id="celular"
-            placeholder="0966553564"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.celular}
             icon={HiMiniDevicePhoneMobile}
             {...register('celular')}
@@ -114,7 +123,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="direccion" value="Dirección" />
           <TextInput
             id="direccion"
-            placeholder="Av. de las Américas"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.direccion}
             icon={HiMapPin}
             {...register('direccion')}
@@ -124,7 +133,7 @@ function CustomerForm({ closeModal }) {
           <Label htmlFor="email" value="Correo Electrónico" />
           <TextInput
             id="email"
-            placeholder="username@example.com"
+            placeholder=""
             defaultValue={customerSelected && customerSelected.email}
             icon={HiMiniEnvelope}
             {...register('email')}
@@ -136,7 +145,7 @@ function CustomerForm({ closeModal }) {
         <Button color="blue" type="submit" className="mt-3">
           Guardar
         </Button>
-        <Button color="failure" onClick={closeModal} className="mt-3">
+        <Button color="red" onClick={closeModal} className="mt-3">
           Cancelar
         </Button>
       </fieldset>

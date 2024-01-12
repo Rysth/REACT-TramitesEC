@@ -22,7 +22,7 @@ function TableModal({ openModal, closeModal, formComponent, slice, title, setEnt
       size={modalSize ? modalSize : 'lg'}
     >
       <header className="p-2 py-4 sm:p-6 text-center text-white border-b rounded-t-md bg-[var(--CL-primary)]">
-        <h3 className="text-xl sm:text-3xl md:text-4xl">{headerMessage}</h3>
+        <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
       </header>
       <Modal.Body>{React.createElement(formComponent, { closeModal })}</Modal.Body>
     </Modal>

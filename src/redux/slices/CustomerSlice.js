@@ -13,24 +13,13 @@ const initialState = {
 }
 
 const handleRequestError = (error) => {
-  if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000, theme: 'colored' })
-
-    setTimeout(() => {
-      sessionStorage.removeItem('active')
-      sessionStorage.removeItem('activeUser')
-      sessionStorage.removeItem('activeToken')
-      window.location.href = '/session'
-    }, 3000)
-  }
-
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos', { theme: 'colored' })
+    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos')
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Cliente tiene Trámites!', { theme: 'colored' })
+    toast.error('¡Cliente tiene Trámites!')
   }
 
   throw new Error(error)
@@ -104,7 +93,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   state.customersArray = customers
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
+    toast.success(successMessage, { autoClose: 2000 })
   }
 }
 
