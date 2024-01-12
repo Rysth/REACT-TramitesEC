@@ -9,6 +9,7 @@ import { createCliente, updateCliente } from '../../../redux/slices/CustomerSlic
 function CustomerForm({ closeModal }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
+  const { id: user_id } = useSelector((store) => store.authentication.activeUser)
   const { processorOriginal } = useSelector((store) => store.processor)
   const { customerSelected } = useSelector((store) => store.customer)
   const { register, handleSubmit, reset } = useForm()
@@ -27,7 +28,12 @@ function CustomerForm({ closeModal }) {
       return
     }
 
-    dispatch(createCliente({ activeToken, newCustomer: customerData })).then(() => closeModal())
+    const newCustomerData = {
+      ...newCustomer,
+      user_id,
+    }
+
+    dispatch(createCliente({ activeToken, newCustomer: newCustomerData })).then(() => closeModal())
   }
 
   const onSubmit = (customerData) => {
@@ -112,7 +118,6 @@ function CustomerForm({ closeModal }) {
             defaultValue={customerSelected && customerSelected.direccion}
             icon={HiMapPin}
             {...register('direccion')}
-            required
           />
         </div>
         <div>

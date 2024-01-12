@@ -30,7 +30,7 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('¡Cliente tiene Trámites!', { theme: 'colored' })
   }
 
   throw new Error(error)
@@ -129,7 +129,7 @@ const customerSlice = createSlice({
           (customer.cedula.toLowerCase().includes(searchData) ||
             fullName.includes(searchData) ||
             customer.email.toLowerCase().includes(searchData)) &&
-          (!selectedUserId || customer.processor.user.id === selectedUserId)
+          (!selectedUserId || customer.user.id === selectedUserId)
         )
       })
 

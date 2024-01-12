@@ -20,7 +20,7 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
-          {customer.processor.user.username}
+          {customer.user.username}
         </Badge>
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
@@ -32,7 +32,7 @@ function CustomerItem({ customer, showModal, showConfirmation }) {
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
           Editar
         </Button>
-        {customer.processor.user.id === id && (
+        {customer.user.id === id && (
           <Button
             size="xs"
             color="failure"
