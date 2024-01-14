@@ -26,7 +26,7 @@ function CustomerForm({ closeModal }) {
   const { procedureSelected } = useSelector((store) => store.procedure)
   const { register, handleSubmit, reset } = useForm()
   //Form
-  const [typeID, setTypeID] = useState(1)
+  const [typeID, setTypeID] = useState(0)
 
   const handleCreateOrUpdate = (newProcedure) => {
     const procedureData = {

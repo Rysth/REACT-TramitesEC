@@ -88,7 +88,6 @@ ProcedureItem.propTypes = {
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      username: PropTypes.string.isRequired,
     }),
     license: PropTypes.shape({
       id: PropTypes.number.isRequired,
