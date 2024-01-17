@@ -51,7 +51,7 @@ function ProcessorForm({ closeModal }) {
           <Label htmlFor="nombres" value="Nombres" />
           <TextInput
             id="nombres"
-            placeholder="John Doe"
+            placeholder=""
             defaultValue={processorSelected && processorSelected.nombres}
             icon={HiMiniUserCircle}
             {...register('nombres')}
@@ -62,7 +62,7 @@ function ProcessorForm({ closeModal }) {
           <Label htmlFor="apellidos" value="Apellidos" />
           <TextInput
             id="apellidos"
-            placeholder="Sánchez Castro"
+            placeholder=""
             defaultValue={processorSelected && processorSelected.apellidos}
             icon={HiMiniUserCircle}
             {...register('apellidos')}
@@ -75,7 +75,7 @@ function ProcessorForm({ closeModal }) {
           <Label htmlFor="celular" value="Celular" />
           <TextInput
             id="celular"
-            placeholder="0966553564"
+            placeholder=""
             defaultValue={processorSelected && processorSelected.celular}
             icon={HiMiniDevicePhoneMobile}
             {...register('celular')}
