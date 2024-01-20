@@ -8,7 +8,7 @@ import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcessor, processorActions } from '../../../redux/slices/ProcessorSlice'
 import ProcessorItem from './ProcessorItem'
 
-function ProcessorTable({ currentItems, showModal }) {
+function ProcessorTable({ currentItems, showModal, handleDelete }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -16,8 +16,10 @@ function ProcessorTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id }))
-    dispatch(processorActions.setProcessorSelected(''))
+    dispatch(destroyProcessor({ activeToken, processorID: processorSelected.id })).then(() => {
+      dispatch(processorActions.setProcessorSelected(''))
+      handleDelete() // Call the handleDelete function passed as a prop
+    })
   }
 
   if (loading) {
@@ -65,6 +67,7 @@ function ProcessorTable({ currentItems, showModal }) {
 ProcessorTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 }
 
 export default ProcessorTable

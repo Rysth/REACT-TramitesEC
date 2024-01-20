@@ -7,16 +7,16 @@ import { CSVLink } from 'react-csv'
 import debounce from 'lodash/debounce'
 import { useCallback } from 'react'
 
-function TableHeader({ searchMethod, restartCurrentPage, showModal, originalItems, fileName }) {
+function TableHeader({ restartCurrentPage, showModal, originalItems, fileName, setSearch, setSelectedUserId }) {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
 
   const debouncedSearch = useCallback(
     debounce((input) => {
-      dispatch(searchMethod({ searchData: input, selectedUserId: value }))
+      setSearch(input)
     }, 500),
-    [dispatch, searchMethod, value], // Dependencias
+    [dispatch, value], // Dependencias
   )
 
   const handleSearchData = (event) => {
@@ -27,7 +27,7 @@ function TableHeader({ searchMethod, restartCurrentPage, showModal, originalItem
 
   const handleSelectChange = (selectedValue) => {
     setValue(selectedValue)
-    dispatch(searchMethod({ searchData: '', selectedUserId: selectedValue }))
+    setSelectedUserId(selectedValue)
     restartCurrentPage()
   }
 
@@ -75,11 +75,12 @@ function TableHeader({ searchMethod, restartCurrentPage, showModal, originalItem
 }
 
 TableHeader.propTypes = {
-  searchMethod: PropTypes.func.isRequired,
   restartCurrentPage: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   originalItems: PropTypes.array.isRequired,
   fileName: PropTypes.string.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  setSelectedUserId: PropTypes.func.isRequired,
 }
 
 export default TableHeader

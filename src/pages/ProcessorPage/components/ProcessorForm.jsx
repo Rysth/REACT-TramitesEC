@@ -7,42 +7,37 @@ import { HiMiniDevicePhoneMobile, HiMiniUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createProcessor, updateProcessor } from '../../../redux/slices/ProcessorSlice'
 
-function ProcessorForm({ closeModal }) {
+function ProcessorForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { id: user_id } = useSelector((store) => store.authentication.activeUser)
   const { processorSelected } = useSelector((store) => store.processor)
-  const { register, handleSubmit, reset } = useForm()
-
-  const handleCreateOrUpdate = (newProcessor) => {
-    const processorData = {
-      ...newProcessor,
-    }
-
-    if (processorSelected) {
-      const oldProcessor = {
-        id: processorSelected.id,
-        ...processorData,
-      }
-      dispatch(updateProcessor({ activeToken, oldProcessor })).then(() => closeModal())
-      return
-    }
-
-    const newProccessorData = {
-      ...newProcessor,
-      user_id,
-    }
-
-    dispatch(createProcessor({ activeToken, newProcessor: newProccessorData })).then(() => closeModal())
-  }
+  const { register, handleSubmit, reset, setValue } = useForm()
 
   const onSubmit = (processorData) => {
-    handleCreateOrUpdate(processorData)
+    if (processorSelected) {
+      // Update processor
+      dispatch(updateProcessor({ activeToken, processorData: { ...processorData, id: processorSelected.id } }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    } else {
+      // Create new processor
+
+      dispatch(createProcessor({ activeToken, processorData }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    }
   }
 
   useEffect(() => {
-    reset()
-  }, [reset])
+    if (processorSelected) {
+      // Populate the form with the selected processor's data
+      Object.keys(processorSelected).forEach((key) => {
+        setValue(key, processorSelected[key])
+      })
+    } else {
+      reset() // Reset the form if no processor is selected
+    }
+  }, [processorSelected, reset, setValue])
 
   return (
     <form className="grid space-y-2" onSubmit={handleSubmit(onSubmit)}>

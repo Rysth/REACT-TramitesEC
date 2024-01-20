@@ -45,11 +45,13 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving processors (GET)
-export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page }) => {
-  console.log(page)
+export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page, search, userId }) => {
+  const params = { page }
+  if (search) params.search = search
+  if (userId) params.userId = userId
 
   return axios.get(`${API_URL}/api/v1/processors`, {
-    params: { page },
+    params,
     headers: {
       Authorization: activeToken,
     },
@@ -58,8 +60,8 @@ export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ a
 })
 
 // Thunk for creating a new processor (POST)
-export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, newProcessor }) => {
-  return axios.post(`${API_URL}/api/v1/processors/`, newProcessor, {
+export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, processorData }) => {
+  return axios.post(`${API_URL}/api/v1/processors/`, processorData, {
     headers: {
       Authorization: activeToken,
     },
@@ -68,8 +70,8 @@ export const createProcessor = createAsyncThunkWrapper('createProcessor', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, oldProcessor }) => {
-  return axios.put(`${API_URL}/api/v1/processors/${oldProcessor.id}`, oldProcessor, {
+export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, processorData }) => {
+  return axios.put(`${API_URL}/api/v1/processors/${processorData.id}`, processorData, {
     headers: {
       Authorization: activeToken,
     },
@@ -89,12 +91,14 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const { processors, pagination } = action.payload
-  state.processorOriginal = processors
-  state.processorsArray = processors
-  state.currentPage = pagination.current_page
-  state.totalPages = pagination.total_pages
-  state.totalProcessors = pagination.total_count
+  if (action.payload.processors) {
+    const { processors, pagination } = action.payload
+    state.processorOriginal = processors
+    state.processorsArray = processors
+    state.currentPage = pagination.current_page
+    state.totalPages = pagination.total_pages
+    state.totalProcessors = pagination.total_count
+  }
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })
