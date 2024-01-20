@@ -10,6 +10,9 @@ const initialState = {
   processorStats: [],
   processorSelected: null,
   loading: true,
+  currentPage: 1,
+  totalPages: 0,
+  totalProcessors: 0,
 }
 
 const handleRequestError = (error) => {
@@ -42,8 +45,11 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving processors (GET)
-export const getProcessors = createAsyncThunkWrapper('getProcessors', async (activeToken) => {
+export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page }) => {
+  console.log(page)
+
   return axios.get(`${API_URL}/api/v1/processors`, {
+    params: { page },
     headers: {
       Authorization: activeToken,
     },
@@ -83,10 +89,12 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const { payload } = action
-  const processors = payload.processors
+  const { processors, pagination } = action.payload
   state.processorOriginal = processors
   state.processorsArray = processors
+  state.currentPage = pagination.current_page
+  state.totalPages = pagination.total_pages
+  state.totalProcessors = pagination.total_count
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })

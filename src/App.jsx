@@ -25,13 +25,7 @@ function App() {
 
   useEffect(() => {
     if (active) {
-      dispatch(getProcessors(activeToken))
-      dispatch(getCustomers(activeToken))
       dispatch(getUsers(activeToken))
-      dispatch(getProcedures(activeToken))
-      dispatch(getTypes(activeToken))
-      dispatch(getLicenses(activeToken))
-      dispatch(getStatuses(activeToken))
     }
   }, [dispatch, activeToken, active])
 

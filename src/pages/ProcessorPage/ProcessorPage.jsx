@@ -1,24 +1,39 @@
 import { Card } from '@tremor/react'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import usePagination from '../../hooks/usePagination'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
-import { processorActions } from '../../redux/slices/ProcessorSlice'
+import { getProcessors, processorActions } from '../../redux/slices/ProcessorSlice'
 import ProcessorForm from './components/ProcessorForm'
 import ProcessorTable from './components/ProcessorTable'
 
 function ProcessorPage() {
-  const { processorsArray, processorOriginal } = useSelector((store) => store.processor)
-  const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(processorsArray)
+  const dispatch = useDispatch()
+  const { activeToken } = useSelector((store) => store.authentication)
+  const { processorsArray, processorOriginal, totalPages } = useSelector((store) => store.processor)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1)
+    dispatch(getProcessors({ activeToken, page: selectedItem.selected + 1 }))
+  }
+
+  const resetToFirstPage = () => {
+    setCurrentPage(1)
+    dispatch(getProcessors({ activeToken, page: 1 }))
+  }
 
   const [openModal, setOpenModal] = useState(false)
   const showModal = () => setOpenModal(true)
   const closeModal = () => setOpenModal(false)
+
+  useEffect(() => {
+    dispatch(getProcessors({ activeToken, page: 1 }))
+  }, [dispatchEvent])
 
   return (
     <SectionLayout title="Trámitadores" subtitle="Información General de los Trámitadores">
@@ -35,20 +50,15 @@ function ProcessorPage() {
           <TableHeader
             title="Listado de Trámitadores"
             searchMethod={processorActions.searchProcessor}
-            restartCurrentPage={restartCurrentPage}
+            restartCurrentPage={resetToFirstPage}
             showModal={showModal}
             originalItems={processorOriginal}
             fileName="TRAMITESEC-Tramitadores"
           />
           <TableLayout>
-            <ProcessorTable currentItems={currentItems} showModal={showModal} />
+            <ProcessorTable currentItems={processorsArray} showModal={showModal} />
           </TableLayout>
-          <TablePaginate
-            currentPage={currentPage}
-            pageCount={pageCount}
-            handlePageChange={handlePageChange}
-            customArray={processorsArray}
-          />
+          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
       </MainLayout>
     </SectionLayout>
