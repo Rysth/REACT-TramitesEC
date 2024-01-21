@@ -65,8 +65,6 @@ function ProcessorPage() {
             title="Listado de Trámitadores"
             restartCurrentPage={resetToFirstPage}
             showModal={showModal}
-            originalItems={processorOriginal}
-            fileName="TRAMITESEC-Tramitadores"
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
           />

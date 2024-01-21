@@ -1,13 +1,11 @@
-import { SearchSelect, SearchSelectItem, TextInput, Button } from '@tremor/react'
-import PropTypes from 'prop-types'
-import { useState } from 'react'
-import { IoPerson, IoCreateSharp, IoSearch, IoDownload } from 'react-icons/io5'
-import { useDispatch, useSelector } from 'react-redux'
-import { CSVLink } from 'react-csv'
+import { Button, SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
 import debounce from 'lodash/debounce'
-import { useCallback } from 'react'
+import PropTypes from 'prop-types'
+import { useCallback, useState } from 'react'
+import { IoCreateSharp, IoPerson, IoSearch } from 'react-icons/io5'
+import { useDispatch, useSelector } from 'react-redux'
 
-function TableHeader({ restartCurrentPage, showModal, originalItems, fileName, setSearch, setSelectedUserId }) {
+function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUserId }) {
   const dispatch = useDispatch()
   const [value, setValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
@@ -61,12 +59,6 @@ function TableHeader({ restartCurrentPage, showModal, originalItems, fileName, s
               Crear
               <IoCreateSharp className="inline-block ml-1" />
             </Button>
-            <Button color="green">
-              <CSVLink data={originalItems} filename={`${fileName}.csv`} className="flex items-center">
-                Excel
-                <IoDownload className="ml-1" />
-              </CSVLink>
-            </Button>
           </div>
         </div>
       </fieldset>
@@ -77,8 +69,6 @@ function TableHeader({ restartCurrentPage, showModal, originalItems, fileName, s
 TableHeader.propTypes = {
   restartCurrentPage: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
-  originalItems: PropTypes.array.isRequired,
-  fileName: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
 }

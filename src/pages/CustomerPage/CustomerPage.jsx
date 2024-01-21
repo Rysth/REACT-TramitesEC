@@ -65,8 +65,6 @@ function CustomerPage() {
             title="Listado de Clientes"
             restartCurrentPage={resetToFirstPage}
             showModal={showModal}
-            originalItems={customersOriginal}
-            fileName="TRAMITESEC-Clientes"
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
           />
