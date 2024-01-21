@@ -8,7 +8,7 @@ import TableDelete from '../../../components/Table/TableDelete'
 import { customerActions, destroyCustomer } from '../../../redux/slices/CustomerSlice'
 import CustomerItem from './CustomerItem'
 
-function CustomerTable({ currentItems, showModal, handleDelete }) {
+function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -50,15 +50,19 @@ function CustomerTable({ currentItems, showModal, handleDelete }) {
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
-          {currentItems.map((customer, index) => (
-            <CustomerItem
-              key={index}
-              index={index + 1}
-              customer={customer}
-              showModal={showModal}
-              showConfirmation={setConfirmationModal}
-            />
-          ))}
+          {currentItems.map((customer, index) => {
+            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+
+            return (
+              <CustomerItem
+                key={calculatedIndex}
+                index={calculatedIndex}
+                customer={customer}
+                showModal={showModal}
+                showConfirmation={setConfirmationModal}
+              />
+            )
+          })}
         </TableBody>
       </Table>
     </>
@@ -69,6 +73,8 @@ CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
 }
 
 export default CustomerTable

@@ -33,7 +33,7 @@ function App() {
     <BrowserRouter>
       <ToastContainer />
       {active && <Sidebar />}
-      <main className="h-screen">
+      <main className="min-h-screen">
         <Routes>
           <Route
             path="/session"

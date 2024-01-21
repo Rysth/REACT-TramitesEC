@@ -33,7 +33,7 @@ function Sidebar() {
             open && 'translate-x-0'
           }`}
         >
-          <nav className="flex flex-col h-full p-3 overflow-y-auto">
+          <nav className="flex flex-col h-full p-4 px-3 overflow-y-auto">
             <a href="/" className="flex items-center justify-center h-12 sm:h-16">
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl text-white whitespace-nowrap">TrámitesEC</h2>

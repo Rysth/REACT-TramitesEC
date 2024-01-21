@@ -14,7 +14,7 @@ import ProcessorTable from './components/ProcessorTable'
 function ProcessorPage() {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorsArray, processorOriginal, totalPages } = useSelector((store) => store.processor)
+  const { processorsArray, totalPages } = useSelector((store) => store.processor)
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
   const [selectedUserId, setSelectedUserId] = useState(null)
@@ -69,7 +69,13 @@ function ProcessorPage() {
             setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <ProcessorTable currentItems={processorsArray} showModal={showModal} handleDelete={handleDelete} />
+            <ProcessorTable
+              currentItems={processorsArray}
+              currentPage={currentPage}
+              itemsPerPage={25}
+              showModal={showModal}
+              handleDelete={handleDelete}
+            />
           </TableLayout>
           <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>

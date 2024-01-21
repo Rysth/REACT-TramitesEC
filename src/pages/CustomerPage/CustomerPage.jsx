@@ -14,7 +14,7 @@ import CustomerTable from './components/CustomerTable'
 function CustomerPage() {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { customersArray, customersOriginal, totalPages } = useSelector((store) => store.customer)
+  const { customersArray, totalPages } = useSelector((store) => store.customer)
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
   const [selectedUserId, setSelectedUserId] = useState(null)
@@ -69,7 +69,13 @@ function CustomerPage() {
             setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <CustomerTable currentItems={customersArray} showModal={showModal} handleDelete={handleDelete} />
+            <CustomerTable
+              currentItems={customersArray}
+              currentPage={currentPage}
+              itemsPerPage={25}
+              showModal={showModal}
+              handleDelete={handleDelete}
+            />
           </TableLayout>
           <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
