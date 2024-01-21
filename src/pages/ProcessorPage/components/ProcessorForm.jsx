@@ -15,13 +15,10 @@ function ProcessorForm({ closeModal, refetchFunction }) {
 
   const onSubmit = (processorData) => {
     if (processorSelected) {
-      // Update processor
       dispatch(updateProcessor({ activeToken, processorData: { ...processorData, id: processorSelected.id } }))
         .then(() => refetchFunction())
         .then(() => closeModal())
     } else {
-      // Create new processor
-
       dispatch(createProcessor({ activeToken, processorData }))
         .then(() => refetchFunction())
         .then(() => closeModal())
@@ -92,6 +89,7 @@ function ProcessorForm({ closeModal, refetchFunction }) {
 
 ProcessorForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
 }
 
 export default ProcessorForm

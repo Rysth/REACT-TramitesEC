@@ -25,7 +25,7 @@ function ProcessorPage() {
 
   const handlePageChange = (selectedItem) => {
     setCurrentPage(selectedItem.selected + 1)
-    dispatch(getProcessors({ activeToken, page: selectedItem.selected + 1 }))
+    dispatch(getProcessors({ activeToken, page: selectedItem.selected + 1, search, userId: selectedUserId }))
   }
 
   const resetToFirstPage = () => {

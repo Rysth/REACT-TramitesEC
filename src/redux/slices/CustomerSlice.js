@@ -10,6 +10,9 @@ const initialState = {
   customerStats: [],
   customerSelected: null,
   loading: true,
+  currentPage: 1,
+  totalPages: 0,
+  totalProcessors: 0,
 }
 
 const handleRequestError = (error) => {
@@ -37,18 +40,13 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving clients (GET)
-export const getCustomers = createAsyncThunkWrapper('getCustomers', async (activeToken) => {
-  return axios.get(`${API_URL}/api/v1/customers`, {
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+export const getCustomers = createAsyncThunkWrapper('getCustomers', async ({ activeToken, page, search, userId }) => {
+  const params = { page }
+  if (search) params.search = search
+  if (userId) params.userId = userId
 
-// Thunk for retrieving clients (GET)
-export const getCustomersByProcessor = createAsyncThunkWrapper('getCustomersByProcessor', async (activeToken) => {
   return axios.get(`${API_URL}/api/v1/customers`, {
+    params,
     headers: {
       Authorization: activeToken,
     },
@@ -57,8 +55,8 @@ export const getCustomersByProcessor = createAsyncThunkWrapper('getCustomersByPr
 })
 
 // Thunk for creating a new client (POST)
-export const createCliente = createAsyncThunkWrapper('createCliente', async ({ activeToken, newCustomer }) => {
-  return axios.post(`${API_URL}/api/v1/customers/`, newCustomer, {
+export const createCustomer = createAsyncThunkWrapper('createCustomer', async ({ activeToken, customerData }) => {
+  return axios.post(`${API_URL}/api/v1/customers/`, customerData, {
     headers: {
       Authorization: activeToken,
     },
@@ -67,8 +65,8 @@ export const createCliente = createAsyncThunkWrapper('createCliente', async ({ a
 })
 
 // Thunk for updating an existing client (PUT)
-export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ activeToken, oldCustomer }) => {
-  return axios.put(`${API_URL}/api/v1/customers/${oldCustomer.id}`, oldCustomer, {
+export const updateCustomer = createAsyncThunkWrapper('updateCustomer', async ({ activeToken, customerData }) => {
+  return axios.put(`${API_URL}/api/v1/customers/${customerData.id}`, customerData, {
     headers: {
       Authorization: activeToken,
     },
@@ -77,7 +75,7 @@ export const updateCliente = createAsyncThunkWrapper('updateCliente', async ({ a
 })
 
 // Thunk for deleting a client (DELETE)
-export const destroyCliente = createAsyncThunkWrapper('destroyCliente', async ({ activeToken, customerID }) => {
+export const destroyCustomer = createAsyncThunkWrapper('destroyCustomer', async ({ activeToken, customerID }) => {
   return axios.delete(`${API_URL}/api/v1/customers/${customerID}`, {
     headers: {
       Authorization: activeToken,
@@ -88,9 +86,14 @@ export const destroyCliente = createAsyncThunkWrapper('destroyCliente', async ({
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const customers = action.payload.customers
-  state.customersOriginal = customers
-  state.customersArray = customers
+  if (action.payload.customers) {
+    const { customers, pagination } = action.payload
+    state.customersOriginal = customers
+    state.customersArray = customers
+    state.currentPage = pagination.current_page
+    state.totalPages = pagination.total_pages
+    state.totalProcessors = pagination.total_count
+  }
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })
@@ -144,15 +147,15 @@ const customerSlice = createSlice({
       state.loading = false
       updateStateAndStats(state, action)
     })
-    builder.addCase(createCliente.fulfilled, (state, action) => {
+    builder.addCase(createCustomer.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
-    builder.addCase(updateCliente.fulfilled, (state, action) => {
+    builder.addCase(updateCustomer.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Actualizado!')
     })
-    builder.addCase(destroyCliente.fulfilled, (state, action) => {
+    builder.addCase(destroyCustomer.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Eliminado!')
     })

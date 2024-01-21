@@ -63,8 +63,8 @@ CustomerItem.propTypes = {
     celular: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     processor: PropTypes.shape({
-      nombres: PropTypes.string.isRequired,
-      apellidos: PropTypes.string.isRequired,
+      nombres: PropTypes.string,
+      apellidos: PropTypes.string,
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,

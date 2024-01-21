@@ -12,45 +12,37 @@ import {
   HiUser,
 } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { createCliente, updateCliente } from '../../../redux/slices/CustomerSlice'
+import { createCustomer, updateCustomer } from '../../../redux/slices/CustomerSlice'
 
-function CustomerForm({ closeModal }) {
+function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { id: user_id } = useSelector((store) => store.authentication.activeUser)
   const { processorOriginal } = useSelector((store) => store.processor)
   const { customerSelected } = useSelector((store) => store.customer)
-  const { register, handleSubmit, reset } = useForm()
-
-  const handleCreateOrUpdate = (newCustomer) => {
-    const customerData = {
-      ...newCustomer,
-    }
-
-    if (customerSelected) {
-      const oldCustomer = {
-        id: customerSelected.id,
-        ...customerData,
-      }
-      dispatch(updateCliente({ activeToken, oldCustomer })).then(() => closeModal())
-      return
-    }
-
-    const newCustomerData = {
-      ...newCustomer,
-      user_id,
-    }
-
-    dispatch(createCliente({ activeToken, newCustomer: newCustomerData })).then(() => closeModal())
-  }
+  const { register, handleSubmit, reset, setValue } = useForm()
 
   const onSubmit = (customerData) => {
-    handleCreateOrUpdate(customerData)
+    if (customerSelected) {
+      dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    } else {
+      dispatch(createCustomer({ activeToken, customerData }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    }
   }
 
   useEffect(() => {
-    reset()
-  }, [reset])
+    if (customerSelected) {
+      // Populate the form with the selected processor's data
+      Object.keys(customerSelected).forEach((key) => {
+        setValue(key, customerSelected[key])
+      })
+    } else {
+      reset() // Reset the form if no processor is selected
+    }
+  }, [customerSelected, reset, setValue])
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -155,6 +147,7 @@ function CustomerForm({ closeModal }) {
 
 CustomerForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
 }
 
 export default CustomerForm

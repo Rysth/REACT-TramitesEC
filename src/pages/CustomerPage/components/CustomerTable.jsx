@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
-import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
+import { customerActions, destroyCustomer } from '../../../redux/slices/CustomerSlice'
 import CustomerItem from './CustomerItem'
 
-function CustomerTable({ currentItems, showModal }) {
+function CustomerTable({ currentItems, showModal, handleDelete }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -16,8 +16,10 @@ function CustomerTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyCliente({ activeToken, customerID: customerSelected.id }))
-    dispatch(customerActions.setCustomerSelected(''))
+    dispatch(destroyCustomer({ activeToken, customerID: customerSelected.id })).then(() => {
+      dispatch(customerActions.setCustomerSelected(''))
+      handleDelete() // Call the handleDelete function passed as a prop
+    })
   }
 
   if (loading) {
@@ -66,6 +68,7 @@ function CustomerTable({ currentItems, showModal }) {
 CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 }
 
 export default CustomerTable
