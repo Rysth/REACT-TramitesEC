@@ -19,7 +19,6 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
-      <TableCell className="py-1 truncate">{customer.direccion}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.user.username}

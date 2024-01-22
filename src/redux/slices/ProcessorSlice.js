@@ -145,6 +145,9 @@ const processorslice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getProcessors.pending, (state) => {
+      state.loading = true
+    })
     builder.addCase(getProcessors.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)

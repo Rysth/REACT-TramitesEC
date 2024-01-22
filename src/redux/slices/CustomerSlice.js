@@ -143,6 +143,9 @@ const customerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getCustomers.pending, (state) => {
+      state.loading = true
+    })
     builder.addCase(getCustomers.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action)

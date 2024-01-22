@@ -44,7 +44,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
             </SearchSelectItem>
           ))}
         </SearchSelect>
-        <div className="flex flex-col items-center justify-end w-full max-w-md gap-2 sm:flex-row">
+        <div className="flex flex-col items-center justify-end w-full max-w-sm gap-2 sm:flex-row">
           <TextInput
             id="search"
             type="text"
@@ -54,7 +54,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
             color="purple"
             required
           />
-          <div className="flex items-center justify-end w-full gap-1 max-w-max">
+          <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">
             <Button color="blue" onClick={showModal} className="flex items-center">
               Crear
               <IoCreateSharp className="inline-block ml-1" />

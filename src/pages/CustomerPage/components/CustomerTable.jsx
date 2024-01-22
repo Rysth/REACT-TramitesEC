@@ -40,13 +40,12 @@ function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, han
       <Table>
         <TableHead>
           <TableRow className="sticky top-0 z-40 border-b border-x-0">
-            <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
-            <TableHeaderCell className="w-1/12 bg-gray-100 ">Cédula</TableHeaderCell>
-            <TableHeaderCell className="w-3/12 bg-gray-100 ">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Dirección</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Celular</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Acciones</TableHeaderCell>
+            <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Cédula</TableHeaderCell>
+            <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="w-[20%]">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-[20%]">Celular</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">

@@ -13,10 +13,11 @@ function TablePaginate({ currentPage, pageCount, handlePageChange }) {
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
         onPageChange={handlePageChange}
+        nextClassName="ml-2"
+        previousClassName="mr-2"
         containerClassName={'flex items-center gap-1 justify-center sm:justify-end mx-auto text-xs p-3'}
-        subContainerClassName={'mx-2'}
-        activeClassName={'rounded-lg text-white font-bold bg-[var(--CL-primary)]'}
-        pageLinkClassName="p-2 outline-1 block px-3.5 md:hover:shadow-xl transition"
+        activeClassName={'rounded-md bg-[var(--CL-primary)] text-white'}
+        pageLinkClassName="p-2 outline-1 block px-3.5 transition rounded font-semibold hover:bg-gray-200"
       />
     </footer>
   )
