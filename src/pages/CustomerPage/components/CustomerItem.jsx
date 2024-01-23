@@ -3,15 +3,20 @@ import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { customerActions } from '../../../redux/slices/CustomerSlice'
+import { customerActions, fetchCustomerDetails } from '../../../redux/slices/CustomerSlice'
 
 function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { activeToken, activeUser } = useSelector((store) => store.authentication)
 
   const handleCustomerSelected = (customerID) => {
-    dispatch(customerActions.setCustomerSelected(customerID))
-    showModal()
+    dispatch(fetchCustomerDetails({ activeToken, customerId: customerID }))
+      .then(() => {
+        showModal()
+      })
+      .catch((error) => {
+        console.error('Error fetching customer details:', error)
+      })
   }
 
   return (
@@ -34,7 +39,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {customer.user.id === id && (
+        {customer.user.id === activeUser.id && (
           <Button
             size="xs"
             color="red"

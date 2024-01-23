@@ -1,24 +1,19 @@
 import { Button, TextInput } from '@tremor/react'
-import { Label, Select } from 'flowbite-react'
+import { Label } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  HiIdentification,
-  HiMapPin,
-  HiMiniDevicePhoneMobile,
-  HiMiniEnvelope,
-  HiMiniUserCircle,
-  HiUser,
-} from 'react-icons/hi2'
+import { HiIdentification, HiMapPin, HiMiniDevicePhoneMobile, HiMiniEnvelope, HiMiniUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createCustomer, updateCustomer } from '../../../redux/slices/CustomerSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 
+import { debounce } from 'lodash'
+import AsyncSelect from 'react-select/async'
+
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorOptions } = useSelector((store) => store.processor)
   const { customerSelected } = useSelector((store) => store.customer)
   const { register, handleSubmit, reset, setValue } = useForm()
 
@@ -34,14 +29,27 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }
 
+  const loadProcessorOptions = debounce((inputValue, callback) => {
+    dispatch(fetchProcessorOptions({ activeToken, query: inputValue.toLowerCase() }))
+      .unwrap()
+      .then((response) => {
+        const options = response.map((processor) => ({
+          label: `${processor.codigo} - ${processor.nombres} ${processor.apellidos}`,
+          value: processor.id,
+        }))
+        callback(options)
+      })
+      .catch(() => callback([]))
+  }, 800)
+
   useEffect(() => {
+    console.log(customerSelected)
     if (customerSelected) {
-      // Populate the form with the selected processor's data
       Object.keys(customerSelected).forEach((key) => {
         setValue(key, customerSelected[key])
       })
     } else {
-      reset() // Reset the form if no processor is selected
+      reset() // Reset the form if no customer is selected
     }
   }, [customerSelected, reset, setValue])
 
@@ -54,16 +62,22 @@ function CustomerForm({ closeModal, refetchFunction }) {
       <fieldset className="grid">
         <div>
           <Label htmlFor="processor_id" value="Trámitador" />
-          <Select
-            icon={HiUser}
-            id="processor_id"
-            defaultValue={customerSelected && customerSelected.processor.id}
-            required
-          >
-            {processorOptions.map((processor) => (
-              <option key={processor.id} value={processor.id}>{`${processor.nombres} ${processor.apellidos}`}</option>
-            ))}
-          </Select>
+          <AsyncSelect
+            cacheOptions
+            loadOptions={loadProcessorOptions}
+            defaultOptions
+            placeholder="Buscar..."
+            onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+            defaultValue={
+              customerSelected
+                ? {
+                    label: `${customerSelected.processor.codigo} - ${customerSelected.processor.nombres} ${customerSelected.processor.apellidos}`,
+                    value: customerSelected.processor.id,
+                  }
+                : undefined
+            }
+            className="text-sm shadow shadow-gray-200"
+          />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">

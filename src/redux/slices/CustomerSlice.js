@@ -54,6 +54,19 @@ export const getCustomers = createAsyncThunkWrapper('getCustomers', async ({ act
   })
 })
 
+// Thunk for retrieving a specific customer's details (GET)
+export const fetchCustomerDetails = createAsyncThunkWrapper(
+  'customer/fetchDetails',
+  async ({ activeToken, customerId }) => {
+    return axios.get(`${API_URL}/api/v1/customers/${customerId}`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Thunk for creating a new client (POST)
 export const createCustomer = createAsyncThunkWrapper('createCustomer', async ({ activeToken, customerData }) => {
   return axios.post(`${API_URL}/api/v1/customers/`, customerData, {
@@ -161,6 +174,10 @@ const customerSlice = createSlice({
     builder.addCase(destroyCustomer.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Eliminado!')
+    })
+    builder.addCase(fetchCustomerDetails.fulfilled, (state, action) => {
+      state.loading = false
+      state.customerSelected = action.payload
     })
   },
 })
