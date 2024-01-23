@@ -1,9 +1,9 @@
 import { Card } from '@tremor/react'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
+import useEntityManagement from '../../hooks/useEntityManagement'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
@@ -12,41 +12,19 @@ import ProcessorForm from './components/ProcessorForm'
 import ProcessorTable from './components/ProcessorTable'
 
 function ProcessorPage() {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
-  const { processorsArray, totalPages } = useSelector((store) => store.processor)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [selectedUserId, setSelectedUserId] = useState(null)
-
-  const refetchProcessors = () => {
-    dispatch(getProcessors({ activeToken, page: currentPage, search, userId: selectedUserId }))
-  }
-
-  const handlePageChange = (selectedItem) => {
-    setCurrentPage(selectedItem.selected + 1)
-    dispatch(getProcessors({ activeToken, page: selectedItem.selected + 1, search, userId: selectedUserId }))
-  }
-
-  const resetToFirstPage = () => {
-    setCurrentPage(1)
-    dispatch(getProcessors({ activeToken, page: 1, search, userId: selectedUserId }))
-  }
-
-  const handleDelete = () => {
-    if (processorsArray.length === 1 && currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-    refetchProcessors() // Refetch the processor list
-  }
-
-  const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
-  const closeModal = () => setOpenModal(false)
-
-  useEffect(() => {
-    dispatch(getProcessors({ activeToken, page: 1, search, userId: selectedUserId }))
-  }, [dispatch, activeToken, search, selectedUserId])
+  const {
+    entitiesArray: processorsArray,
+    totalPages,
+    currentPage,
+    openModal,
+    showModal,
+    closeModal,
+    handlePageChange,
+    resetToFirstPage,
+    setSearch,
+    setSelectedUserId,
+    handleDelete,
+  } = useEntityManagement(getProcessors, 'processor', 'processorsArray')
 
   return (
     <SectionLayout title="Trámitadores" subtitle="Información General de los Trámitadores">
@@ -54,7 +32,7 @@ function ProcessorPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={ProcessorForm}
-        refetchFunction={refetchProcessors}
+        refetchFunction={resetToFirstPage}
         slice="processor"
         title="Trámitador"
         setEntitySelected={processorActions.setProcessorSelected}
@@ -69,13 +47,17 @@ function ProcessorPage() {
             setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <ProcessorTable
-              currentItems={processorsArray}
-              currentPage={currentPage}
-              itemsPerPage={25}
-              showModal={showModal}
-              handleDelete={handleDelete}
-            />
+            {Array.isArray(processorsArray) ? (
+              <ProcessorTable
+                currentItems={processorsArray}
+                currentPage={currentPage}
+                itemsPerPage={25}
+                showModal={showModal}
+                handleDelete={handleDelete}
+              />
+            ) : (
+              <Loading /> // Placeholder for loading or empty state
+            )}
           </TableLayout>
           <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
