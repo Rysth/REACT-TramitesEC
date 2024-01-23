@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL
 const initialState = {
   processorOriginal: [],
   processorsArray: [],
-  processorStats: [],
+  processorOptions: [],
   processorSelected: null,
   loading: true,
   currentPage: 1,
@@ -43,6 +43,20 @@ const createAsyncThunkWrapper = (type, requestFn) =>
       handleRequestError(error)
     }
   })
+
+// Thunk for loading processor options
+export const fetchProcessorOptions = createAsyncThunkWrapper(
+  'processor/fetchOptions',
+  async ({ activeToken, query }) => {
+    return axios.get(`${API_URL}/api/v1/processors/search_from_customers`, {
+      params: { query },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
 
 // Thunk for retrieving processors (GET)
 export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page, search, userId }) => {
@@ -145,6 +159,10 @@ const processorslice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchProcessorOptions.fulfilled, (state, action) => {
+      // Assuming the response structure has an array of processors
+      state.processorOptions = action.payload
+    })
     builder.addCase(getProcessors.pending, (state) => {
       state.loading = true
     })

@@ -13,11 +13,12 @@ import {
 } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createCustomer, updateCustomer } from '../../../redux/slices/CustomerSlice'
+import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorOriginal } = useSelector((store) => store.processor)
+  const { processorOptions } = useSelector((store) => store.processor)
   const { customerSelected } = useSelector((store) => store.customer)
   const { register, handleSubmit, reset, setValue } = useForm()
 
@@ -44,6 +45,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }, [customerSelected, reset, setValue])
 
+  useEffect(() => {
+    dispatch(fetchProcessorOptions({ activeToken, query: '' }))
+  }, [])
+
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid">
@@ -52,11 +57,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <Select
             icon={HiUser}
             id="processor_id"
-            {...register('processor_id')}
             defaultValue={customerSelected && customerSelected.processor.id}
             required
           >
-            {processorOriginal.map((processor) => (
+            {processorOptions.map((processor) => (
               <option key={processor.id} value={processor.id}>{`${processor.nombres} ${processor.apellidos}`}</option>
             ))}
           </Select>
