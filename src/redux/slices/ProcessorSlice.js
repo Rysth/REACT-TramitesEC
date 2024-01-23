@@ -17,12 +17,12 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('¡Trámitador Tiene Clientes!')
+    toast.error('¡El Trámitador tiene Clientes!')
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Trámitador ya Registrado!')
+    toast.error('¡El Trámitador ya está Registrado!')
     return
   }
 

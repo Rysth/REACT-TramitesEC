@@ -17,7 +17,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula/Correo Repetidos')
+    toast.error('¡Cliente ya Registrado! Cédula, Email o Celular Repetidos')
     return
   }
 
