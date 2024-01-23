@@ -1,15 +1,14 @@
 import { Button, TextInput } from '@tremor/react'
 import { Label } from 'flowbite-react'
+import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiIdentification, HiMapPin, HiMiniDevicePhoneMobile, HiMiniEnvelope, HiMiniUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
+import AsyncSelect from 'react-select/async'
 import { createCustomer, updateCustomer } from '../../../redux/slices/CustomerSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
-
-import { debounce } from 'lodash'
-import AsyncSelect from 'react-select/async'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -43,7 +42,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
   }, 800)
 
   useEffect(() => {
-    console.log(customerSelected)
     if (customerSelected) {
       Object.keys(customerSelected).forEach((key) => {
         setValue(key, customerSelected[key])

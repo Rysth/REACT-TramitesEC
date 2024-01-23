@@ -11,12 +11,6 @@ import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
-import { getCustomers } from './redux/slices/CustomerSlice'
-import { getLicenses } from './redux/slices/LicenseSlice'
-import { getProcedures } from './redux/slices/ProcedureSlice'
-import { getProcessors } from './redux/slices/ProcessorSlice'
-import { getStatuses } from './redux/slices/StatusSlice'
-import { getTypes } from './redux/slices/TypeSlice'
 import { getUsers } from './redux/slices/UserSlice'
 
 function App() {

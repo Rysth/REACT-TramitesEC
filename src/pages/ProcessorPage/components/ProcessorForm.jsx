@@ -1,5 +1,5 @@
 import { Button, TextInput } from '@tremor/react'
-import { Label } from 'flowbite-react'
+import { Badge, Label } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -11,7 +11,13 @@ function ProcessorForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
   const { processorSelected } = useSelector((store) => store.processor)
-  const { register, handleSubmit, reset, setValue } = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm()
 
   const onSubmit = (processorData) => {
     if (processorSelected) {
@@ -37,41 +43,60 @@ function ProcessorForm({ closeModal, refetchFunction }) {
   }, [processorSelected, reset, setValue])
 
   return (
-    <form className="grid space-y-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="nombres" value="Nombres" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="nombres" value="Nombres" />
+            {errors.nombres && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="nombres"
             placeholder=""
             defaultValue={processorSelected && processorSelected.nombres}
             icon={HiMiniUserCircle}
-            {...register('nombres')}
-            required
+            {...register('nombres', { required: true })}
           />
         </div>
-        <div>
-          <Label htmlFor="apellidos" value="Apellidos" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="apellidos" value="Apellidos" />
+            {errors.apellidos && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="apellidos"
             placeholder=""
             defaultValue={processorSelected && processorSelected.apellidos}
             icon={HiMiniUserCircle}
-            {...register('apellidos')}
-            required
+            {...register('apellidos', { required: true })}
           />
         </div>
       </fieldset>
       <fieldset className="grid">
-        <div>
-          <Label htmlFor="celular" value="Celular" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="celular" value="Celular" />
+            {errors.celular && (
+              <Badge className="text-xs" color="failure">
+                {errors.celular.type === 'required' && 'Campo requerido'}
+                {errors.celular.type === 'pattern' && 'Solo números'}
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="celular"
             placeholder=""
             defaultValue={processorSelected && processorSelected.celular}
             icon={HiMiniDevicePhoneMobile}
-            {...register('celular')}
-            required
+            {...register('celular', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
       </fieldset>
