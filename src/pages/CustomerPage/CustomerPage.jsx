@@ -1,9 +1,9 @@
 import { Card } from '@tremor/react'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
+import useEntityManagement from '../../hooks/useEntityManagement'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
@@ -12,41 +12,19 @@ import CustomerForm from './components/CustomerForm'
 import CustomerTable from './components/CustomerTable'
 
 function CustomerPage() {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((store) => store.authentication)
-  const { customersArray, totalPages } = useSelector((store) => store.customer)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState('')
-  const [selectedUserId, setSelectedUserId] = useState(null)
-
-  const refetchCustomers = () => {
-    dispatch(getCustomers({ activeToken, page: currentPage, search, userId: selectedUserId }))
-  }
-
-  const handlePageChange = (selectedItem) => {
-    setCurrentPage(selectedItem.selected + 1)
-    dispatch(getCustomers({ activeToken, page: selectedItem.selected + 1, search, userId: selectedUserId }))
-  }
-
-  const resetToFirstPage = () => {
-    setCurrentPage(1)
-    dispatch(getCustomers({ activeToken, page: 1, search, userId: selectedUserId }))
-  }
-
-  const handleDelete = () => {
-    if (customersArray.length === 1 && currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-    refetchCustomers() // Refetch the processor list
-  }
-
-  const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
-  const closeModal = () => setOpenModal(false)
-
-  useEffect(() => {
-    dispatch(getCustomers({ activeToken, page: 1, search, userId: selectedUserId }))
-  }, [dispatch, activeToken, search, selectedUserId])
+  const {
+    entitiesArray: customersArray,
+    totalPages,
+    currentPage,
+    openModal,
+    showModal,
+    closeModal,
+    handlePageChange,
+    resetToFirstPage,
+    setSearch,
+    setSelectedUserId,
+    handleDelete,
+  } = useEntityManagement(getCustomers, 'customer', 'customersArray')
 
   return (
     <SectionLayout title="Clientes" subtitle="Información General de los Clientes">
@@ -54,7 +32,7 @@ function CustomerPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={CustomerForm}
-        refetchFunction={refetchCustomers}
+        refetchFunction={resetToFirstPage}
         slice="customer"
         title="Cliente"
         setEntitySelected={customerActions.setCustomerSelected}
@@ -69,13 +47,17 @@ function CustomerPage() {
             setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <CustomerTable
-              currentItems={customersArray}
-              currentPage={currentPage}
-              itemsPerPage={25}
-              showModal={showModal}
-              handleDelete={handleDelete}
-            />
+            {Array.isArray(customersArray) ? (
+              <CustomerTable
+                currentItems={customersArray}
+                currentPage={currentPage}
+                itemsPerPage={25}
+                showModal={showModal}
+                handleDelete={handleDelete}
+              />
+            ) : (
+              <Loading /> // Placeholder for loading or empty state
+            )}
           </TableLayout>
           <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
