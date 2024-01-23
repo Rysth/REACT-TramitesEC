@@ -43,14 +43,27 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving procedures (GET)
-export const getProcedures = createAsyncThunkWrapper('getProcedures', async (activeToken) => {
+export const getProcedures = createAsyncThunkWrapper('getProcedures', async ({ activeToken, page, search, userId }) => {
+  const params = { page }
+  if (search) params.search = search
+  if (userId) params.userId = userId
+
   return axios.get(`${API_URL}/api/v1/procedures`, {
-    headers: {
-      Authorization: activeToken,
-    },
+    params,
+    headers: { Authorization: activeToken },
     withCredentials: true,
   })
 })
+
+export const fetchProcedureDetails = createAsyncThunkWrapper(
+  'procedure/fetchDetails',
+  async ({ activeToken, procedureId }) => {
+    return axios.get(`${API_URL}/api/v1/procedures/${procedureId}`, {
+      headers: { Authorization: activeToken },
+      withCredentials: true,
+    })
+  },
+)
 
 // Thunk for creating a new processor (POST)
 export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcedure }) => {
@@ -84,29 +97,14 @@ export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const { payload } = action
-  const procedures = payload.procedures
-  state.procedureOriginal = procedures
-  state.proceduresArray = procedures
-
-  /* processor Stats */
-  state.procedureStats = [
-    {
-      title: 'Total de Trámites',
-      metric: payload.stats.procedures_quantity,
-      color: 'indigo',
-    },
-    {
-      title: 'Agregados (Últimos 30 días)',
-      metric: payload.stats.procedures_added_last_month,
-      color: 'purple',
-    },
-    {
-      title: 'Agregados (Últimos 7 días)',
-      metric: payload.stats.procedures_added_last_7_days,
-      color: 'blue',
-    },
-  ]
+  if (action.payload.procedures) {
+    const { procedures, pagination } = action.payload
+    state.procedureOriginal = procedures
+    state.proceduresArray = procedures
+    state.currentPage = pagination.current_page
+    state.totalPages = pagination.total_pages
+    state.totalProcessors = pagination.total_count
+  }
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })
@@ -158,10 +156,18 @@ const proceduresSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getProcedures.fulfilled, (state, action) => {
-      state.loading = false
-      updateStateAndStats(state, action)
-    })
+    builder
+      .addCase(getProcedures.pending, (state, action) => {
+        state.loading = true
+      })
+      .addCase(getProcedures.fulfilled, (state, action) => {
+        state.loading = false
+        updateStateAndStats(state, action)
+      })
+      .addCase(fetchProcedureDetails.fulfilled, (state, action) => {
+        state.loading = false
+        state.procedureSelected = action.payload
+      })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámite Registrado!')

@@ -2,7 +2,7 @@ import ReactPaginate from 'react-paginate'
 import PropTypes from 'prop-types'
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 
-function TablePaginate({ currentPage, pageCount, handlePageChange }) {
+function TablePaginate({ currentPage = 0, pageCount = 1, handlePageChange }) {
   return (
     <footer>
       <ReactPaginate
@@ -24,8 +24,8 @@ function TablePaginate({ currentPage, pageCount, handlePageChange }) {
 }
 
 TablePaginate.propTypes = {
-  currentPage: PropTypes.number.isRequired,
-  pageCount: PropTypes.number.isRequired,
+  currentPage: PropTypes.number,
+  pageCount: PropTypes.number,
   handlePageChange: PropTypes.func.isRequired,
 }
 

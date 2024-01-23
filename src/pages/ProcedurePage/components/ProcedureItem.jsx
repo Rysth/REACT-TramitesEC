@@ -3,16 +3,23 @@ import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { procedureActions } from '../../../redux/slices/ProcedureSlice'
+import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
   const { id } = useSelector((store) => store.authentication.activeUser)
 
   const handleProcedureSelected = (procedureID) => {
-    dispatch(procedureActions.setProcedureSelected(procedureID))
-    showModal()
+    dispatch(fetchProcedureDetails({ activeToken, procedureId: procedureID }))
+      .then(() => {
+        showModal()
+      })
+      .catch((error) => {
+        console.error('Error fetching procedure details:', error)
+      })
   }
+
+  const statusColor = procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
 
   return (
     <TableRow>
@@ -21,7 +28,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
       <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
-        <Badge color="indigo" className="grid place-items-center">
+        <Badge color={statusColor} className="grid place-items-center">
           {procedure.status.nombre}
         </Badge>
       </TableCell>
@@ -29,6 +36,11 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
           {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
+        </Badge>
+      </TableCell>
+      <TableCell className="py-1 truncate">
+        <Badge color="indigo" className="grid place-items-center">
+          {procedure.user.username}
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
