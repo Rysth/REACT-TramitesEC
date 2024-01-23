@@ -35,6 +35,7 @@ function ProcedurePage() {
         refetchFunction={resetToFirstPage}
         slice="procedure"
         title="Trámite"
+        modalSize="2xl"
         setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>

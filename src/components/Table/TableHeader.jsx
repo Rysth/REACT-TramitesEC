@@ -35,7 +35,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
         <SearchSelect
           value={value}
           onValueChange={handleSelectChange}
-          className="z-50 max-w-md sm:max-w-sm"
+          className="z-50 max-w-md sm:max-w-[15rem]"
           placeholder="Usuario"
         >
           {usersArray.map((user) => (
@@ -44,7 +44,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
             </SearchSelectItem>
           ))}
         </SearchSelect>
-        <div className="flex flex-col items-center justify-end w-full max-w-sm gap-2 sm:flex-row">
+        <div className="flex flex-col items-center justify-end w-full max-w-[20rem] gap-2 sm:flex-row">
           <TextInput
             id="search"
             type="text"
