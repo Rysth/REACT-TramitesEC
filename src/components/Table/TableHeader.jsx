@@ -13,13 +13,13 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
   const debouncedSearch = useCallback(
     debounce((input) => {
       setSearch(input)
+      restartCurrentPage()
     }, 500),
     [dispatch, value], // Dependencias
   )
 
   const handleSearchData = (event) => {
     const input = event.target.value.toLowerCase().trim()
-    restartCurrentPage()
     debouncedSearch(input)
   }
 
