@@ -24,6 +24,10 @@ const handleRequestError = (error) => {
     }, 3000)
   }
 
+  if (error.response.status === 409) {
+    toast.error('¡El Cliente tiene un Trámite Activo!')
+  }
+
   if (error.response.status === 500) {
     toast.error('¡Problema en el Servidor!')
   }
