@@ -51,7 +51,7 @@ function ProcessorTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         <TableBody className="text-xs">
           {currentItems.map((processor, index) => {
             const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
-
+            console.log(calculatedIndex)
             return (
               <ProcessorItem
                 key={calculatedIndex}

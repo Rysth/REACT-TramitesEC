@@ -52,7 +52,7 @@ function ProcedurePage() {
               <ProcedureTable
                 currentItems={proceduresArray}
                 currentPage={currentPage}
-                itemsPerPage={25}
+                itemsPerPage={20}
                 showModal={showModal}
                 handleDelete={handleDelete}
               />

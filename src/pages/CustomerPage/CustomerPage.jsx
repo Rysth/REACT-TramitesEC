@@ -51,7 +51,7 @@ function CustomerPage() {
               <CustomerTable
                 currentItems={customersArray}
                 currentPage={currentPage}
-                itemsPerPage={25}
+                itemsPerPage={20}
                 showModal={showModal}
                 handleDelete={handleDelete}
               />
