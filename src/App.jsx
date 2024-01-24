@@ -11,13 +11,8 @@ import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
-import { getCustomers } from './redux/slices/CustomerSlice'
-import { getLicenses } from './redux/slices/LicenseSlice'
-import { getProcedures } from './redux/slices/ProcedureSlice'
-import { getProcessors } from './redux/slices/ProcessorSlice'
-import { getStatuses } from './redux/slices/StatusSlice'
-import { getTypes } from './redux/slices/TypeSlice'
 import { getUsers } from './redux/slices/UserSlice'
+import { getStatuses, getLicenses, getTypes } from './redux/slices/SharedSlice'
 
 function App() {
   const dispatch = useDispatch()
@@ -25,21 +20,19 @@ function App() {
 
   useEffect(() => {
     if (active) {
-      dispatch(getProcessors(activeToken))
-      dispatch(getCustomers(activeToken))
       dispatch(getUsers(activeToken))
-      dispatch(getProcedures(activeToken))
-      dispatch(getTypes(activeToken))
-      dispatch(getLicenses(activeToken))
       dispatch(getStatuses(activeToken))
+      dispatch(getLicenses(activeToken))
+      dispatch(getTypes(activeToken))
     }
   }, [dispatch, activeToken, active])
 
   return (
     <BrowserRouter>
       <ToastContainer />
+
       {active && <Sidebar />}
-      <main className="h-screen">
+      <main className="min-h-screen">
         <Routes>
           <Route
             path="/session"

@@ -7,19 +7,22 @@ const API_URL = import.meta.env.VITE_API_URL
 const initialState = {
   processorOriginal: [],
   processorsArray: [],
-  processorStats: [],
+  processorOptions: [],
   processorSelected: null,
   loading: true,
+  currentPage: 1,
+  totalPages: 0,
+  totalProcessors: 0,
 }
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('¡Trámitador Tiene Clientes!')
+    toast.error('¡El Trámitador tiene Clientes!')
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Trámitador ya Registrado!')
+    toast.error('¡El Trámitador ya está Registrado!')
     return
   }
 
@@ -41,9 +44,28 @@ const createAsyncThunkWrapper = (type, requestFn) =>
     }
   })
 
+// Thunk for loading processor options
+export const fetchProcessorOptions = createAsyncThunkWrapper(
+  'processor/fetchOptions',
+  async ({ activeToken, query }) => {
+    return axios.get(`${API_URL}/api/v1/processors/search_from_customers`, {
+      params: { query },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Thunk for retrieving processors (GET)
-export const getProcessors = createAsyncThunkWrapper('getProcessors', async (activeToken) => {
+export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page, search, userId }) => {
+  const params = { page }
+  if (search) params.search = search
+  if (userId) params.userId = userId
+
   return axios.get(`${API_URL}/api/v1/processors`, {
+    params,
     headers: {
       Authorization: activeToken,
     },
@@ -52,8 +74,8 @@ export const getProcessors = createAsyncThunkWrapper('getProcessors', async (act
 })
 
 // Thunk for creating a new processor (POST)
-export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, newProcessor }) => {
-  return axios.post(`${API_URL}/api/v1/processors/`, newProcessor, {
+export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, processorData }) => {
+  return axios.post(`${API_URL}/api/v1/processors/`, processorData, {
     headers: {
       Authorization: activeToken,
     },
@@ -62,8 +84,8 @@ export const createProcessor = createAsyncThunkWrapper('createProcessor', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, oldProcessor }) => {
-  return axios.put(`${API_URL}/api/v1/processors/${oldProcessor.id}`, oldProcessor, {
+export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, processorData }) => {
+  return axios.put(`${API_URL}/api/v1/processors/${processorData.id}`, processorData, {
     headers: {
       Authorization: activeToken,
     },
@@ -83,10 +105,14 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const { payload } = action
-  const processors = payload.processors
-  state.processorOriginal = processors
-  state.processorsArray = processors
+  if (action.payload.processors) {
+    const { processors, pagination } = action.payload
+    state.processorOriginal = processors
+    state.processorsArray = processors
+    state.currentPage = pagination.current_page
+    state.totalPages = pagination.total_pages
+    state.totalProcessors = pagination.total_count
+  }
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })
@@ -133,9 +159,16 @@ const processorslice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchProcessorOptions.fulfilled, (state, action) => {
+      // Assuming the response structure has an array of processors
+      state.processorOptions = action.payload
+    })
+    builder.addCase(getProcessors.pending, (state) => {
+      state.loading = true
+    })
     builder.addCase(getProcessors.fulfilled, (state, action) => {
-      state.loading = false
       updateStateAndStats(state, action)
+      state.loading = false
     })
     builder.addCase(createProcessor.fulfilled, (state, action) => {
       state.loading = false

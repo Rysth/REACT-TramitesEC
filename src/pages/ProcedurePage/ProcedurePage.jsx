@@ -1,24 +1,30 @@
 import { Card } from '@tremor/react'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import usePagination from '../../hooks/usePagination'
+import useEntityManagement from '../../hooks/useEntityManagement'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
-import { procedureActions } from '../../redux/slices/ProcedureSlice'
+import { getProcedures, procedureActions } from '../../redux/slices/ProcedureSlice'
 import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage() {
-  const { proceduresArray, procedureStats, procedureOriginal } = useSelector((store) => store.procedure)
-  const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(proceduresArray)
-
-  const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
-  const closeModal = () => setOpenModal(false)
+  const {
+    entitiesArray: proceduresArray,
+    totalPages,
+    currentPage,
+    openModal,
+    showModal,
+    closeModal,
+    handlePageChange,
+    resetToFirstPage,
+    setSearch,
+    setSelectedUserId,
+    handleDelete,
+  } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
   return (
     <SectionLayout title="Trámites" subtitle="Información General de los Trámites">
@@ -26,30 +32,35 @@ function ProcedurePage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={ProcedureForm}
+        refetchFunction={resetToFirstPage}
         slice="procedure"
         title="Trámite"
-        setEntitySelected={procedureActions.setProcedureSelected}
         modalSize="2xl"
+        setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámites"
-            searchMethod={procedureActions.searchProcedure}
-            restartCurrentPage={restartCurrentPage}
+            restartCurrentPage={resetToFirstPage}
             showModal={showModal}
-            originalItems={procedureOriginal}
-            fileName="TRAMITESEC-Trámites"
+            setSearch={setSearch}
+            setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <ProcedureTable currentItems={currentItems} showModal={showModal} />
+            {Array.isArray(proceduresArray) ? (
+              <ProcedureTable
+                currentItems={proceduresArray}
+                currentPage={currentPage}
+                itemsPerPage={20}
+                showModal={showModal}
+                handleDelete={handleDelete}
+              />
+            ) : (
+              <Loading />
+            )}
           </TableLayout>
-          <TablePaginate
-            currentPage={currentPage}
-            pageCount={pageCount}
-            handlePageChange={handlePageChange}
-            customArray={proceduresArray}
-          />
+          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
       </MainLayout>
     </SectionLayout>

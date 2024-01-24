@@ -1,24 +1,30 @@
 import { Card } from '@tremor/react'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
 import TablePaginate from '../../components/Table/TablePaginate'
-import usePagination from '../../hooks/usePagination'
+import useEntityManagement from '../../hooks/useEntityManagement'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
-import { customerActions } from '../../redux/slices/CustomerSlice'
+import { customerActions, getCustomers } from '../../redux/slices/CustomerSlice'
 import CustomerForm from './components/CustomerForm'
 import CustomerTable from './components/CustomerTable'
 
 function CustomerPage() {
-  const { customersArray, customerStats, customersOriginal } = useSelector((store) => store.customer)
-  const { currentPage, pageCount, handlePageChange, currentItems, restartCurrentPage } = usePagination(customersArray)
-
-  const [openModal, setOpenModal] = useState(false)
-  const showModal = () => setOpenModal(true)
-  const closeModal = () => setOpenModal(false)
+  const {
+    entitiesArray: customersArray,
+    totalPages,
+    currentPage,
+    openModal,
+    showModal,
+    closeModal,
+    handlePageChange,
+    resetToFirstPage,
+    setSearch,
+    setSelectedUserId,
+    handleDelete,
+  } = useEntityManagement(getCustomers, 'customer', 'customersArray')
 
   return (
     <SectionLayout title="Clientes" subtitle="Información General de los Clientes">
@@ -26,6 +32,7 @@ function CustomerPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={CustomerForm}
+        refetchFunction={resetToFirstPage}
         slice="customer"
         title="Cliente"
         setEntitySelected={customerActions.setCustomerSelected}
@@ -34,21 +41,25 @@ function CustomerPage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Clientes"
-            searchMethod={customerActions.searchCustomer}
-            restartCurrentPage={restartCurrentPage}
+            restartCurrentPage={resetToFirstPage}
             showModal={showModal}
-            originalItems={customersOriginal}
-            fileName="TRAMITESEC-Clientes"
+            setSearch={setSearch}
+            setSelectedUserId={setSelectedUserId}
           />
           <TableLayout>
-            <CustomerTable currentItems={currentItems} showModal={showModal} />
+            {Array.isArray(customersArray) ? (
+              <CustomerTable
+                currentItems={customersArray}
+                currentPage={currentPage}
+                itemsPerPage={20}
+                showModal={showModal}
+                handleDelete={handleDelete}
+              />
+            ) : (
+              <Loading /> // Placeholder for loading or empty state
+            )}
           </TableLayout>
-          <TablePaginate
-            currentPage={currentPage}
-            pageCount={pageCount}
-            handlePageChange={handlePageChange}
-            customArray={customersArray}
-          />
+          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
         </Card>
       </MainLayout>
     </SectionLayout>

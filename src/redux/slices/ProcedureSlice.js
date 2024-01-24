@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL
 const initialState = {
   procedureOriginal: [],
   proceduresArray: [],
-  procedureStats: [],
+  processorOptions: [],
   procedureSelected: null,
   loading: true,
 }
@@ -22,6 +22,10 @@ const handleRequestError = (error) => {
       sessionStorage.removeItem('activeToken')
       window.location.href = '/session'
     }, 3000)
+  }
+
+  if (error.response.status === 409) {
+    toast.error('¡El Cliente tiene un Trámite Activo!')
   }
 
   if (error.response.status === 500) {
@@ -43,18 +47,31 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving procedures (GET)
-export const getProcedures = createAsyncThunkWrapper('getProcedures', async (activeToken) => {
+export const getProcedures = createAsyncThunkWrapper('getProcedures', async ({ activeToken, page, search, userId }) => {
+  const params = { page }
+  if (search) params.search = search
+  if (userId) params.userId = userId
+
   return axios.get(`${API_URL}/api/v1/procedures`, {
-    headers: {
-      Authorization: activeToken,
-    },
+    params,
+    headers: { Authorization: activeToken },
     withCredentials: true,
   })
 })
 
+export const fetchProcedureDetails = createAsyncThunkWrapper(
+  'procedure/fetchDetails',
+  async ({ activeToken, procedureId }) => {
+    return axios.get(`${API_URL}/api/v1/procedures/${procedureId}`, {
+      headers: { Authorization: activeToken },
+      withCredentials: true,
+    })
+  },
+)
+
 // Thunk for creating a new processor (POST)
-export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcedure }) => {
-  return axios.post(`${API_URL}/api/v1/procedures/`, newProcedure, {
+export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
+  return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
     headers: {
       Authorization: activeToken,
     },
@@ -63,8 +80,8 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, oldProcedure }) => {
-  return axios.put(`${API_URL}/api/v1/procedures/${oldProcedure.id}`, oldProcedure, {
+export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, procedureData }) => {
+  return axios.put(`${API_URL}/api/v1/procedures/${procedureData.id}`, procedureData, {
     headers: {
       Authorization: activeToken,
     },
@@ -84,29 +101,14 @@ export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', asyn
 
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
-  const { payload } = action
-  const procedures = payload.procedures
-  state.procedureOriginal = procedures
-  state.proceduresArray = procedures
-
-  /* processor Stats */
-  state.procedureStats = [
-    {
-      title: 'Total de Trámites',
-      metric: payload.stats.procedures_quantity,
-      color: 'indigo',
-    },
-    {
-      title: 'Agregados (Últimos 30 días)',
-      metric: payload.stats.procedures_added_last_month,
-      color: 'purple',
-    },
-    {
-      title: 'Agregados (Últimos 7 días)',
-      metric: payload.stats.procedures_added_last_7_days,
-      color: 'blue',
-    },
-  ]
+  if (action.payload.procedures) {
+    const { procedures, pagination } = action.payload
+    state.procedureOriginal = procedures
+    state.proceduresArray = procedures
+    state.currentPage = pagination.current_page
+    state.totalPages = pagination.total_pages
+    state.totalProcessors = pagination.total_count
+  }
 
   if (successMessage) {
     toast.success(successMessage, { autoClose: 2000 })
@@ -158,9 +160,16 @@ const proceduresSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getProcedures.pending, (state) => {
+      state.loading = true
+    })
     builder.addCase(getProcedures.fulfilled, (state, action) => {
-      state.loading = false
       updateStateAndStats(state, action)
+      state.loading = false
+    })
+    builder.addCase(fetchProcedureDetails.fulfilled, (state, action) => {
+      state.loading = false
+      state.procedureSelected = action.payload
     })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false

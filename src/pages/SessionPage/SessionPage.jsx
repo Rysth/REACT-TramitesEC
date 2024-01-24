@@ -1,19 +1,20 @@
+import { Button, Label, TextInput } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import { HiMail } from 'react-icons/hi'
-import { Button, TextInput, Label } from 'flowbite-react'
 import { RiLockPasswordFill } from 'react-icons/ri'
-import { createSession } from '../../redux/slices/AuthenticationSlice'
+import { useDispatch } from 'react-redux'
 import UndrawLogin from '../../assets/images/illustrations/undraw_login.svg'
+import BrandImage from '../../assets/personal/brand_blue.svg'
+import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function SessionPage() {
   const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-
   const onSubmit = (userData) => dispatch(createSession(userData))
+
   return (
     <section className="w-full h-screen">
-      <div className="flex items-center justify-center h-full bg-slate-100">
+      <div className="flex flex-col items-center justify-center h-full gap-4 bg-slate-100">
         <div className="flex flex-col items-center justify-center max-w-screen-sm p-4 py-8 bg-white shadow-xl sm:p-10 shadow-black/15 rounded-xl">
           <form
             className="flex flex-col items-center justify-center h-full gap-5 w-72 sm:rounded-l-3xl"
@@ -44,6 +45,16 @@ function SessionPage() {
             </Button>
           </form>
         </div>
+        <footer className="text-center">
+          <a
+            href="https://rysthdesign.netlify.app/"
+            className="flex items-center gap-2 p-2 text-xs transition rounded-md bottom-5 right-6 hover:scale-105"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Creado Por <img src={BrandImage} alt="RysthDesign Logo" className="w-12" />
+          </a>
+        </footer>
       </div>
     </section>
   )

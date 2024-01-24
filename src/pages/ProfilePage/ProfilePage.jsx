@@ -32,7 +32,7 @@ function ProfilePage() {
               className="mt-4 h-80"
               data={userData}
               index="Meses"
-              categories={['Tramitadores', 'Clientes', 'Tramites']}
+              categories={['Tramitadores', 'Tramites', 'Clientes']}
               colors={['blue', 'indigo', 'purple']}
               stack={false}
               yAxisWidth={60}

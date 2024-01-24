@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
 import TableDelete from '../../../components/Table/TableDelete'
-import { customerActions, destroyCliente } from '../../../redux/slices/CustomerSlice'
+import { customerActions, destroyCustomer } from '../../../redux/slices/CustomerSlice'
 import CustomerItem from './CustomerItem'
 
-function CustomerTable({ currentItems, showModal }) {
+function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -16,8 +16,10 @@ function CustomerTable({ currentItems, showModal }) {
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyCliente({ activeToken, customerID: customerSelected.id }))
-    dispatch(customerActions.setCustomerSelected(''))
+    dispatch(destroyCustomer({ activeToken, customerID: customerSelected.id })).then(() => {
+      dispatch(customerActions.setCustomerSelected(''))
+      handleDelete() // Call the handleDelete function passed as a prop
+    })
   }
 
   if (loading) {
@@ -38,25 +40,28 @@ function CustomerTable({ currentItems, showModal }) {
       <Table>
         <TableHead>
           <TableRow className="sticky top-0 z-40 border-b border-x-0">
-            <TableHeaderCell className="w-[5%] bg-gray-100 ">#</TableHeaderCell>
-            <TableHeaderCell className="w-1/12 bg-gray-100 ">Cédula</TableHeaderCell>
-            <TableHeaderCell className="w-3/12 bg-gray-100 ">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Dirección</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Celular</TableHeaderCell>
-            <TableHeaderCell className="w-2/12 bg-gray-100 ">Acciones</TableHeaderCell>
+            <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Cédula</TableHeaderCell>
+            <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
+            <TableHeaderCell className="w-[20%]">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-[20%]">Celular</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-xs divide-y">
-          {currentItems.map((customer, index) => (
-            <CustomerItem
-              key={index}
-              index={index + 1}
-              customer={customer}
-              showModal={showModal}
-              showConfirmation={setConfirmationModal}
-            />
-          ))}
+          {currentItems.map((customer, index) => {
+            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+
+            return (
+              <CustomerItem
+                key={calculatedIndex}
+                index={calculatedIndex}
+                customer={customer}
+                showModal={showModal}
+                showConfirmation={setConfirmationModal}
+              />
+            )
+          })}
         </TableBody>
       </Table>
     </>
@@ -66,6 +71,9 @@ function CustomerTable({ currentItems, showModal }) {
 CustomerTable.propTypes = {
   currentItems: PropTypes.array.isRequired,
   showModal: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
 }
 
 export default CustomerTable

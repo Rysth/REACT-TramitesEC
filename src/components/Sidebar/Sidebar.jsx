@@ -1,7 +1,7 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
-import { IoClose, IoMenu, IoPeople, IoPerson, IoDocument } from 'react-icons/io5'
-import { MdAccountCircle, MdSpaceDashboard } from 'react-icons/md'
+import { IoClose, IoDocument, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
+import { MdAccountCircle } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -33,7 +33,7 @@ function Sidebar() {
             open && 'translate-x-0'
           }`}
         >
-          <nav className="flex flex-col h-full p-3 overflow-y-auto">
+          <nav className="flex flex-col h-full p-4 px-3 overflow-y-auto">
             <a href="/" className="flex items-center justify-center h-12 sm:h-16">
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl text-white whitespace-nowrap">TrámitesEC</h2>

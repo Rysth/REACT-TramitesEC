@@ -3,15 +3,20 @@ import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { customerActions } from '../../../redux/slices/CustomerSlice'
+import { customerActions, fetchCustomerDetails } from '../../../redux/slices/CustomerSlice'
 
 function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { activeToken, activeUser } = useSelector((store) => store.authentication)
 
   const handleCustomerSelected = (customerID) => {
-    dispatch(customerActions.setCustomerSelected(customerID))
-    showModal()
+    dispatch(fetchCustomerDetails({ activeToken, customerId: customerID }))
+      .then(() => {
+        showModal()
+      })
+      .catch((error) => {
+        console.error('Error fetching customer details:', error)
+      })
   }
 
   return (
@@ -19,7 +24,6 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
-      <TableCell className="py-1 truncate">{customer.direccion}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.user.username}
@@ -35,19 +39,18 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {customer.user.id === id && (
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              dispatch(customerActions.setCustomerSelected(customer.id))
-              showConfirmation(true)
-            }}
-          >
-            <span className="sr-only">Eliminar</span>
-            <HiMiniTrash />
-          </Button>
-        )}
+        <Button
+          size="xs"
+          color="red"
+          onClick={() => {
+            dispatch(customerActions.setCustomerSelected(customer.id))
+            showConfirmation(true)
+          }}
+          disabled={customer.user.id !== activeUser.id}
+        >
+          <span className="sr-only">Eliminar</span>
+          <HiMiniTrash />
+        </Button>
       </TableCell>
     </TableRow>
   )
@@ -63,8 +66,8 @@ CustomerItem.propTypes = {
     celular: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     processor: PropTypes.shape({
-      nombres: PropTypes.string.isRequired,
-      apellidos: PropTypes.string.isRequired,
+      nombres: PropTypes.string,
+      apellidos: PropTypes.string,
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,

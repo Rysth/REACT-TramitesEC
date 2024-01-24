@@ -104,7 +104,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
-      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
     },
   },
   extraReducers: (builder) => {
@@ -113,21 +113,21 @@ export const AuthenticationSlice = createSlice({
       updateSessionStorage(state)
     })
     builder.addCase(createSession.pending, () => {
-      toast.info('Autentificando...', { autoClose: 2000, theme: 'colored' })
+      toast.info('Autentificando...', { autoClose: 2000 })
     })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
       state.activeUser = action.payload[1]
       state.activeToken = action.payload[0].token
       updateSessionStorage(state)
-      toast.success('¡Bienvenido!', { autoClose: 2000, theme: 'colored' })
+      toast.success('¡Bienvenido!', { autoClose: 2000 })
     })
     builder.addCase(destroySession.fulfilled, (state) => {
       state.active = false
       state.activeUser = {}
       state.activeToken = ''
       updateSessionStorage(state)
-      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
     })
   },
 })
