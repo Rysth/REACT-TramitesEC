@@ -7,7 +7,7 @@ import { processorActions } from '../../../redux/slices/ProcessorSlice'
 
 function ProcessorItem({ index, processor, showModal, showConfirmation }) {
   const dispatch = useDispatch()
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { activeUser } = useSelector((store) => store.authentication)
 
   const handleProcessorSelected = (processorID) => {
     dispatch(processorActions.setProcessorSelected(processorID))
@@ -30,23 +30,22 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button color="blue" size="xs" onClick={() => handleProcessorSelected(processor.id)}>
+        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {processor.user.id === id && (
-          <Button
-            color="red"
-            size="xs"
-            onClick={() => {
-              dispatch(processorActions.setProcessorSelected(processor.id))
-              showConfirmation(true)
-            }}
-          >
-            <span className="sr-only">Eliminar</span>
-            <HiMiniTrash />
-          </Button>
-        )}
+        <Button
+          color="red"
+          size="xs"
+          onClick={() => {
+            dispatch(processorActions.setProcessorSelected(processor.id))
+            showConfirmation(true)
+          }}
+          disabled={processor.user.id !== activeUser.id}
+        >
+          <span className="sr-only">Eliminar</span>
+          <HiMiniTrash />
+        </Button>
       </TableCell>
     </TableRow>
   )

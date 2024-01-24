@@ -20,6 +20,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   }
 
   const statusColor = procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
+  const isProcedureFinished = procedure && procedure.status.id === 3 ? true : false
 
   return (
     <TableRow>
@@ -58,19 +59,18 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {procedure.user.id === activeUser.id && (
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              dispatch(procedureActions.setProcedureSelected(procedure.id))
-              showConfirmation(true)
-            }}
-          >
-            <span className="sr-only">Eliminar</span>
-            <HiMiniTrash />
-          </Button>
-        )}
+        <Button
+          size="xs"
+          color="red"
+          onClick={() => {
+            dispatch(procedureActions.setProcedureSelected(procedure.id))
+            showConfirmation(true)
+          }}
+          disabled={procedure.user.id !== activeUser.id}
+        >
+          <span className="sr-only">Eliminar</span>
+          <HiMiniTrash />
+        </Button>
       </TableCell>
     </TableRow>
   )

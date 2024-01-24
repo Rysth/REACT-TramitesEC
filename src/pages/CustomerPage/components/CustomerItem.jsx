@@ -39,19 +39,18 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {customer.user.id === activeUser.id && (
-          <Button
-            size="xs"
-            color="red"
-            onClick={() => {
-              dispatch(customerActions.setCustomerSelected(customer.id))
-              showConfirmation(true)
-            }}
-          >
-            <span className="sr-only">Eliminar</span>
-            <HiMiniTrash />
-          </Button>
-        )}
+        <Button
+          size="xs"
+          color="red"
+          onClick={() => {
+            dispatch(customerActions.setCustomerSelected(customer.id))
+            showConfirmation(true)
+          }}
+          disabled={customer.user.id !== activeUser.id}
+        >
+          <span className="sr-only">Eliminar</span>
+          <HiMiniTrash />
+        </Button>
       </TableCell>
     </TableRow>
   )
