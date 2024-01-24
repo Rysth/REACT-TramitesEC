@@ -30,6 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
+
       {active && <Sidebar />}
       <main className="min-h-screen">
         <Routes>
