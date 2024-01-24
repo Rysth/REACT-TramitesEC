@@ -76,8 +76,8 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, producedureData }) => {
-  return axios.put(`${API_URL}/api/v1/procedures/${producedureData.id}`, producedureData, {
+export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, procedureData }) => {
+  return axios.put(`${API_URL}/api/v1/procedures/${procedureData.id}`, procedureData, {
     headers: {
       Authorization: activeToken,
     },
@@ -156,18 +156,17 @@ const proceduresSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getProcedures.pending, (state, action) => {
-        state.loading = true
-      })
-      .addCase(getProcedures.fulfilled, (state, action) => {
-        updateStateAndStats(state, action)
-        state.loading = false
-      })
-      .addCase(fetchProcedureDetails.fulfilled, (state, action) => {
-        state.loading = false
-        state.procedureSelected = action.payload
-      })
+    builder.addCase(getProcedures.pending, (state, action) => {
+      state.loading = true
+    })
+    builder.addCase(getProcedures.fulfilled, (state, action) => {
+      updateStateAndStats(state, action)
+      state.loading = false
+    })
+    builder.addCase(fetchProcedureDetails.fulfilled, (state, action) => {
+      state.loading = false
+      state.procedureSelected = action.payload
+    })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámite Registrado!')

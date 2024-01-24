@@ -7,7 +7,7 @@ import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/P
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
-  const { id } = useSelector((store) => store.authentication.activeUser)
+  const { activeToken, activeUser } = useSelector((store) => store.authentication)
 
   const handleProcedureSelected = (procedureID) => {
     dispatch(fetchProcedureDetails({ activeToken, procedureId: procedureID }))
@@ -58,7 +58,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
-        {procedure.user.id === id && (
+        {procedure.user.id === activeUser.id && (
           <Button
             size="xs"
             color="red"
