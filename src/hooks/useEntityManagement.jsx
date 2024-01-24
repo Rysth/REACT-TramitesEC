@@ -38,7 +38,13 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
 
   useEffect(() => {
     refetchEntities()
-  }, [dispatch, activeToken, search, selectedUserId])
+  }, [dispatch, activeToken, search, selectedUserId, currentPage]) // Include currentPage in dependencies
+
+  useEffect(() => {
+    if (selectedUserId) {
+      setCurrentPage(1)
+    }
+  }, [selectedUserId])
 
   return {
     entitiesArray,

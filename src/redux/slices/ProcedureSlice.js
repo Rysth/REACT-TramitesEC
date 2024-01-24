@@ -66,8 +66,8 @@ export const fetchProcedureDetails = createAsyncThunkWrapper(
 )
 
 // Thunk for creating a new processor (POST)
-export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, newProcedure }) => {
-  return axios.post(`${API_URL}/api/v1/procedures/`, newProcedure, {
+export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
+  return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
     headers: {
       Authorization: activeToken,
     },
@@ -76,8 +76,8 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 })
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, oldProcedure }) => {
-  return axios.put(`${API_URL}/api/v1/procedures/${oldProcedure.id}`, oldProcedure, {
+export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, producedureData }) => {
+  return axios.put(`${API_URL}/api/v1/procedures/${producedureData.id}`, producedureData, {
     headers: {
       Authorization: activeToken,
     },
@@ -161,8 +161,8 @@ const proceduresSlice = createSlice({
         state.loading = true
       })
       .addCase(getProcedures.fulfilled, (state, action) => {
-        state.loading = false
         updateStateAndStats(state, action)
+        state.loading = false
       })
       .addCase(fetchProcedureDetails.fulfilled, (state, action) => {
         state.loading = false

@@ -174,8 +174,8 @@ const customerSlice = createSlice({
       state.loading = true
     })
     builder.addCase(getCustomers.fulfilled, (state, action) => {
-      state.loading = false
       updateStateAndStats(state, action)
+      state.loading = false
     })
     builder.addCase(createCustomer.fulfilled, (state, action) => {
       state.loading = false
