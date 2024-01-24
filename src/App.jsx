@@ -12,9 +12,7 @@ import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import { getUsers } from './redux/slices/UserSlice'
-import { getStatuses } from './redux/slices/StatusSlice'
-import { getLicenses } from './redux/slices/LicenseSlice'
-import { getTypes } from './redux/slices/TypeSlice'
+import { getStatuses, getLicenses, getTypes } from './redux/slices/SharedSlice'
 
 function App() {
   const dispatch = useDispatch()

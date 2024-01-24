@@ -1,5 +1,6 @@
 import { Button, TextInput } from '@tremor/react'
 import { Label, Select } from 'flowbite-react'
+import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -9,58 +10,87 @@ import {
   HiDocument,
   HiIdentification,
   HiListBullet,
-  HiUser,
 } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { LicenseActions } from '../../../redux/slices/LicenseSlice'
+import AsyncSelect from 'react-select/async'
+import { sharedActions } from '../../../redux/slices/SharedSlice'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
+import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
+import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
 
-function CustomerForm({ closeModal }) {
+function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
-  const { activeToken, activeUser } = useSelector((store) => store.authentication)
-  const { processorOriginal } = useSelector((store) => store.processor)
-  const { customersOriginal } = useSelector((store) => store.customer)
-  const { typesOriginal } = useSelector((store) => store.type)
-  const { licensesArray } = useSelector((store) => store.license)
-  const { statusOriginal } = useSelector((store) => store.status)
+  const { activeToken } = useSelector((store) => store.authentication)
+  const { typesOriginal, licensesArray, statusOriginal } = useSelector((store) => store.shared)
   const { procedureSelected } = useSelector((store) => store.procedure)
-  const { register, handleSubmit, reset } = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm()
+
   //Form
   const [typeID, setTypeID] = useState(1)
 
-  const handleCreateOrUpdate = (newProcedure) => {
-    const procedureData = {
-      ...newProcedure,
-    }
-
-    if (procedureSelected) {
-      const oldProcedure = {
-        id: procedureSelected.id,
-        ...procedureData,
-      }
-      dispatch(updateProcedure({ activeToken, oldProcedure })).then(() => closeModal())
-      return
-    }
-    dispatch(createProcedure({ activeToken, newProcedure: { user_id: activeUser.id, ...procedureData } })).then(() =>
-      closeModal(),
-    )
-  }
-
   const onSubmit = (procedureData) => {
-    handleCreateOrUpdate(procedureData)
+    if (procedureSelected) {
+      dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    } else {
+      dispatch(createProcedure({ activeToken, procedureData }))
+        .then(() => refetchFunction())
+        .then(() => closeModal())
+    }
   }
 
-  useEffect(() => {
-    reset()
-  }, [reset])
+  // Load processor options
+  const loadProcessorOptions = debounce((inputValue, callback) => {
+    dispatch(fetchProcessorOptions({ activeToken, query: inputValue.toLowerCase() }))
+      .unwrap()
+      .then((response) => {
+        const options = response.map((processor) => ({
+          label: `${processor.codigo} - ${processor.nombres} ${processor.apellidos}`,
+          value: processor.id,
+        }))
+        callback(options)
+      })
+      .catch(() => callback([]))
+  }, 800)
+
+  // Load customer options
+  const loadCustomerOptions = debounce((inputValue, callback) => {
+    dispatch(fetchCustomerOptions({ activeToken, query: inputValue.toLowerCase() }))
+      .unwrap()
+      .then((response) => {
+        const options = response.map((customer) => ({
+          label: `${customer.cedula} - ${customer.nombres} ${customer.apellidos}`,
+          value: customer.id,
+        }))
+        callback(options)
+      })
+      .catch(() => callback([]))
+  }, 800)
 
   useEffect(() => {
-    dispatch(LicenseActions.filterLicenses(typeID))
+    if (procedureSelected) {
+      Object.keys(procedureSelected).forEach((key) => {
+        setValue(key, procedureSelected[key])
+      })
+    } else {
+      reset() // Reset the form if no procedure is selected
+    }
+  }, [procedureSelected, reset, setValue])
+
+  useEffect(() => {
+    dispatch(sharedActions.filterLicenses(typeID))
   }, [typeID, dispatch])
 
   useEffect(() => {
     if (procedureSelected) {
-      dispatch(LicenseActions.filterLicenses(procedureSelected.type.id))
+      dispatch(sharedActions.filterLicenses(procedureSelected.type.id))
     }
   }, [procedureSelected, dispatch])
 
@@ -120,32 +150,41 @@ function CustomerForm({ closeModal }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="processor_id" value="Trámitador" />
-          <Select
-            icon={HiUser}
-            id="processor_id"
-            {...register('processor_id')}
-            defaultValue={procedureSelected && procedureSelected.processor.id}
-            required
-          >
-            {processorOriginal.map((processor) => (
-              <option key={processor.id} value={processor.id}>{`${processor.nombres} ${processor.apellidos}`}</option>
-            ))}
-          </Select>
+          <AsyncSelect
+            cacheOptions
+            loadOptions={loadProcessorOptions}
+            defaultOptions
+            placeholder="Buscar Trámitador..."
+            onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+            defaultValue={
+              procedureSelected && procedureSelected.processor
+                ? {
+                    label: `${procedureSelected.processor.codigo} - ${procedureSelected.processor.nombres} ${procedureSelected.processor.apellidos}`,
+                    value: procedureSelected.processor.id,
+                  }
+                : undefined
+            }
+            className="text-sm shadow shadow-gray-200"
+          />
         </div>
         <div>
           <Label htmlFor="customer_id" value="Cliente" />
-          <Select
-            className="!bg-white"
-            icon={HiUser}
-            id="customer_id"
-            {...register('customer_id')}
-            defaultValue={procedureSelected && procedureSelected.customer.id}
-            required
-          >
-            {customersOriginal.map((customer) => (
-              <option key={customer.id} value={customer.id}>{`${customer.nombres} ${customer.apellidos}`}</option>
-            ))}
-          </Select>
+          <AsyncSelect
+            cacheOptions
+            loadOptions={loadCustomerOptions}
+            defaultOptions
+            placeholder="Buscar Cliente..."
+            onChange={(selectedOption) => setValue('customer_id', selectedOption.value)}
+            defaultValue={
+              procedureSelected && procedureSelected.customer
+                ? {
+                    label: `${procedureSelected.customer.cedula} - ${procedureSelected.customer.nombres} ${procedureSelected.customer.apellidos}`,
+                    value: procedureSelected.customer.id,
+                  }
+                : undefined
+            }
+            className="text-sm shadow shadow-gray-200"
+          />
         </div>
       </fieldset>
 
@@ -234,6 +273,7 @@ function CustomerForm({ closeModal }) {
 
 CustomerForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
 }
 
 export default CustomerForm

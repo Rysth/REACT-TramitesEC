@@ -39,6 +39,20 @@ const createAsyncThunkWrapper = (type, requestFn) =>
     }
   })
 
+// Thunk for loading customer options
+export const fetchCustomerOptions = createAsyncThunkWrapper(
+  'processor/fetchOptions',
+  async ({ activeToken, query }) => {
+    return axios.get(`${API_URL}/api/v1/customers/search_from_procedures`, {
+      params: { query },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Thunk for retrieving clients (GET)
 export const getCustomers = createAsyncThunkWrapper('getCustomers', async ({ activeToken, page, search, userId }) => {
   const params = { page }

@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL
 const initialState = {
   procedureOriginal: [],
   proceduresArray: [],
-  procedureStats: [],
+  processorOptions: [],
   procedureSelected: null,
   loading: true,
 }
