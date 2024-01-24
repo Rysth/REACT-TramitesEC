@@ -59,7 +59,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   useEffect(() => {
     dispatch(fetchProcessorOptions({ activeToken, query: '' }))
-  }, [])
+  }, [dispatch, activeToken])
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>

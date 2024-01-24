@@ -20,7 +20,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   }
 
   const statusColor = procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
-  const isProcedureFinished = procedure && procedure.status.id === 3 ? true : false
 
   return (
     <TableRow>
@@ -100,6 +99,7 @@ ProcedureItem.propTypes = {
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
     }),
     license: PropTypes.shape({
       id: PropTypes.number.isRequired,

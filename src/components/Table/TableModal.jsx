@@ -41,6 +41,7 @@ function TableModal({
 TableModal.propTypes = {
   openModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
   formComponent: PropTypes.elementType.isRequired,
   slice: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

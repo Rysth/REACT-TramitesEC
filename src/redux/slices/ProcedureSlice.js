@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -160,7 +160,7 @@ const proceduresSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getProcedures.pending, (state, action) => {
+    builder.addCase(getProcedures.pending, (state) => {
       state.loading = true
     })
     builder.addCase(getProcedures.fulfilled, (state, action) => {

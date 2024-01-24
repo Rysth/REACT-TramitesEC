@@ -1,11 +1,11 @@
+import { Button, Label, TextInput } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { HiMail } from 'react-icons/hi'
-import { Button, TextInput, Label } from 'flowbite-react'
 import { RiLockPasswordFill } from 'react-icons/ri'
-import { createSession } from '../../redux/slices/AuthenticationSlice'
+import { useDispatch } from 'react-redux'
 import UndrawLogin from '../../assets/images/illustrations/undraw_login.svg'
 import BrandImage from '../../assets/personal/brand_blue.svg'
+import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function SessionPage() {
   const dispatch = useDispatch()
@@ -50,6 +50,7 @@ function SessionPage() {
             href="https://rysthdesign.netlify.app/"
             className="flex items-center gap-2 p-2 text-xs transition rounded-md bottom-5 right-6 hover:scale-105"
             target="_blank"
+            rel="noreferrer"
           >
             Creado Por <img src={BrandImage} alt="RysthDesign Logo" className="w-12" />
           </a>
