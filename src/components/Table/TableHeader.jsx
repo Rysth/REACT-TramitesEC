@@ -30,7 +30,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
   }
 
   return (
-    <article className="p-2 sm:px-4 py-4 bg-[var(--CL-primary)] rounded-t-lg">
+    <article className="p-4 sm:px-4 bg-[var(--CL-primary)] rounded-t-lg">
       <fieldset className="flex flex-col items-center justify-between w-full gap-2 sm:flex-row">
         <SearchSelect
           value={value}
@@ -44,7 +44,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
             </SearchSelectItem>
           ))}
         </SearchSelect>
-        <div className="flex flex-col items-center justify-end w-full max-w-[20rem] gap-2 sm:flex-row">
+        <div className="flex flex-col items-center justify-end w-full sm:max-w-[20rem] gap-2 sm:flex-row">
           <TextInput
             id="search"
             type="text"

@@ -48,7 +48,7 @@ function ProcessorTable({ currentItems, currentPage, itemsPerPage, showModal, ha
             <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody className="text-xs divide-y">
+        <TableBody className="text-xs">
           {currentItems.map((processor, index) => {
             const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
 
