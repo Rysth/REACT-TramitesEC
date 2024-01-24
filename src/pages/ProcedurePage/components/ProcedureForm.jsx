@@ -1,5 +1,5 @@
 import { Button, TextInput } from '@tremor/react'
-import { Label, Select } from 'flowbite-react'
+import { Badge, Label, Select } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
@@ -97,8 +97,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid gap-4 sm:grid-cols-3">
-        <div>
-          <Label htmlFor="type_id" value="Tipo Trámite" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="type_id" value="Tipo Trámite" />
+            {errors.type_id && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <Select
             icon={HiDocument}
             id="type_id"
@@ -114,8 +121,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
             ))}
           </Select>
         </div>
-        <div>
-          <Label htmlFor="license_id" value="Licencia" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="license_id" value="Licencia" />
+            {errors.license_id && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <Select
             icon={HiIdentification}
             id="license_id"
@@ -130,8 +144,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
             ))}
           </Select>
         </div>
-        <div>
-          <Label htmlFor="status_id" value="Estado" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="status_id" value="Estado" />
+            {errors.status_id && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <Select
             icon={HiListBullet}
             id="status_id"
@@ -148,8 +169,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="processor_id" value="Trámitador" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="processor_id" value="Trámitador" />
+            {errors.processor_id && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <AsyncSelect
             cacheOptions
             loadOptions={loadProcessorOptions}
@@ -167,8 +195,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
             className="text-sm shadow shadow-gray-200"
           />
         </div>
-        <div>
-          <Label htmlFor="customer_id" value="Cliente" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="customer_id" value="Cliente" />
+            {errors.customer_id && (
+              <Badge className="text-xs" color="failure">
+                Campo Requerido
+              </Badge>
+            )}
+          </div>
           <AsyncSelect
             cacheOptions
             loadOptions={loadCustomerOptions}
@@ -187,58 +222,87 @@ function CustomerForm({ closeModal, refetchFunction }) {
           />
         </div>
       </fieldset>
-
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="valor" value="Valor" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="valor" value="Valor" />
+            {errors.valor && (
+              <Badge className="text-xs" color="failure">
+                {errors.valor.type === 'required' && 'Campo requerido'}
+                {errors.valor.type === 'pattern' && 'Solo números'}
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="valor"
             defaultValue={procedureSelected && procedureSelected.valor}
             icon={HiCurrencyDollar}
-            {...register('valor')}
+            {...register('valor', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
-            required
           />
         </div>
-        <div>
-          <Label htmlFor="valor_pendiente" value="Valor Pendiente" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="valor_pendiente" value="Valor Pendiente" />
+            {errors.valor_pendiente && (
+              <Badge className="text-xs" color="failure">
+                {errors.valor_pendiente.type === 'required' && 'Campo requerido'}
+                {errors.valor_pendiente.type === 'pattern' && 'Solo números'}
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="valor_pendiente"
             defaultValue={procedureSelected && procedureSelected.valor_pendiente}
             icon={HiCurrencyDollar}
-            {...register('valor_pendiente')}
-            required
+            {...register('valor_pendiente', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
           />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="ganancia" value="Ganancia" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="ganancia" value="Ganancia" />
+            {errors.ganancia && (
+              <Badge className="text-xs" color="failure">
+                {errors.ganancia.type === 'required' && 'Campo requerido'}
+                {errors.ganancia.type === 'pattern' && 'Solo números'}
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="ganancia"
             defaultValue={procedureSelected && procedureSelected.ganancia}
             icon={HiCurrencyDollar}
-            {...register('ganancia')}
+            {...register('ganancia', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
-            required
           />
         </div>
-        <div>
-          <Label htmlFor="ganancia_pendiente" value="Ganancia Pendiente" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="ganancia_pendiente" value="Ganancia Pendiente" />
+            {errors.ganancia_pendiente && (
+              <Badge className="text-xs" color="failure">
+                {errors.ganancia_pendiente.type === 'required' && 'Campo requerido'}
+                {errors.ganancia_pendiente.type === 'pattern' && 'Solo números'}
+              </Badge>
+            )}
+          </div>
           <TextInput
             id="ganancia_pendiente"
             defaultValue={procedureSelected && procedureSelected.ganancia_pendiente}
             icon={HiCurrencyDollar}
-            {...register('ganancia_pendiente')}
+            {...register('ganancia_pendiente', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
-            required
           />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="placa" value="Placa" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="placa" value="Placa" />
+          </div>
           <TextInput
             id="placa"
             defaultValue={procedureSelected && procedureSelected.placa}
@@ -247,8 +311,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
             {...register('placa')}
           />
         </div>
-        <div>
-          <Label htmlFor="observaciones" value="Observaciones" />
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="observaciones" value="Observaciones" />
+          </div>
           <TextInput
             id="observaciones"
             defaultValue={procedureSelected && procedureSelected.observaciones}
