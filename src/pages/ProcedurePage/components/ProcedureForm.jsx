@@ -13,7 +13,6 @@ import {
 } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncSelect from 'react-select/async'
-import { sharedActions } from '../../../redux/slices/SharedSlice'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
@@ -30,9 +29,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
     setValue,
     formState: { errors },
   } = useForm()
-
-  //Form
-  const [typeID, setTypeID] = useState(1)
 
   const onSubmit = (procedureData) => {
     if (procedureSelected) {
@@ -84,16 +80,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, reset, setValue])
 
-  useEffect(() => {
-    dispatch(sharedActions.filterLicenses(typeID))
-  }, [typeID, dispatch])
-
-  useEffect(() => {
-    if (procedureSelected) {
-      dispatch(sharedActions.filterLicenses(procedureSelected.type.id))
-    }
-  }, [procedureSelected, dispatch])
-
   const isProcedureFinished = procedureSelected && procedureSelected.status.id === 3 ? true : false
 
   return (
@@ -113,7 +99,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             id="type_id"
             {...register('type_id')}
             defaultValue={procedureSelected && procedureSelected.type.id}
-            onChange={(event) => setTypeID(parseInt(event.target.value))}
             disabled={isProcedureFinished}
             required
           >

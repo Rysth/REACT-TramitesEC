@@ -32,7 +32,11 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.status.nombre}
         </Badge>
       </TableCell>
-
+      <TableCell className="py-1 truncate">
+        <Badge color="indigo" className="grid place-items-center">
+          {procedure.type.nombre}
+        </Badge>
+      </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="info" className="grid place-items-center">
           {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
@@ -41,16 +45,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {procedure.user.username}
-        </Badge>
-      </TableCell>
-      <TableCell className="py-1 truncate">
-        <Badge color="green" className="grid place-items-center">
-          ${procedure.valor}
-        </Badge>
-      </TableCell>
-      <TableCell className="py-1 truncate">
-        <Badge color={`${procedure.valor_pendiente === 0 ? 'gray' : 'red'}`} className="grid place-items-center">
-          ${procedure.valor_pendiente}
         </Badge>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
