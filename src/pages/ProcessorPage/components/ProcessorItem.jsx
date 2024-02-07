@@ -14,16 +14,17 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
     showModal()
   }
 
+  const isAdmin = activeUser.id === 3
+
   return (
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1 truncate">{processor.codigo}</TableCell>
       <TableCell className="py-1 truncate">
-        <a
-          href={`tramitadores/${processor.id}`}
-          className="hover:text-blue-500"
-        >{`${processor.nombres} ${processor.apellidos}`}</a>
+        <a href={`tramitadores/${processor.id}`} className="hover:text-blue-500">
+          {processor.codigo}
+        </a>
       </TableCell>
+      <TableCell className="py-1 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {processor.user.username}
@@ -35,7 +36,7 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)}>
+        <Button size="xs" color="blue" onClick={() => handleProcessorSelected(processor.id)} disabled={!isAdmin}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
@@ -46,7 +47,7 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
             dispatch(processorActions.setProcessorSelected(processor.id))
             showConfirmation(true)
           }}
-          disabled={processor.user.id !== activeUser.id}
+          disabled={!isAdmin}
         >
           <span className="sr-only">Eliminar</span>
           <HiMiniTrash />

@@ -43,7 +43,8 @@ function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, han
             <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Cédula</TableHeaderCell>
             <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-[20%]">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-[15%]">Trámitador</TableHeaderCell>
+            <TableHeaderCell className="w-[15%]">Usuario</TableHeaderCell>
             <TableHeaderCell className="w-[20%]">Celular</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>

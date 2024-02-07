@@ -7,6 +7,7 @@ import SectionLayout from '../../layouts/SectionLayout'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchClientsSentLast7Days } from '../../redux/slices/ProcessorSlice'
+import { HiUserCircle } from 'react-icons/hi2'
 
 const ProcessorProfilePage = () => {
   const dispatch = useDispatch()
@@ -33,27 +34,15 @@ const ProcessorProfilePage = () => {
           </Button>
         </header>
         <MainLayout>
-          <header className="p-4 border rounded-lg">
-            <h3 className="text-center bg-[var(--CL-primary)] py-2 rounded text-white text-xl sm:text-2xl md:py-4">
-              Datos del Trámitador
-            </h3>
-            <div className="grid gap-2 pt-4 sm:grid-cols-2 md:grid-cols-4">
-              <p className="text-sm">
-                <span className="font-bold">Cédula:</span> 0931237663
-              </p>
-              <p className="text-sm">
-                <span className="font-bold">Nombres:</span> John Andrés
-              </p>
-              <p className="text-sm">
-                <span className="font-bold">Apellidos:</span> Palacios Tutiven
-              </p>
-            </div>
+          <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
+            <HiUserCircle className="text-8xl" />
+            <h2 className="text-2xl sm:text-4xl ">John Palacios</h2>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
             <Col numColSpanLg={3}>
               <Card className="h-full">
                 <Title className="text-lg font-bold">Desempeño con Clientes</Title>
-                <Text>Clientes envíados en los últimos 4 meses</Text>
+                <Text>Clientes envíados en los últimos 5 meses</Text>
                 <BarChart
                   className="mt-4 h-72"
                   data={processorCustomers}
@@ -67,7 +56,7 @@ const ProcessorProfilePage = () => {
             <Col numColSpanLg={3}>
               <Card className="h-full">
                 <Title className="font-bold">Desempeño con Trámites</Title>
-                <Text>Trámites hechos en los últimos 4 meses</Text>
+                <Text>Trámites hechos en los últimos 5 meses</Text>
                 <BarChart
                   className="mt-4 h-72"
                   data={processorCustomers}
