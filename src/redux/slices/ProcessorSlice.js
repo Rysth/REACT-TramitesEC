@@ -13,6 +13,7 @@ const initialState = {
   currentPage: 1,
   totalPages: 0,
   totalProcessors: 0,
+  processorCustomers: [],
 }
 
 const handleRequestError = (error) => {
@@ -119,6 +120,21 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 }
 
+/* Complementary ProcessorProfilePage */
+// Thunk para obtener todos los clientes enviados por un procesador en los últimos 7 días
+export const fetchClientsSentLast7Days = createAsyncThunkWrapper(
+  'processor/fetchClientsSentLast7Days',
+  async ({ activeToken, processorID }) => {
+    return axios.get(`${API_URL}/api/v1/processors/calculate_quantity_and_months`, {
+      params: { id: processorID },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Redux Toolkit Slice for managing processor state
 const processorslice = createSlice({
   name: 'processors',
@@ -181,6 +197,10 @@ const processorslice = createSlice({
     builder.addCase(destroyProcessor.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
+    })
+    builder.addCase(fetchClientsSentLast7Days.fulfilled, (state, action) => {
+      state.loading = false
+      state.processorCustomers = [...action.payload]
     })
   },
 })

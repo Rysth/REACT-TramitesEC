@@ -18,7 +18,12 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{processor.codigo}</TableCell>
-      <TableCell className="py-1 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">
+        <a
+          href={`tramitadores/${processor.id}`}
+          className="hover:text-blue-500"
+        >{`${processor.nombres} ${processor.apellidos}`}</a>
+      </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {processor.user.username}

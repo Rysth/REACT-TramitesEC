@@ -26,7 +26,7 @@ function ProfilePage() {
       <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
         <Col numColSpanLg={6}>
           <Card className="h-full">
-            <Title>Rendimiento Generales (Últimos 6 Meses)</Title>
+            <Title>Rendimiento Generales</Title>
             <Text>Comparación entre Trámitadores, Clientes y Trámites</Text>
             <BarChart
               className="mt-4 h-80"

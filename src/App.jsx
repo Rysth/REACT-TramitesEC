@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import { getUsers } from './redux/slices/UserSlice'
 import { getStatuses, getLicenses, getTypes } from './redux/slices/SharedSlice'
+import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 
 function App() {
   const dispatch = useDispatch()
@@ -47,6 +48,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <ProcessorPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tramitadores/:id"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <ProcessorProfilePage />
               </ProtectedRoute>
             }
           />
