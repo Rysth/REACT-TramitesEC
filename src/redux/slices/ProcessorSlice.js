@@ -13,7 +13,8 @@ const initialState = {
   currentPage: 1,
   totalPages: 0,
   totalProcessors: 0,
-  processorCustomers: [],
+  processorProcedures: [],
+  processorData: {},
 }
 
 const handleRequestError = (error) => {
@@ -120,13 +121,11 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 }
 
-/* Complementary ProcessorProfilePage */
-// Thunk para obtener todos los clientes enviados por un procesador en los últimos 7 días
-export const fetchClientsSentLast7Days = createAsyncThunkWrapper(
-  'processor/fetchClientsSentLast7Days',
+/// Thunk for fetching latest procedures for a processor (GET)
+export const fetchLatestProcedures = createAsyncThunkWrapper(
+  'processor/fetchLatestProcedures',
   async ({ activeToken, processorID }) => {
-    return axios.get(`${API_URL}/api/v1/processors/calculate_quantity_and_months`, {
-      params: { id: processorID },
+    return await axios.get(`${API_URL}/api/v1/processors/${processorID}`, {
       headers: {
         Authorization: activeToken,
       },
@@ -198,9 +197,11 @@ const processorslice = createSlice({
       state.loading = false
       updateStateAndStats(state, action, '¡Trámitador Eliminado!')
     })
-    builder.addCase(fetchClientsSentLast7Days.fulfilled, (state, action) => {
+    builder.addCase(fetchLatestProcedures.fulfilled, (state, action) => {
       state.loading = false
-      state.processorCustomers = [...action.payload]
+      console.log(action.payload)
+      state.processorData = action.payload.processor
+      state.processorProcedures = [...action.payload.procedures]
     })
   },
 })
