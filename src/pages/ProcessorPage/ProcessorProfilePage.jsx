@@ -1,23 +1,26 @@
 import {
-  BarChart,
   Card,
   Col,
+  DonutChart,
   Grid,
-  Text,
-  Title,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableHeaderCell,
-  TableBody,
   TableRow,
-  TableCell,
+  Text,
+  Title,
+  BarChart,
+  BarList,
 } from '@tremor/react'
 import { Badge, Button } from 'flowbite-react'
-import React, { useEffect } from 'react'
-import { FaArrowLeft } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react'
+import { FaArrowLeft, FaPerson, FaFileContract } from 'react-icons/fa6'
 import { HiUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import TablePaginate from '../../components/Table/TablePaginate'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import { fetchLatestProcedures } from '../../redux/slices/ProcessorSlice'
@@ -25,15 +28,20 @@ import { fetchLatestProcedures } from '../../redux/slices/ProcessorSlice'
 const ProcessorProfilePage = () => {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorProcedures, processorData, loading } = useSelector((store) => store.processor)
+  const { processorProcedures, processorData, processorStats, loading, totalPages, currentPage } = useSelector(
+    (store) => store.processor,
+  )
+  const [page, setPage] = useState(1)
   const params = useParams()
 
   useEffect(() => {
     const processorID = params.id
-    dispatch(fetchLatestProcedures({ activeToken, processorID }))
-  }, [dispatch, params])
+    dispatch(fetchLatestProcedures({ activeToken, processorID, page }))
+  }, [dispatch, params, activeToken, page])
 
-  useEffect(() => {}, [processorProcedures])
+  const handlePageChange = ({ selected }) => {
+    setPage(selected + 1)
+  }
 
   return (
     <>
@@ -52,6 +60,47 @@ const ProcessorProfilePage = () => {
             </h2>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
+            <Col numColSpanLg={3}>
+              <Card className="h-full">
+                <Title className="text-lg font-bold">Desempeño General</Title>
+                <Text>Visualización del total de clientes y trámites.</Text>
+                <BarList
+                  data={[
+                    {
+                      name: 'Clientes',
+                      value: processorStats.clientes || 0,
+                      icon: () => <FaPerson className="mr-1.5" />,
+                    },
+                    {
+                      name: 'Trámites',
+                      value: processorStats.tramites || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                    },
+                  ]}
+                  className="mt-2"
+                  showAnimation
+                />
+              </Card>
+            </Col>
+            <Col numColSpanLg={3}>
+              <Card className="h-full">
+                <Title className="text-lg font-bold">Desempeño en Trámites</Title>
+                <Text>Visualización de valores pagados y ganancias generadas.</Text>
+                <DonutChart
+                  className="mt-6 h-60"
+                  data={[
+                    { name: 'Valores', value: processorStats.valores || 0 },
+                    { name: 'Ganancias', value: processorStats.ganancias || 0 },
+                  ]}
+                  category="value" // Set the category to "name"
+                  index="name"
+                  valueFormatter={(value) => `$${new Intl.NumberFormat('us').format(value).toString()}`} // Adjust the value formatter as needed
+                  colors={['blue', 'indigo']} // Adjust colors as needed
+                  variant="pie"
+                  showAnimation
+                />
+              </Card>
+            </Col>
             <Col numColSpanLg={6}>
               <Card className="h-full space-y-4">
                 <Title className="text-lg font-bold">Listado de Trámites</Title>
@@ -97,6 +146,7 @@ const ProcessorProfilePage = () => {
                       ))}
                   </TableBody>
                 </Table>
+                <TablePaginate currentPage={currentPage} pageCount={totalPages} handlePageChange={handlePageChange} />
               </Card>
             </Col>
           </Grid>

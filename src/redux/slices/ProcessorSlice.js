@@ -15,6 +15,7 @@ const initialState = {
   totalProcessors: 0,
   processorProcedures: [],
   processorData: {},
+  processorStats: {},
 }
 
 const handleRequestError = (error) => {
@@ -200,8 +201,11 @@ const processorslice = createSlice({
     builder.addCase(fetchLatestProcedures.fulfilled, (state, action) => {
       state.loading = false
       console.log(action.payload)
-      state.processorData = action.payload.processor
       state.processorProcedures = [...action.payload.procedures]
+      state.processorData = action.payload.processor
+      state.processorStats = action.payload.processor_stats
+      state.totalPages = action.payload.pagination.total_pages
+      state.currentPage = action.payload.pagination.current_page
     })
   },
 })

@@ -35,6 +35,7 @@ function ProfilePage() {
               categories={['Tramitadores', 'Tramites', 'Clientes']}
               colors={['blue', 'indigo', 'purple']}
               stack={false}
+              showAnimation
               yAxisWidth={60}
             />
           </Card>
