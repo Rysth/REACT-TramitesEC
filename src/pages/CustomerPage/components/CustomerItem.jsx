@@ -22,7 +22,12 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
   return (
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1 truncate">{customer.cedula}</TableCell>
+      <TableCell className="py-1 truncate">
+        {' '}
+        <a href={`clientes/${customer.id}`} className="transition hover:text-blue-500 hover:underline">
+          {customer.cedula}
+        </a>
+      </TableCell>
       <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge className="grid place-items-center">
@@ -36,7 +41,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
         <a href={`tel:+593${customer.celular}`} className="text-blue-500 md:hover:text-black">
-          {customer.celular}
+          {customer.processor.celular}
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">

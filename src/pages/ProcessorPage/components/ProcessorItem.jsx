@@ -20,7 +20,7 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">
-        <a href={`tramitadores/${processor.id}`} className="transition hover:text-blue-500 hover:underline">
+        <a href={`/tramitadores/${processor.id}`} className="transition hover:text-blue-500 hover:underline">
           {processor.codigo}
         </a>
       </TableCell>

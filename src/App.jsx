@@ -52,7 +52,7 @@ function App() {
             }
           />
           <Route
-            path="tramitadores/:id"
+            path="/tramitadores/:id"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <ProcessorProfilePage />

@@ -200,7 +200,6 @@ const processorslice = createSlice({
     })
     builder.addCase(fetchLatestProcedures.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload)
       state.processorProcedures = [...action.payload.procedures]
       state.processorData = action.payload.processor
       state.processorStats = action.payload.processor_stats
