@@ -1,4 +1,5 @@
 import {
+  BarList,
   Card,
   Col,
   DonutChart,
@@ -11,32 +12,30 @@ import {
   TableRow,
   Text,
   Title,
-  BarChart,
-  BarList,
 } from '@tremor/react'
 import { Badge, Button } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { FaArrowLeft, FaPerson, FaFileContract } from 'react-icons/fa6'
+import { FaArrowLeft, FaFileContract, FaCircleCheck } from 'react-icons/fa6'
 import { HiUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import TablePaginate from '../../components/Table/TablePaginate'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
-import { fetchLatestProcedures } from '../../redux/slices/ProcessorSlice'
+import { fetchLatestProcedures } from '../../redux/slices/CustomerSlice'
 
-const ProcessorProfilePage = () => {
+const CustomerProfilePage = () => {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { processorProcedures, processorData, processorStats, loading, totalPages, currentPage } = useSelector(
-    (store) => store.processor,
+  const { customerProcedures, customerData, customerStats, loading, totalPages, currentPage } = useSelector(
+    (store) => store.customer,
   )
   const [page, setPage] = useState(0)
   const params = useParams()
 
   useEffect(() => {
-    const processorID = params.id
-    dispatch(fetchLatestProcedures({ activeToken, processorID, page }))
+    const customerID = params.id
+    dispatch(fetchLatestProcedures({ activeToken, customerID, page }))
   }, [dispatch, params, activeToken, page])
 
   const handlePageChange = ({ selected }) => {
@@ -47,7 +46,7 @@ const ProcessorProfilePage = () => {
     <>
       <SectionLayout>
         <header className="mb-4">
-          <Button className="w-max" color="failure" href="/">
+          <Button className="w-max" color="failure" href="/clientes">
             <FaArrowLeft className="block mr-2" />
             <span className="block">Regresar</span>
           </Button>
@@ -56,25 +55,25 @@ const ProcessorProfilePage = () => {
           <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
             <HiUserCircle className="text-8xl" />
             <h2 className="text-2xl sm:text-4xl ">
-              {processorData.nombres} {processorData.apellidos}
+              {customerData.nombres} {customerData.apellidos}
             </h2>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
             <Col numColSpanLg={3}>
               <Card className="h-full">
                 <Title className="text-lg font-bold">Desempeño General</Title>
-                <Text>Visualización del total de clientes y trámites.</Text>
+                <Text>Visualización del total de trámites hechos y finalizados.</Text>
                 <BarList
                   data={[
                     {
-                      name: 'Clientes',
-                      value: processorStats.clientes || 0,
-                      icon: () => <FaPerson className="mr-1.5" />,
+                      name: 'Trámites Hechos',
+                      value: customerStats.tramites || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
                     },
                     {
-                      name: 'Trámites',
-                      value: processorStats.tramites || 0,
-                      icon: () => <FaFileContract className="mr-1.5" />,
+                      name: 'Trámites Finalizados',
+                      value: customerStats.tramites_finalizados || 0,
+                      icon: () => <FaCircleCheck className="mr-1.5" />,
                     },
                   ]}
                   className="mt-6"
@@ -89,8 +88,8 @@ const ProcessorProfilePage = () => {
                 <DonutChart
                   className="mt-6 h-60"
                   data={[
-                    { name: 'Valores', value: processorStats.valores || 0 },
-                    { name: 'Ganancias', value: processorStats.ganancias || 0 },
+                    { name: 'Valores', value: customerStats.valores || 0 },
+                    { name: 'Ganancias', value: customerStats.ganancias || 0 },
                   ]}
                   category="value" // Set the category to "name"
                   index="name"
@@ -108,15 +107,16 @@ const ProcessorProfilePage = () => {
                   <TableHead>
                     <TableRow className="border-b border-x-0">
                       <TableHeaderCell className="w-[10%]">Fecha</TableHeaderCell>
-                      <TableHeaderCell className="w-[30%]">Cliente</TableHeaderCell>
+                      <TableHeaderCell className="w-[20%]">Cliente</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Tipo de Trámite</TableHeaderCell>
+                      <TableHeaderCell className="w-[10%]">Trámitador</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {!loading &&
-                      processorProcedures.map((procedure) => (
+                      customerProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
                           <TableCell>{procedure.fecha}</TableCell>
                           <TableCell>
@@ -133,8 +133,17 @@ const ProcessorProfilePage = () => {
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge color="info" className="grid place-items-center">
+                            <Badge color="purple" className="grid place-items-center">
                               {procedure.type.nombre}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="py-1 truncate">
+                            <Badge
+                              color="info"
+                              className="grid place-items-center"
+                              href={`/tramitadores/${procedure.processor.id}`}
+                            >
+                              {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
                             </Badge>
                           </TableCell>
                           <TableCell className="py-1 truncate">
@@ -156,4 +165,4 @@ const ProcessorProfilePage = () => {
   )
 }
 
-export default ProcessorProfilePage
+export default CustomerProfilePage

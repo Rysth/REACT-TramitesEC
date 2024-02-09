@@ -13,6 +13,9 @@ const initialState = {
   currentPage: 1,
   totalPages: 0,
   totalProcessors: 0,
+  customerProcedures: [],
+  customerData: {},
+  customerStats: {},
 }
 
 const handleRequestError = (error) => {
@@ -111,6 +114,22 @@ export const destroyCustomer = createAsyncThunkWrapper('destroyCustomer', async 
   })
 })
 
+/// Thunk for fetching latest procedures for a customer (GET)
+export const fetchLatestProcedures = createAsyncThunkWrapper(
+  'customer/fetchLatestProcedures',
+  async ({ activeToken, customerID, page }) => {
+    return await axios.get(`${API_URL}/api/v1/customers/${customerID}`, {
+      params: {
+        page: page,
+      },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
   if (action.payload.customers) {
@@ -192,6 +211,14 @@ const customerSlice = createSlice({
     builder.addCase(fetchCustomerDetails.fulfilled, (state, action) => {
       state.loading = false
       state.customerSelected = action.payload
+    })
+    builder.addCase(fetchLatestProcedures.fulfilled, (state, action) => {
+      state.loading = false
+      state.customerProcedures = [...action.payload.procedures]
+      state.customerData = action.payload.customer
+      state.customerStats = action.payload.customer_stats
+      state.totalPages = action.payload.pagination.total_pages
+      state.currentPage = action.payload.pagination.current_page
     })
   },
 })

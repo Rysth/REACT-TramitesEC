@@ -14,6 +14,7 @@ import SessionPage from './pages/SessionPage/SessionPage'
 import { getUsers } from './redux/slices/UserSlice'
 import { getStatuses, getLicenses, getTypes } from './redux/slices/SharedSlice'
 import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
+import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
 
 function App() {
   const dispatch = useDispatch()
@@ -64,6 +65,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <CustomerPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clientes/:id"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <CustomerProfilePage />
               </ProtectedRoute>
             }
           />

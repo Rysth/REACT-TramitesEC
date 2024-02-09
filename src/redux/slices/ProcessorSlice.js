@@ -106,6 +106,22 @@ export const destroyProcessor = createAsyncThunkWrapper('destroyProcessor', asyn
   })
 })
 
+/// Thunk for fetching latest procedures for a processor (GET)
+export const fetchLatestProcedures = createAsyncThunkWrapper(
+  'processor/fetchLatestProcedures',
+  async ({ activeToken, processorID, page }) => {
+    return await axios.get(`${API_URL}/api/v1/processors/${processorID}`, {
+      params: {
+        page: page,
+      },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
   if (action.payload.processors) {
@@ -121,19 +137,6 @@ const updateStateAndStats = (state, action, successMessage) => {
     toast.success(successMessage, { autoClose: 2000 })
   }
 }
-
-/// Thunk for fetching latest procedures for a processor (GET)
-export const fetchLatestProcedures = createAsyncThunkWrapper(
-  'processor/fetchLatestProcedures',
-  async ({ activeToken, processorID }) => {
-    return await axios.get(`${API_URL}/api/v1/processors/${processorID}`, {
-      headers: {
-        Authorization: activeToken,
-      },
-      withCredentials: true,
-    })
-  },
-)
 
 // Redux Toolkit Slice for managing processor state
 const processorslice = createSlice({
