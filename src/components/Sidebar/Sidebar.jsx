@@ -14,6 +14,8 @@ function Sidebar() {
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
 
+  const isAdmin = id === 3
+
   return (
     <>
       <Button
@@ -33,7 +35,7 @@ function Sidebar() {
             open && 'translate-x-0'
           }`}
         >
-          <nav className="flex flex-col h-full p-4 px-3 overflow-y-auto">
+          <nav className="flex flex-col h-full px-3 py-5 overflow-y-auto">
             <a href="/" className="flex items-center justify-center h-12 sm:h-16">
               <img src={BrandLogo} alt="Brand logo" className="w-9 h-9" />
               <h2 className="text-2xl text-white whitespace-nowrap">TrámitesEC</h2>
@@ -66,18 +68,24 @@ function Sidebar() {
                   <span>Trámites</span>
                 </NavLink>
               </li>
-              <li className="mt-3 mb-3">
-                <hr />
-              </li>
-              <li>
-                <NavLink
-                  to={`/profiles/${id}`}
-                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
-                >
-                  <MdAccountCircle className="text-xl" />
-                  <span>{username}</span>
-                </NavLink>
-              </li>
+
+              {isAdmin && (
+                <>
+                  {' '}
+                  <li className="mt-3 mb-3">
+                    <hr />
+                  </li>
+                  <li>
+                    <NavLink
+                      to={`/profiles/${id}`}
+                      className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
+                    >
+                      <MdAccountCircle className="text-xl" />
+                      <span>{username}</span>
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </ul>
 
             <footer className="grid gap-2">
