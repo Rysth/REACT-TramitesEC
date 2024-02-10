@@ -42,6 +42,8 @@ const CustomerProfilePage = () => {
     setPage(selected + 1)
   }
 
+  const isDirect = customerData.is_direct
+
   return (
     <>
       <SectionLayout>
@@ -55,7 +57,7 @@ const CustomerProfilePage = () => {
           <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
             <HiUserCircle className="text-8xl" />
             <h2 className="text-2xl sm:text-4xl ">
-              {customerData.nombres} {customerData.apellidos}
+              {customerData.first_name} {customerData.last_name}
             </h2>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
@@ -118,9 +120,9 @@ const CustomerProfilePage = () => {
                     {!loading &&
                       customerProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
-                          <TableCell>{procedure.fecha}</TableCell>
+                          <TableCell>{procedure.date}</TableCell>
                           <TableCell>
-                            {procedure.customer.nombres} {procedure.customer.apellidos}
+                            {procedure.customer.first_name} {procedure.customer.last_name}
                           </TableCell>
                           <TableCell>
                             <Badge
@@ -129,22 +131,27 @@ const CustomerProfilePage = () => {
                               }
                               className="grid place-items-center"
                             >
-                              {procedure.status.nombre}
+                              {procedure.status.name}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Badge color="purple" className="grid place-items-center">
-                              {procedure.type.nombre}
+                              {procedure.procedure_type.name}
                             </Badge>
                           </TableCell>
                           <TableCell className="py-1 truncate">
-                            <Badge
-                              color="info"
-                              className="grid place-items-center"
-                              href={`/tramitadores/${procedure.processor.id}`}
-                            >
-                              {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
-                            </Badge>
+                            {!isDirect && procedure.processor ? (
+                              <Badge
+                                className="grid place-items-center"
+                                href={`/tramitadores/${procedure.processor.id}`}
+                              >
+                                {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
+                              </Badge>
+                            ) : (
+                              <Badge className="grid place-items-center" color="green">
+                                Usuario Directo
+                              </Badge>
+                            )}
                           </TableCell>
                           <TableCell className="py-1 truncate">
                             <Badge color="indigo" className="grid place-items-center">

@@ -7,31 +7,35 @@ import { customerActions, fetchCustomerDetails } from '../../../redux/slices/Cus
 
 function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
-  const { activeToken, activeUser } = useSelector((store) => store.authentication)
+  const { activeUser } = useSelector((store) => store.authentication)
 
   const handleCustomerSelected = (customerID) => {
-    dispatch(fetchCustomerDetails({ activeToken, customerId: customerID }))
-      .then(() => {
-        showModal()
-      })
-      .catch((error) => {
-        console.error('Error fetching customer details:', error)
-      })
+    dispatch(customerActions.setCustomerSelected(customerID))
+    showModal()
   }
+
+  const isDirect = customer.is_direct
+  const isAdmin = activeUser.is_admin
 
   return (
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">
         <a href={`/clientes/${customer.id}`} className="transition hover:text-blue-500 hover:underline">
-          {customer.cedula}
+          {customer.identification}
         </a>
       </TableCell>
-      <TableCell className="py-1 truncate">{`${customer.nombres} ${customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
       <TableCell className="py-1 truncate">
-        <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`}>
-          {`${customer.processor.nombres} ${customer.processor.apellidos}`}
-        </Badge>
+        {!isDirect && customer.processor ? (
+          <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`}>
+            {`${customer.processor.first_name} ${customer.processor.last_name}`}
+          </Badge>
+        ) : (
+          <Badge className="grid place-items-center" color="green">
+            Usuario Directo
+          </Badge>
+        )}
       </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
@@ -39,9 +43,15 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
-        <a href={`tel:+593${customer.celular}`} className="text-blue-500 md:hover:text-black">
-          {customer.processor.celular}
-        </a>
+        {!isDirect ? (
+          <a href={`tel:+593${customer.phone}`} className="text-blue-500 md:hover:underline">
+            {customer.phone}
+          </a>
+        ) : (
+          <a href={`tel:+593${customer.processor.phone}`} className="text-blue-500 md:hover:underline">
+            {customer.processor.phone}
+          </a>
+        )}
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
@@ -55,7 +65,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
             dispatch(customerActions.setCustomerSelected(customer.id))
             showConfirmation(true)
           }}
-          disabled={customer.user.id !== activeUser.id}
+          disabled={!isAdmin}
         >
           <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
@@ -69,14 +79,15 @@ CustomerItem.propTypes = {
   index: PropTypes.number.isRequired,
   customer: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    cedula: PropTypes.string.isRequired,
-    nombres: PropTypes.string.isRequired,
-    apellidos: PropTypes.string.isRequired,
-    celular: PropTypes.string.isRequired,
+    identification: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     processor: PropTypes.shape({
-      nombres: PropTypes.string,
-      apellidos: PropTypes.string,
+      code: PropTypes.string,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,

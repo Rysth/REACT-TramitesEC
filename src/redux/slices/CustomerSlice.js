@@ -74,8 +74,8 @@ export const getCustomers = createAsyncThunkWrapper('getCustomers', async ({ act
 // Thunk for retrieving a specific customer's details (GET)
 export const fetchCustomerDetails = createAsyncThunkWrapper(
   'customer/fetchDetails',
-  async ({ activeToken, customerId }) => {
-    return axios.get(`${API_URL}/api/v1/customers/${customerId}`, {
+  async ({ activeToken, customerID }) => {
+    return axios.get(`${API_URL}/api/v1/customers/${customerID}`, {
       headers: {
         Authorization: activeToken,
       },
@@ -185,6 +185,7 @@ const customerSlice = createSlice({
 
       const customerID = parseInt(content)
       const customerFound = state.customersOriginal.find((customer) => customer.id === customerID)
+      console.log(customerFound)
       state.customerSelected = customerFound
     },
   },

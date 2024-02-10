@@ -1,8 +1,8 @@
-import { Button, TextInput } from '@tremor/react'
-import { Badge, Label } from 'flowbite-react'
+import { TextInput, Button } from '@tremor/react'
+import { Badge, Label, Checkbox } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiIdentification, HiMapPin, HiMiniDevicePhoneMobile, HiMiniEnvelope, HiMiniUserCircle } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,8 +21,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
     setValue,
     formState: { errors },
   } = useForm()
+  const [isDirect, setIsDirect] = useState(false)
 
   const onSubmit = (customerData) => {
+    console.log(customerData)
     if (customerSelected) {
       dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } }))
         .then(() => refetchFunction())
@@ -39,7 +41,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((processor) => ({
-          label: `${processor.codigo} - ${processor.nombres} ${processor.apellidos}`,
+          label: `${processor.code} - ${processor.first_name} ${processor.last_name}`,
           value: processor.id,
         }))
         callback(options)
@@ -52,6 +54,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       Object.keys(customerSelected).forEach((key) => {
         setValue(key, customerSelected[key])
       })
+      setIsDirect(customerSelected.is_direct)
     } else {
       reset() // Reset the form if no customer is selected
     }
@@ -64,105 +67,122 @@ function CustomerForm({ closeModal, refetchFunction }) {
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="processor_id" value="Trámitador" />
-            {errors.processor_id && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
-          </div>
-          <AsyncSelect
-            cacheOptions
-            loadOptions={loadProcessorOptions}
-            defaultOptions
-            placeholder="Buscar..."
-            onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
-            defaultValue={
-              customerSelected
-                ? {
-                    label: `${customerSelected.processor.codigo} - ${customerSelected.processor.nombres} ${customerSelected.processor.apellidos}`,
-                    value: customerSelected.processor.id,
-                  }
-                : undefined
-            }
-            className="text-sm shadow shadow-gray-200"
+        <div className="flex items-center justify-center gap-2">
+          <Checkbox
+            id="accept"
+            onClick={() => setIsDirect(!isDirect)}
+            {...register('is_direct')}
+            disabled={customerSelected}
+            color="blue"
           />
+          <Label htmlFor="accept" className="flex" disabled={customerSelected}>
+            ¿Deseas crear un Cliente Directo?
+          </Label>
         </div>
       </fieldset>
+      {!isDirect && (
+        <fieldset className="grid">
+          {/* Render AsyncSelect only if isDirect is false */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="processor_id" value="Trámitador" />
+              {errors.processor_id && (
+                <Badge className="text-xs" color="failure">
+                  Campo Requerido
+                </Badge>
+              )}
+            </div>
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadProcessorOptions}
+              defaultOptions
+              placeholder="Buscar..."
+              onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+              defaultValue={
+                customerSelected
+                  ? {
+                      label: `${customerSelected.processor.code} - ${customerSelected.processor.first_name} ${customerSelected.processor.last_name}`,
+                      value: customerSelected.processor.id,
+                    }
+                  : undefined
+              }
+              className="text-sm shadow shadow-gray-200"
+            />
+          </div>
+        </fieldset>
+      )}
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="cedula" value="Cédula" />
-            {errors.cedula && (
+            {errors.identification && (
               <Badge className="text-xs" color="failure">
-                {errors.cedula.type === 'required' && 'Campo requerido'}
-                {errors.cedula.type === 'pattern' && 'Solo números'}
+                {errors.identification.type === 'required' && 'Campo requerido'}
+                {errors.identification.type === 'pattern' && 'Solo números'}
               </Badge>
             )}
           </div>
           <TextInput
-            id="cedula"
+            id="identification"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.cedula}
+            defaultValue={customerSelected && customerSelected.identification}
             icon={HiIdentification}
-            {...register('cedula', { required: true, pattern: /^[0-9]+$/i })}
+            {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="celular" value="Celular" />
-            {errors.celular && (
+            <Label htmlFor="phone" value="Teléfono" />
+            {errors.phone && (
               <Badge className="text-xs" color="failure">
-                {errors.celular.type === 'required' && 'Campo requerido'}
-                {errors.celular.type === 'pattern' && 'Solo números'}
+                {errors.phone.type === 'required' && 'Campo requerido'}
+                {errors.phone.type === 'pattern' && 'Solo números'}
               </Badge>
             )}
           </div>
           <TextInput
-            id="celular"
+            id="phone"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.celular}
+            defaultValue={customerSelected && customerSelected.phone}
             icon={HiMiniDevicePhoneMobile}
-            {...register('celular', { required: true, pattern: /^[0-9]+$/i })}
+            {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="nombres" value="Nombres" />
-            {errors.nombres && (
+            <Label htmlFor="first_name" value="Nombres" />
+            {errors.first_name && (
               <Badge className="text-xs" color="failure">
                 Campo Requerido
               </Badge>
             )}
           </div>
           <TextInput
-            id="nombres"
+            id="first_name"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.nombres}
+            defaultValue={customerSelected && customerSelected.first_name}
             icon={HiMiniUserCircle}
-            {...register('nombres', { required: true })}
+            {...register('first_name', { required: true })}
           />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="apellidos" value="Apellidos" />
-            {errors.apellidos && (
+            <Label htmlFor="last_name" value="Apellidos" />
+            {errors.last_name && (
               <Badge className="text-xs" color="failure">
                 Campo Requerido
               </Badge>
             )}
           </div>
           <TextInput
-            id="apellidos"
+            id="last_name"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.apellidos}
+            defaultValue={customerSelected && customerSelected.last_name}
             icon={HiMiniUserCircle}
-            {...register('apellidos', { required: true })}
+            {...register('last_name', { required: true })}
           />
         </div>
       </fieldset>
@@ -185,13 +205,13 @@ function CustomerForm({ closeModal, refetchFunction }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="direccion" value="Dirección" />
+          <Label htmlFor="address" value="Dirección" />
           <TextInput
-            id="direccion"
+            id="address"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.direccion}
+            defaultValue={customerSelected && customerSelected.address}
             icon={HiMapPin}
-            {...register('direccion')}
+            {...register('address')}
           />
         </div>
       </fieldset>

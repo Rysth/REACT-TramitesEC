@@ -31,7 +31,7 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
-        <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:text-black">
+        <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:underline">
           {processor.phone}
         </a>
       </TableCell>
