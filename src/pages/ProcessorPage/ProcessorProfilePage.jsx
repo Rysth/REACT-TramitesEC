@@ -56,7 +56,7 @@ const ProcessorProfilePage = () => {
           <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
             <HiUserCircle className="text-8xl" />
             <h2 className="text-2xl sm:text-4xl ">
-              {processorData.nombres} {processorData.apellidos}
+              {processorData.first_name} {processorData.last_name}
             </h2>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
@@ -118,13 +118,13 @@ const ProcessorProfilePage = () => {
                     {!loading &&
                       processorProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
-                          <TableCell>{procedure.fecha}</TableCell>
+                          <TableCell>{procedure.date}</TableCell>
                           <TableCell>
                             <a
                               href={`/clientes/${procedure.customer.id}`}
                               className="transition hover:text-blue-500 hover:underline"
                             >
-                              {procedure.customer.nombres} {procedure.customer.apellidos}
+                              {procedure.customer.first_name} {procedure.customer.last_name}
                             </a>
                           </TableCell>
                           <TableCell>
@@ -134,12 +134,12 @@ const ProcessorProfilePage = () => {
                               }
                               className="grid place-items-center"
                             >
-                              {procedure.status.nombre}
+                              {procedure.status.name}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Badge color="info" className="grid place-items-center">
-                              {procedure.type.nombre}
+                              {procedure.procedure_type.name}
                             </Badge>
                           </TableCell>
                           <TableCell className="py-1 truncate">
