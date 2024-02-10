@@ -14,17 +14,17 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
     showModal()
   }
 
-  const isAdmin = activeUser.id === 3
+  const isAdmin = activeUser.is_admin
 
   return (
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">
         <a href={`/tramitadores/${processor.id}`} className="transition hover:text-blue-500 hover:underline">
-          {processor.codigo}
+          {processor.code}
         </a>
       </TableCell>
-      <TableCell className="py-1 truncate">{`${processor.nombres} ${processor.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">{`${processor.first_name} ${processor.last_name}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {processor.user.username}
@@ -32,7 +32,7 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
         <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:text-black">
-          {processor.celular}
+          {processor.phone}
         </a>
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
@@ -61,10 +61,10 @@ ProcessorItem.propTypes = {
   index: PropTypes.number.isRequired,
   processor: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    codigo: PropTypes.string.isRequired,
-    nombres: PropTypes.string.isRequired,
-    apellidos: PropTypes.string.isRequired,
-    celular: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,

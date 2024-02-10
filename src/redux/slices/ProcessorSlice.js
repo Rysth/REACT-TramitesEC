@@ -20,7 +20,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('¡El Trámitador tiene Clientes!')
+    toast.error('¡Aún tiene Clientes o Trámites!')
     return
   }
 

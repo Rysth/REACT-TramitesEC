@@ -120,7 +120,12 @@ const ProcessorProfilePage = () => {
                         <TableRow key={procedure.id} className="text-xs">
                           <TableCell>{procedure.fecha}</TableCell>
                           <TableCell>
-                            {procedure.customer.nombres} {procedure.customer.apellidos}
+                            <a
+                              href={`/clientes/${procedure.customer.id}`}
+                              className="transition hover:text-blue-500 hover:underline"
+                            >
+                              {procedure.customer.nombres} {procedure.customer.apellidos}
+                            </a>
                           </TableCell>
                           <TableCell>
                             <Badge

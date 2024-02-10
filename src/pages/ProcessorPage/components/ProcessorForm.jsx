@@ -48,55 +48,55 @@ function ProcessorForm({ closeModal, refetchFunction }) {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="nombres" value="Nombres" />
-            {errors.nombres && (
+            {errors.first_name && (
               <Badge className="text-xs" color="failure">
                 Campo Requerido
               </Badge>
             )}
           </div>
           <TextInput
-            id="nombres"
+            id="first_name"
             placeholder=""
-            defaultValue={processorSelected && processorSelected.nombres}
+            defaultValue={processorSelected && processorSelected.first_name}
             icon={HiMiniUserCircle}
-            {...register('nombres', { required: true })}
+            {...register('first_name', { required: true })}
           />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="apellidos" value="Apellidos" />
-            {errors.apellidos && (
+            <Label htmlFor="last_name" value="Apellidos" />
+            {errors.last_name && (
               <Badge className="text-xs" color="failure">
                 Campo Requerido
               </Badge>
             )}
           </div>
           <TextInput
-            id="apellidos"
+            id="last_name"
             placeholder=""
             defaultValue={processorSelected && processorSelected.apellidos}
             icon={HiMiniUserCircle}
-            {...register('apellidos', { required: true })}
+            {...register('last_name', { required: true })}
           />
         </div>
       </fieldset>
       <fieldset className="grid">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="celular" value="Celular" />
-            {errors.celular && (
+            <Label htmlFor="celular" value="Teléfono" />
+            {errors.phone && (
               <Badge className="text-xs" color="failure">
-                {errors.celular.type === 'required' && 'Campo requerido'}
-                {errors.celular.type === 'pattern' && 'Solo números'}
+                {errors.phone.type === 'required' && 'Campo requerido'}
+                {errors.phone.type === 'pattern' && 'Solo números'}
               </Badge>
             )}
           </div>
           <TextInput
-            id="celular"
+            id="phone"
             placeholder=""
             defaultValue={processorSelected && processorSelected.celular}
             icon={HiMiniDevicePhoneMobile}
-            {...register('celular', { required: true, pattern: /^[0-9]+$/i })}
+            {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
       </fieldset>

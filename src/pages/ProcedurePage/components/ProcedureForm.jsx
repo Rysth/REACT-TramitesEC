@@ -80,8 +80,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, reset, setValue])
 
-  const isProcedureFinished = procedureSelected && procedureSelected.status.id === 3 ? true : false
-
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid gap-4 sm:grid-cols-3">
@@ -99,7 +97,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             id="type_id"
             {...register('type_id')}
             defaultValue={procedureSelected && procedureSelected.type.id}
-            disabled={isProcedureFinished}
             required
           >
             {typesOriginal.map((type) => (
@@ -123,7 +120,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             id="license_id"
             {...register('license_id')}
             defaultValue={procedureSelected && procedureSelected.license.id}
-            disabled={isProcedureFinished}
             required
           >
             {licensesArray.map((license) => (
@@ -147,7 +143,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             id="status_id"
             {...register('status_id')}
             defaultValue={procedureSelected && procedureSelected.status.id}
-            disabled={isProcedureFinished}
             required
           >
             {statusOriginal.map((status) => (
@@ -183,7 +178,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 : undefined
             }
             className="text-sm shadow shadow-gray-200"
-            isDisabled={isProcedureFinished}
           />
         </div>
         <div className="space-y-2">
@@ -210,7 +204,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 : undefined
             }
             className="text-sm shadow shadow-gray-200"
-            isDisabled={isProcedureFinished}
           />
         </div>
       </fieldset>
@@ -231,7 +224,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             icon={HiCurrencyDollar}
             {...register('valor', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
-            disabled={isProcedureFinished}
           />
         </div>
         <div className="space-y-2">
@@ -270,7 +262,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             icon={HiCurrencyDollar}
             {...register('ganancia', { required: true, pattern: /^[0-9.]+$/i })}
             placeholder=""
-            disabled={isProcedureFinished}
           />
         </div>
         <div className="space-y-2">

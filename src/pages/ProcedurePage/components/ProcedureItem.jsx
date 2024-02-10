@@ -38,7 +38,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
-        <Badge color="info" className="grid place-items-center">
+        <Badge color="info" className="grid place-items-center" href={`/tramitadores/${procedure.processor.id}`}>
           {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
         </Badge>
       </TableCell>
