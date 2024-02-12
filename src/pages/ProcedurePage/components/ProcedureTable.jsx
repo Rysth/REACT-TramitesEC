@@ -41,7 +41,6 @@ function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         <TableHead>
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
-            <TableHeaderCell className="w-[5%]">Código</TableHeaderCell>
             <TableHeaderCell className="w-[5%]">Fecha</TableHeaderCell>
             <TableHeaderCell className="w-max">Cliente</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>

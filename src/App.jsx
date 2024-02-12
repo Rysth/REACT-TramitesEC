@@ -12,7 +12,7 @@ import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import { getUsers } from './redux/slices/UserSlice'
-import { getStatuses, getLicenses, getTypes } from './redux/slices/SharedSlice'
+import { getStatuses, getLicenses, getLicenseTypes, getProcedureTypes } from './redux/slices/SharedSlice'
 import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
 
@@ -25,7 +25,8 @@ function App() {
       dispatch(getUsers(activeToken))
       dispatch(getStatuses(activeToken))
       dispatch(getLicenses(activeToken))
-      dispatch(getTypes(activeToken))
+      dispatch(getLicenseTypes(activeToken))
+      dispatch(getProcedureTypes(activeToken))
     }
   }, [dispatch, activeToken, active])
 

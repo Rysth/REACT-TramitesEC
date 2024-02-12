@@ -20,27 +20,34 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   }
 
   const statusColor = procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
+  const isAdmin = activeUser.is_admin
+  const isDirect = procedure.customer.is_direct
 
   return (
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1 truncate">{procedure.codigo}</TableCell>
-      <TableCell className="py-1 truncate">{procedure.fecha}</TableCell>
-      <TableCell className="py-1 truncate">{`${procedure.customer.nombres} ${procedure.customer.apellidos}`}</TableCell>
+      <TableCell className="py-1 truncate">{procedure.date}</TableCell>
+      <TableCell className="py-1 truncate">{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</TableCell>
       <TableCell className="py-1 truncate">
         <Badge color={statusColor} className="grid place-items-center">
-          {procedure.status.nombre}
+          {procedure.status.name}
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
-          {procedure.type.nombre}
+          {procedure.procedure_type.name}
         </Badge>
       </TableCell>
       <TableCell className="py-1 truncate">
-        <Badge color="info" className="grid place-items-center" href={`/tramitadores/${procedure.processor.id}`}>
-          {`${procedure.processor.nombres} ${procedure.processor.apellidos}`}
-        </Badge>
+        {!isDirect ? (
+          <Badge className="grid place-items-center" href={`/tramitadores/${procedure.processor.id}`}>
+            {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
+          </Badge>
+        ) : (
+          <Badge className="grid place-items-center" color="green">
+            Usuario Directo
+          </Badge>
+        )}
       </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color="indigo" className="grid place-items-center">
@@ -59,7 +66,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
             dispatch(procedureActions.setProcedureSelected(procedure.id))
             showConfirmation(true)
           }}
-          disabled={procedure.user.id !== activeUser.id}
+          disabled={!isAdmin}
         >
           <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
@@ -75,21 +82,21 @@ ProcedureItem.propTypes = {
   index: PropTypes.number.isRequired,
   procedure: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    codigo: PropTypes.string.isRequired,
-    fecha: PropTypes.string.isRequired,
-    valor: PropTypes.number.isRequired,
-    valor_pendiente: PropTypes.number.isRequired,
-    ganancia: PropTypes.number.isRequired,
-    ganancia_pendiente: PropTypes.number.isRequired,
+    code: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    cost: PropTypes.number.isRequired,
+    cost_pending: PropTypes.number.isRequired,
+    profit: PropTypes.number.isRequired,
+    profit_pending: PropTypes.number.isRequired,
     processor: PropTypes.shape({
-      nombres: PropTypes.string.isRequired,
-      apellidos: PropTypes.string.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
     }),
     customer: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      cedula: PropTypes.string.isRequired,
-      nombres: PropTypes.string.isRequired,
-      apellidos: PropTypes.string.isRequired,
+      identification: PropTypes.string.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
     }),
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -97,11 +104,11 @@ ProcedureItem.propTypes = {
     }),
     license: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      nombre: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }),
     status: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      nombre: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }),
   }),
   showModal: PropTypes.func.isRequired,

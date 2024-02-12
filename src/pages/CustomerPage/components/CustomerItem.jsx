@@ -27,7 +27,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
       </TableCell>
       <TableCell className="py-1 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
       <TableCell className="py-1 truncate">
-        {!isDirect && customer.processor ? (
+        {!isDirect ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`}>
             {`${customer.processor.first_name} ${customer.processor.last_name}`}
           </Badge>
@@ -43,7 +43,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1 text-blue-500 truncate">
-        {!isDirect ? (
+        {isDirect ? (
           <a href={`tel:+593${customer.phone}`} className="text-blue-500 md:hover:underline">
             {customer.phone}
           </a>

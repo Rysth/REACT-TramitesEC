@@ -9,6 +9,9 @@ const initialState = {
   statusOriginal: [],
   licensesOriginal: [],
   licensesArray: [],
+  licenseTypesOriginal: [],
+  selectedProcedureType: {},
+  selectedLicenseType: {},
 }
 
 const handleRequestError = (error) => {
@@ -19,16 +22,16 @@ const handleRequestError = (error) => {
   }
 }
 
-// Async thunk for fetching types
-export const getTypes = createAsyncThunk('shared/getTypes', async (activeToken) => {
+// Async thunk for fetching procedure types
+export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', async (activeToken) => {
   try {
-    const response = await axios.get(`${API_URL}/api/v1/types`, {
+    const response = await axios.get(`${API_URL}/api/v1/procedure_types`, {
       headers: {
         Authorization: activeToken,
       },
       withCredentials: true,
     })
-
+    console.log(response)
     return response.data
   } catch (error) {
     handleRequestError(error)
@@ -44,7 +47,21 @@ export const getStatuses = createAsyncThunk('shared/getStatuses', async (activeT
       },
       withCredentials: true,
     })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
 
+// Async thunk for fetching license types
+export const getLicenseTypes = createAsyncThunk('shared/getLicenseTypes', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/license_types`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
     return response.data
   } catch (error) {
     handleRequestError(error)
@@ -60,7 +77,6 @@ export const getLicenses = createAsyncThunk('shared/getLicenses', async (activeT
       },
       withCredentials: true,
     })
-
     return response.data
   } catch (error) {
     handleRequestError(error)
@@ -79,10 +95,25 @@ const sharedSlice = createSlice({
       }
       state.licensesArray = state.licensesOriginal.filter((license) => license.type.id === searchTypeID)
     },
+    setProcedureTypeSelected: (state, action) => {
+      const selectedProcedureTypeId = parseInt(action.payload)
+
+      if (selectedProcedureTypeId === 0) {
+        state.selectedProcedureType === null
+        return
+      }
+
+      state.selectedProcedureType = state.typesOriginal.find((type) => type.id === selectedProcedureTypeId)
+      state.selectedLicenseType = null // Reset selected license type when procedure type changes
+    },
+    setLicenseTypeSelected: (state, action) => {
+      const selectedLicenseTypeId = parseInt(action.payload)
+      state.selectedLicenseType = selectedLicenseTypeId
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getTypes.fulfilled, (state, action) => {
+      .addCase(getProcedureTypes.fulfilled, (state, action) => {
         state.typesOriginal = action.payload
       })
       .addCase(getStatuses.fulfilled, (state, action) => {
@@ -91,6 +122,9 @@ const sharedSlice = createSlice({
       .addCase(getLicenses.fulfilled, (state, action) => {
         state.licensesOriginal = action.payload
         state.licensesArray = action.payload
+      })
+      .addCase(getLicenseTypes.fulfilled, (state, action) => {
+        state.licenseTypesOriginal = action.payload
       })
   },
 })
