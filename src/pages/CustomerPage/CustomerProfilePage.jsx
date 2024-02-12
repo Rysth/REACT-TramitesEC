@@ -30,7 +30,7 @@ const CustomerProfilePage = () => {
   const { customerProcedures, customerData, customerStats, loading, totalPages, currentPage } = useSelector(
     (store) => store.customer,
   )
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const params = useParams()
 
   useEffect(() => {
@@ -64,21 +64,44 @@ const CustomerProfilePage = () => {
             <Col numColSpanLg={3}>
               <Card className="h-full">
                 <Title className="text-lg font-bold">Desempeño General</Title>
-                <Text>Visualización del total de trámites hechos y finalizados.</Text>
+                <p className="flex items-center justify-between mt-4 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+                  <span>Título</span>
+                  <span>Cantidad</span>
+                </p>
                 <BarList
                   data={[
                     {
-                      name: 'Trámites Hechos',
+                      name: 'Cantidad de Trámites Realizados',
                       value: customerStats.tramites || 0,
                       icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'indigo',
+                    },
+                    {
+                      name: 'Trámites Pendientes de Pago',
+                      value: customerStats.tramites_pendientes || 0,
+                      icon: () => <FaCircleCheck className="mr-1.5" />,
+                      color: 'red',
+                    },
+                    {
+                      name: 'Trámites en Proceso',
+                      value: customerStats.tramites_proceso || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'gray',
+                    },
+                    {
+                      name: 'Trámites entregados Proveedor',
+                      value: customerStats.tramites_proveedor || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'blue',
                     },
                     {
                       name: 'Trámites Finalizados',
                       value: customerStats.tramites_finalizados || 0,
                       icon: () => <FaCircleCheck className="mr-1.5" />,
+                      color: 'green',
                     },
                   ]}
-                  className="mt-6"
+                  className="mt-2"
                   showAnimation
                 />
               </Card>
@@ -116,7 +139,7 @@ const CustomerProfilePage = () => {
                       <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  <TableBody className="min-h-96">
                     {!loading &&
                       customerProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
@@ -162,7 +185,11 @@ const CustomerProfilePage = () => {
                       ))}
                   </TableBody>
                 </Table>
-                <TablePaginate currentPage={currentPage} pageCount={totalPages} handlePageChange={handlePageChange} />
+                <TablePaginate
+                  currentPage={currentPage - 1}
+                  pageCount={totalPages}
+                  handlePageChange={handlePageChange}
+                />
               </Card>
             </Col>
           </Grid>

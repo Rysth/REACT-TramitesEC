@@ -31,7 +31,7 @@ const ProcessorProfilePage = () => {
   const { processorProcedures, processorData, processorStats, loading, totalPages, currentPage } = useSelector(
     (store) => store.processor,
   )
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const params = useParams()
 
   useEffect(() => {
@@ -63,21 +63,43 @@ const ProcessorProfilePage = () => {
             <Col numColSpanLg={3}>
               <Card className="h-full">
                 <Title className="text-lg font-bold">Desempeño General</Title>
-                <Text>Visualización del total de clientes y trámites.</Text>
+                <p className="flex items-center justify-between mt-4 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+                  <span>Título</span>
+                  <span>Cantidad</span>
+                </p>
                 <BarList
                   data={[
+                    {
+                      name: 'Cantidad de Trámites Realizados',
+                      value: processorStats.tramites || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'indigo',
+                    },
+                    {
+                      name: 'Trámites en Proceso',
+                      value: processorStats.tramites_proceso || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'gray',
+                    },
+                    {
+                      name: 'Trámites entregado Proveedor',
+                      value: processorStats.tramites_proveedor || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'purple',
+                    },
+                    {
+                      name: 'Trámites Finalizados',
+                      value: processorStats.tramites_finalizados || 0,
+                      icon: () => <FaFileContract className="mr-1.5" />,
+                      color: 'green',
+                    },
                     {
                       name: 'Clientes',
                       value: processorStats.clientes || 0,
                       icon: () => <FaPerson className="mr-1.5" />,
                     },
-                    {
-                      name: 'Trámites',
-                      value: processorStats.tramites || 0,
-                      icon: () => <FaFileContract className="mr-1.5" />,
-                    },
                   ]}
-                  className="mt-6"
+                  className="mt-2"
                   showAnimation
                 />
               </Card>
@@ -114,7 +136,7 @@ const ProcessorProfilePage = () => {
                       <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  <TableBody className="min-h-[24rem]">
                     {!loading &&
                       processorProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
@@ -130,7 +152,13 @@ const ProcessorProfilePage = () => {
                           <TableCell>
                             <Badge
                               color={
-                                procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
+                                procedure.status.id === 1
+                                  ? 'gray'
+                                  : procedure.status.id === 2
+                                    ? 'indigo'
+                                    : procedure.status.id === 3
+                                      ? 'purple'
+                                      : 'success'
                               }
                               className="grid place-items-center"
                             >
@@ -151,7 +179,11 @@ const ProcessorProfilePage = () => {
                       ))}
                   </TableBody>
                 </Table>
-                <TablePaginate currentPage={currentPage} pageCount={totalPages} handlePageChange={handlePageChange} />
+                <TablePaginate
+                  currentPage={currentPage - 1}
+                  pageCount={totalPages}
+                  handlePageChange={handlePageChange}
+                />
               </Card>
             </Col>
           </Grid>
