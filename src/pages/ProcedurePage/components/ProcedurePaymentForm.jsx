@@ -58,7 +58,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
     setValue('payment_type_id', 1)
   }, [setValue])
 
-  const isNotPending = costPending === 0
+  const isNotPending = procedureSelected?.is_paid
 
   return (
     <div className="space-y-4 ">
@@ -141,13 +141,13 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         </div>
       </fieldset>
       <fieldset className="flex items-center justify-end">
-        <Button type="button" onClick={handleSubmit(onSubmit)}>
+        <Button type="button" onClick={handleSubmit(onSubmit)} disabled={isNotPending}>
           Crear
         </Button>
       </fieldset>
-      <fieldset className="overflow-auto max-h-64">
+      <fieldset className="relative overflow-auto max-h-64">
         <Table>
-          <Table.Head>
+          <Table.Head className="sticky top-0">
             <Table.HeadCell>Fecha</Table.HeadCell>
             <Table.HeadCell className="w-[60%]">Tipo de Pago</Table.HeadCell>
             <Table.HeadCell>Valor</Table.HeadCell>

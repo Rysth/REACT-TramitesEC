@@ -104,7 +104,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   }, [procedureSelected, reset, setValue])
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
-  const isNotPending = procedureSelected?.cost_pending === 0
+  const isNotPending = procedureSelected?.is_paid
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -262,7 +262,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
-                disabled={isCompleted && isNotPending}
+                disabled={isCompleted || isNotPending}
               />
             </div>
             <div className="space-y-2">
@@ -303,7 +303,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleProfitChange}
-                disabled={isCompleted && isNotPending}
+                disabled={isCompleted || isNotPending}
               />
             </div>
             <div className="space-y-2">

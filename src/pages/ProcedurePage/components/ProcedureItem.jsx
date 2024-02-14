@@ -27,7 +27,12 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">{procedure.date}</TableCell>
-      <TableCell className="py-1 truncate">{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</TableCell>
+      <TableCell className="py-1 truncate">
+        <a
+          href={`/clientes/${procedure.customer.id}`}
+          className="transition hover:text-blue-500 hover:underline"
+        >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
+      </TableCell>
       <TableCell className="py-1 truncate">
         <Badge color={statusColor} className="grid place-items-center">
           {procedure.status.name}

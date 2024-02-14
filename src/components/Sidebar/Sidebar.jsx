@@ -14,7 +14,7 @@ function Sidebar() {
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
 
-  const isAdmin = id === 3
+  const isAdmin = id === 1
 
   return (
     <>
