@@ -10,6 +10,7 @@ import TableLayout from '../../layouts/TableLayout'
 import { getProcedures, procedureActions } from '../../redux/slices/ProcedureSlice'
 import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
+import { useSelector } from 'react-redux'
 
 function ProcedurePage() {
   const {
@@ -25,6 +26,7 @@ function ProcedurePage() {
     setSelectedUserId,
     handleDelete,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
+  const { procedureSelected } = useSelector((store) => store.procedure)
 
   return (
     <SectionLayout title="Trámites" subtitle="Información General de los Trámites">
@@ -35,7 +37,7 @@ function ProcedurePage() {
         refetchFunction={resetToFirstPage}
         slice="procedure"
         title="Trámite"
-        modalSize="2xl"
+        modalSize={`${procedureSelected ? '7xl' : '2xl'}`}
         setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>

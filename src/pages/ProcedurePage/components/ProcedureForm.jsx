@@ -17,11 +17,12 @@ import { createProcedure, updateProcedure } from '../../../redux/slices/Procedur
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
+import ProcedurePaymentForm from './ProcedurePaymentForm'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType } = useSelector(
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
     (store) => store.shared,
   )
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -31,15 +32,18 @@ function CustomerForm({ closeModal, refetchFunction }) {
     reset,
     setValue,
     formState: { errors },
+    getValues,
   } = useForm()
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
     const cost = e.target.value
-    const updatedCostPending = procedureSelected
-      ? Math.max(0, procedureSelected.cost_pending - (procedureSelected.cost - cost))
-      : cost
-    setValue('cost_pending', updatedCostPending)
+    setValue('cost_pending', cost)
+  }
+
+  const handleProfitChange = (e) => {
+    const profit = e.target.value
+    setValue('profit_pending', profit)
   }
 
   const onSubmit = (procedureData) => {
@@ -100,251 +104,255 @@ function CustomerForm({ closeModal, refetchFunction }) {
   }, [procedureSelected, reset, setValue])
 
   return (
-    <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
-            {errors.procedure_type_id && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
-          </div>
-          <Select
-            icon={HiDocument}
-            id="procedure_type_id"
-            {...register('procedure_type_id')}
-            onChange={(e) => handleProcedureSelectedChange(e)}
-            defaultValue={procedureSelected && procedureSelected.procedure_type.id}
-            required
-          >
-            {typesOriginal.map((procedure_type) => (
-              <option key={procedure_type.id} value={procedure_type.id}>
-                {procedure_type.name}
-              </option>
-            ))}
-          </Select>
-        </div>
-        {selectedProcedureType && selectedProcedureType.has_licenses && (
+    <form className={`grid gap-4 ${procedureSelected && 'md:grid-cols-2'}`} onSubmit={handleSubmit(onSubmit)}>
+      <div className="grid space-y-4">
+        <fieldset className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="license_id" value="Licencia" />
-              {errors.license_id && (
+              <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
+              {errors.procedure_type_id && (
                 <Badge className="text-xs" color="failure">
                   Campo Requerido
                 </Badge>
               )}
             </div>
             <Select
-              icon={HiIdentification}
-              id="license_id"
-              {...register('license_id')}
-              defaultValue={procedureSelected && procedureSelected.license?.id}
+              icon={HiDocument}
+              id="procedure_type_id"
+              {...register('procedure_type_id')}
+              onChange={(e) => handleProcedureSelectedChange(e)}
+              defaultValue={procedureSelected && procedureSelected.procedure_type.id}
               required
             >
-              {licensesOriginal.map((license) => (
-                <option key={license.id} value={license.id}>
-                  {license.name}
+              {typesOriginal.map((procedure_type) => (
+                <option key={procedure_type.id} value={procedure_type.id}>
+                  {procedure_type.name}
                 </option>
               ))}
             </Select>
           </div>
-        )}
-      </fieldset>
-      <fieldset>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="status_id" value="Estado" />
-            {errors.status_id && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+          {selectedProcedureType && selectedProcedureType.has_licenses && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="license_id" value="Licencia" />
+                {errors.license_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <Select
+                icon={HiIdentification}
+                id="license_id"
+                {...register('license_id')}
+                defaultValue={procedureSelected && procedureSelected.license?.id}
+                required
+              >
+                {licensesOriginal.map((license) => (
+                  <option key={license.id} value={license.id}>
+                    {license.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
+        </fieldset>
+        <fieldset>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="status_id" value="Estado" />
+              {errors.status_id && (
+                <Badge className="text-xs" color="failure">
+                  Campo Requerido
+                </Badge>
+              )}
+            </div>
+            <Select
+              icon={HiListBullet}
+              id="status_id"
+              {...register('status_id')}
+              defaultValue={procedureSelected && procedureSelected.status.id}
+              required
+            >
+              {statusOriginal.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.name}
+                </option>
+              ))}
+            </Select>
           </div>
-          <Select
-            icon={HiListBullet}
-            id="status_id"
-            {...register('status_id')}
-            defaultValue={procedureSelected && procedureSelected.status.id}
-            required
-          >
-            {statusOriginal.map((status) => (
-              <option key={status.id} value={status.id}>
-                {status.name}
-              </option>
-            ))}
-          </Select>
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="processor_id" value="Trámitador" />
-            {errors.processor_id && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+        </fieldset>
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="processor_id" value="Trámitador" />
+              {errors.processor_id && (
+                <Badge className="text-xs" color="failure">
+                  Campo Requerido
+                </Badge>
+              )}
+            </div>
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadProcessorOptions}
+              defaultOptions
+              placeholder="Buscar Trámitador..."
+              onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+              defaultValue={
+                procedureSelected && procedureSelected.processor
+                  ? {
+                      label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
+                      value: procedureSelected.processor.id,
+                    }
+                  : undefined
+              }
+              className="text-sm shadow shadow-gray-200"
+            />
           </div>
-          <AsyncSelect
-            cacheOptions
-            loadOptions={loadProcessorOptions}
-            defaultOptions
-            placeholder="Buscar Trámitador..."
-            onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
-            defaultValue={
-              procedureSelected && procedureSelected.processor
-                ? {
-                    label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
-                    value: procedureSelected.processor.id,
-                  }
-                : undefined
-            }
-            className="text-sm shadow shadow-gray-200"
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="customer_id" value="Cliente" />
-            {errors.customer_id && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="customer_id" value="Cliente" />
+              {errors.customer_id && (
+                <Badge className="text-xs" color="failure">
+                  Campo Requerido
+                </Badge>
+              )}
+            </div>
+            <AsyncSelect
+              cacheOptions
+              loadOptions={loadCustomerOptions}
+              defaultOptions
+              placeholder="Buscar Cliente..."
+              onChange={(selectedOption) => setValue('customer_id', selectedOption.value)}
+              defaultValue={
+                procedureSelected && procedureSelected.customer
+                  ? {
+                      label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
+                      value: procedureSelected.customer.id,
+                    }
+                  : undefined
+              }
+              className="text-sm shadow shadow-gray-200"
+            />
           </div>
-          <AsyncSelect
-            cacheOptions
-            loadOptions={loadCustomerOptions}
-            defaultOptions
-            placeholder="Buscar Cliente..."
-            onChange={(selectedOption) => setValue('customer_id', selectedOption.value)}
-            defaultValue={
-              procedureSelected && procedureSelected.customer
-                ? {
-                    label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
-                    value: procedureSelected.customer.id,
-                  }
-                : undefined
-            }
-            className="text-sm shadow shadow-gray-200"
-          />
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="cost" value="Valor" />
-            {errors.cost && (
-              <Badge className="text-xs" color="failure">
-                {errors.cost.type === 'required' && 'Campo requerido'}
-                {errors.cost.type === 'pattern' && 'Solo números'}
-              </Badge>
-            )}
+        </fieldset>
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="cost" value="Valor" />
+              {errors.cost && (
+                <Badge className="text-xs" color="failure">
+                  {errors.cost.type === 'required' && 'Campo requerido'}
+                  {errors.cost.type === 'pattern' && 'Solo números'}
+                </Badge>
+              )}
+            </div>
+            <TextInput
+              id="cost"
+              defaultValue={procedureSelected && procedureSelected.cost}
+              icon={HiCurrencyDollar}
+              {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
+              placeholder=""
+              onChange={handleCostChange}
+            />
           </div>
-          <TextInput
-            id="cost"
-            defaultValue={procedureSelected && procedureSelected.cost}
-            icon={HiCurrencyDollar}
-            {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
-            placeholder=""
-            onChange={handleCostChange}
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="cost_pending" value="Valor Pendiente" />
-            {errors.cost_pending && (
-              <Badge className="text-xs" color="failure">
-                {errors.cost_pending.type === 'required' && 'Campo requerido'}
-                {errors.cost_pending.type === 'pattern' && 'Solo números'}
-              </Badge>
-            )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="cost_pending" value="Valor Pendiente" />
+              {errors.cost_pending && (
+                <Badge className="text-xs" color="failure">
+                  {errors.cost_pending.type === 'required' && 'Campo requerido'}
+                  {errors.cost_pending.type === 'pattern' && 'Solo números'}
+                </Badge>
+              )}
+            </div>
+            <TextInput
+              id="cost_pending"
+              defaultValue={procedureSelected && procedureSelected.cost_pending}
+              icon={HiCurrencyDollar}
+              {...register('cost_pending', { required: true, pattern: /^[0-9.]+$/i })}
+              placeholder=""
+              readOnly
+            />
           </div>
-          <TextInput
-            id="cost_pending"
-            defaultValue={procedureSelected && procedureSelected.cost_pending}
-            icon={HiCurrencyDollar}
-            {...register('cost_pending', { required: true, pattern: /^[0-9.]+$/i })}
-            placeholder=""
-            readOnly
-          />
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="profit" value="Ganancia" />
-            {errors.profit && (
-              <Badge className="text-xs" color="failure">
-                {errors.profit.type === 'required' && 'Campo requerido'}
-                {errors.profit.type === 'pattern' && 'Solo números'}
-              </Badge>
-            )}
+        </fieldset>
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="profit" value="Ganancia" />
+              {errors.profit && (
+                <Badge className="text-xs" color="failure">
+                  {errors.profit.type === 'required' && 'Campo requerido'}
+                  {errors.profit.type === 'pattern' && 'Solo números'}
+                </Badge>
+              )}
+            </div>
+            <TextInput
+              id="profit"
+              defaultValue={procedureSelected && procedureSelected.profit}
+              icon={HiCurrencyDollar}
+              {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
+              placeholder=""
+              onChange={handleProfitChange}
+            />
           </div>
-          <TextInput
-            id="profit"
-            defaultValue={procedureSelected && procedureSelected.profit}
-            icon={HiCurrencyDollar}
-            {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
-            placeholder=""
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="profit_pending" value="Ganancia Pendiente" />
-            {errors.profit_pending && (
-              <Badge className="text-xs" color="failure">
-                {errors.profit_pending.type === 'required' && 'Campo requerido'}
-                {errors.profit_pending.type === 'pattern' && 'Solo números'}
-              </Badge>
-            )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="profit_pending" value="Ganancia Pendiente" />
+              {errors.profit_pending && (
+                <Badge className="text-xs" color="failure">
+                  {errors.profit_pending.type === 'required' && 'Campo requerido'}
+                  {errors.profit_pending.type === 'pattern' && 'Solo números'}
+                </Badge>
+              )}
+            </div>
+            <TextInput
+              id="profit_pending"
+              defaultValue={procedureSelected && procedureSelected.profit_pending}
+              icon={HiCurrencyDollar}
+              {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
+              placeholder=""
+              readOnly
+            />
           </div>
-          <TextInput
-            id="profit_pending"
-            defaultValue={procedureSelected && procedureSelected.profit_pending}
-            icon={HiCurrencyDollar}
-            {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
-            placeholder=""
-          />
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="plate" value="Placa" />
+        </fieldset>
+        <fieldset className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="plate" value="Placa" />
+            </div>
+            <TextInput
+              id="plate"
+              defaultValue={procedureSelected && procedureSelected.plate}
+              icon={HiIdentification}
+              placeholder=""
+              disabled={selectedProcedureType?.id !== 2}
+              {...register('plate')}
+            />
           </div>
-          <TextInput
-            id="plate"
-            defaultValue={procedureSelected && procedureSelected.plate}
-            icon={HiIdentification}
-            placeholder=""
-            disabled={selectedProcedureType?.id !== 2}
-            {...register('plate')}
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="comments" value="Comentarios" />
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="comments" value="Comentarios" />
+            </div>
+            <TextInput
+              id="comments"
+              defaultValue={procedureSelected && procedureSelected.comments}
+              icon={HiChatBubbleBottomCenterText}
+              placeholder=""
+              {...register('comments')}
+            />
           </div>
-          <TextInput
-            id="comments"
-            defaultValue={procedureSelected && procedureSelected.comments}
-            icon={HiChatBubbleBottomCenterText}
-            placeholder=""
-            {...register('comments')}
-          />
-        </div>
-      </fieldset>
-
-      <fieldset className="flex items-center justify-end gap-2 mt-10">
-        <Button color="blue" type="submit" className="mt-3">
-          Guardar
-        </Button>
-        <Button color="red" onClick={closeModal} className="mt-3">
-          Cancelar
-        </Button>
-      </fieldset>
+        </fieldset>
+        <fieldset className="flex items-center justify-end gap-2 mt-10">
+          <Button color="blue" type="submit" className="mt-3">
+            Guardar
+          </Button>
+          <Button color="red" onClick={closeModal} className="mt-3">
+            Cancelar
+          </Button>
+        </fieldset>
+      </div>
+      {procedureSelected && <ProcedurePaymentForm />}
     </form>
   )
 }

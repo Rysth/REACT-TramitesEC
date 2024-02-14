@@ -10,6 +10,7 @@ const initialState = {
   licensesOriginal: [],
   licensesArray: [],
   licenseTypesOriginal: [],
+  paymentsOriginal: [],
   selectedProcedureType: {},
   selectedLicenseType: {},
 }
@@ -31,7 +32,6 @@ export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', as
       },
       withCredentials: true,
     })
-    console.log(response)
     return response.data
   } catch (error) {
     handleRequestError(error)
@@ -72,6 +72,21 @@ export const getLicenseTypes = createAsyncThunk('shared/getLicenseTypes', async 
 export const getLicenses = createAsyncThunk('shared/getLicenses', async (activeToken) => {
   try {
     const response = await axios.get(`${API_URL}/api/v1/licenses`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
+// Async thunk for fetching license types
+export const getPaymentTypes = createAsyncThunk('shared/getPaymentTypes', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/payment_types`, {
       headers: {
         Authorization: activeToken,
       },
@@ -125,6 +140,10 @@ const sharedSlice = createSlice({
       })
       .addCase(getLicenseTypes.fulfilled, (state, action) => {
         state.licenseTypesOriginal = action.payload
+      })
+      .addCase(getPaymentTypes.fulfilled, (state, action) => {
+        state.paymentsOriginal = action.payload
+        console.log(action.payload)
       })
   },
 })
