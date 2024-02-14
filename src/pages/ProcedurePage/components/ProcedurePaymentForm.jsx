@@ -1,13 +1,15 @@
 import { Button, TextInput } from '@tremor/react'
 import { Badge, Label, Select, Table } from 'flowbite-react'
+import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiCurrencyDollar, HiDocument, HiDocumentCheck } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { createPayment, getPayments } from '../../../redux/slices/SharedSlice'
 import { toast } from 'react-toastify'
+import { createPayment, deletePayment, getPayments } from '../../../redux/slices/SharedSlice'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 
-const ProcedurePaymentForm = () => {
+const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const { procedureSelected } = useSelector((store) => store.procedure)
   const { paymentsTypeOriginal, paymentsOriginal } = useSelector((store) => store.shared)
   const dispatch = useDispatch()
@@ -28,7 +30,10 @@ const ProcedurePaymentForm = () => {
     const updatedPaymentData = { ...paymentData, procedure_id } // Include procedure_id in paymentData
     dispatch(createPayment({ activeToken, paymentData: updatedPaymentData }))
       .then(() => {
-        dispatch(getPayments({ activeToken, procedureID: procedureSelected.id })).then(() => reset())
+        dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
+          .then(() => refetchFunction())
+          .then(() => reset())
+          .then(() => closeModal())
       })
       .catch((error) => {
         // Display error message if payment creation fails
@@ -36,12 +41,18 @@ const ProcedurePaymentForm = () => {
         console.error('Error creating payment:', error)
       })
   }
+
+  const handleDeletePayment = (paymentID) => {
+    dispatch(deletePayment({ activeToken, paymentID }))
+      .then(() => refetchFunction())
+      .then(() => reset())
+      .then(() => closeModal())
+  }
+
   useEffect(() => {
     dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
     setCostPending(procedureSelected?.cost_pending || 0) // Set initial value of cost_pending
   }, [])
-
-  useEffect(() => {}, [paymentsOriginal])
 
   useEffect(() => {
     setValue('payment_type_id', 1)
@@ -66,12 +77,12 @@ const ProcedurePaymentForm = () => {
             icon={HiDocument}
             id="payment_type_id"
             {...register('payment_type_id')}
-            value={1}
+            defaultValue={1}
             onChange={(e) => setPaymentType(parseInt(e.target.value))}
             required
             disabled={isNotPending}
           >
-            {paymentsOriginal.length > 0 &&
+            {paymentsTypeOriginal.length > 0 &&
               paymentsTypeOriginal.map((payment_type) => (
                 <option key={payment_type.id} value={payment_type.id}>
                   {payment_type.name}
@@ -88,6 +99,8 @@ const ProcedurePaymentForm = () => {
               <Badge className="text-xs" color="failure">
                 {errors.value.type === 'required' && 'Campo requerido'}
                 {errors.value.type === 'pattern' && 'Solo números'}
+                {errors.value.type === 'positive' && 'Solo valores positivos'}
+                {errors.value.type === 'max' && 'Solo valores menores al valor pendiente'}
               </Badge>
             )}
           </div>
@@ -95,7 +108,15 @@ const ProcedurePaymentForm = () => {
             id="value"
             defaultValue={procedureSelected && procedureSelected.value}
             icon={HiCurrencyDollar}
-            {...register('value', { required: true, pattern: /^[0-9.]+$/i })}
+            {...register('value', {
+              required: true,
+              pattern: /^[0-9.]+$/i,
+              validate: {
+                positive: (value) => parseFloat(value) >= 0 || 'Solo valores positivos',
+                max: (value) =>
+                  parseFloat(value) <= procedureSelected.cost_pending || 'Solo valores menores al valor pendiente',
+              },
+            })}
             placeholder=""
             disabled={isNotPending}
           />
@@ -124,7 +145,7 @@ const ProcedurePaymentForm = () => {
           Crear
         </Button>
       </fieldset>
-      <fieldset className="overflow-auto max-h-72">
+      <fieldset className="overflow-auto max-h-64">
         <Table>
           <Table.Head>
             <Table.HeadCell>Fecha</Table.HeadCell>
@@ -138,17 +159,24 @@ const ProcedurePaymentForm = () => {
           <Table.Body className="text-xs divide-y">
             {paymentsOriginal.length > 0 &&
               paymentsOriginal.map((payment) => (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell className="font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <Table.Row key={payment.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <Table.Cell className="font-medium text-gray-900 whitespace-nowrap dark:text-white  !py-1">
                     {payment.date}
                   </Table.Cell>
                   <Table.Cell className="truncate">{payment.payment_type.name}</Table.Cell>
                   <Table.Cell>${payment.value}</Table.Cell>
                   <Table.Cell>{payment?.receipt_number}</Table.Cell>
-                  <Table.Cell>
-                    <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                      Edit
-                    </a>
+                  <Table.Cell className="!py-1">
+                    <Button
+                      type="button"
+                      className="!text-xs"
+                      onClick={() => handleDeletePayment(payment.id)}
+                      size="xs"
+                      color="red"
+                    >
+                      <span className="sr-only">Eliminar</span>
+                      <HiMiniTrash />
+                    </Button>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -157,6 +185,11 @@ const ProcedurePaymentForm = () => {
       </fieldset>
     </div>
   )
+}
+
+ProcedurePaymentForm.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  refetchFunction: PropTypes.func.isRequired,
 }
 
 export default ProcedurePaymentForm

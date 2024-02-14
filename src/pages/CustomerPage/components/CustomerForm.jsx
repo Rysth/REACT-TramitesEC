@@ -215,11 +215,11 @@ function CustomerForm({ closeModal, refetchFunction }) {
           />
         </div>
       </fieldset>
-      <fieldset className="flex items-center justify-end gap-2 mt-10">
-        <Button color="blue" type="submit" className="mt-3">
+      <fieldset className="flex items-center justify-end gap-2 mt-4">
+        <Button color="green" type="submit">
           Guardar
         </Button>
-        <Button color="red" onClick={closeModal} className="mt-3">
+        <Button color="red" onClick={closeModal}>
           Cancelar
         </Button>
       </fieldset>

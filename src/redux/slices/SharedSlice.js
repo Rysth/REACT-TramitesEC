@@ -128,6 +128,21 @@ export const createPayment = createAsyncThunk('shared/createPayment', async ({ a
   }
 })
 
+// Async thunk for deleting a payment
+export const deletePayment = createAsyncThunk('shared/deletePayment', async ({ activeToken, paymentID }) => {
+  try {
+    await axios.delete(`${API_URL}/api/v1/payments/${paymentID}`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return paymentID
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
 const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -180,6 +195,10 @@ const sharedSlice = createSlice({
       .addCase(createPayment.fulfilled, (state, action) => {
         state.paymentsOriginal = action.payload
         toast.success('¡Pago creado exitosamente!', { autoClose: 2000 })
+      })
+      .addCase(deletePayment.fulfilled, (state, action) => {
+        state.paymentsOriginal = state.paymentsOriginal.filter((payment) => payment.id !== action.payload)
+        toast.success('¡Pago eliminado exitosamente!', { autoClose: 2000 })
       })
   },
 })
