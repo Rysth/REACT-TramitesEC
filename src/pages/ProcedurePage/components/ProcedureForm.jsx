@@ -104,7 +104,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   }, [procedureSelected, reset, setValue])
 
   return (
-    <form className={`grid gap-4 ${procedureSelected && 'md:grid-cols-2'}`} onSubmit={handleSubmit(onSubmit)}>
+    <form className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[45%_1fr]'}`} onSubmit={handleSubmit(onSubmit)}>
       <div className="grid space-y-4">
         <fieldset className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">

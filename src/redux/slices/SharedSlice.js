@@ -10,6 +10,7 @@ const initialState = {
   licensesOriginal: [],
   licensesArray: [],
   licenseTypesOriginal: [],
+  paymentsTypeOriginal: [],
   paymentsOriginal: [],
   selectedProcedureType: {},
   selectedLicenseType: {},
@@ -97,6 +98,35 @@ export const getPaymentTypes = createAsyncThunk('shared/getPaymentTypes', async 
     handleRequestError(error)
   }
 })
+// Async thunk for fetching license types
+export const getPayments = createAsyncThunk('shared/getPayments', async ({ activeToken, procedureID }) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/payments/${procedureID}`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
+// Async thunk for creating a new payment
+export const createPayment = createAsyncThunk('shared/createPayment', async ({ activeToken, paymentData }) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/v1/payments`, paymentData, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
 
 const sharedSlice = createSlice({
   name: 'shared',
@@ -142,8 +172,14 @@ const sharedSlice = createSlice({
         state.licenseTypesOriginal = action.payload
       })
       .addCase(getPaymentTypes.fulfilled, (state, action) => {
+        state.paymentsTypeOriginal = action.payload
+      })
+      .addCase(getPayments.fulfilled, (state, action) => {
         state.paymentsOriginal = action.payload
-        console.log(action.payload)
+      })
+      .addCase(createPayment.fulfilled, (state, action) => {
+        state.paymentsOriginal = action.payload
+        toast.success('¡Pago creado exitosamente!', { autoClose: 2000 })
       })
   },
 })
