@@ -185,7 +185,6 @@ const customerSlice = createSlice({
 
       const customerID = parseInt(content)
       const customerFound = state.customersOriginal.find((customer) => customer.id === customerID)
-      console.log(customerFound)
       state.customerSelected = customerFound
     },
   },

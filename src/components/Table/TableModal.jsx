@@ -30,7 +30,7 @@ function TableModal({
       className={`z-[9000] ${loading && 'pointer-events-none grayscale'}`}
       size={modalSize ? modalSize : 'lg'}
     >
-      <header className="p-2 py-4 sm:p-6 text-center text-white border-b rounded-t-md bg-[var(--CL-primary)]">
+      <header className="p-2 py-4 sm:p-6 text-center text-white rounded-t-md bg-[var(--CL-primary)]">
         <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
       </header>
       <Modal.Body>{React.createElement(formComponent, { closeModal, refetchFunction })}</Modal.Body>

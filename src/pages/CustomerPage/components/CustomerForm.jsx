@@ -21,14 +21,24 @@ function CustomerForm({ closeModal, refetchFunction }) {
     setValue,
     formState: { errors },
   } = useForm()
-  const [isDirect, setIsDirect] = useState(false)
 
   const onSubmit = (customerData) => {
-    console.log(customerData)
     if (customerSelected) {
-      dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } }))
-        .then(() => refetchFunction())
-        .then(() => closeModal())
+      // Check if the customerData is different from customerSelected
+      const isDifferent = Object.keys(customerData).some((key) => {
+        // Exclude the 'user' key from comparison
+        if (key === 'user') return false
+        return customerData[key] !== customerSelected[key]
+      })
+
+      if (isDifferent) {
+        dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } }))
+          .then(() => refetchFunction())
+          .then(() => closeModal())
+      } else {
+        // No need to update if the data is the same
+        closeModal()
+      }
     } else {
       dispatch(createCustomer({ activeToken, customerData }))
         .then(() => refetchFunction())
@@ -54,7 +64,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
       Object.keys(customerSelected).forEach((key) => {
         setValue(key, customerSelected[key])
       })
-      setIsDirect(customerSelected.is_direct)
     } else {
       reset() // Reset the form if no customer is selected
     }
@@ -63,6 +72,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
   useEffect(() => {
     dispatch(fetchProcessorOptions({ activeToken, query: '' }))
   }, [dispatch, activeToken])
+
+  const isDirect = customerSelected.is_direct
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +110,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
               placeholder="Buscar..."
               onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
               defaultValue={
-                customerSelected
+                customerSelected && customerSelected.processor
                   ? {
                       label: `${customerSelected.processor.code} - ${customerSelected.processor.first_name} ${customerSelected.processor.last_name}`,
                       value: customerSelected.processor.id,
