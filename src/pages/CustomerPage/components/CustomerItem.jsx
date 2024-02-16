@@ -54,7 +54,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
         )}
       </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1">
-        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)}>
+        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)} disabled={!isAdmin}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>

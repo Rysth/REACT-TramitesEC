@@ -20,17 +20,17 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('¡Aún tiene Clientes o Trámites!')
+    toast.error('¡Aún tiene clientes o trámites!')
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡El Trámitador ya está Registrado!')
+    toast.error('¡El trámitador ya está registrado!')
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!')
+    toast.error('¡Problema en el servidor!')
   }
 
   throw new Error(error)
@@ -88,6 +88,8 @@ export const createProcessor = createAsyncThunkWrapper('createProcessor', async 
 
 // Thunk for updating an existing processor (PUT)
 export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, processorData }) => {
+  console.log(processorData.id)
+
   return axios.put(`${API_URL}/api/v1/processors/${processorData.id}`, processorData, {
     headers: {
       Authorization: activeToken,

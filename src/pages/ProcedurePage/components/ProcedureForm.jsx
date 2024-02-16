@@ -22,7 +22,7 @@ import ProcedurePaymentForm from './ProcedurePaymentForm'
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType } = useSelector(
     (store) => store.shared,
   )
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -32,7 +32,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
     reset,
     setValue,
     formState: { errors },
-    getValues,
+    trigger,
   } = useForm()
 
   // Function to handle changes in the cost field
@@ -97,72 +97,20 @@ function CustomerForm({ closeModal, refetchFunction }) {
       dispatch(sharedActions.setProcedureTypeSelected(procedureSelected.procedure_type.id))
       Object.keys(procedureSelected).forEach((key) => {
         setValue(key, procedureSelected[key])
+        trigger(key) // Manually trigger revalidation and update the form field
       })
     } else {
       reset() // Reset the form if no procedure is selected
     }
-  }, [procedureSelected, reset, setValue])
+  }, [procedureSelected, reset, setValue, trigger])
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[45%_1fr]'}`}>
+      <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-2'}`}>
         <div className="grid space-y-4">
-          <fieldset className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
-                {errors.procedure_type_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
-              </div>
-              <Select
-                icon={HiDocument}
-                id="procedure_type_id"
-                {...register('procedure_type_id')}
-                onChange={(e) => handleProcedureSelectedChange(e)}
-                defaultValue={procedureSelected && procedureSelected.procedure_type.id}
-                disabled={isCompleted}
-                required
-              >
-                {typesOriginal.map((procedure_type) => (
-                  <option key={procedure_type.id} value={procedure_type.id}>
-                    {procedure_type.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            {selectedProcedureType && selectedProcedureType.has_licenses && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="license_id" value="Licencia" />
-                  {errors.license_id && (
-                    <Badge className="text-xs" color="failure">
-                      Campo Requerido
-                    </Badge>
-                  )}
-                </div>
-                <Select
-                  icon={HiIdentification}
-                  id="license_id"
-                  {...register('license_id')}
-                  defaultValue={procedureSelected && procedureSelected.license?.id}
-                  disabled={isCompleted}
-                  required
-                >
-                  {licensesOriginal.map((license) => (
-                    <option key={license.id} value={license.id}>
-                      {license.name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            )}
-          </fieldset>
           <fieldset>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -244,6 +192,60 @@ function CustomerForm({ closeModal, refetchFunction }) {
               />
             </div>
           </fieldset>
+          <fieldset className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
+                {errors.procedure_type_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <Select
+                icon={HiDocument}
+                id="procedure_type_id"
+                {...register('procedure_type_id')}
+                onChange={(e) => handleProcedureSelectedChange(e)}
+                defaultValue={procedureSelected && procedureSelected.procedure_type.id}
+                disabled={isCompleted}
+                required
+              >
+                {typesOriginal.map((procedure_type) => (
+                  <option key={procedure_type.id} value={procedure_type.id}>
+                    {procedure_type.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            {selectedProcedureType && selectedProcedureType.has_licenses && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="license_id" value="Licencia" />
+                  {errors.license_id && (
+                    <Badge className="text-xs" color="failure">
+                      Campo Requerido
+                    </Badge>
+                  )}
+                </div>
+                <Select
+                  icon={HiIdentification}
+                  id="license_id"
+                  {...register('license_id')}
+                  defaultValue={procedureSelected && procedureSelected.license?.id}
+                  disabled={isCompleted}
+                  required
+                >
+                  {licensesOriginal.map((license) => (
+                    <option key={license.id} value={license.id}>
+                      {license.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            )}
+          </fieldset>
+
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">

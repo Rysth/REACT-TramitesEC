@@ -21,9 +21,22 @@ function ProcessorForm({ closeModal, refetchFunction }) {
 
   const onSubmit = (processorData) => {
     if (processorSelected) {
-      dispatch(updateProcessor({ activeToken, processorData: { ...processorData, id: processorSelected.id } }))
-        .then(() => refetchFunction())
-        .then(() => closeModal())
+      // Check if the processorData is different from processorSelected
+      const isDifferent = Object.keys(processorData).some((key) => {
+        // Skip the 'user' object
+        if (key === 'user') return false
+        // Check if the key exists in processorSelected and if their values are different
+        return processorSelected.hasOwnProperty(key) && processorData[key] !== processorSelected[key]
+      })
+
+      if (isDifferent) {
+        dispatch(updateProcessor({ activeToken, processorData: { ...processorData, id: processorSelected.id } }))
+          .then(() => refetchFunction())
+          .then(() => closeModal())
+      } else {
+        // No need to update if the data is the same
+        closeModal()
+      }
     } else {
       dispatch(createProcessor({ activeToken, processorData }))
         .then(() => refetchFunction())

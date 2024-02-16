@@ -3,11 +3,11 @@ import { Badge, Label, Select, Table } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { HiCurrencyDollar, HiDocument, HiDocumentCheck } from 'react-icons/hi2'
+import { HiCurrencyDollar, HiDocument, HiDocumentCheck, HiMiniTrash } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { procedureActions } from '../../../redux/slices/ProcedureSlice'
 import { createPayment, deletePayment, getPayments } from '../../../redux/slices/SharedSlice'
-import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 
 const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -32,8 +32,8 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
       .then(() => {
         dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
           .then(() => refetchFunction())
+          .then(() => dispatch(procedureActions.setProcedureSelected(procedureSelected.id)))
           .then(() => reset())
-          .then(() => closeModal())
       })
       .catch((error) => {
         // Display error message if payment creation fails
@@ -45,8 +45,8 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const handleDeletePayment = (paymentID) => {
     dispatch(deletePayment({ activeToken, paymentID }))
       .then(() => refetchFunction())
+      .then(() => dispatch(procedureActions.setProcedureSelected(procedureSelected.id)))
       .then(() => reset())
-      .then(() => closeModal())
   }
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const isNotPending = procedureSelected?.is_paid
 
   return (
-    <div className="space-y-4 ">
+    <div className="space-y-4">
       <fieldset className="grid gap-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -142,16 +142,16 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
       </fieldset>
       <fieldset className="flex items-center justify-end">
         <Button type="button" onClick={handleSubmit(onSubmit)} disabled={isNotPending}>
-          Crear
+          Guardar
         </Button>
       </fieldset>
-      <fieldset className="relative overflow-auto max-h-64">
+      <fieldset className="relative overflow-x-auto max-h-64">
         <Table>
           <Table.Head className="sticky top-0">
-            <Table.HeadCell>Fecha</Table.HeadCell>
-            <Table.HeadCell className="w-[60%]">Tipo de Pago</Table.HeadCell>
-            <Table.HeadCell>Valor</Table.HeadCell>
-            <Table.HeadCell>Comprobante</Table.HeadCell>
+            <Table.HeadCell className="w-[5%]">Fecha</Table.HeadCell>
+            <Table.HeadCell className="w-full">Tipo de Pago</Table.HeadCell>
+            <Table.HeadCell className="w-[5%]">Valor</Table.HeadCell>
+            <Table.HeadCell className="w-[15%]">Comprobante</Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
