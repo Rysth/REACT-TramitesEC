@@ -23,6 +23,7 @@ function CustomerPage() {
     resetToFirstPage,
     setSearch,
     setSelectedUserId,
+    setSelectedProcessorId,
     handleDelete,
   } = useEntityManagement(getCustomers, 'customer', 'customersArray')
 
@@ -45,6 +46,8 @@ function CustomerPage() {
             showModal={showModal}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
+            setSelectedProcessorId={setSelectedProcessorId}
+            showProcessorFilter
           />
           <TableLayout>
             {Array.isArray(customersArray) ? (

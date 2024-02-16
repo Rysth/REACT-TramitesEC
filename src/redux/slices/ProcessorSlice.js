@@ -51,7 +51,7 @@ const createAsyncThunkWrapper = (type, requestFn) =>
 export const fetchProcessorOptions = createAsyncThunkWrapper(
   'processor/fetchOptions',
   async ({ activeToken, query }) => {
-    return axios.get(`${API_URL}/api/v1/processors/search_from_customers`, {
+    return axios.get(`${API_URL}/api/v1/processors/search_processors`, {
       params: { query },
       headers: {
         Authorization: activeToken,

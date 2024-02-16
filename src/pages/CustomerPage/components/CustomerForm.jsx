@@ -21,6 +21,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
     setValue,
     formState: { errors },
   } = useForm()
+  const [isDirect, setIsDirect] = useState(false)
 
   const onSubmit = (customerData) => {
     if (customerSelected) {
@@ -61,6 +62,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   useEffect(() => {
     if (customerSelected) {
+      setIsDirect(customerSelected.is_direct)
       Object.keys(customerSelected).forEach((key) => {
         setValue(key, customerSelected[key])
       })
@@ -72,8 +74,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
   useEffect(() => {
     dispatch(fetchProcessorOptions({ activeToken, query: '' }))
   }, [dispatch, activeToken])
-
-  const isDirect = customerSelected.is_direct
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>

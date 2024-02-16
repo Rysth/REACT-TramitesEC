@@ -1,21 +1,33 @@
-import { Button, SearchSelect, SearchSelectItem, TextInput } from '@tremor/react'
+import { Button, SearchSelect, SearchSelectItem, TextInput } from '@tremor/react/dist'
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { IoCreateSharp, IoPerson, IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
-function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUserId }) {
+function TableHeader({
+  restartCurrentPage,
+  showModal,
+  setSearch,
+  setSelectedUserId,
+  setSelectedProcessorId,
+  showProcessorFilter,
+}) {
   const dispatch = useDispatch()
-  const [value, setValue] = useState('')
+  const [userID, setUserID] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [processorID, setProcessorID] = useState('')
   const { usersArray } = useSelector((store) => store.users)
+  const { processorOptions } = useSelector((store) => store.processor)
+  const { activeToken } = useSelector((store) => store.authentication)
 
   const debouncedSearch = useCallback(
     debounce((input) => {
       setSearch(input)
       restartCurrentPage()
     }, 500),
-    [dispatch, value], // Dependencias
+    [dispatch, userID, processorID], // Dependencias
   )
 
   const handleSearchData = (event) => {
@@ -24,26 +36,67 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
   }
 
   const handleSelectChange = (selectedValue) => {
-    setValue(selectedValue)
+    setUserID(selectedValue)
     setSelectedUserId(selectedValue)
     restartCurrentPage()
   }
 
+  const handleProcessorSelectChange = (selectedValue) => {
+    setProcessorID(selectedValue)
+    setSelectedProcessorId(selectedValue)
+    restartCurrentPage()
+  }
+
+  const handleProcessorInputChange = useCallback(
+    debounce((inputValue) => {
+      const trimmedValue = inputValue.trim()
+      setSearchValue(trimmedValue)
+      if (trimmedValue === '') {
+        dispatch(fetchProcessorOptions({ activeToken, query: '' }))
+      } else {
+        dispatch(fetchProcessorOptions({ activeToken, query: inputValue }))
+      }
+    }, 500),
+    [dispatch, activeToken],
+  )
+
+  useEffect(() => {
+    handleProcessorInputChange('')
+  }, [])
+
   return (
     <article className="p-4 sm:px-4 bg-[var(--CL-primary)] rounded-t-lg">
       <fieldset className="flex flex-col items-center justify-between w-full gap-2 sm:flex-row">
-        <SearchSelect
-          value={value}
-          onValueChange={handleSelectChange}
-          className="z-50 max-w-md sm:max-w-[15rem]"
-          placeholder="Usuario"
-        >
-          {usersArray.map((user) => (
-            <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
-              {user.username}
-            </SearchSelectItem>
-          ))}
-        </SearchSelect>
+        <div className="flex items-center gap-2">
+          <SearchSelect
+            value={userID}
+            onValueChange={handleSelectChange}
+            className="z-50 max-w-md sm:max-w-[15rem] w-60"
+            placeholder="Usuario"
+          >
+            {usersArray.map((user) => (
+              <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
+                {user.username}
+              </SearchSelectItem>
+            ))}
+          </SearchSelect>
+          {showProcessorFilter && (
+            <SearchSelect
+              value={processorID}
+              onValueChange={handleProcessorSelectChange}
+              className="z-50 max-w-md sm:max-w-[15rem] w-60"
+              placeholder="Trámitador"
+              searchValue={searchValue}
+              onSearchValueChange={handleProcessorInputChange}
+            >
+              {processorOptions.map((processor) => (
+                <SearchSelectItem key={processor.id} value={processor.id}>
+                  {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
+                </SearchSelectItem>
+              ))}
+            </SearchSelect>
+          )}
+        </div>
         <div className="flex flex-col items-center justify-end w-full sm:max-w-[20rem] gap-2 sm:flex-row">
           <TextInput
             id="search"
@@ -52,6 +105,7 @@ function TableHeader({ restartCurrentPage, showModal, setSearch, setSelectedUser
             placeholder="Buscar..."
             onChange={handleSearchData}
             color="purple"
+            allowClear
             required
           />
           <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">
@@ -71,6 +125,8 @@ TableHeader.propTypes = {
   showModal: PropTypes.func.isRequired,
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
+  setSelectedProcessorId: PropTypes.func.isRequired,
+  showProcessorFilter: PropTypes.bool.isRequired,
 }
 
 export default TableHeader
