@@ -137,6 +137,7 @@ const ProcessorProfilePage = () => {
                       <TableHeaderCell className="w-[30%]">Cliente</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Tipo de Trámite</TableHeaderCell>
+                      <TableHeaderCell className="w-[10%]">Pago</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
                     </TableRow>
                   </TableHead>
@@ -174,6 +175,17 @@ const ProcessorProfilePage = () => {
                             <Badge color="info" className="grid place-items-center">
                               {procedure.procedure_type.name}
                             </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {procedure.is_paid ? (
+                              <Badge className="grid place-items-center" color="green">
+                                Pagado
+                              </Badge>
+                            ) : (
+                              <Badge className="grid place-items-center" color="red">
+                                Pendiente
+                              </Badge>
+                            )}
                           </TableCell>
                           <TableCell className="py-1 truncate">
                             <Badge color="indigo" className="grid place-items-center">

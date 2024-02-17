@@ -1,7 +1,7 @@
 import { Button, TableCell, TableRow } from '@tremor/react'
 import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
+import { HiEye, HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
 
@@ -60,6 +60,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
         </Button>
+
         <Button
           size="xs"
           color="red"

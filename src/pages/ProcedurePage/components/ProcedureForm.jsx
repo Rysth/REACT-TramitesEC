@@ -25,7 +25,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
     (store) => store.shared,
   )
-  const { procedureSelected, procedureChange } = useSelector((store) => store.procedure)
+  const { procedureSelected } = useSelector((store) => store.procedure)
   const {
     register,
     handleSubmit,
@@ -130,10 +130,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = paymentsOriginal.length > 0
-
-  useEffect(() => {
-    console.log(procedureChange)
-  }, [procedureChange])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -368,7 +364,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
       <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit" disabled={procedureChange}>
+        <Button color="green" type="submit">
           Guardar
         </Button>
         <Button color="red" onClick={closeModal}>

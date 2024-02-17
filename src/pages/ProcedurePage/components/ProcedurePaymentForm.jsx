@@ -143,8 +143,8 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         </Button>
       </fieldset>
       <fieldset className="relative overflow-x-auto max-h-64">
-        <Table striped>
-          <TableHead className="sticky top-0">
+        <Table>
+          <TableHead className="bg-neutral-100">
             <TableHeaderCell className="w-[5%] text-xs">Fecha</TableHeaderCell>
             <TableHeaderCell className="text-xs w-max">Forma de Pago</TableHeaderCell>
             <TableHeaderCell className="w-[10%] text-xs">Valor</TableHeaderCell>
