@@ -53,11 +53,14 @@ const ProcessorProfilePage = () => {
           </Button>
         </header>
         <MainLayout>
-          <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
+          <header className="bg-[var(--CL-primary)] relative rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
             <HiUserCircle className="text-8xl" />
             <h2 className="text-2xl sm:text-4xl ">
               {processorData.first_name} {processorData.last_name}
             </h2>
+            <Badge className="absolute top-5 left-5" color="indigo">
+              Trámitador
+            </Badge>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
             <Col numColSpanLg={3}>
@@ -70,7 +73,12 @@ const ProcessorProfilePage = () => {
                 <BarList
                   data={[
                     {
-                      name: 'Cantidad de Trámites Realizados',
+                      name: 'Clientes Proporcionados',
+                      value: processorStats.clientes || 0,
+                      icon: () => <FaPerson className="mr-1.5" />,
+                    },
+                    {
+                      name: 'Trámites Realizados',
                       value: processorStats.tramites || 0,
                       icon: () => <FaFileContract className="mr-1.5" />,
                       color: 'indigo',
@@ -92,11 +100,6 @@ const ProcessorProfilePage = () => {
                       value: processorStats.tramites_finalizados || 0,
                       icon: () => <FaFileContract className="mr-1.5" />,
                       color: 'green',
-                    },
-                    {
-                      name: 'Clientes',
-                      value: processorStats.clientes || 0,
-                      icon: () => <FaPerson className="mr-1.5" />,
                     },
                   ]}
                   className="mt-2"
@@ -129,6 +132,7 @@ const ProcessorProfilePage = () => {
                 <Table>
                   <TableHead>
                     <TableRow className="border-b border-x-0">
+                      <TableHeaderCell className="w-[10%]">Código</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Fecha</TableHeaderCell>
                       <TableHeaderCell className="w-[30%]">Cliente</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>
@@ -140,6 +144,7 @@ const ProcessorProfilePage = () => {
                     {!loading &&
                       processorProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
+                          <TableCell>{procedure.code}</TableCell>
                           <TableCell>{procedure.date}</TableCell>
                           <TableCell>
                             <a

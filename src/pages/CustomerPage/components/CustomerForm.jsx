@@ -25,10 +25,14 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const onSubmit = (customerData) => {
     if (customerSelected) {
-      // Check if the customerData is different from customerSelected
       const isDifferent = Object.keys(customerData).some((key) => {
         // Exclude the 'user' key from comparison
         if (key === 'user') return false
+
+        // Skip comparison for Processor data if the customer is direct
+        if (key === 'is_direct' && customerSelected.is_direct) return false
+
+        // Check if the value is different
         return customerData[key] !== customerSelected[key]
       })
 

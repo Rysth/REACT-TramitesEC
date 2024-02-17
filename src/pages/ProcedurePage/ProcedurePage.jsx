@@ -24,6 +24,8 @@ function ProcedurePage() {
     resetToFirstPage,
     setSearch,
     setSelectedUserId,
+    setSelectedProcessorId,
+    setSelectedStatusId,
     handleDelete,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -48,6 +50,10 @@ function ProcedurePage() {
             showModal={showModal}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
+            setSelectedProcessorId={setSelectedProcessorId}
+            setSelectedStatusId={setSelectedStatusId}
+            showProcessorFilter
+            showStatusFilter
           />
           <TableLayout>
             {Array.isArray(proceduresArray) ? (

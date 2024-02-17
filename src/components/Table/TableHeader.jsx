@@ -12,14 +12,18 @@ function TableHeader({
   setSearch,
   setSelectedUserId,
   setSelectedProcessorId,
+  setSelectedStatusId,
   showProcessorFilter,
+  showStatusFilter,
 }) {
   const dispatch = useDispatch()
   const [userID, setUserID] = useState('')
-  const [searchValue, setSearchValue] = useState('')
+  const [statusID, setStatusID] = useState('')
   const [processorID, setProcessorID] = useState('')
+  const [searchValue, setSearchValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
   const { processorOptions } = useSelector((store) => store.processor)
+  const { statusOriginal } = useSelector((store) => store.shared)
   const { activeToken } = useSelector((store) => store.authentication)
 
   const debouncedSearch = useCallback(
@@ -47,6 +51,12 @@ function TableHeader({
     restartCurrentPage()
   }
 
+  const handleStatusSelectChange = (selectedValue) => {
+    setStatusID(selectedValue)
+    setSelectedStatusId(selectedValue)
+    restartCurrentPage()
+  }
+
   const handleProcessorInputChange = useCallback(
     debounce((inputValue) => {
       const trimmedValue = inputValue.trim()
@@ -71,11 +81,11 @@ function TableHeader({
           <SearchSelect
             value={userID}
             onValueChange={handleSelectChange}
-            className="z-50 max-w-md sm:max-w-[15rem] w-60"
+            className="z-50 max-w-md sm:max-w-[15rem] w-48"
             placeholder="Usuario"
           >
             {usersArray.map((user) => (
-              <SearchSelectItem key={user.id} value={user.id} icon={IoPerson}>
+              <SearchSelectItem className="!text-xs" key={user.id} value={user.id} icon={IoPerson}>
                 {user.username}
               </SearchSelectItem>
             ))}
@@ -84,14 +94,28 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-50 max-w-md sm:max-w-[15rem] w-60"
+              className="z-50 max-w-md sm:max-w-[15rem] w-48"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
             >
               {processorOptions.map((processor) => (
-                <SearchSelectItem key={processor.id} value={processor.id}>
+                <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
                   {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
+                </SearchSelectItem>
+              ))}
+            </SearchSelect>
+          )}
+          {showStatusFilter && (
+            <SearchSelect
+              value={statusID}
+              onValueChange={handleStatusSelectChange}
+              className="z-50 max-w-md sm:max-w-[15rem] w-48"
+              placeholder="Estado"
+            >
+              {statusOriginal.map((status) => (
+                <SearchSelectItem className="text-xs" key={status.id} value={status.id}>
+                  {status.name}
                 </SearchSelectItem>
               ))}
             </SearchSelect>
@@ -126,7 +150,9 @@ TableHeader.propTypes = {
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
   setSelectedProcessorId: PropTypes.func.isRequired,
+  setSelectedStatusId: PropTypes.func.isRequired,
   showProcessorFilter: PropTypes.bool.isRequired,
+  showStatusFilter: PropTypes.bool.isRequired,
 }
 
 export default TableHeader

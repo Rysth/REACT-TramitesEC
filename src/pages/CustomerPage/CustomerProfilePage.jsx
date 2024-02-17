@@ -54,11 +54,14 @@ const CustomerProfilePage = () => {
           </Button>
         </header>
         <MainLayout>
-          <header className="bg-[var(--CL-primary)] rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
+          <header className="bg-[var(--CL-primary)] relative rounded-xl h-60 flex flex-col sm:flex-row items-center justify-center p-4 shadow-xl  text-white">
             <HiUserCircle className="text-8xl" />
             <h2 className="text-2xl sm:text-4xl ">
               {customerData.first_name} {customerData.last_name}
             </h2>
+            <Badge className="absolute top-5 left-5" color="indigo">
+              Cliente
+            </Badge>
           </header>
           <Grid numItemsLg={6} className="gap-6 pb-10 mt-6">
             <Col numColSpanLg={3}>
@@ -87,12 +90,6 @@ const CustomerProfilePage = () => {
                       value: customerStats.tramites_proceso || 0,
                       icon: () => <FaFileContract className="mr-1.5" />,
                       color: 'gray',
-                    },
-                    {
-                      name: 'Trámites entregados Proveedor',
-                      value: customerStats.tramites_proveedor || 0,
-                      icon: () => <FaFileContract className="mr-1.5" />,
-                      color: 'blue',
                     },
                     {
                       name: 'Trámites Finalizados',
@@ -131,11 +128,13 @@ const CustomerProfilePage = () => {
                 <Table>
                   <TableHead>
                     <TableRow className="border-b border-x-0">
+                      <TableHeaderCell className="w-[10%]">Código</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Fecha</TableHeaderCell>
                       <TableHeaderCell className="w-[20%]">Cliente</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Tipo de Trámite</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Trámitador</TableHeaderCell>
+                      <TableHeaderCell className="w-[10%]">Pago</TableHeaderCell>
                       <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
                     </TableRow>
                   </TableHead>
@@ -143,6 +142,7 @@ const CustomerProfilePage = () => {
                     {!loading &&
                       customerProcedures.map((procedure) => (
                         <TableRow key={procedure.id} className="text-xs">
+                          <TableCell>{procedure.code}</TableCell>
                           <TableCell>{procedure.date}</TableCell>
                           <TableCell>
                             {procedure.customer.first_name} {procedure.customer.last_name}
@@ -176,6 +176,18 @@ const CustomerProfilePage = () => {
                               </Badge>
                             )}
                           </TableCell>
+                          <TableCell>
+                            {procedure.is_paid ? (
+                              <Badge className="grid place-items-center" color="green">
+                                Pagado
+                              </Badge>
+                            ) : (
+                              <Badge className="grid place-items-center" color="red">
+                                Pendiente
+                              </Badge>
+                            )}
+                          </TableCell>
+
                           <TableCell className="py-1 truncate">
                             <Badge color="indigo" className="grid place-items-center">
                               {procedure.user.username}

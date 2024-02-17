@@ -149,9 +149,9 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         <Table>
           <Table.Head className="sticky top-0">
             <Table.HeadCell className="w-[5%]">Fecha</Table.HeadCell>
-            <Table.HeadCell className="w-full">Tipo de Pago</Table.HeadCell>
+            <Table.HeadCell className="w-[35%]">Tipo de Pago</Table.HeadCell>
             <Table.HeadCell className="w-[5%]">Valor</Table.HeadCell>
-            <Table.HeadCell className="w-[15%]">Comprobante</Table.HeadCell>
+            <Table.HeadCell className="w-[10%]">Comprobante</Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
