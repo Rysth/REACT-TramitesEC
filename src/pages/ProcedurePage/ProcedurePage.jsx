@@ -39,7 +39,7 @@ function ProcedurePage() {
         refetchFunction={resetToFirstPage}
         slice="procedure"
         title="Trámite"
-        modalSize={`${procedureSelected ? '7xl' : '2xl'}`}
+        modalSize={`${procedureSelected ? '6xl' : '2xl'}`}
         setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>
@@ -60,7 +60,7 @@ function ProcedurePage() {
               <ProcedureTable
                 currentItems={proceduresArray}
                 currentPage={currentPage}
-                itemsPerPage={20}
+                itemsPerPage={15}
                 showModal={showModal}
                 handleDelete={handleDelete}
               />

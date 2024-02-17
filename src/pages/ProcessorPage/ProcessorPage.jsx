@@ -51,7 +51,7 @@ function ProcessorPage() {
               <ProcessorTable
                 currentItems={processorsArray}
                 currentPage={currentPage}
-                itemsPerPage={20}
+                itemsPerPage={15}
                 showModal={showModal}
                 handleDelete={handleDelete}
               />

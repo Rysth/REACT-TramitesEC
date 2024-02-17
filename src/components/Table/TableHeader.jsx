@@ -133,7 +133,7 @@ function TableHeader({
             required
           />
           <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">
-            <Button color="blue" onClick={showModal} className="flex items-center">
+            <Button color="green" onClick={showModal} className="flex items-center">
               Crear
               <IoCreateSharp className="inline-block ml-1" />
             </Button>

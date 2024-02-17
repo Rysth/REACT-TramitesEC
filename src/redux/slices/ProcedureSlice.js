@@ -9,6 +9,7 @@ const initialState = {
   proceduresArray: [],
   processorOptions: [],
   procedureSelected: null,
+  procedureChange: false,
   loading: true,
 }
 
@@ -155,6 +156,7 @@ const proceduresSlice = createSlice({
       const content = action.payload
 
       if (content === '') {
+        state.procedureChange = false
         state.procedureSelected = null
         return
       }
@@ -163,6 +165,7 @@ const proceduresSlice = createSlice({
       const procedureFound = state.procedureOriginal.find((procedure) => procedure.id === procedureID)
       console.log('ProcedureID:', procedureFound)
       state.procedureSelected = procedureFound
+      state.procedureChange = true
     },
   },
   extraReducers: (builder) => {

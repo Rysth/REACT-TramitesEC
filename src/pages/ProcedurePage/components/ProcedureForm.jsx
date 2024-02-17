@@ -2,7 +2,7 @@ import { Button, TextInput } from '@tremor/react'
 import { Badge, Label, Select } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   HiChatBubbleBottomCenterText,
@@ -22,16 +22,16 @@ import ProcedurePaymentForm from './ProcedurePaymentForm'
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType } = useSelector(
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
     (store) => store.shared,
   )
-  const { procedureSelected } = useSelector((store) => store.procedure)
+  const { procedureSelected, procedureChange } = useSelector((store) => store.procedure)
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm({ mode: 'onChange' })
 
   // Function to handle changes in the cost field
@@ -129,10 +129,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
+  const hasPayments = paymentsOriginal.length > 0
+
+  useEffect(() => {
+    console.log(procedureChange)
+  }, [procedureChange])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[40%_1fr]'}`}>
+      <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
         <div className="grid space-y-4">
           <fieldset>
             <div className="space-y-2">
@@ -178,7 +183,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                     : undefined
                 }
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted}
+                isDisabled={isCompleted || hasPayments}
               />
             </div>
             <div className="space-y-2">
@@ -204,7 +209,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted}
+                isDisabled={isCompleted || hasPayments}
                 className="text-sm shadow shadow-gray-200"
               />
             </div>
@@ -224,7 +229,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="procedure_type_id"
                 {...register('procedure_type_id')}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                disabled={isCompleted}
+                disabled={isCompleted || hasPayments}
                 required
               >
                 {typesOriginal.map((procedure_type) => (
@@ -248,7 +253,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   icon={HiIdentification}
                   id="license_id"
                   {...register('license_id')}
-                  disabled={isCompleted}
+                  disabled={isCompleted || hasPayments}
                   required
                 >
                   {licensesOriginal.map((license) => (
@@ -278,7 +283,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
-                disabled={isCompleted || isNotPending}
+                disabled={isCompleted || isNotPending || hasPayments}
               />
             </div>
             <div className="space-y-2">
@@ -317,7 +322,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleProfitChange}
-                disabled={isCompleted || isNotPending}
+                disabled={isCompleted || isNotPending || hasPayments}
               />
             </div>
             <div className="space-y-2">
@@ -363,7 +368,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
       <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit" disabled={!isDirty}>
+        <Button color="green" type="submit" disabled={procedureChange}>
           Guardar
         </Button>
         <Button color="red" onClick={closeModal}>

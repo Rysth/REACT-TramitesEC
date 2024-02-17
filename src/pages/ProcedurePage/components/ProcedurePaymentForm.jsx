@@ -1,5 +1,5 @@
-import { Button, TextInput } from '@tremor/react'
-import { Badge, Label, Select, Table } from 'flowbite-react'
+import { Button, TextInput, Table, TableBody, TableHead, TableHeaderCell, TableRow, TableCell } from '@tremor/react'
+import { Badge, Label, Select } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -62,7 +62,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
       <fieldset className="grid gap-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="payment_type_id" value="Tipo de Pago" />
+            <Label htmlFor="payment_type_id" value="Forma de Pago" />
             {errors.payment_type_id && (
               <Badge className="text-xs" color="failure">
                 {errors.payment_type_id.type === 'required' && 'Campo requerido'}
@@ -143,27 +143,25 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         </Button>
       </fieldset>
       <fieldset className="relative overflow-x-auto max-h-64">
-        <Table>
-          <Table.Head className="sticky top-0">
-            <Table.HeadCell className="w-[5%]">Fecha</Table.HeadCell>
-            <Table.HeadCell className="w-[35%]">Tipo de Pago</Table.HeadCell>
-            <Table.HeadCell className="w-[5%]">Valor</Table.HeadCell>
-            <Table.HeadCell className="w-[10%]">Comprobante</Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only">Edit</span>
-            </Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="text-xs divide-y">
+        <Table striped>
+          <TableHead className="sticky top-0">
+            <TableHeaderCell className="w-[5%] text-xs">Fecha</TableHeaderCell>
+            <TableHeaderCell className="text-xs w-max">Forma de Pago</TableHeaderCell>
+            <TableHeaderCell className="w-[10%] text-xs">Valor</TableHeaderCell>
+            <TableHeaderCell className="w-[20%] text-xs">Comprobante</TableHeaderCell>
+            <TableHeaderCell className="w-[10%] text-xs">Acciones</TableHeaderCell>
+          </TableHead>
+          <TableBody className="text-xs divide-y">
             {paymentsOriginal.length > 0 &&
               paymentsOriginal.map((payment) => (
-                <Table.Row key={payment.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell className="font-medium text-gray-900 whitespace-nowrap dark:text-white  !py-1">
+                <TableRow key={payment.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white  !py-1">
                     {payment.date}
-                  </Table.Cell>
-                  <Table.Cell className="truncate">{payment.payment_type.name}</Table.Cell>
-                  <Table.Cell>${payment.value}</Table.Cell>
-                  <Table.Cell>{payment?.receipt_number}</Table.Cell>
-                  <Table.Cell className="!py-1">
+                  </TableCell>
+                  <TableCell className="truncate">{payment.payment_type.name}</TableCell>
+                  <TableCell>${payment.value}</TableCell>
+                  <TableCell>{payment?.receipt_number}</TableCell>
+                  <TableCell className="!py-1">
                     <Button
                       type="button"
                       className="!text-xs"
@@ -174,10 +172,10 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
                       <span className="sr-only">Eliminar</span>
                       <HiMiniTrash />
                     </Button>
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
-          </Table.Body>
+          </TableBody>
         </Table>
       </fieldset>
     </div>

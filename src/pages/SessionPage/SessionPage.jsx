@@ -47,7 +47,7 @@ function SessionPage() {
         </div>
         <footer className="text-center">
           <a
-            href="https://rysthdesign.netlify.app/"
+            href="https://rysthdesign.com/"
             className="flex items-center gap-2 p-2 text-xs transition rounded-md bottom-5 right-6 hover:scale-105"
             target="_blank"
             rel="noreferrer"
