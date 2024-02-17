@@ -161,6 +161,7 @@ const proceduresSlice = createSlice({
 
       const procedureID = parseInt(content)
       const procedureFound = state.procedureOriginal.find((procedure) => procedure.id === procedureID)
+      console.log('ProcedureID:', procedureFound)
       state.procedureSelected = procedureFound
     },
   },

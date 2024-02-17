@@ -2,7 +2,7 @@ import { Button, TextInput } from '@tremor/react'
 import { Badge, Label, Select } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   HiChatBubbleBottomCenterText,
@@ -31,9 +31,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
-    trigger,
-  } = useForm()
+    formState: { errors, isDirty, isValid },
+  } = useForm({ mode: 'onChange' })
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -48,11 +47,36 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const onSubmit = (procedureData) => {
     if (procedureSelected) {
-      dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
-        .then(() => refetchFunction())
-        .then(() => closeModal())
+      // Check if the processorData is different from processorSelected
+      const isDifferent = Object.keys(procedureSelected).some((key) => {
+        if (
+          key === 'user' ||
+          key === 'processor' ||
+          key === 'status' ||
+          key === 'procedure_type' ||
+          key === 'license' ||
+          key === 'customer'
+        ) {
+          return false
+        }
+
+        if (key === 'status_id') {
+          console.log(parseInt(procedureData[key]) !== parseInt(procedureSelected[key]))
+          return parseInt(procedureData[key]) !== parseInt(procedureSelected[key])
+        }
+
+        // Check if the key exists in processorSelected and if their values are different
+        return procedureSelected.hasOwnProperty(key) && procedureData[key] !== procedureSelected[key]
+      })
+
+      if (isDifferent) {
+        dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
+          .then(() => refetchFunction())
+          .then(() => closeModal())
+      } else {
+        closeModal()
+      }
     } else {
-      console.table(procedureData)
       dispatch(createProcedure({ activeToken, procedureData }))
         .then(() => refetchFunction())
         .then(() => closeModal())
@@ -97,12 +121,11 @@ function CustomerForm({ closeModal, refetchFunction }) {
       dispatch(sharedActions.setProcedureTypeSelected(procedureSelected.procedure_type.id))
       Object.keys(procedureSelected).forEach((key) => {
         setValue(key, procedureSelected[key])
-        trigger(key) // Manually trigger revalidation and update the form field
       })
     } else {
-      reset() // Reset the form if no procedure is selected
+      reset()
     }
-  }, [procedureSelected, reset, setValue, trigger])
+  }, [procedureSelected, reset, setValue])
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
@@ -121,13 +144,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   </Badge>
                 )}
               </div>
-              <Select
-                icon={HiListBullet}
-                id="status_id"
-                {...register('status_id')}
-                defaultValue={procedureSelected && procedureSelected.status.id}
-                required
-              >
+              <Select icon={HiListBullet} id="status_id" {...register('status_id')} required>
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
                     {status.name}
@@ -207,7 +224,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="procedure_type_id"
                 {...register('procedure_type_id')}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                defaultValue={procedureSelected && procedureSelected.procedure_type.id}
                 disabled={isCompleted}
                 required
               >
@@ -232,7 +248,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   icon={HiIdentification}
                   id="license_id"
                   {...register('license_id')}
-                  defaultValue={procedureSelected && procedureSelected.license?.id}
                   disabled={isCompleted}
                   required
                 >
@@ -259,7 +274,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <TextInput
                 id="cost"
-                defaultValue={procedureSelected && procedureSelected.cost}
                 icon={HiCurrencyDollar}
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
@@ -279,7 +293,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <TextInput
                 id="cost_pending"
-                defaultValue={procedureSelected && procedureSelected.cost_pending}
                 icon={HiCurrencyDollar}
                 {...register('cost_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
@@ -300,7 +313,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <TextInput
                 id="profit"
-                defaultValue={procedureSelected && procedureSelected.profit}
                 icon={HiCurrencyDollar}
                 {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
@@ -320,7 +332,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <TextInput
                 id="profit_pending"
-                defaultValue={procedureSelected && procedureSelected.profit_pending}
                 icon={HiCurrencyDollar}
                 {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
@@ -333,13 +344,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
               <div className="flex items-center justify-between">
                 <Label htmlFor="comments" value="Comentarios" />
               </div>
-              <TextInput
-                id="comments"
-                defaultValue={procedureSelected && procedureSelected.comments}
-                icon={HiChatBubbleBottomCenterText}
-                placeholder=""
-                {...register('comments')}
-              />
+              <TextInput id="comments" icon={HiChatBubbleBottomCenterText} placeholder="" {...register('comments')} />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -347,7 +352,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <TextInput
                 id="plate"
-                defaultValue={procedureSelected && procedureSelected.plate}
                 icon={HiIdentification}
                 placeholder=""
                 disabled={selectedProcedureType?.id !== 2}
@@ -359,7 +363,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
       <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit">
+        <Button color="green" type="submit" disabled={!isDirty}>
           Guardar
         </Button>
         <Button color="red" onClick={closeModal}>

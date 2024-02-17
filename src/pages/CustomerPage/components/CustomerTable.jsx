@@ -39,13 +39,13 @@ function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, han
       />
       <Table>
         <TableHead>
-          <TableRow className="sticky top-0 z-40 border-b border-x-0">
+          <TableRow className="border-b border-x-0">
             <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Trámitador</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Cédula</TableHeaderCell>
             <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-[15%]">Trámitador</TableHeaderCell>
-            <TableHeaderCell className="w-[15%]">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-[20%]">Teléfono Trámitador</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>

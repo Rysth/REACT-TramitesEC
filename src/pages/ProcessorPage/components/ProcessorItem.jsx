@@ -20,16 +20,17 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
     <TableRow>
       <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1 truncate">
+        <Badge color="indigo" className="grid place-items-center">
+          {processor.user.username}
+        </Badge>
+      </TableCell>
+      <TableCell className="py-1 truncate">
         <a href={`/tramitadores/${processor.id}`} className="transition hover:text-blue-500 hover:underline">
           {processor.code}
         </a>
       </TableCell>
       <TableCell className="py-1 truncate">{`${processor.first_name} ${processor.last_name}`}</TableCell>
-      <TableCell className="py-1 truncate">
-        <Badge color="indigo" className="grid place-items-center">
-          {processor.user.username}
-        </Badge>
-      </TableCell>
+
       <TableCell className="py-1 text-blue-500 truncate">
         <a href={`tel:+593${processor.celular}`} className="text-blue-500 md:hover:underline">
           {processor.phone}

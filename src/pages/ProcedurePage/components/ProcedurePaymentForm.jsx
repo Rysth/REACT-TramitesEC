@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { HiCurrencyDollar, HiDocument, HiDocumentCheck, HiMiniTrash } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { procedureActions } from '../../../redux/slices/ProcedureSlice'
 import { createPayment, deletePayment, getPayments } from '../../../redux/slices/SharedSlice'
 
 const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
@@ -15,7 +14,6 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((state) => state.authentication)
   const [paymentType, setPaymentType] = useState(1)
-  const [costPending, setCostPending] = useState(0) // State to store cost_pending
 
   const {
     register,
@@ -32,8 +30,8 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
       .then(() => {
         dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
           .then(() => refetchFunction())
-          .then(() => dispatch(procedureActions.setProcedureSelected(procedureSelected.id)))
           .then(() => reset())
+          .then(() => closeModal())
       })
       .catch((error) => {
         // Display error message if payment creation fails
@@ -45,13 +43,12 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const handleDeletePayment = (paymentID) => {
     dispatch(deletePayment({ activeToken, paymentID }))
       .then(() => refetchFunction())
-      .then(() => dispatch(procedureActions.setProcedureSelected(procedureSelected.id)))
       .then(() => reset())
+      .then(() => closeModal())
   }
 
   useEffect(() => {
     dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
-    setCostPending(procedureSelected?.cost_pending || 0) // Set initial value of cost_pending
   }, [])
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { Button, SearchSelect, SearchSelectItem, TextInput } from '@tremor/react
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
-import { IoCreateSharp, IoPerson, IoSearch } from 'react-icons/io5'
+import { IoCreateSharp, IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
@@ -85,7 +85,7 @@ function TableHeader({
             placeholder="Usuario"
           >
             {usersArray.map((user) => (
-              <SearchSelectItem className="!text-xs" key={user.id} value={user.id} icon={IoPerson}>
+              <SearchSelectItem className="!text-xs" key={user.id} value={user.id}>
                 {user.username}
               </SearchSelectItem>
             ))}

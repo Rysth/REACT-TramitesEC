@@ -41,10 +41,10 @@ function ProcessorTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         <TableHead>
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="w-[5%]">#</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Código</TableHeaderCell>
             <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-[20%]">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-[20%]">Teléfono</TableHeaderCell>
+            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
