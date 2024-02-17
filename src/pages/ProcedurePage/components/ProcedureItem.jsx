@@ -25,13 +25,13 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
 
   return (
     <TableRow>
-      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
+      <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {procedure.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 truncate">
         {!isDirect ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${procedure.processor.id}`} color="purple">
             {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
@@ -40,22 +40,22 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <Badge className="grid place-items-center">Usuario Directo</Badge>
         )}
       </TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 truncate">
         <Badge color={statusColor} className="grid place-items-center">
           {procedure.status.name}
         </Badge>
       </TableCell>
-      <TableCell className="py-1 truncate">{procedure.date}</TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 truncate">{procedure.date}</TableCell>
+      <TableCell className="py-1.5 truncate">
         <a
           href={`/clientes/${procedure.customer.id}`}
           className="transition hover:text-blue-500 hover:underline"
         >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
       </TableCell>
 
-      <TableCell className="py-1 ">{procedure.procedure_type.name}</TableCell>
+      <TableCell className="py-1.5 ">{procedure.procedure_type.name}</TableCell>
 
-      <TableCell className="flex items-center w-full gap-1 py-1">
+      <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />

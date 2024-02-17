@@ -19,13 +19,13 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
 
   return (
     <TableRow>
-      <TableCell className="py-1 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
+      <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 truncate">
         {!isDirect ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`} color="purple">
             {`${customer.processor.first_name} ${customer.processor.last_name}`}
@@ -34,14 +34,14 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <Badge className="grid place-items-center">Usuario Directo</Badge>
         )}
       </TableCell>
-      <TableCell className="py-1 truncate">
+      <TableCell className="py-1.5 truncate">
         <a href={`/clientes/${customer.id}`} className="transition hover:text-blue-500 hover:underline">
           {customer.identification}
         </a>
       </TableCell>
-      <TableCell className="py-1 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
+      <TableCell className="py-1.5 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
 
-      <TableCell className="py-1 text-blue-500 truncate">
+      <TableCell className="py-1.5 text-blue-500 truncate">
         {isDirect ? (
           <a href={`tel:+593${customer.phone}`} className="text-blue-500 md:hover:underline">
             {customer.phone}
@@ -52,7 +52,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           </a>
         )}
       </TableCell>
-      <TableCell className="flex items-center w-full gap-1 py-1">
+      <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)} disabled={!isAdmin}>
           <span className="sr-only">Editar</span>
           <HiPencilSquare />
