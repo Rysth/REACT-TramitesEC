@@ -77,11 +77,11 @@ function TableHeader({
   return (
     <article className="p-4 sm:px-4 bg-[var(--CL-primary)] rounded-t-lg">
       <fieldset className="flex flex-col items-center justify-between w-full gap-2 sm:flex-row">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col w-full gap-2 md:w-max md:items-center md:flex-row">
           <SearchSelect
             value={userID}
             onValueChange={handleSelectChange}
-            className="z-50 max-w-md sm:max-w-[15rem] w-48"
+            className="z-50 w-full md:w-48"
             placeholder="Usuario"
           >
             {usersArray.map((user) => (
@@ -94,7 +94,7 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-50 max-w-md sm:max-w-[15rem] w-48"
+              className="z-40 w-full md:w-48"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
@@ -110,7 +110,7 @@ function TableHeader({
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-50 max-w-md sm:max-w-[15rem] w-48"
+              className="z-30 w-full md:w-48"
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
