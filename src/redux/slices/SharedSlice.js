@@ -12,7 +12,7 @@ const initialState = {
   licenseTypesOriginal: [],
   paymentsTypeOriginal: [],
   paymentsOriginal: [],
-  selectedProcedureType: {},
+  selectedProcedureType: { id: 1 },
   selectedLicenseType: {},
 }
 

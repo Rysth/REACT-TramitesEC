@@ -18,6 +18,7 @@ import { createProcedure, updateProcedure } from '../../../redux/slices/Procedur
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
+import usePlate from '../../../hooks/usePlate'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -134,6 +135,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
     procedureSelected?.status.id === 2 || procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
+  const shouldUsePlate = usePlate(selectedProcedureType)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -370,7 +372,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="plate"
                 icon={HiIdentification}
                 placeholder=""
-                disabled={selectedProcedureType?.id !== 2}
+                disabled={shouldUsePlate}
                 {...register('plate')}
               />
             </div>
