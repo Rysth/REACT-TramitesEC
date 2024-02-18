@@ -47,6 +47,15 @@ function ProcessorPage() {
     dispatch(processorActions.setEndDate(endDateString))
   }
 
+  // Function to check if startDate and endDate are set
+  const isDateSet = () => startDate && endDate
+
+  // Function to reset dates
+  const resetDates = () => {
+    dispatch(processorActions.setStartDate(null))
+    dispatch(processorActions.setEndDate(null))
+  }
+
   return (
     <SectionLayout title="Trámitadores" subtitle="Información General de los Trámitadores">
       <TableModal
@@ -75,9 +84,13 @@ function ProcessorPage() {
             />
           </fieldset>
           <Button
-            onClick={() => dispatch(generateExcelFile({ activeToken, startDate, endDate }))}
+            onClick={() => {
+              dispatch(generateExcelFile({ activeToken, startDate, endDate }))
+              resetDates() // Reset dates after clicking the button
+            }}
             color="green"
             className="flex items-center"
+            disabled={!isDateSet()}
           >
             <span className="inline-block">Generar Excel</span>
             <FaFileExcel className="inline-block ml-1" />

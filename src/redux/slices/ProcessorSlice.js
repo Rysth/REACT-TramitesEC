@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import JSZip from 'jszip'
 import FileSaver from 'file-saver'
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -128,6 +127,15 @@ export const fetchLatestProcedures = createAsyncThunkWrapper(
   },
 )
 
+// Function to format date to include only day, month, and year
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Month is zero-based
+  const year = date.getFullYear()
+  return `${day}-${month}-${year}`
+}
+
 // Thunk for generating Excel file
 export const generateExcelFile = createAsyncThunk(
   'processor/generateExcelFile',
@@ -145,8 +153,16 @@ export const generateExcelFile = createAsyncThunk(
         withCredentials: true,
       })
 
+      // Generate a random code for the filename
+      const randomCode = Math.random().toString(36).substring(7)
+      // Format the start date and end date to include only day, month, and year
+      const formattedStartDate = formatDate(startDate)
+      const formattedEndDate = formatDate(endDate)
+      // Format the filename with the random code, start date, and end date
+      const filename = `tramitadores_${formattedStartDate}_to_${formattedEndDate}_${randomCode}.xlsx`
+
       // Save the Excel file to the user's device
-      FileSaver.saveAs(response.data, 'tramitadores2024-02-01_to_2024-02-29.xlsx')
+      FileSaver.saveAs(response.data, filename)
     } catch (error) {
       handleRequestError(error) // Handle request error
       throw error // Throw the error to indicate failure
