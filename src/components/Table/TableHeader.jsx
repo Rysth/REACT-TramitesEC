@@ -98,6 +98,9 @@ function TableHeader({
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
             >
+              <SearchSelectItem className="text-xs" value={0}>
+                Cliente Directos
+              </SearchSelectItem>
               {processorOptions.map((processor) => (
                 <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
                   {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
@@ -109,7 +112,7 @@ function TableHeader({
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-30 w-full col-start-1 col-end-3 row-start-1 md:w-40"
+              className="z-30 w-full col-span-full md:w-40"
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
@@ -128,7 +131,6 @@ function TableHeader({
           onChange={handleSearchData}
           color="purple"
           className="md:max-w-xs"
-          allowClear
           required
         />
       </header>
@@ -141,10 +143,10 @@ TableHeader.propTypes = {
 
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
-  setSelectedProcessorId: PropTypes.func.isRequired,
-  setSelectedStatusId: PropTypes.func.isRequired,
-  showProcessorFilter: PropTypes.bool.isRequired,
-  showStatusFilter: PropTypes.bool.isRequired,
+  setSelectedProcessorId: PropTypes.func,
+  setSelectedStatusId: PropTypes.func,
+  showProcessorFilter: PropTypes.bool,
+  showStatusFilter: PropTypes.bool,
 }
 
 export default TableHeader

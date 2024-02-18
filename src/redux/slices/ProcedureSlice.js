@@ -54,7 +54,7 @@ export const getProcedures = createAsyncThunkWrapper(
     const params = { page }
     if (search) params.search = search
     if (userId) params.userId = userId
-    if (processorId) params.processorId = processorId
+    if (processorId || processorId === 0) params.processorId = processorId
     if (statusId) params.statusId = statusId
 
     return axios.get(`${API_URL}/api/v1/procedures`, {
