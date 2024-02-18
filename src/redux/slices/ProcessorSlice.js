@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import JSZip from 'jszip'
+import FileSaver from 'file-saver'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -16,6 +18,8 @@ const initialState = {
   processorProcedures: [],
   processorData: {},
   processorStats: {},
+  startDate: null,
+  endDate: null,
 }
 
 const handleRequestError = (error) => {
@@ -124,6 +128,32 @@ export const fetchLatestProcedures = createAsyncThunkWrapper(
   },
 )
 
+// Thunk for generating Excel file
+export const generateExcelFile = createAsyncThunk(
+  'processor/generateExcelFile',
+  async ({ activeToken, startDate, endDate }) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/v1/processors/generate_excel`, {
+        params: {
+          start_date: startDate,
+          end_date: endDate,
+        },
+        headers: {
+          Authorization: activeToken,
+        },
+        responseType: 'blob',
+        withCredentials: true,
+      })
+
+      // Save the Excel file to the user's device
+      FileSaver.saveAs(response.data, 'tramitadores2024-02-01_to_2024-02-29.xlsx')
+    } catch (error) {
+      handleRequestError(error) // Handle request error
+      throw error // Throw the error to indicate failure
+    }
+  },
+)
+
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
   if (action.payload.processors) {
@@ -177,6 +207,14 @@ const processorslice = createSlice({
       const processorID = parseInt(content)
       const processorFound = state.processorOriginal.find((processor) => processor.id === processorID)
       state.processorSelected = processorFound
+    },
+    // Reducer for setting start date
+    setStartDate: (state, action) => {
+      state.startDate = action.payload
+    },
+    // Reducer for setting end date
+    setEndDate: (state, action) => {
+      state.endDate = action.payload
     },
   },
   extraReducers: (builder) => {
