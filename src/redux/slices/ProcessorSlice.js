@@ -25,7 +25,7 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡El trámitador ya está registrado!')
+    toast.error('¡El trámitador ya está registrado! Nombre y Apellidos Repetidos')
     return
   }
 

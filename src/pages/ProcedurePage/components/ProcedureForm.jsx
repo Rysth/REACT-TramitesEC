@@ -179,7 +179,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                     : undefined
                 }
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted || hasPayments}
+                isDisabled={procedureSelected && procedureSelected && (isCompleted || hasPayments)}
               />
             </div>
             <div className="space-y-2">
@@ -205,7 +205,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted || hasPayments}
+                isDisabled={procedureSelected && procedureSelected && (isCompleted || hasPayments)}
                 className="text-sm shadow shadow-gray-200"
               />
             </div>
@@ -225,7 +225,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="procedure_type_id"
                 {...register('procedure_type_id')}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                disabled={isCompleted || hasPayments}
+                disabled={procedureSelected && (isCompleted || hasPayments)}
                 required
               >
                 {typesOriginal.map((procedure_type) => (
@@ -249,7 +249,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   icon={HiIdentification}
                   id="license_id"
                   {...register('license_id')}
-                  disabled={isCompleted || hasPayments}
+                  disabled={procedureSelected && (isCompleted || hasPayments)}
                   required
                 >
                   {licensesOriginal.map((license) => (
@@ -279,7 +279,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
-                disabled={isCompleted || isNotPending || hasPayments}
+                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
               />
             </div>
             <div className="space-y-2">
@@ -318,7 +318,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleProfitChange}
-                disabled={isCompleted || isNotPending || hasPayments}
+                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
               />
             </div>
             <div className="space-y-2">

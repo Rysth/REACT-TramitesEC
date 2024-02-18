@@ -19,7 +19,8 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       })
   }
 
-  const statusColor = procedure.status.id === 1 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
+  const statusColor =
+    procedure.status.id === 1 || procedure.status.id === 3 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
   const isAdmin = activeUser.is_admin
   const isDirect = procedure.customer.is_direct
 
@@ -37,7 +38,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
             {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
           </Badge>
         ) : (
-          <Badge className="grid place-items-center">Usuario Directo</Badge>
+          <Badge className="grid place-items-center">Cliente Directo</Badge>
         )}
       </TableCell>
       <TableCell className="py-1.5 truncate">

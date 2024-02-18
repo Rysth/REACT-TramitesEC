@@ -31,7 +31,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
             {`${customer.processor.first_name} ${customer.processor.last_name}`}
           </Badge>
         ) : (
-          <Badge className="grid place-items-center">Usuario Directo</Badge>
+          <Badge className="grid place-items-center">Cliente Directo</Badge>
         )}
       </TableCell>
       <TableCell className="py-1.5 truncate">
@@ -43,11 +43,17 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
 
       <TableCell className="py-1.5 text-blue-500 truncate">
         {isDirect ? (
-          <a href={`tel:+593${customer.phone}`} className="text-blue-500 md:hover:underline">
+          <a
+            href={`https://api.whatsapp.com/send?phone=593${customer.phone}`}
+            className="text-blue-500 md:hover:underline"
+          >
             {customer.phone}
           </a>
         ) : (
-          <a href={`tel:+593${customer.processor.phone}`} className="text-blue-500 md:hover:underline">
+          <a
+            href={`https://api.whatsapp.com/send?phone=593${customer.processor.phone}`}
+            className="text-blue-500 md:hover:underline"
+          >
             {customer.processor.phone}
           </a>
         )}
