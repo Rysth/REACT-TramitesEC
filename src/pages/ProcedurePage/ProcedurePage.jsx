@@ -47,7 +47,6 @@ function ProcedurePage() {
           <TableHeader
             title="Listado de Trámites"
             restartCurrentPage={resetToFirstPage}
-            showModal={showModal}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
             setSelectedProcessorId={setSelectedProcessorId}
@@ -68,7 +67,7 @@ function ProcedurePage() {
               <Loading />
             )}
           </TableLayout>
-          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
+          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange}   showModal={showModal}/>
         </Card>
       </MainLayout>
     </SectionLayout>

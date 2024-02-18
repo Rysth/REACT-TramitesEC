@@ -42,7 +42,6 @@ function ProcessorPage() {
           <TableHeader
             title="Listado de Trámitadores"
             restartCurrentPage={resetToFirstPage}
-            showModal={showModal}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
           />
@@ -59,7 +58,12 @@ function ProcessorPage() {
               <Loading /> // Placeholder for loading or empty state
             )}
           </TableLayout>
-          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange} />
+          <TablePaginate
+            currentPage={currentPage - 1}
+            pageCount={totalPages}
+            handlePageChange={handlePageChange}
+            showModal={showModal}
+          />
         </Card>
       </MainLayout>
     </SectionLayout>

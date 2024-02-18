@@ -1,14 +1,13 @@
-import { Button, SearchSelect, SearchSelectItem, TextInput } from '@tremor/react/dist'
+import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react/dist'
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
-import { IoCreateSharp, IoSearch } from 'react-icons/io5'
+import { IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
 function TableHeader({
   restartCurrentPage,
-  showModal,
   setSearch,
   setSelectedUserId,
   setSelectedProcessorId,
@@ -75,13 +74,13 @@ function TableHeader({
   }, [])
 
   return (
-    <article className="p-4 sm:px-4 bg-[var(--CL-primary)] rounded-t-lg">
-      <fieldset className="flex flex-col items-center justify-between w-full gap-2 sm:flex-row">
-        <div className="flex flex-col w-full gap-2 md:w-max md:items-center md:flex-row">
+    <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
+      <header className="flex flex-col items-center justify-between gap-2 ml-auto sm:flex-row ">
+        <div className="grid w-full grid-cols-2 gap-2 md:flex md:w-max md:items-center">
           <SearchSelect
             value={userID}
             onValueChange={handleSelectChange}
-            className="z-50 w-full md:w-48"
+            className="z-50 w-20 md:w-40"
             placeholder="Usuario"
           >
             {usersArray.map((user) => (
@@ -94,7 +93,7 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-40 w-full md:w-48"
+              className="z-40 w-20 md:w-40"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
@@ -110,7 +109,7 @@ function TableHeader({
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-30 w-full md:w-48"
+              className="z-30 w-full col-start-1 col-end-3 row-start-1 md:w-40"
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
@@ -121,32 +120,25 @@ function TableHeader({
             </SearchSelect>
           )}
         </div>
-        <div className="flex flex-col items-center justify-end w-full sm:max-w-[20rem] gap-2 sm:flex-row">
-          <TextInput
-            id="search"
-            type="text"
-            icon={IoSearch}
-            placeholder="Buscar..."
-            onChange={handleSearchData}
-            color="purple"
-            allowClear
-            required
-          />
-          <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">
-            <Button color="green" onClick={showModal} className="flex items-center">
-              Crear
-              <IoCreateSharp className="inline-block ml-1" />
-            </Button>
-          </div>
-        </div>
-      </fieldset>
+        <TextInput
+          id="search"
+          type="text"
+          icon={IoSearch}
+          placeholder="Buscar..."
+          onChange={handleSearchData}
+          color="purple"
+          className="md:max-w-xs"
+          allowClear
+          required
+        />
+      </header>
     </article>
   )
 }
 
 TableHeader.propTypes = {
   restartCurrentPage: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
+
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
   setSelectedProcessorId: PropTypes.func.isRequired,

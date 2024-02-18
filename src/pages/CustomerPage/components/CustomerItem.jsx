@@ -46,6 +46,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.phone}`}
             className="text-blue-500 md:hover:underline"
+            target="_blank"
           >
             {customer.phone}
           </a>
@@ -53,6 +54,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.processor.phone}`}
             className="text-blue-500 md:hover:underline"
+            target="_blank"
           >
             {customer.processor.phone}
           </a>
