@@ -148,12 +148,14 @@ const ProcessorProfilePage = () => {
                           <TableCell>{procedure.code}</TableCell>
                           <TableCell>{procedure.date}</TableCell>
                           <TableCell>
-                            <a
-                              href={`/clientes/${procedure.customer.id}`}
-                              className="transition hover:text-blue-500 hover:underline"
-                            >
-                              {procedure.customer.first_name} {procedure.customer.last_name}
-                            </a>
+                            {procedure.customer ? (
+                              <a
+                                href={`/clientes/${procedure.customer.id}`}
+                                className="transition hover:text-blue-500 hover:underline"
+                              >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
+                            ) : (
+                              <p>{procedure.plate}</p>
+                            )}
                           </TableCell>
                           <TableCell>
                             <Badge

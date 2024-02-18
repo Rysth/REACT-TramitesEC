@@ -125,8 +125,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
       Object.keys(procedureSelected).forEach((key) => {
         setValue(key, procedureSelected[key])
       })
-      if (procedureSelected.customer.is_direct) setDisableProcessor(true)
+      if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
     } else {
+      dispatch(sharedActions.setProcedureTypeSelected(0))
       reset()
     }
   }, [procedureSelected, reset, setValue])
@@ -194,8 +195,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted || hasPayments}
+                isDisabled={isCompleted || hasPayments || !shouldUsePlate}
                 className="text-sm shadow shadow-gray-200"
+                required={shouldUsePlate}
               />
             </div>
             <div className="space-y-2">
@@ -224,6 +226,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 }
                 className="text-sm shadow shadow-gray-200"
                 isDisabled={isCompleted || hasPayments || disableProcessor}
+                required={!shouldUsePlate || !disableProcessor}
               />
             </div>
           </fieldset>
@@ -367,13 +370,18 @@ function CustomerForm({ closeModal, refetchFunction }) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="plate" value="Placa" />
+                {errors.plate && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
               </div>
               <TextInput
                 id="plate"
                 icon={HiIdentification}
                 placeholder=""
-                disabled={shouldUsePlate}
-                {...register('plate')}
+                disabled={isCompleted || isNotPending || hasPayments || shouldUsePlate}
+                {...register('plate', { required: !shouldUsePlate })}
               />
             </div>
           </fieldset>

@@ -6,7 +6,7 @@ import ReactPaginate from 'react-paginate'
 
 function TablePaginate({ currentPage, pageCount, handlePageChange, showModal }) {
   return (
-    <footer className={`flex items-center justify-between p-2 px-4 ${!showModal && '!justify-end !px-2'}`}>
+    <footer className={`flex items-center justify-between p-2 md:p-4 ${!showModal && '!justify-end !px-2'}`}>
       {showModal && (
         <div>
           <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">

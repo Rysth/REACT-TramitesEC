@@ -22,7 +22,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const statusColor =
     procedure.status.id === 1 || procedure.status.id === 3 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
   const isAdmin = activeUser.is_admin
-  const isDirect = procedure.customer.is_direct
+  const isDirect = procedure.customer?.is_direct
 
   return (
     <TableRow>
@@ -48,10 +48,14 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       </TableCell>
       <TableCell className="py-1.5 truncate">{procedure.date}</TableCell>
       <TableCell className="py-1.5 truncate">
-        <a
-          href={`/clientes/${procedure.customer.id}`}
-          className="transition hover:text-blue-500 hover:underline"
-        >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
+        {procedure.customer ? (
+          <a
+            href={`/clientes/${procedure.customer.id}`}
+            className="transition hover:text-blue-500 hover:underline"
+          >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
+        ) : (
+          <p>{procedure.plate}</p>
+        )}
       </TableCell>
 
       <TableCell className="py-1.5 ">{procedure.procedure_type.name}</TableCell>
