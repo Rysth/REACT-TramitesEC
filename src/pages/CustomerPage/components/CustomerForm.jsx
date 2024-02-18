@@ -62,7 +62,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         callback(options)
       })
       .catch(() => callback([]))
-  }, 800)
+  }, 700)
 
   useEffect(() => {
     if (customerSelected) {

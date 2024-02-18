@@ -172,7 +172,7 @@ const CustomerProfilePage = () => {
                               </Badge>
                             ) : (
                               <Badge className="grid place-items-center" color="green">
-                                Usuario Directo
+                                Cliente Directo
                               </Badge>
                             )}
                           </TableCell>

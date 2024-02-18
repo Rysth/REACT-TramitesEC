@@ -2,7 +2,7 @@ import { Button, TextInput } from '@tremor/react'
 import { Badge, Label, Select } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   HiChatBubbleBottomCenterText,
@@ -26,6 +26,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
     (store) => store.shared,
   )
   const { procedureSelected } = useSelector((store) => store.procedure)
+  const [disableProcessor, setDisableProcessor] = useState()
   const {
     register,
     handleSubmit,
@@ -95,7 +96,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         callback(options)
       })
       .catch(() => callback([]))
-  }, 800)
+  }, 700)
 
   // Load customer options
   const loadCustomerOptions = debounce((inputValue, callback) => {
@@ -103,13 +104,14 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((customer) => ({
-          label: `${customer.identification} - ${customer.first_name} ${customer.last_name}`,
+          label: `${customer.identification} - ${customer.first_name} ${customer.last_name} ${customer.is_direct ? '- CD' : ''}`,
           value: customer.id,
+          isDirect: customer.is_direct,
         }))
         callback(options)
       })
       .catch(() => callback([]))
-  }, 800)
+  }, 700)
 
   const handleProcedureSelectedChange = (e) => {
     const procedureTypeID = parseInt(e.target.value)
@@ -122,14 +124,16 @@ function CustomerForm({ closeModal, refetchFunction }) {
       Object.keys(procedureSelected).forEach((key) => {
         setValue(key, procedureSelected[key])
       })
+      if (procedureSelected.customer.is_direct) setDisableProcessor(true)
     } else {
       reset()
     }
   }, [procedureSelected, reset, setValue])
 
-  const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
+  const isCompleted =
+    procedureSelected?.status.id === 2 || procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
-  const hasPayments = paymentsOriginal.length > 0
+  const hasPayments = procedureSelected && paymentsOriginal.length > 0
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,6 +161,43 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
+                <Label htmlFor="customer_id" value="Cliente" />
+                {errors.customer_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <AsyncSelect
+                cacheOptions
+                loadOptions={loadCustomerOptions}
+                defaultOptions
+                placeholder="Buscar Cliente..."
+                onChange={(selectedOption) => {
+                  setValue('customer_id', selectedOption.value)
+                  // Check if the selected customer has is_direct set to true
+                  if (selectedOption && selectedOption.isDirect) {
+                    setValue('processor_id', null) // Set processor_id to null
+                    setDisableProcessor(true)
+                  } else {
+                    // Enable the processor selector if the customer is not direct
+                    setDisableProcessor(false)
+                  }
+                }}
+                defaultValue={
+                  procedureSelected && procedureSelected.customer
+                    ? {
+                        label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
+                        value: procedureSelected.customer.id,
+                      }
+                    : undefined
+                }
+                isDisabled={isCompleted || hasPayments}
+                className="text-sm shadow shadow-gray-200"
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
                 <Label htmlFor="processor_id" value="Trámitador" />
                 {errors.processor_id && (
                   <Badge className="text-xs" color="failure">
@@ -166,6 +207,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <AsyncSelect
                 cacheOptions
+                id="processor_id"
                 loadOptions={loadProcessorOptions}
                 defaultOptions
                 placeholder="Buscar Trámitador..."
@@ -179,34 +221,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                     : undefined
                 }
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={procedureSelected && procedureSelected && (isCompleted || hasPayments)}
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="customer_id" value="Cliente" />
-                {errors.customer_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
-              </div>
-              <AsyncSelect
-                cacheOptions
-                loadOptions={loadCustomerOptions}
-                defaultOptions
-                placeholder="Buscar Cliente..."
-                onChange={(selectedOption) => setValue('customer_id', selectedOption.value)}
-                defaultValue={
-                  procedureSelected && procedureSelected.customer
-                    ? {
-                        label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
-                        value: procedureSelected.customer.id,
-                      }
-                    : undefined
-                }
-                isDisabled={procedureSelected && procedureSelected && (isCompleted || hasPayments)}
-                className="text-sm shadow shadow-gray-200"
+                isDisabled={isCompleted || hasPayments || disableProcessor}
               />
             </div>
           </fieldset>

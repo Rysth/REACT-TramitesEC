@@ -33,7 +33,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
         </Badge>
       </TableCell>
       <TableCell className="py-1.5 truncate">
-        {!isDirect ? (
+        {!isDirect && procedure.processor ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${procedure.processor.id}`} color="purple">
             {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
           </Badge>
@@ -55,6 +55,17 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       </TableCell>
 
       <TableCell className="py-1.5 ">{procedure.procedure_type.name}</TableCell>
+      <TableCell className="py-1.5">
+        {procedure.is_paid ? (
+          <Badge className="grid place-items-center" color="green">
+            Pagado
+          </Badge>
+        ) : (
+          <Badge className="grid place-items-center" color="red">
+            Pendiente
+          </Badge>
+        )}
+      </TableCell>
 
       <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>

@@ -29,7 +29,7 @@ function TableHeader({
     debounce((input) => {
       setSearch(input)
       restartCurrentPage()
-    }, 500),
+    }, 700),
     [dispatch, userID, processorID], // Dependencias
   )
 
@@ -65,7 +65,7 @@ function TableHeader({
       } else {
         dispatch(fetchProcessorOptions({ activeToken, query: inputValue }))
       }
-    }, 500),
+    }, 700),
     [dispatch, activeToken],
   )
 
