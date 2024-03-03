@@ -2,7 +2,7 @@ import { Button, Label, TextInput } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import { HiMail } from 'react-icons/hi'
 import { RiLockPasswordFill } from 'react-icons/ri'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import UndrawLogin from '../../assets/images/illustrations/undraw_login.svg'
 import BrandImage from '../../assets/personal/brand_blue.svg'
 import { createSession } from '../../redux/slices/AuthenticationSlice'
@@ -10,7 +10,11 @@ import { createSession } from '../../redux/slices/AuthenticationSlice'
 function SessionPage() {
   const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-  const onSubmit = (userData) => dispatch(createSession(userData))
+  const loading = useSelector((store) => store.authentication.loading)
+
+  const onSubmit = (userData) => {
+    dispatch(createSession(userData))
+  }
 
   return (
     <section className="w-full h-screen">
@@ -24,7 +28,13 @@ function SessionPage() {
             <h2 className="w-full mb-3 text-3xl font-bold text-center">Iniciar Sesión</h2>
             <fieldset className="w-full">
               <Label htmlFor="email" value="Correo Electrónico" className="block mb-2" />
-              <TextInput icon={HiMail} placeholder="username@example.com" {...register('email')} required />
+              <TextInput
+                icon={HiMail}
+                placeholder="username@example.com"
+                {...register('email')}
+                disabled={loading}
+                required
+              />
             </fieldset>
             <fieldset className="w-full">
               <Label htmlFor="password" className="block mb-2" value="Contraseña" />
@@ -32,14 +42,16 @@ function SessionPage() {
                 icon={RiLockPasswordFill}
                 type="password"
                 placeholder="*****"
+                disabled={loading}
                 {...register('password')}
                 required
               />
             </fieldset>
             <Button
-              className="flex items-center justify-center w-full gap-2 transition rounded-lg bg-blue-dark durantion 300"
+              className="w-full transition rounded-lg bg-blue-dark durantion-300"
               type="submit"
               color="dark"
+              disabled={loading}
             >
               <span>Ingresar</span>
             </Button>

@@ -12,6 +12,7 @@ const initialState = {
   activeUser: getActiveUser || {},
   activeToken: getActiveToken || '',
   active: getActiveSession === 'true',
+  loading: false,
 }
 
 const handleRequestError = (error) => {
@@ -28,6 +29,8 @@ const handleRequestError = (error) => {
 
 export const createSession = createAsyncThunk('authentication/createSession', async (userData) => {
   try {
+    console.log(userData)
+
     const response = await axios.post(`${API_URL}/users/tokens/sign_in`, userData, {
       headers: {
         'Content-Type': 'application/json',
@@ -112,11 +115,13 @@ export const AuthenticationSlice = createSlice({
       state.activeUser = action.payload
       updateSessionStorage(state)
     })
-    builder.addCase(createSession.pending, () => {
+    builder.addCase(createSession.pending, (state, action) => {
+      state.loading = true
       toast.info('Autentificando...', { autoClose: 2000 })
     })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
+      state.loading = false
       state.activeUser = action.payload[1]
       state.activeToken = action.payload[0].token
       updateSessionStorage(state)
