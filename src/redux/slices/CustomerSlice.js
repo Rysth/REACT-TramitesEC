@@ -96,8 +96,6 @@ export const createCustomer = createAsyncThunkWrapper('createCustomer', async ({
     customerData.processor_id = null
   }
 
-  console.log(customerData)
-
   return axios.post(`${API_URL}/api/v1/customers/`, customerData, {
     headers: {
       Authorization: activeToken,
@@ -208,9 +206,8 @@ const customerSlice = createSlice({
       updateStateAndStats(state, action)
       state.loading = false
     })
-    builder.addCase(createCustomer.pending, (state, action) => {
+    builder.addCase(createCustomer.pending, (state) => {
       state.loading = true
-      updateStateAndStats(state, action, '¡Cliente Registrado!')
     })
     builder.addCase(createCustomer.fulfilled, (state, action) => {
       state.loading = false

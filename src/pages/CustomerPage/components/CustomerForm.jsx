@@ -45,6 +45,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         closeModal()
       }
     } else {
+      console.log(customerData)
       dispatch(createCustomer({ activeToken, customerData }))
         .then(() => refetchFunction())
         .then(() => closeModal())
@@ -113,7 +114,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
               defaultOptions
               placeholder="Buscar..."
               onChange={(selectedOption) => {
-                console.log(selectedOption)
                 setValue('processor_id', selectedOption.value)
               }}
               defaultValue={
@@ -220,7 +220,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
             defaultValue={customerSelected && customerSelected.phone}
             icon={HiMiniDevicePhoneMobile}
             {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
-            disabled={!isDirect && customerSelected && !customerSelected.is_direct}
+            disabled={!isDirect || (customerSelected && !customerSelected.is_direct)}
           />
         </div>
         <div className="space-y-2">
