@@ -50,7 +50,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.status.name}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 truncate">{procedure.date}</TableCell>
+      <TableCell className="py-1.5 truncate">{new Date(procedure.updated_at).toLocaleDateString()}</TableCell>
       <TableCell className="py-1.5 ">
         {procedure.customer ? (
           <a

@@ -36,14 +36,12 @@ function ProcessorPage() {
   const handleStartDateChange = (date) => {
     // Convert Date object to ISO string format before dispatching
     const startDateString = date ? date.toISOString() : null
-    console.log(startDateString)
     dispatch(processorActions.setStartDate(startDateString))
   }
 
   const handleEndDateChange = (date) => {
     // Convert Date object to ISO string format before dispatching
     const endDateString = date ? date.toISOString() : null
-    console.log(endDateString)
     dispatch(processorActions.setEndDate(endDateString))
   }
 
