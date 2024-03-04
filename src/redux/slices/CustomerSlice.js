@@ -208,9 +208,16 @@ const customerSlice = createSlice({
       updateStateAndStats(state, action)
       state.loading = false
     })
+    builder.addCase(createCustomer.pending, (state, action) => {
+      state.loading = true
+      updateStateAndStats(state, action, '¡Cliente Registrado!')
+    })
     builder.addCase(createCustomer.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Cliente Registrado!')
+    })
+    builder.addCase(createCustomer.rejected, (state) => {
+      state.loading = false
     })
     builder.addCase(updateCustomer.fulfilled, (state, action) => {
       state.loading = false

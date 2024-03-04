@@ -113,9 +113,9 @@ export const AuthenticationSlice = createSlice({
       state.activeUser = action.payload
       updateSessionStorage(state)
     })
-    builder.addCase(createSession.pending, (state, action) => {
+    builder.addCase(createSession.pending, (state) => {
       state.loading = true
-      toast.info('Autentificando...', { autoClose: 2000 })
+      toast.info('Espere porfavor...', { autoClose: 2000 })
     })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
@@ -124,6 +124,9 @@ export const AuthenticationSlice = createSlice({
       state.activeToken = action.payload[0].token
       updateSessionStorage(state)
       toast.success('¡Bienvenido!', { autoClose: 2000 })
+    })
+    builder.addCase(createSession.rejected, (state, action) => {
+      state.loading = false
     })
     builder.addCase(destroySession.fulfilled, (state) => {
       state.active = false

@@ -13,7 +13,7 @@ import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { customerSelected } = useSelector((store) => store.customer)
+  const { customerSelected, loading } = useSelector((store) => store.customer)
   const {
     register,
     handleSubmit,
@@ -235,7 +235,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         </div>
       </fieldset>
       <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit">
+        <Button color="green" type="submit" disabled={loading}>
           Guardar
         </Button>
         <Button color="red" onClick={closeModal}>

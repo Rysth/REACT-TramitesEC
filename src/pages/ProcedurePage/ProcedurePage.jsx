@@ -30,8 +30,6 @@ function ProcedurePage({ routeName }) {
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
   const { procedureSelected } = useSelector((store) => store.procedure)
 
-  console.log(routeName)
-
   const newFilterArray =
     routeName === 'licencias'
       ? proceduresArray.filter((item) => item.procedure_type.has_licenses)

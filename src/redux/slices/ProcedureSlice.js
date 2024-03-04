@@ -180,9 +180,15 @@ const proceduresSlice = createSlice({
       state.loading = false
       state.procedureSelected = action.payload
     })
+    builder.addCase(createProcedure.pending, (state) => {
+      state.loading = true
+    })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
       state.loading = false
       updateStateAndStats(state, action, '¡Trámite Registrado!')
+    })
+    builder.addCase(createProcedure.rejected, (state) => {
+      state.loading = false
     })
     builder.addCase(updateProcedure.fulfilled, (state, action) => {
       state.loading = false

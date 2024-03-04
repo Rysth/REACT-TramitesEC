@@ -12,14 +12,14 @@ import {
   HiListBullet,
 } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import AsyncSelect from 'react-select/async'
+import usePlate from '../../../hooks/usePlate'
 import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
-import usePlate from '../../../hooks/usePlate'
-import { useLocation } from 'react-router-dom'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -27,7 +27,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
     (store) => store.shared,
   )
-  const { procedureSelected } = useSelector((store) => store.procedure)
+  const { procedureSelected, loading } = useSelector((store) => store.procedure)
   const [disableProcessor, setDisableProcessor] = useState()
   const {
     register,
@@ -139,10 +139,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
 
-  console.log(selectedProcedureType)
-
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
+
+  console.log(loading)
 
   const newFilterArray = isRouteLicenses
     ? typesOriginal.filter((item) => item.has_licenses)
@@ -172,6 +172,35 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
           </fieldset>
           <fieldset className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="processor_id" value="Trámitador" />
+                {errors.processor_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <AsyncSelect
+                cacheOptions
+                id="processor_id"
+                loadOptions={loadProcessorOptions}
+                defaultOptions
+                placeholder="Buscar Trámitador..."
+                onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+                defaultValue={
+                  procedureSelected && procedureSelected.processor
+                    ? {
+                        label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
+                        value: procedureSelected.processor.id,
+                      }
+                    : undefined
+                }
+                className="text-sm shadow shadow-gray-200"
+                isDisabled={isCompleted || hasPayments || disableProcessor}
+                required={!shouldUsePlate || !disableProcessor}
+              />
+            </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="customer_id" value="Cliente" />
@@ -205,38 +234,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted || hasPayments || !shouldUsePlate}
+                isDisabled={isCompleted || hasPayments || !isRouteLicenses}
                 className="text-sm shadow shadow-gray-200"
                 required={shouldUsePlate}
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="processor_id" value="Trámitador" />
-                {errors.processor_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
-              </div>
-              <AsyncSelect
-                cacheOptions
-                id="processor_id"
-                loadOptions={loadProcessorOptions}
-                defaultOptions
-                placeholder="Buscar Trámitador..."
-                onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
-                defaultValue={
-                  procedureSelected && procedureSelected.processor
-                    ? {
-                        label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
-                        value: procedureSelected.processor.id,
-                      }
-                    : undefined
-                }
-                className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted || hasPayments || disableProcessor}
-                required={!shouldUsePlate || !disableProcessor}
               />
             </div>
           </fieldset>
@@ -399,7 +399,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
       <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit">
+        <Button color="green" type="submit" disabled={loading}>
           Guardar
         </Button>
         <Button color="red" onClick={closeModal}>
