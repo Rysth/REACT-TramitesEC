@@ -31,7 +31,7 @@ function ProcessorPage() {
   const dispatch = useDispatch()
   const startDate = useSelector((state) => state.processor.startDate)
   const endDate = useSelector((state) => state.processor.endDate)
-  const { activeToken } = useSelector((state) => state.authentication)
+  const { activeToken, activeUser } = useSelector((state) => state.authentication)
 
   const handleStartDateChange = (date) => {
     // Convert Date object to ISO string format before dispatching
@@ -49,6 +49,7 @@ function ProcessorPage() {
 
   // Function to check if startDate and endDate are set
   const isDateSet = () => startDate && endDate
+  const isAdmin = activeUser.is_admin
 
   // Function to reset dates
   const resetDates = () => {
@@ -68,34 +69,36 @@ function ProcessorPage() {
         setEntitySelected={processorActions.setProcessorSelected}
       />
       <MainLayout>
-        <div className="flex items-center justify-between py-2">
-          <fieldset className="flex flex-col items-center gap-2 md:flex-row">
-            <DatePicker
-              className="z-[60] w-40"
-              defaultValue={startDate}
-              onValueChange={handleStartDateChange}
-              placeholder="Fecha Inicial"
-            />
-            <DatePicker
-              className="z-[60] w-40"
-              defaultValue={endDate}
-              onValueChange={handleEndDateChange}
-              placeholder="Fecha Final"
-            />
-          </fieldset>
-          <Button
-            onClick={() => {
-              dispatch(generateExcelFile({ activeToken, startDate, endDate }))
-              resetDates() // Reset dates after clicking the button
-            }}
-            color="green"
-            className="flex items-center"
-            disabled={!isDateSet()}
-          >
-            <span className="inline-block">Generar Excel</span>
-            <FaFileExcel className="inline-block ml-1" />
-          </Button>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center justify-between py-2">
+            <fieldset className="flex flex-col items-center gap-2 md:flex-row">
+              <DatePicker
+                className="z-[60] w-40"
+                defaultValue={startDate}
+                onValueChange={handleStartDateChange}
+                placeholder="Fecha Inicial"
+              />
+              <DatePicker
+                className="z-[60] w-40"
+                defaultValue={endDate}
+                onValueChange={handleEndDateChange}
+                placeholder="Fecha Final"
+              />
+            </fieldset>
+            <Button
+              onClick={() => {
+                dispatch(generateExcelFile({ activeToken, startDate, endDate }))
+                resetDates() // Reset dates after clicking the button
+              }}
+              color="green"
+              className="flex items-center"
+              disabled={!isDateSet()}
+            >
+              <span className="inline-block">Generar Excel</span>
+              <FaFileExcel className="inline-block ml-1" />
+            </Button>
+          </div>
+        )}
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámitadores"

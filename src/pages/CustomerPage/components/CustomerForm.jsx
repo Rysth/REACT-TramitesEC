@@ -112,12 +112,16 @@ function CustomerForm({ closeModal, refetchFunction }) {
               loadOptions={loadProcessorOptions}
               defaultOptions
               placeholder="Buscar..."
-              onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+              onChange={(selectedOption) => {
+                console.log(selectedOption)
+                setValue('processor_id', selectedOption.value)
+              }}
               defaultValue={
                 customerSelected && customerSelected.processor
                   ? {
                       label: `${customerSelected.processor.code} - ${customerSelected.processor.first_name} ${customerSelected.processor.last_name}`,
                       value: customerSelected.processor.id,
+                      phone: customerSelected.processor.phone,
                     }
                   : undefined
               }
@@ -145,23 +149,21 @@ function CustomerForm({ closeModal, refetchFunction }) {
             {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
-
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="phone" value="Teléfono" />
-            {errors.phone && (
+            <Label htmlFor="email" value="Email" />
+            {errors.email && (
               <Badge className="text-xs" color="failure">
-                {errors.phone.type === 'required' && 'Campo requerido'}
-                {errors.phone.type === 'pattern' && 'Solo números'}
+                Campo Requerido
               </Badge>
             )}
           </div>
           <TextInput
-            id="phone"
+            id="email"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.phone}
-            icon={HiMiniDevicePhoneMobile}
-            {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
+            defaultValue={customerSelected && customerSelected.email}
+            icon={HiMiniEnvelope}
+            {...register('email', { required: true })}
           />
         </div>
       </fieldset>
@@ -204,19 +206,21 @@ function CustomerForm({ closeModal, refetchFunction }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="email" value="Email" />
-            {errors.email && (
+            <Label htmlFor="phone" value="Teléfono" />
+            {errors.phone && (
               <Badge className="text-xs" color="failure">
-                Campo Requerido
+                {errors.phone.type === 'required' && 'Campo requerido'}
+                {errors.phone.type === 'pattern' && 'Solo números'}
               </Badge>
             )}
           </div>
           <TextInput
-            id="email"
+            id="phone"
             placeholder=""
-            defaultValue={customerSelected && customerSelected.email}
-            icon={HiMiniEnvelope}
-            {...register('email', { required: true })}
+            defaultValue={customerSelected && customerSelected.phone}
+            icon={HiMiniDevicePhoneMobile}
+            {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
+            disabled={!isDirect && !customerSelected.is_direct}
           />
         </div>
         <div className="space-y-2">

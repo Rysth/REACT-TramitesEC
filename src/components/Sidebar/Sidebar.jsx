@@ -1,20 +1,22 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
-import { IoClose, IoDocument, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
+import { IoChevronDown, IoChevronUp, IoClose, IoDocument, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
 import { MdAccountCircle } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
+import { FaChevronRight } from 'react-icons/fa'
 
 function Sidebar() {
   const [open, setOpen] = useState()
-  const { id, username } = useSelector((store) => store.authentication.activeUser)
+  const [showSubMenu, setShowSubMenu] = useState(false)
+  const { id, username, is_admin } = useSelector((store) => store.authentication.activeUser)
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
 
-  const isAdmin = id === 1
+  const isAdmin = is_admin
 
   return (
     <>
@@ -60,13 +62,39 @@ function Sidebar() {
                 </NavLink>
               </li>
               <li>
-                <NavLink
+                <button
                   to="/tramites"
-                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition w-full"
+                  onClick={() => setShowSubMenu(!showSubMenu)}
                 >
                   <IoDocument className="text-xl" />
                   <span>Trámites</span>
-                </NavLink>
+                  {showSubMenu ? (
+                    <IoChevronUp className="ml-auto text-xl" />
+                  ) : (
+                    <IoChevronDown className="ml-auto text-xl" />
+                  )}
+                </button>
+                <ul className={`pl-4 mt-1 grid gap-1 ${!showSubMenu && 'hidden'}`}>
+                  <li>
+                    <NavLink
+                      to="/tramites/licencias"
+                      className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition w-full"
+                    >
+                      <FaChevronRight className="text-xl" />
+                      Licencias
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/tramites/vehiculares"
+                      className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition w-full"
+                    >
+                      <FaChevronRight className="text-xl" />
+                      Vehículares
+                    </NavLink>
+                  </li>
+                </ul>
               </li>
 
               {isAdmin && (

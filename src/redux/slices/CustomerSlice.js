@@ -20,7 +20,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula, Email o Celular Repetidos')
+    toast.error('¡Cliente ya Registrado! Cédula o Teléfono Repetidos')
     return
   }
 
@@ -90,6 +90,14 @@ export const fetchCustomerDetails = createAsyncThunkWrapper(
 
 // Thunk for creating a new client (POST)
 export const createCustomer = createAsyncThunkWrapper('createCustomer', async ({ activeToken, customerData }) => {
+  console.log(customerData)
+
+  if (customerData.is_direct) {
+    customerData.processor_id = null
+  }
+
+  console.log(customerData)
+
   return axios.post(`${API_URL}/api/v1/customers/`, customerData, {
     headers: {
       Authorization: activeToken,
