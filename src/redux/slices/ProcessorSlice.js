@@ -139,12 +139,13 @@ const formatDate = (dateString) => {
 // Thunk for generating Excel file
 export const generateExcelFile = createAsyncThunk(
   'processor/generateExcelFile',
-  async ({ activeToken, startDate, endDate }) => {
+  async ({ activeToken, startDate, endDate, isAdmin = false }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/processors/generate_excel`, {
         params: {
           start_date: startDate,
           end_date: endDate,
+          is_admin: isAdmin,
         },
         headers: {
           Authorization: activeToken,
