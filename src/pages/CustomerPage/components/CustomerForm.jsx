@@ -220,7 +220,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
             defaultValue={customerSelected && customerSelected.phone}
             icon={HiMiniDevicePhoneMobile}
             {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
-            disabled={!isDirect && !customerSelected.is_direct}
+            disabled={!isDirect && customerSelected && !customerSelected.is_direct}
           />
         </div>
         <div className="space-y-2">
