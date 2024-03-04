@@ -85,10 +85,18 @@ function App() {
             }
           />
           <Route
-            path="/tramites"
+            path="/tramites/vehiculares"
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
-                <ProcedurePage />
+                <ProcedurePage routeName="vehiculares" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tramites/licencias"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <ProcedurePage routeName="licencias" />
               </ProtectedRoute>
             }
           />

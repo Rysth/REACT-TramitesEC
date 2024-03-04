@@ -12,7 +12,7 @@ import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 import { useSelector } from 'react-redux'
 
-function ProcedurePage() {
+function ProcedurePage({ routeName }) {
   const {
     entitiesArray: proceduresArray,
     totalPages,
@@ -29,6 +29,13 @@ function ProcedurePage() {
     handleDelete,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
   const { procedureSelected } = useSelector((store) => store.procedure)
+
+  console.log(routeName)
+
+  const newFilterArray =
+    routeName === 'licencias'
+      ? proceduresArray.filter((item) => item.procedure_type.has_licenses)
+      : proceduresArray.filter((item) => !item.procedure_type.has_licenses)
 
   return (
     <SectionLayout title="Trámites" subtitle="Información General de los Trámites">
@@ -55,9 +62,9 @@ function ProcedurePage() {
             showStatusFilter
           />
           <TableLayout>
-            {Array.isArray(proceduresArray) ? (
+            {Array.isArray(newFilterArray) ? (
               <ProcedureTable
-                currentItems={proceduresArray}
+                currentItems={newFilterArray}
                 currentPage={currentPage}
                 itemsPerPage={15}
                 showModal={showModal}
@@ -67,7 +74,12 @@ function ProcedurePage() {
               <Loading />
             )}
           </TableLayout>
-          <TablePaginate currentPage={currentPage - 1} pageCount={totalPages} handlePageChange={handlePageChange}   showModal={showModal}/>
+          <TablePaginate
+            currentPage={currentPage - 1}
+            pageCount={totalPages}
+            handlePageChange={handlePageChange}
+            showModal={showModal}
+          />
         </Card>
       </MainLayout>
     </SectionLayout>

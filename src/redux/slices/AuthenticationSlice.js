@@ -29,8 +29,6 @@ const handleRequestError = (error) => {
 
 export const createSession = createAsyncThunk('authentication/createSession', async (userData) => {
   try {
-    console.log(userData)
-
     const response = await axios.post(`${API_URL}/users/tokens/sign_in`, userData, {
       headers: {
         'Content-Type': 'application/json',

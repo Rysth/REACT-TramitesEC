@@ -19,6 +19,7 @@ import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
 import usePlate from '../../../hooks/usePlate'
+import { useLocation } from 'react-router-dom'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -138,6 +139,15 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
 
+  console.log(selectedProcedureType)
+
+  const routeName = useLocation().pathname
+  const isRouteLicenses = routeName.includes('licencias')
+
+  const newFilterArray = isRouteLicenses
+    ? typesOriginal.filter((item) => item.has_licenses)
+    : typesOriginal.filter((item) => !item.has_licenses)
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
@@ -248,14 +258,14 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 disabled={procedureSelected && (isCompleted || hasPayments)}
                 required
               >
-                {typesOriginal.map((procedure_type) => (
+                {newFilterArray.map((procedure_type) => (
                   <option key={procedure_type.id} value={procedure_type.id}>
                     {procedure_type.name}
                   </option>
                 ))}
               </Select>
             </div>
-            {selectedProcedureType && selectedProcedureType.has_licenses && (
+            {isRouteLicenses && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="license_id" value="Licencia" />
@@ -380,7 +390,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="plate"
                 icon={HiIdentification}
                 placeholder=""
-                disabled={isCompleted || isNotPending || hasPayments || shouldUsePlate}
+                disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
                 {...register('plate', { required: !shouldUsePlate })}
               />
             </div>
