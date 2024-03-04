@@ -106,7 +106,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((customer) => ({
-          label: `${customer.identification} - ${customer.first_name} ${customer.last_name} ${customer.is_direct ? '- CD' : ''}`,
+          label: `${customer.identification} ${customer.is_direct ? '- CD' : ''} - ${customer.first_name} ${customer.last_name} `,
           value: customer.id,
           isDirect: customer.is_direct,
         }))
@@ -141,8 +141,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
-
-  console.log(loading)
 
   const newFilterArray = isRouteLicenses
     ? typesOriginal.filter((item) => item.has_licenses)
@@ -391,7 +389,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 icon={HiIdentification}
                 placeholder=""
                 disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
-                {...register('plate', { required: !shouldUsePlate })}
+                {...register('plate', { required: !isRouteLicenses })}
               />
             </div>
           </fieldset>

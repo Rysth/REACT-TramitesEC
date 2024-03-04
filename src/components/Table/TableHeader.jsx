@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
+import { useLocation } from 'react-router-dom'
 
 function TableHeader({
   restartCurrentPage,
@@ -12,17 +13,20 @@ function TableHeader({
   setSelectedUserId,
   setSelectedProcessorId,
   setSelectedStatusId,
+  setSelectedProcedureTypeId,
   showProcessorFilter,
   showStatusFilter,
+  showProcedureTypeFilter,
 }) {
   const dispatch = useDispatch()
   const [userID, setUserID] = useState('')
   const [statusID, setStatusID] = useState('')
+  const [procedureTypeId, setProcedureTypeId] = useState('')
   const [processorID, setProcessorID] = useState('')
   const [searchValue, setSearchValue] = useState('')
   const { usersArray } = useSelector((store) => store.users)
   const { processorOptions } = useSelector((store) => store.processor)
-  const { statusOriginal } = useSelector((store) => store.shared)
+  const { statusOriginal, typesOriginal } = useSelector((store) => store.shared)
   const { activeToken } = useSelector((store) => store.authentication)
 
   const debouncedSearch = useCallback(
@@ -56,6 +60,12 @@ function TableHeader({
     restartCurrentPage()
   }
 
+  const handleProcedureTypeSelectChange = (selectedValue) => {
+    setProcedureTypeId(selectedValue)
+    setSelectedProcedureTypeId(selectedValue)
+    restartCurrentPage()
+  }
+
   const handleProcessorInputChange = useCallback(
     debounce((inputValue) => {
       const trimmedValue = inputValue.trim()
@@ -72,6 +82,13 @@ function TableHeader({
   useEffect(() => {
     handleProcessorInputChange('')
   }, [])
+
+  const routeName = useLocation().pathname
+  const isRouteLicenses = routeName.includes('licencias')
+
+  const newFilterArray = isRouteLicenses
+    ? typesOriginal.filter((item) => item.has_licenses)
+    : typesOriginal.filter((item) => !item.has_licenses)
 
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
@@ -122,6 +139,20 @@ function TableHeader({
               ))}
             </SearchSelect>
           )}
+          {showProcedureTypeFilter && (
+            <SearchSelect
+              value={procedureTypeId}
+              onValueChange={handleProcedureTypeSelectChange}
+              className="z-30 w-full col-span-full md:w-40"
+              placeholder="Trámite"
+            >
+              {newFilterArray.map((type) => (
+                <SearchSelectItem className="text-xs" key={type.id} value={type.id}>
+                  {type.name}
+                </SearchSelectItem>
+              ))}
+            </SearchSelect>
+          )}
         </div>
         <TextInput
           id="search"
@@ -145,8 +176,10 @@ TableHeader.propTypes = {
   setSelectedUserId: PropTypes.func.isRequired,
   setSelectedProcessorId: PropTypes.func,
   setSelectedStatusId: PropTypes.func,
+  setSelectedProcedureTypeId: PropTypes.func,
   showProcessorFilter: PropTypes.bool,
   showStatusFilter: PropTypes.bool,
+  showProcedureTypeFilter: PropTypes.bool,
 }
 
 export default TableHeader

@@ -26,6 +26,7 @@ function ProcedurePage({ routeName }) {
     setSelectedUserId,
     setSelectedProcessorId,
     setSelectedStatusId,
+    setSelectedProcedureTypeId,
     handleDelete,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -56,8 +57,10 @@ function ProcedurePage({ routeName }) {
             setSelectedUserId={setSelectedUserId}
             setSelectedProcessorId={setSelectedProcessorId}
             setSelectedStatusId={setSelectedStatusId}
+            setSelectedProcedureTypeId={setSelectedProcedureTypeId}
             showProcessorFilter
             showStatusFilter
+            showProcedureTypeFilter
           />
           <TableLayout>
             {Array.isArray(newFilterArray) ? (

@@ -12,6 +12,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [selectedUserId, setSelectedUserId] = useState(null)
   const [selectedProcessorId, setSelectedProcessorId] = useState(null)
   const [selectedStatusId, setSelectedStatusId] = useState(null)
+  const [selectedProcedureTypeId, setSelectedProcedureTypeId] = useState(null)
   const [openModal, setOpenModal] = useState(false)
 
   const refetchEntities = () => {
@@ -23,6 +24,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         userId: selectedUserId,
         processorId: selectedProcessorId,
         statusId: selectedStatusId,
+        procedureTypeId: selectedProcedureTypeId,
       }),
     )
   }
@@ -49,13 +51,22 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
 
   useEffect(() => {
     refetchEntities()
-  }, [dispatch, activeToken, search, selectedUserId, currentPage, selectedProcessorId, selectedStatusId]) // Include currentPage in dependencies
+  }, [
+    dispatch,
+    activeToken,
+    search,
+    selectedUserId,
+    currentPage,
+    selectedProcessorId,
+    selectedStatusId,
+    selectedProcedureTypeId,
+  ]) // Include currentPage in dependencies
 
   useEffect(() => {
-    if (selectedUserId || selectedProcessorId || selectedStatusId) {
+    if (selectedUserId || selectedProcessorId || selectedStatusId || selectedProcedureTypeId) {
       setCurrentPage(1)
     }
-  }, [selectedUserId, selectedProcessorId, selectedStatusId])
+  }, [selectedUserId, selectedProcessorId, selectedStatusId, selectedProcedureTypeId])
 
   return {
     entitiesArray,
@@ -70,6 +81,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     setSelectedUserId,
     setSelectedProcessorId,
     setSelectedStatusId,
+    setSelectedProcedureTypeId,
     handleDelete,
   }
 }
