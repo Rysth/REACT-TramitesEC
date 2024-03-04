@@ -90,8 +90,6 @@ export const fetchCustomerDetails = createAsyncThunkWrapper(
 
 // Thunk for creating a new client (POST)
 export const createCustomer = createAsyncThunkWrapper('createCustomer', async ({ activeToken, customerData }) => {
-  console.log(customerData)
-
   if (customerData.is_direct) {
     customerData.processor_id = null
   }
@@ -211,14 +209,16 @@ const customerSlice = createSlice({
     })
     builder.addCase(createCustomer.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Cliente Registrado!')
-    })
-    builder.addCase(createCustomer.rejected, (state) => {
-      state.loading = false
+      if (action.payload) {
+        updateStateAndStats(state, action, '¡Cliente Registrado!')
+      }
     })
     builder.addCase(updateCustomer.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Cliente Actualizado!')
+
+      if (action.payload) {
+        updateStateAndStats(state, action, '¡Cliente Actualizado!')
+      }
     })
     builder.addCase(destroyCustomer.fulfilled, (state, action) => {
       state.loading = false

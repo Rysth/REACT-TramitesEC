@@ -185,15 +185,23 @@ const proceduresSlice = createSlice({
       state.loading = true
     })
     builder.addCase(createProcedure.fulfilled, (state, action) => {
-      state.loading = false
-      updateStateAndStats(state, action, '¡Trámite Registrado!')
+      state.loading = true
+
+      if (action.payload) {
+        state.loading = false
+        updateStateAndStats(state, action, '¡Trámite Registrado!')
+      }
     })
     builder.addCase(createProcedure.rejected, (state) => {
       state.loading = false
     })
     builder.addCase(updateProcedure.fulfilled, (state, action) => {
-      state.loading = false
-      updateStateAndStats(state, action, '¡Trámite Actualizado!')
+      state.loading = true
+
+      if (action.payload) {
+        state.loading = false
+        updateStateAndStats(state, action, '¡Trámite Actualizado!')
+      }
     })
     builder.addCase(destroyProcedure.fulfilled, (state, action) => {
       state.loading = false

@@ -248,7 +248,10 @@ const processorslice = createSlice({
     })
     builder.addCase(createProcessor.fulfilled, (state, action) => {
       state.loading = false
-      updateStateAndStats(state, action, '¡Trámitador Registrado!')
+
+      if (action.payload) {
+        updateStateAndStats(state, action, '¡Trámitador Registrado!')
+      }
     })
     builder.addCase(updateProcessor.fulfilled, (state, action) => {
       state.loading = false

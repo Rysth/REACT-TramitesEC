@@ -1,22 +1,20 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
+import { FaChevronRight } from 'react-icons/fa'
 import { IoChevronDown, IoChevronUp, IoClose, IoDocument, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
-import { MdAccountCircle } from 'react-icons/md'
-import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
-import { FaChevronRight } from 'react-icons/fa'
 
 function Sidebar() {
   const [open, setOpen] = useState()
   const [showSubMenu, setShowSubMenu] = useState(false)
-  const { id, username, is_admin } = useSelector((store) => store.authentication.activeUser)
+  /* const { id, username, is_admin } = useSelector((store) => store.authentication.activeUser) */
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
 
-  const isAdmin = is_admin
+  /* const isAdmin = is_admin */
 
   return (
     <>
@@ -96,8 +94,7 @@ function Sidebar() {
                   </li>
                 </ul>
               </li>
-
-              {isAdmin && (
+              {/* {isAdmin && (
                 <>
                   {' '}
                   <li className="mt-3 mb-3">
@@ -113,7 +110,7 @@ function Sidebar() {
                     </NavLink>
                   </li>
                 </>
-              )}
+              )} */}
             </ul>
 
             <footer className="grid gap-2">

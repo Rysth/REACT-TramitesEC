@@ -32,14 +32,14 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 ">
+      <TableCell className="py-1.5 uppercase">
         {!isDirect && procedure.processor ? (
           <Badge
-            className="grid truncate place-items-center"
+            className="grid truncate place-items-center max-w-[8rem]"
             href={`/tramitadores/${procedure.processor.id}`}
             color="purple"
           >
-            {`${procedure.processor.first_name} ${procedure.processor.last_name}`}
+            {`${procedure.processor.first_name.split(' ')[0]} ${procedure.processor.last_name.split(' ')[0]}`}
           </Badge>
         ) : (
           <Badge className="grid place-items-center">Cliente Directo</Badge>
@@ -50,12 +50,12 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.status.name}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 truncate">{new Date(procedure.updated_at).toLocaleDateString()}</TableCell>
+      <TableCell className="py-1.5">{new Date(procedure.updated_at).toLocaleDateString()}</TableCell>
       <TableCell className="py-1.5 ">
         {procedure.customer ? (
           <a
             href={`/clientes/${procedure.customer.id}`}
-            className="truncate transition hover:text-blue-500 hover:underline"
+            className=" transition hover:text-blue-500 hover:underline max-w-[5rem]"
           >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
         ) : (
           <p>{procedure.plate}</p>

@@ -37,18 +37,21 @@ function CustomerForm({ closeModal, refetchFunction }) {
       })
 
       if (isDifferent) {
-        dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } }))
-          .then(() => refetchFunction())
-          .then(() => closeModal())
+        dispatch(updateCustomer({ activeToken, customerData: { ...customerData, id: customerSelected.id } })).then(
+          () => {
+            refetchFunction()
+            closeModal()
+          },
+        )
       } else {
         // No need to update if the data is the same
         closeModal()
       }
     } else {
-      console.log(customerData)
-      dispatch(createCustomer({ activeToken, customerData }))
-        .then(() => refetchFunction())
-        .then(() => closeModal())
+      dispatch(createCustomer({ activeToken, customerData })).then(() => {
+        refetchFunction()
+        closeModal()
+      })
     }
   }
 

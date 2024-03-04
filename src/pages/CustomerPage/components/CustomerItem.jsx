@@ -25,10 +25,10 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           {customer.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 truncate">
+      <TableCell className="py-1.5 uppercase">
         {!isDirect ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`} color="purple">
-            {`${customer.processor.first_name} ${customer.processor.last_name}`}
+            {`${customer.processor.first_name.split(' ')[0]} ${customer.processor.last_name.split(' ')[0]}`}
           </Badge>
         ) : (
           <Badge className="grid place-items-center">Cliente Directo</Badge>
