@@ -56,7 +56,9 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <a
             href={`/clientes/${procedure.customer.id}`}
             className=" transition hover:text-blue-500 hover:underline max-w-[5rem]"
-          >{`${procedure.customer.first_name} ${procedure.customer.last_name}`}</a>
+          >
+            {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name.split(' ')[0]}`}
+          </a>
         ) : (
           <p>{procedure.plate}</p>
         )}

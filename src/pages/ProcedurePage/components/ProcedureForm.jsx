@@ -117,6 +117,12 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const handleProcedureSelectedChange = (e) => {
     const procedureTypeID = parseInt(e.target.value)
+    console.log(procedureTypeID)
+    if (procedureTypeID === 15) {
+      setIsCambioPropietario(true)
+    } else {
+      setIsCambioPropietario(false)
+    }
     dispatch(sharedActions.setProcedureTypeSelected(procedureTypeID))
   }
 
@@ -127,6 +133,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
         setValue(key, procedureSelected[key])
       })
       if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
+      if (procedureSelected.procedure_type.id === 15) {
+        setIsCambioPropietario(true)
+      }
     } else {
       dispatch(sharedActions.setProcedureTypeSelected(0))
       reset()
@@ -138,6 +147,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
+
+  const [isCambioPropietario, setIsCambioPropietario] = useState(false)
 
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
@@ -185,7 +196,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 loadOptions={loadProcessorOptions}
                 defaultOptions
                 placeholder="Buscar Trámitador..."
-                onChange={(selectedOption) => setValue('processor_id', selectedOption.value)}
+                onChange={(selectedOption) => {
+                  setValue('processor_id', selectedOption.value)
+                }}
                 defaultValue={
                   procedureSelected && procedureSelected.processor
                     ? {
@@ -277,7 +290,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   icon={HiIdentification}
                   id="license_id"
                   {...register('license_id')}
-                  disabled={procedureSelected && (isCompleted || hasPayments)}
+                  disabled={(procedureSelected && (isCompleted || hasPayments)) || isCambioPropietario}
                   required
                 >
                   {licensesOriginal.map((license) => (
@@ -388,8 +401,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="plate"
                 icon={HiIdentification}
                 placeholder=""
-                disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
-                {...register('plate', { required: !isRouteLicenses })}
+                disabled={isCompleted || isNotPending || hasPayments || !isCambioPropietario}
+                {...register('plate', { required: !isRouteLicenses || isCambioPropietario })}
               />
             </div>
           </fieldset>
