@@ -118,7 +118,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const handleProcedureSelectedChange = (e) => {
     const procedureTypeID = parseInt(e.target.value)
     console.log(procedureTypeID)
-    if (procedureTypeID === 15) {
+    if (procedureTypeID === 15 || procedureTypeID === 10 || procedureTypeID === 20) {
       setIsCambioPropietario(true)
     } else {
       setIsCambioPropietario(false)
@@ -133,7 +133,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
         setValue(key, procedureSelected[key])
       })
       if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
-      if (procedureSelected.procedure_type.id === 15) {
+      const procedureTypeActualID = procedureSelected.procedure_type.id
+      if (procedureTypeActualID === 15 || procedureTypeActualID === 10 || procedureTypeActualID === 20) {
         setIsCambioPropietario(true)
       }
     } else {
@@ -245,7 +246,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted || hasPayments || !isRouteLicenses}
+                isDisabled={isCompleted || hasPayments || (!isRouteLicenses && !isCambioPropietario)}
                 className="text-sm shadow shadow-gray-200"
                 required={shouldUsePlate}
               />
@@ -290,7 +291,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                   icon={HiIdentification}
                   id="license_id"
                   {...register('license_id')}
-                  disabled={(procedureSelected && (isCompleted || hasPayments)) || isCambioPropietario}
+                  disabled={procedureSelected && (isCompleted || hasPayments)}
                   required
                 >
                   {licensesOriginal.map((license) => (
@@ -401,8 +402,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 id="plate"
                 icon={HiIdentification}
                 placeholder=""
-                disabled={isCompleted || isNotPending || hasPayments || !isCambioPropietario}
-                {...register('plate', { required: !isRouteLicenses || isCambioPropietario })}
+                disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
+                {...register('plate', { required: !isRouteLicenses })}
               />
             </div>
           </fieldset>
