@@ -143,8 +143,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, reset, setValue])
 
-  const isCompleted =
-    procedureSelected?.status.id === 2 || procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
+  const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
