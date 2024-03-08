@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 function TableLayout({ children }) {
-  return <div className="overflow-auto min-h-96 max-h-96">{children}</div>
+  return <div className="overflow-auto">{children}</div>
 }
 
 TableLayout.propTypes = {

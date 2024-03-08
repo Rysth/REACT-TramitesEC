@@ -50,6 +50,9 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.status.name}
         </Badge>
       </TableCell>
+      <TableCell className="py-1.5 ">
+        <Badge className="grid truncate place-items-center">{procedure.procedure_type.name}</Badge>
+      </TableCell>
       <TableCell className="py-1.5">{new Date(procedure.updated_at).toLocaleDateString()}</TableCell>
       <TableCell className="py-1.5 ">
         {procedure.customer ? (
@@ -64,7 +67,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
         )}
       </TableCell>
 
-      <TableCell className="py-1.5 ">{procedure.procedure_type.name}</TableCell>
       <TableCell className="py-1.5">
         {procedure.is_paid ? (
           <Badge className="grid place-items-center" color="green">

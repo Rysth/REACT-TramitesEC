@@ -92,12 +92,12 @@ function TableHeader({
 
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
-      <header className="flex flex-col items-center justify-between gap-2 ml-auto sm:flex-row ">
-        <div className="grid w-full grid-cols-2 gap-2 md:flex md:w-max md:items-center">
+      <header className="flex flex-col items-center justify-between gap-2 ml-auto lg:flex-row ">
+        <div className="grid w-full grid-cols-2 gap-2 xl:flex md:w-max md:items-center">
           <SearchSelect
             value={userID}
             onValueChange={handleSelectChange}
-            className="z-50 w-20 md:w-40"
+            className="z-50 w-full md:w-40"
             placeholder="Usuario"
           >
             {usersArray.map((user) => (
@@ -110,7 +110,7 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-40 w-20 md:w-40"
+              className="z-40 w-full md:w-40"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
