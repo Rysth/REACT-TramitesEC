@@ -11,6 +11,7 @@ import { getProcedures, procedureActions } from '../../redux/slices/ProcedureSli
 import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 function ProcedurePage({ routeName }) {
   const {
@@ -27,14 +28,14 @@ function ProcedurePage({ routeName }) {
     setSelectedProcessorId,
     setSelectedStatusId,
     setSelectedProcedureTypeId,
+    setHasLicenses,
     handleDelete,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
   const { procedureSelected } = useSelector((store) => store.procedure)
 
-  const newFilterArray =
-    routeName === 'licencias'
-      ? proceduresArray.filter((item) => item.procedure_type.has_licenses)
-      : proceduresArray.filter((item) => !item.procedure_type.has_licenses)
+  useEffect(() => {
+    setHasLicenses(routeName === 'licencias')
+  }, [routeName])
 
   return (
     <SectionLayout title="Trámites" subtitle="Información General de los Trámites">
@@ -63,9 +64,9 @@ function ProcedurePage({ routeName }) {
             showProcedureTypeFilter
           />
           <TableLayout>
-            {Array.isArray(newFilterArray) ? (
+            {Array.isArray(proceduresArray) ? (
               <ProcedureTable
-                currentItems={newFilterArray}
+                currentItems={proceduresArray}
                 currentPage={currentPage}
                 itemsPerPage={15}
                 showModal={showModal}
