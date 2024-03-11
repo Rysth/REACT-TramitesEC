@@ -20,6 +20,7 @@ import { createProcedure, updateProcedure } from '../../../redux/slices/Procedur
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
+import { HiCalendar } from 'react-icons/hi'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -92,7 +93,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((processor) => ({
-          label: `${processor.code} - ${processor.first_name} ${processor.last_name}`,
+          label: `${processor.code} - ${processor.first_name.split(' ')[0]} ${processor.last_name.split(' ')[0]}`,
           value: processor.id,
         }))
         callback(options)
@@ -106,7 +107,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((customer) => ({
-          label: `${customer.identification} ${customer.is_direct ? '- CD' : ''} - ${customer.first_name} ${customer.last_name} `,
+          label: `${customer.is_direct ? 'CD - ' : ''}${customer.identification} - ${customer.first_name.split(' ')[0]} ${customer.last_name.split(' ')[0]} `,
           value: customer.id,
           isDirect: customer.is_direct,
         }))
@@ -117,26 +118,22 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   const handleProcedureSelectedChange = (e) => {
     const procedureTypeID = parseInt(e.target.value)
-    console.log(procedureTypeID)
-    if (procedureTypeID === 15 || procedureTypeID === 10 || procedureTypeID === 20) {
-      setIsCambioPropietario(true)
-    } else {
-      setIsCambioPropietario(false)
-    }
     dispatch(sharedActions.setProcedureTypeSelected(procedureTypeID))
   }
 
   useEffect(() => {
     if (procedureSelected) {
+      console.log(procedureSelected)
       dispatch(sharedActions.setProcedureTypeSelected(procedureSelected.procedure_type.id))
       Object.keys(procedureSelected).forEach((key) => {
-        setValue(key, procedureSelected[key])
+        if (key === 'created_at') {
+          const formattedDate = new Date(procedureSelected[key]).toISOString().split('T')[0]
+          setValue(key, formattedDate)
+        } else {
+          setValue(key, procedureSelected[key])
+        }
       })
       if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
-      const procedureTypeActualID = procedureSelected.procedure_type.id
-      if (procedureTypeActualID === 15 || procedureTypeActualID === 10 || procedureTypeActualID === 20) {
-        setIsCambioPropietario(true)
-      }
     } else {
       dispatch(sharedActions.setProcedureTypeSelected(0))
       reset()
@@ -147,8 +144,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
-
-  const [isCambioPropietario, setIsCambioPropietario] = useState(false)
 
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
@@ -161,7 +156,30 @@ function CustomerForm({ closeModal, refetchFunction }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
         <div className="grid space-y-4">
-          <fieldset>
+          <fieldset className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="created_at" value="Fecha del Trámite" />
+                {errors.created_at && (
+                  <Badge className="text-xs" color="failure">
+                    {errors.created_at.type === 'required' && 'Campo requerido'}
+                  </Badge>
+                )}
+              </div>
+              <TextInput
+                id="created_at"
+                icon={HiCalendar}
+                {...register('created_at', { required: true })}
+                placeholder=""
+                type="date"
+                disabled={procedureSelected && isCompleted}
+                defaultValue={
+                  procedureSelected
+                    ? String(procedureSelected.created_at).split('T')[0]
+                    : new Date().toISOString().split('T')[0]
+                }
+              />
+            </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="status_id" value="Estado" />
@@ -179,6 +197,57 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 ))}
               </Select>
             </div>
+          </fieldset>
+          <fieldset className={`grid gap-4  ${isRouteLicenses && 'sm:grid-cols-2'}`}>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
+                {errors.procedure_type_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <Select
+                icon={HiDocument}
+                id="procedure_type_id"
+                {...register('procedure_type_id')}
+                onChange={(e) => handleProcedureSelectedChange(e)}
+                disabled={procedureSelected && (isCompleted || hasPayments)}
+                required
+              >
+                {newFilterArray.map((procedure_type) => (
+                  <option key={procedure_type.id} value={procedure_type.id}>
+                    {procedure_type.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            {isRouteLicenses && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="license_id" value="Licencia" />
+                  {errors.license_id && (
+                    <Badge className="text-xs" color="failure">
+                      Campo Requerido
+                    </Badge>
+                  )}
+                </div>
+                <Select
+                  icon={HiIdentification}
+                  id="license_id"
+                  {...register('license_id')}
+                  disabled={procedureSelected && (isCompleted || hasPayments)}
+                  required
+                >
+                  {licensesOriginal.map((license) => (
+                    <option key={license.id} value={license.id}>
+                      {license.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            )}
           </fieldset>
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -245,62 +314,11 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       }
                     : undefined
                 }
-                isDisabled={isCompleted || hasPayments || (!isRouteLicenses && !isCambioPropietario)}
+                isDisabled={isCompleted || hasPayments}
                 className="text-sm shadow shadow-gray-200"
-                required={shouldUsePlate}
+                required={isRouteLicenses}
               />
             </div>
-          </fieldset>
-          <fieldset className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
-                {errors.procedure_type_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
-              </div>
-              <Select
-                icon={HiDocument}
-                id="procedure_type_id"
-                {...register('procedure_type_id')}
-                onChange={(e) => handleProcedureSelectedChange(e)}
-                disabled={procedureSelected && (isCompleted || hasPayments)}
-                required
-              >
-                {newFilterArray.map((procedure_type) => (
-                  <option key={procedure_type.id} value={procedure_type.id}>
-                    {procedure_type.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-            {isRouteLicenses && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="license_id" value="Licencia" />
-                  {errors.license_id && (
-                    <Badge className="text-xs" color="failure">
-                      Campo Requerido
-                    </Badge>
-                  )}
-                </div>
-                <Select
-                  icon={HiIdentification}
-                  id="license_id"
-                  {...register('license_id')}
-                  disabled={procedureSelected && (isCompleted || hasPayments)}
-                  required
-                >
-                  {licensesOriginal.map((license) => (
-                    <option key={license.id} value={license.id}>
-                      {license.name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            )}
           </fieldset>
 
           <fieldset className="grid gap-4 sm:grid-cols-2">
@@ -326,12 +344,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="cost_pending" value="Valor Pendiente" />
-                {errors.cost_pending && (
-                  <Badge className="text-xs" color="failure">
-                    {errors.cost_pending.type === 'required' && 'Campo requerido'}
-                    {errors.cost_pending.type === 'pattern' && 'Solo números'}
-                  </Badge>
-                )}
               </div>
               <TextInput
                 id="cost_pending"
@@ -365,12 +377,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="profit_pending" value="Ganancia Pendiente" />
-                {errors.profit_pending && (
-                  <Badge className="text-xs" color="failure">
-                    {errors.profit_pending.type === 'required' && 'Campo requerido'}
-                    {errors.profit_pending.type === 'pattern' && 'Solo números'}
-                  </Badge>
-                )}
               </div>
               <TextInput
                 id="profit_pending"

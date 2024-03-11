@@ -53,7 +53,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1.5 ">
         <Badge className="grid truncate place-items-center">{procedure.procedure_type.name}</Badge>
       </TableCell>
-      <TableCell className="py-1.5">{new Date(procedure.updated_at).toLocaleDateString()}</TableCell>
+      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
       <TableCell className="py-1.5 ">
         {procedure.customer ? (
           <a
@@ -92,7 +92,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
             dispatch(procedureActions.setProcedureSelected(procedure.id))
             showConfirmation(true)
           }}
-          disabled={!isAdmin}
         >
           <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
