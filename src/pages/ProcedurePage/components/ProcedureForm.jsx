@@ -172,7 +172,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('created_at', { required: true })}
                 placeholder=""
                 type="date"
-                disabled={procedureSelected && isCompleted}
+                /* disabled={isCompleted} */
                 defaultValue={
                   procedureSelected
                     ? String(procedureSelected.created_at).split('T')[0]
