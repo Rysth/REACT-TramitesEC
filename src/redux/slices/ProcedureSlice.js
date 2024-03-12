@@ -25,8 +25,8 @@ const handleRequestError = (error) => {
     }, 3000)
   }
 
-  if (error.response.status === 409) {
-    toast.error('¡El Cliente tiene un Trámite Activo!')
+  if (error.response.status === 422) {
+    toast.error('¡Placa ya utilizada para un Trámite similar!')
   }
 
   if (error.response.status === 500) {
