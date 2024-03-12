@@ -244,7 +244,6 @@ const processorslice = createSlice({
     })
     builder.addCase(getProcessors.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload)
       updateStateAndStats(state, action)
     })
     builder.addCase(createProcessor.fulfilled, (state, action) => {
