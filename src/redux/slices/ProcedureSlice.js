@@ -59,8 +59,6 @@ export const getProcedures = createAsyncThunkWrapper(
     if (procedureTypeId) params.procedureTypeId = procedureTypeId
     if (hasLicenses !== undefined) params.hasLicenses = hasLicenses
 
-    console.log(hasLicenses)
-
     return axios.get(`${API_URL}/api/v1/procedures`, {
       params,
       headers: { Authorization: activeToken },
