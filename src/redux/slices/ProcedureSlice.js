@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import FileSaver from 'file-saver'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -11,6 +12,8 @@ const initialState = {
   procedureSelected: null,
   procedureChange: false,
   loading: true,
+  startDate: null,
+  endDate: null,
 }
 
 const handleRequestError = (error) => {
@@ -107,6 +110,50 @@ export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', asyn
   })
 })
 
+// Function to format date to include only day, month, and year
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Month is zero-based
+  const year = date.getFullYear()
+  return `${day}-${month}-${year}`
+}
+
+// Thunk for generating Excel file for procedures
+export const generateProcedureExcelFile = createAsyncThunk(
+  'procedures/generateExcelFile',
+  async ({ activeToken, startDate, endDate, isAdmin = false }) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/v1/procedures/generate_excel`, {
+        params: {
+          start_date: startDate,
+          end_date: endDate,
+          is_admin: isAdmin,
+        },
+        headers: {
+          Authorization: activeToken,
+        },
+        responseType: 'blob',
+        withCredentials: true,
+      })
+
+      // Generate a random code for the filename
+      const randomCode = Math.random().toString(36).substring(7)
+      // Format the start date and end date to include only day, month, and year
+      const formattedStartDate = formatDate(startDate)
+      const formattedEndDate = formatDate(endDate)
+      // Format the filename with the random code, start date, and end date
+      const filename = `procedures_${formattedStartDate}_to_${formattedEndDate}_${randomCode}.xlsx`
+
+      // Save the Excel file to the user's device
+      FileSaver.saveAs(response.data, filename)
+    } catch (error) {
+      handleRequestError(error) // Handle request error
+      throw error // Throw the error to indicate failure
+    }
+  },
+)
+
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
   if (action.payload.procedures) {
@@ -168,6 +215,14 @@ const proceduresSlice = createSlice({
       console.log('ProcedureID:', procedureFound)
       state.procedureSelected = procedureFound
       state.procedureChange = true
+    },
+    // Reducer for setting start date
+    setStartDate: (state, action) => {
+      state.startDate = action.payload
+    },
+    // Reducer for setting end date
+    setEndDate: (state, action) => {
+      state.endDate = action.payload
     },
   },
   extraReducers: (builder) => {
