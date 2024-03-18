@@ -27,11 +27,13 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   return (
     <TableRow>
       <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1.5 truncate">
+      {/*  <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {procedure.user.username}
         </Badge>
-      </TableCell>
+      </TableCell> */}
+      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
+
       <TableCell className="py-1.5 uppercase">
         {!isDirect && procedure.processor ? (
           <Badge
@@ -53,7 +55,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1.5 ">
         <Badge className="grid truncate place-items-center">{procedure.procedure_type.name}</Badge>
       </TableCell>
-      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
+
       <TableCell className="py-1.5 ">
         {procedure.customer ? (
           <a
@@ -66,7 +68,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           <p>{procedure.plate}</p>
         )}
       </TableCell>
-
       <TableCell className="py-1.5">
         {procedure.is_paid ? (
           <Badge className="grid place-items-center" color="green">
