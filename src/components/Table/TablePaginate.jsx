@@ -23,7 +23,7 @@ function TablePaginate({ currentPage, pageCount, handlePageChange, showModal }) 
         previousLabel={<FaArrowLeft />}
         nextLabel={<FaArrowRight />}
         marginPagesDisplayed={1}
-        pageRangeDisplayed={1}
+        pageRangeDisplayed={2}
         onPageChange={handlePageChange}
         nextClassName="ml-1"
         previousClassName="mr-1"
