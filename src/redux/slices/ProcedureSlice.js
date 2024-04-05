@@ -18,7 +18,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Sesión Caducada! Cerrando Sesion...', { autoClose: 2000 })
+    toast.error('¡La sesión ha caducado! Cerrando sesión...', { autoClose: 2000 })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -29,11 +29,11 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Placa ya utilizada para un Trámite similar!')
+    toast.error('¡La placa ya está asociada a un trámite similar!')
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!')
+    toast.error('¡Se ha producido un problema en el servidor!')
   }
 
   throw new Error(error)
@@ -82,6 +82,7 @@ export const fetchProcedureDetails = createAsyncThunkWrapper(
 
 // Thunk for creating a new processor (POST)
 export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
+  console.log(procedureData)
   return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
     headers: {
       Authorization: activeToken,

@@ -21,6 +21,7 @@ import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
 import { HiCalendar } from 'react-icons/hi'
+import { fetchSupplierOptions } from '../../../redux/slices/SupplierSlice'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -110,6 +111,20 @@ function CustomerForm({ closeModal, refetchFunction }) {
           label: `${customer.is_direct ? 'CD - ' : ''}${customer.identification} - ${customer.first_name.split(' ')[0]} ${customer.last_name.split(' ')[0]} `,
           value: customer.id,
           isDirect: customer.is_direct,
+        }))
+        callback(options)
+      })
+      .catch(() => callback([]))
+  }, 700)
+
+  // Load supplier options
+  const loadSupplierOptions = debounce((inputValue, callback) => {
+    dispatch(fetchSupplierOptions({ activeToken, query: inputValue.toLowerCase() }))
+      .unwrap()
+      .then((response) => {
+        const options = response.map((supplier) => ({
+          label: `${supplier.identification} - ${supplier.name}`,
+          value: supplier.id,
         }))
         callback(options)
       })
@@ -384,6 +399,56 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled
+              />
+            </div>
+          </fieldset>
+          <fieldset className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="supplier_amount" value="Valor a Proveedor" />
+                {errors.supplier_amount && (
+                  <Badge className="text-xs" color="failure">
+                    {errors.supplier_amount.type === 'required' && 'Campo requerido'}
+                    {errors.supplier_amount.type === 'pattern' && 'Solo números'}
+                  </Badge>
+                )}
+              </div>
+              <TextInput
+                id="supplier_amount"
+                icon={HiCurrencyDollar}
+                {...register('supplier_amount', { required: false, pattern: /^[0-9.]+$/i })}
+                placeholder=""
+                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="supplier_id" value="Proveedor" />
+                {errors.supplier_id && (
+                  <Badge className="text-xs" color="failure">
+                    Campo Requerido
+                  </Badge>
+                )}
+              </div>
+              <AsyncSelect
+                cacheOptions
+                id="supplier_id"
+                loadOptions={loadSupplierOptions}
+                defaultOptions
+                placeholder="Buscar Proveedor..."
+                onChange={(selectedOption) => {
+                  setValue('supplier_id', selectedOption.value)
+                }}
+                defaultValue={
+                  procedureSelected && procedureSelected.supplier
+                    ? {
+                        label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
+                        value: procedureSelected.supplier.id,
+                      }
+                    : undefined
+                }
+                className="text-sm shadow shadow-gray-200"
+                isDisabled={isCompleted || hasPayments || disableProcessor}
               />
             </div>
           </fieldset>

@@ -10,7 +10,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
+    toast.error('Se ha producido un problema en el servidor.')
   } else {
     throw new Error(error)
   }

@@ -30,7 +30,6 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="py-1.5 truncate">{`${processor.first_name} ${processor.last_name}`}</TableCell>
-
       <TableCell className="py-1.5 text-blue-500 truncate">
         <a
           href={`https://api.whatsapp.com/send?phone=593${processor.phone}`}

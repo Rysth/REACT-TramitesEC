@@ -23,17 +23,17 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('¡Aún tiene clientes o trámites!')
+    toast.error('El proveedor tiene clientes o trámites asociados y no se puede eliminar.')
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('¡El trámitador ya está registrado! Nombre y Apellidos Repetidos')
+    toast.error('El proveedor ya está registrado. Nombre y apellidos repetidos.')
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Problema en el servidor!')
+    toast.error('Se ha producido un problema en el servidor.')
   }
 
   throw new Error(error)

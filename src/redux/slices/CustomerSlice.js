@@ -23,12 +23,12 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 422) {
-    toast.error('¡Cliente ya Registrado! Cédula o Teléfono Repetidos')
+    toast.error('¡El cliente ya está registrado! La cédula o el teléfono se repiten.')
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Cliente tiene Trámites!')
+    toast.error('¡El cliente tiene trámites asociados!')
   }
 
   throw new Error(error)

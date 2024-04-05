@@ -1,7 +1,16 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
 import { FaChevronRight } from 'react-icons/fa'
-import { IoChevronDown, IoChevronUp, IoClose, IoDocument, IoMenu, IoPeople, IoPerson } from 'react-icons/io5'
+import {
+  IoChevronDown,
+  IoChevronUp,
+  IoClose,
+  IoDocument,
+  IoMenu,
+  IoPeople,
+  IoPerson,
+  IoBusiness,
+} from 'react-icons/io5'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
@@ -48,6 +57,15 @@ function Sidebar() {
                 >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/proveedores"
+                  className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <IoBusiness className="text-xl" />
+                  <span>Proveedores</span>
                 </NavLink>
               </li>
               <li>

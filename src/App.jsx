@@ -21,6 +21,7 @@ import {
 } from './redux/slices/SharedSlice'
 import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
+import SupplierPage from './pages/SupplierPage/SupplierPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -100,6 +101,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route // Add route for Suppliers
+            path="/proveedores"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <SupplierPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/profiles/:id"
             element={
