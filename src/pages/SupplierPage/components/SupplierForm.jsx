@@ -4,7 +4,7 @@ import { Badge, Label } from 'flowbite-react'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { HiMiniDevicePhoneMobile, HiMiniUserCircle } from 'react-icons/hi2'
+import { HiMiniDevicePhoneMobile, HiMiniUserCircle, HiIdentification } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createSupplier, updateSupplier } from '../../../redux/slices/SupplierSlice'
 
@@ -73,10 +73,11 @@ function SupplierForm({ closeModal, refetchFunction }) {
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="identification" value="Identificación" />
+            <Label htmlFor="identification" value="Cédula/RUC" />
             {errors.identification && (
               <Badge className="text-xs" color="failure">
-                Campo Requerido
+                {errors.identification.type === 'required' && 'Campo requerido'}
+                {errors.identification.type === 'pattern' && 'Solo números'}
               </Badge>
             )}
           </div>
@@ -84,8 +85,8 @@ function SupplierForm({ closeModal, refetchFunction }) {
             id="identification"
             placeholder=""
             defaultValue={supplierSelected && supplierSelected.identification}
-            icon={HiMiniUserCircle}
-            {...register('identification', { required: true })}
+            icon={HiIdentification}
+            {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
           />
         </div>
       </fieldset>
