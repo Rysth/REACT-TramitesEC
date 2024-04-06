@@ -115,6 +115,7 @@ function ProcedurePage({ routeName }) {
             setSelectedProcessorId={setSelectedProcessorId}
             setSelectedStatusId={setSelectedStatusId}
             setSelectedProcedureTypeId={setSelectedProcedureTypeId}
+            showUserFilter={false}
             showProcessorFilter
             showStatusFilter
             showProcedureTypeFilter

@@ -25,7 +25,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const isDirect = procedure.customer?.is_direct
 
   return (
-    <TableRow>
+    <TableRow className="hover:bg-neutral-100">
       <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       {/*  <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">

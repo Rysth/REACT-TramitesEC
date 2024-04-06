@@ -14,6 +14,7 @@ function TableHeader({
   setSelectedProcessorId,
   setSelectedStatusId,
   setSelectedProcedureTypeId,
+  showUserFilter = true,
   showProcessorFilter,
   showStatusFilter,
   showProcedureTypeFilter,
@@ -94,18 +95,20 @@ function TableHeader({
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
       <header className="flex flex-col items-center justify-between gap-2 ml-auto lg:flex-row ">
         <div className="grid w-full grid-cols-2 gap-2 xl:flex md:w-max md:items-center">
-          <SearchSelect
-            value={userID}
-            onValueChange={handleSelectChange}
-            className="z-50 w-full md:w-40"
-            placeholder="Usuario"
-          >
-            {usersArray.map((user) => (
-              <SearchSelectItem className="!text-xs" key={user.id} value={user.id}>
-                {user.username}
-              </SearchSelectItem>
-            ))}
-          </SearchSelect>
+          {showUserFilter && (
+            <SearchSelect
+              value={userID}
+              onValueChange={handleSelectChange}
+              className="z-50 w-full md:w-40"
+              placeholder="Usuario"
+            >
+              {usersArray.map((user) => (
+                <SearchSelectItem className="!text-xs" key={user.id} value={user.id}>
+                  {user.username}
+                </SearchSelectItem>
+              ))}
+            </SearchSelect>
+          )}
           {showProcessorFilter && (
             <SearchSelect
               value={processorID}

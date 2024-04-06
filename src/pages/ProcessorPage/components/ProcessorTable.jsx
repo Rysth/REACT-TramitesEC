@@ -37,7 +37,7 @@ function ProcessorTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table>
+      <Table hoverable>
         <TableHead>
           <TableRow className="border-b border-x-0">
             <TableHeaderCell className="w-[4%]">#</TableHeaderCell>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { customerActions, fetchCustomerDetails } from '../../../redux/slices/CustomerSlice'
+import { FaWhatsapp } from 'react-icons/fa'
 
 function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const isAdmin = activeUser.is_admin
 
   return (
-    <TableRow>
+    <TableRow className="hover:bg-neutral-100">
       <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
       <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">
@@ -40,26 +41,26 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
         </a>
       </TableCell>
       <TableCell className="py-1.5 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
-
-      <TableCell className="py-1.5 text-blue-500 truncate">
+      <TableCell className="py-1.5 truncate">
         {isDirect ? (
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.phone}`}
-            className="text-blue-500 md:hover:underline"
+            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
             target="_blank"
           >
-            {customer.phone}
+            <FaWhatsapp /> Contactar
           </a>
         ) : (
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.processor.phone}`}
-            className="text-blue-500 md:hover:underline"
+            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
             target="_blank"
           >
-            {customer.processor.phone}
+            <FaWhatsapp /> Contactar
           </a>
         )}
       </TableCell>
+
       <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)} disabled={!isAdmin}>
           <span className="sr-only">Editar</span>
