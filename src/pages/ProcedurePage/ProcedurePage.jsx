@@ -118,7 +118,6 @@ function ProcedurePage({ routeName }) {
             showUserFilter={false}
             showProcessorFilter
             showStatusFilter
-            showProcedureTypeFilter
           />
           <TableLayout>
             {Array.isArray(proceduresArray) ? (

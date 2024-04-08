@@ -1,4 +1,4 @@
-import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react/dist'
+import { SearchSelect, SearchSelectItem, TextInput, Select, SelectItem } from '@tremor/react/dist'
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
@@ -91,6 +91,8 @@ function TableHeader({
     ? typesOriginal.filter((item) => item.has_licenses)
     : typesOriginal.filter((item) => !item.has_licenses)
 
+  const [value, setValue] = useState('')
+
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
       <header className="flex flex-col items-center justify-between gap-2 ml-auto lg:flex-row ">
@@ -99,11 +101,11 @@ function TableHeader({
             <SearchSelect
               value={userID}
               onValueChange={handleSelectChange}
-              className="z-50 w-full md:w-40"
+              className="z-50 w-full capitalize md:w-52 "
               placeholder="Usuario"
             >
               {usersArray.map((user) => (
-                <SearchSelectItem className="!text-xs" key={user.id} value={user.id}>
+                <SearchSelectItem className="text-sm" key={user.id} value={user.id}>
                   {user.username}
                 </SearchSelectItem>
               ))}
@@ -113,7 +115,7 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-40 w-full md:w-40"
+              className="z-40 w-full capitalize md:w-52 "
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
@@ -121,18 +123,20 @@ function TableHeader({
               <SearchSelectItem className="text-xs" value={0}>
                 Cliente Directos
               </SearchSelectItem>
-              {processorOptions.map((processor) => (
-                <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
-                  {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
-                </SearchSelectItem>
-              ))}
+              {processorOptions.map((processor) => {
+                return (
+                  <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
+                    {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
+                  </SearchSelectItem>
+                )
+              })}
             </SearchSelect>
           )}
           {showStatusFilter && (
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-30 w-full col-span-full md:w-40"
+              className="z-30 w-full uppercase col-span-full md:w-52 "
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
@@ -146,7 +150,7 @@ function TableHeader({
             <SearchSelect
               value={procedureTypeId}
               onValueChange={handleProcedureTypeSelectChange}
-              className="z-30 w-full col-span-full md:w-40"
+              className="z-30 w-full uppercase col-span-full md:w-52 "
               placeholder="Trámite"
             >
               {newFilterArray.map((type) => (
@@ -157,16 +161,24 @@ function TableHeader({
             </SearchSelect>
           )}
         </div>
-        <TextInput
-          id="search"
-          type="text"
-          icon={IoSearch}
-          placeholder="Buscar..."
-          onChange={handleSearchData}
-          color="purple"
-          className="md:max-w-xs"
-          required
-        />
+        <div className="flex items-center gap-2">
+          {/* <Select enableClear value={value} onValueChange={setValue} placeholder="Rango de Fechas">
+            <SelectItem value="0">Hoy</SelectItem>
+            <SelectItem value="1">7 días</SelectItem>
+            <SelectItem value="2">30 días</SelectItem>
+            <SelectItem value="3">90 días</SelectItem>
+          </Select> */}
+          <TextInput
+            id="search"
+            type="text"
+            icon={IoSearch}
+            placeholder="Buscar..."
+            onChange={handleSearchData}
+            color="purple"
+            className="md:max-w-60"
+            required
+          />
+        </div>
       </header>
     </article>
   )
