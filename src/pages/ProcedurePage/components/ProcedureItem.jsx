@@ -1,8 +1,9 @@
 import { Button, TableCell, TableRow } from '@tremor/react'
 import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
-import { HiEye, HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
+import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
@@ -21,8 +22,10 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
 
   const statusColor =
     procedure.status.id === 1 || procedure.status.id === 3 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
-  const isAdmin = activeUser.is_admin
   const isDirect = procedure.customer?.is_direct
+
+  const routeName = useLocation().pathname
+  const isRouteLicenses = routeName.includes('licencias')
 
   return (
     <TableRow className="hover:bg-neutral-100">
@@ -32,8 +35,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           {procedure.user.username}
         </Badge>
       </TableCell> */}
-      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
-
       <TableCell className="py-1.5 uppercase">
         {!isDirect && procedure.processor ? (
           <Badge
@@ -55,9 +56,10 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <TableCell className="py-1.5 ">
         <Badge className="grid truncate place-items-center">{procedure.procedure_type.name}</Badge>
       </TableCell>
+      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
 
-      <TableCell className="py-1.5 ">
-        {procedure.customer ? (
+      <TableCell className="py-1.5 capitalize">
+        {procedure.customer && isRouteLicenses ? (
           <a
             href={`/clientes/${procedure.customer.id}`}
             className=" transition hover:text-blue-500 hover:underline max-w-[5rem]"
@@ -79,7 +81,25 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           </Badge>
         )}
       </TableCell>
-
+      {/*  <TableCell className="py-1.5 truncate">
+        {procedure.customer?.is_direct ? (
+          <a
+            href={`https://api.whatsapp.com/send?phone=593${procedure.customer.phone}`}
+            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            target="_blank"
+          >
+            <FaWhatsapp /> Contactar
+          </a>
+        ) : (
+          <a
+            href={`https://api.whatsapp.com/send?phone=593${procedure.customer?.processor?.phone}`}
+            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            target="_blank"
+          >
+            <FaWhatsapp /> Contactar
+          </a>
+        )}
+      </TableCell> */}
       <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
           <span className="sr-only">Editar</span>

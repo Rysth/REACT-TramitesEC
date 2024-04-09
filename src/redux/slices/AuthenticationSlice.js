@@ -17,11 +17,11 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡Email/Contraseña Incorrectas!')
+    toast.error('¡Email/Contraseña Incorrectas!', { theme: 'colored' })
   } else if (error.response.status === 400) {
-    toast.error('¡Cuenta no Existe!')
+    toast.error('¡Cuenta no Existe!', { theme: 'colored' })
   } else if (error.response.status === 500) {
-    toast.error('¡Problema en el Servidor!')
+    toast.error('¡Problema en el Servidor!', { theme: 'colored' })
   } else {
     throw new Error(error)
   }
@@ -105,7 +105,7 @@ export const AuthenticationSlice = createSlice({
       sessionStorage.removeItem('active')
       sessionStorage.removeItem('activeUser')
       sessionStorage.removeItem('activeToken')
-      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
     },
   },
   extraReducers: (builder) => {
@@ -115,7 +115,7 @@ export const AuthenticationSlice = createSlice({
     })
     builder.addCase(createSession.pending, (state) => {
       state.loading = true
-      toast.info('Espere porfavor...', { autoClose: 2000 })
+      toast.info('Espere porfavor...', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(createSession.fulfilled, (state, action) => {
       state.active = true
@@ -123,7 +123,7 @@ export const AuthenticationSlice = createSlice({
       state.activeUser = action.payload[1]
       state.activeToken = action.payload[0].token
       updateSessionStorage(state)
-      toast.success('¡Bienvenido!', { autoClose: 2000 })
+      toast.success('¡Bienvenido!', { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(createSession.rejected, (state, action) => {
       state.loading = false
@@ -133,7 +133,7 @@ export const AuthenticationSlice = createSlice({
       state.activeUser = {}
       state.activeToken = ''
       updateSessionStorage(state)
-      toast.info('¡Muchas Gracias!', { autoClose: 2000 })
+      toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
     })
   },
 })

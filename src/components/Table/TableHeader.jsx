@@ -1,11 +1,12 @@
-import { SearchSelect, SearchSelectItem, TextInput, Select, SelectItem } from '@tremor/react/dist'
+import { DatePicker } from '@tremor/react'
+import { SearchSelect, SearchSelectItem, TextInput } from '@tremor/react/dist'
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
 import { IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 import { useLocation } from 'react-router-dom'
+import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
 function TableHeader({
   restartCurrentPage,
@@ -162,12 +163,8 @@ function TableHeader({
           )}
         </div>
         <div className="flex items-center gap-2">
-          {/* <Select enableClear value={value} onValueChange={setValue} placeholder="Rango de Fechas">
-            <SelectItem value="0">Hoy</SelectItem>
-            <SelectItem value="1">7 días</SelectItem>
-            <SelectItem value="2">30 días</SelectItem>
-            <SelectItem value="3">90 días</SelectItem>
-          </Select> */}
+          <DatePicker className="z-[60] w-40" placeholder="Fecha Inicial" />
+          <DatePicker className="z-[60] w-40" placeholder="Fecha Fin" />
           <TextInput
             id="search"
             type="text"

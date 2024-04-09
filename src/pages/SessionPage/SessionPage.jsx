@@ -10,7 +10,6 @@ import { createSession } from '../../redux/slices/AuthenticationSlice'
 function SessionPage() {
   const dispatch = useDispatch()
   const { register, handleSubmit } = useForm()
-  const loading = useSelector((store) => store.authentication.loading)
 
   const onSubmit = (userData) => {
     dispatch(createSession(userData))

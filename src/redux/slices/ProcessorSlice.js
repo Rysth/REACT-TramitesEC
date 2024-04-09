@@ -23,17 +23,17 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('El proveedor tiene clientes o trámites asociados y no se puede eliminar.')
+    toast.error('El proveedor tiene clientes o trámites asociados y no se puede eliminar.', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('El proveedor ya está registrado. Nombre y apellidos repetidos.')
+    toast.error('El proveedor ya está registrado. Nombre y apellidos repetidos.', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('Se ha producido un problema en el servidor.')
+    toast.error('Se ha producido un problema en el servidor.', { theme: 'colored' })
   }
 
   throw new Error(error)
@@ -127,24 +127,13 @@ export const fetchLatestProcedures = createAsyncThunkWrapper(
   },
 )
 
-// Function to format date to include only day, month, and year
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Month is zero-based
-  const year = date.getFullYear()
-  return `${day}-${month}-${year}`
-}
-
 // Thunk for generating Excel file
 export const generateExcelFile = createAsyncThunk(
   'processor/generateExcelFile',
-  async ({ activeToken, startDate, endDate, isAdmin = false }) => {
+  async ({ activeToken, isAdmin = false }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/processors/generate_excel`, {
         params: {
-          start_date: startDate,
-          end_date: endDate,
           is_admin: isAdmin,
         },
         headers: {
@@ -156,11 +145,19 @@ export const generateExcelFile = createAsyncThunk(
 
       // Generate a random code for the filename
       const randomCode = Math.random().toString(36).substring(7)
-      // Format the start date and end date to include only day, month, and year
-      const formattedStartDate = formatDate(startDate)
-      const formattedEndDate = formatDate(endDate)
+
+      // Get the current date
+      const currentDate = new Date()
+      // Extract year, month, and day from the current date
+      const year = currentDate.getFullYear()
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+      const day = String(currentDate.getDate()).padStart(2, '0')
+
+      // Format the start date with the current date
+      const formattedDate = `${year}-${month}-${day}`
+
       // Format the filename with the random code, start date, and end date
-      const filename = `tramitadores_${formattedStartDate}_to_${formattedEndDate}_${randomCode}.xlsx`
+      const filename = `tramitadores_${formattedDate}_${randomCode}.xlsx`
 
       // Save the Excel file to the user's device
       FileSaver.saveAs(response.data, filename)
@@ -183,7 +180,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000 })
+    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }
 }
 

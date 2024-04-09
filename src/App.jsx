@@ -40,7 +40,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
 
       {active && <Sidebar />}
       <main className="min-h-screen">

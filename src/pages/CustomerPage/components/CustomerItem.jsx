@@ -1,10 +1,10 @@
 import { Button, TableCell, TableRow } from '@tremor/react'
 import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
+import { FaWhatsapp } from 'react-icons/fa'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { customerActions, fetchCustomerDetails } from '../../../redux/slices/CustomerSlice'
-import { FaWhatsapp } from 'react-icons/fa'
+import { customerActions } from '../../../redux/slices/CustomerSlice'
 
 function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -21,11 +21,11 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
   return (
     <TableRow className="hover:bg-neutral-100">
       <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1.5 truncate">
+      {/* <TableCell className="py-1.5 truncate">
         <Badge color="indigo" className="grid place-items-center">
           {customer.user.username}
         </Badge>
-      </TableCell>
+      </TableCell> */}
       <TableCell className="py-1.5 uppercase">
         {!isDirect ? (
           <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`} color="purple">

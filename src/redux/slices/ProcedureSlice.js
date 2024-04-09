@@ -111,24 +111,13 @@ export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', asyn
   })
 })
 
-// Function to format date to include only day, month, and year
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0') // Month is zero-based
-  const year = date.getFullYear()
-  return `${day}-${month}-${year}`
-}
-
 // Thunk for generating Excel file for procedures
 export const generateProcedureExcelFile = createAsyncThunk(
   'procedures/generateExcelFile',
-  async ({ activeToken, startDate, endDate, isAdmin = false }) => {
+  async ({ activeToken, isAdmin = false }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/procedures/generate_excel`, {
         params: {
-          start_date: startDate,
-          end_date: endDate,
           is_admin: isAdmin,
         },
         headers: {
@@ -140,11 +129,17 @@ export const generateProcedureExcelFile = createAsyncThunk(
 
       // Generate a random code for the filename
       const randomCode = Math.random().toString(36).substring(7)
-      // Format the start date and end date to include only day, month, and year
-      const formattedStartDate = formatDate(startDate)
-      const formattedEndDate = formatDate(endDate)
+
+      const currentDate = new Date()
+      // Extract year, month, and day from the current date
+      const year = currentDate.getFullYear()
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+      const day = String(currentDate.getDate()).padStart(2, '0')
+
+      // Format the start date with the current date
+      const formattedDate = `${year}-${month}-${day}`
       // Format the filename with the random code, start date, and end date
-      const filename = `procedures_${formattedStartDate}_to_${formattedEndDate}_${randomCode}.xlsx`
+      const filename = `tramites_${formattedDate}_${randomCode}.xlsx`
 
       // Save the Excel file to the user's device
       FileSaver.saveAs(response.data, filename)
