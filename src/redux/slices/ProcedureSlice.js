@@ -18,7 +18,7 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 401) {
-    toast.error('¡La sesión ha caducado! Cerrando sesión...', { autoClose: 2000 })
+    toast.error('¡La sesión ha caducado! Cerrando sesión...', { autoClose: 2000, theme: colored })
 
     setTimeout(() => {
       sessionStorage.removeItem('active')
@@ -29,11 +29,11 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡La placa ya está asociada a un trámite similar!')
+    toast.error('¡La placa ya está asociada a un trámite similar!', { theme: colored })
   }
 
   if (error.response.status === 500) {
-    toast.error('¡Se ha producido un problema en el servidor!')
+    toast.error('¡Se ha producido un problema en el servidor!', { theme: colored })
   }
 
   throw new Error(error)
@@ -162,7 +162,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000 })
+    toast.success(successMessage, { autoClose: 2000, theme: colored })
   }
 }
 

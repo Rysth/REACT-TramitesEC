@@ -20,17 +20,17 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 409) {
-    toast.error('El proveedor trámites asociados y no se puede eliminar.')
+    toast.error('El proveedor trámites asociados y no se puede eliminar.', { theme: colored })
     return
   }
 
   if (error.response.status === 422) {
-    toast.error('Ya existe un proveedor con la misma identificación.')
+    toast.error('Ya existe un proveedor con la misma identificación.', { theme: colored })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('Se produjo un error en el servidor.')
+    toast.error('Se produjo un error en el servidor.', { theme: colored })
   }
 
   throw new Error(error)
@@ -147,7 +147,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000 })
+    toast.success(successMessage, { autoClose: 2000, theme: colored })
   }
 }
 
