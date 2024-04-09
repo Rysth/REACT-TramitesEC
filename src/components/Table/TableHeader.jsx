@@ -163,8 +163,8 @@ function TableHeader({
           )}
         </div>
         <div className="flex items-center gap-2">
-          <DatePicker className="z-[60] w-40" placeholder="Fecha Inicial" />
-          <DatePicker className="z-[60] w-40" placeholder="Fecha Fin" />
+          {/* <DatePicker className="z-[60] w-40" placeholder="Fecha Inicial" />
+          <DatePicker className="z-[60] w-40" placeholder="Fecha Fin" /> */}
           <TextInput
             id="search"
             type="text"
