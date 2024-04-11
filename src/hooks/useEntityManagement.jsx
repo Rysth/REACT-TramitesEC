@@ -33,19 +33,16 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
 
   const handlePageChange = (selectedItem) => {
     setCurrentPage(selectedItem.selected + 1)
-    refetchEntities()
   }
 
   const resetToFirstPage = () => {
     setCurrentPage(1)
-    refetchEntities()
   }
 
   const handleDelete = () => {
     if (entitiesArray.length === 1 && currentPage > 1) {
       setCurrentPage(currentPage - 1)
     }
-    refetchEntities()
   }
 
   const showModal = () => setOpenModal(true)
