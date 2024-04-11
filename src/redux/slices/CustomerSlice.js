@@ -23,12 +23,12 @@ const initialState = {
 
 const handleRequestError = (error) => {
   if (error.response.status === 422) {
-    toast.error('¡El cliente ya está registrado! La cédula o el teléfono se repiten.', { theme: colored })
+    toast.error('¡El cliente ya está registrado! La cédula o el teléfono se repiten.', { theme: 'colored' })
     return
   }
 
   if (error.response.status === 500) {
-    toast.error('¡El cliente tiene trámites asociados!', { theme: colored })
+    toast.error('¡El cliente tiene trámites asociados!', { theme: 'colored' })
   }
 
   throw new Error(error)
@@ -201,7 +201,7 @@ const updateStateAndStats = (state, action, successMessage) => {
   }
 
   if (successMessage) {
-    toast.success(successMessage, { autoClose: 2000, theme: colored })
+    toast.success(successMessage, { autoClose: 2000, theme: 'colored' })
   }
 }
 
