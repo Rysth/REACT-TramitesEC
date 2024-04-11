@@ -60,7 +60,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       .unwrap()
       .then((response) => {
         const options = response.map((processor) => ({
-          label: `${processor.code} - ${processor.first_name.split(' ')[0]} ${processor.last_name.split(' ')[0]}}`,
+          label: `${processor.code} - ${processor.first_name.split(' ')[0]} ${processor.last_name.split(' ')[0]}`,
           value: processor.id,
         }))
         callback(options)
