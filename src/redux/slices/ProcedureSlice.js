@@ -50,10 +50,20 @@ const createAsyncThunkWrapper = (type, requestFn) =>
     }
   })
 
-// Thunk for retrieving procedures (GET)
 export const getProcedures = createAsyncThunkWrapper(
   'getProcedures',
-  async ({ activeToken, page, search, userId, processorId, statusId, procedureTypeId, hasLicenses }) => {
+  async ({
+    activeToken,
+    page,
+    search,
+    userId,
+    processorId,
+    statusId,
+    procedureTypeId,
+    hasLicenses,
+    startDate,
+    endDate,
+  }) => {
     const params = { page }
     if (search) params.search = search
     if (userId) params.userId = userId
@@ -61,6 +71,8 @@ export const getProcedures = createAsyncThunkWrapper(
     if (statusId) params.statusId = statusId
     if (procedureTypeId) params.procedureTypeId = procedureTypeId
     if (hasLicenses !== undefined) params.hasLicenses = hasLicenses
+    if (startDate) params.startDate = startDate
+    if (endDate) params.endDate = endDate
 
     return axios.get(`${API_URL}/api/v1/procedures`, {
       params,

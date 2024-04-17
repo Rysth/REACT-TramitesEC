@@ -17,8 +17,6 @@ const initialState = {
   processorProcedures: [],
   processorData: {},
   processorStats: {},
-  startDate: null,
-  endDate: null,
 }
 
 const handleRequestError = (error) => {
@@ -65,19 +63,28 @@ export const fetchProcessorOptions = createAsyncThunkWrapper(
 )
 
 // Thunk for retrieving processors (GET)
-export const getProcessors = createAsyncThunkWrapper('getProcessors', async ({ activeToken, page, search, userId }) => {
-  const params = { page }
-  if (search) params.search = search
-  if (userId) params.userId = userId
+export const getProcessors = createAsyncThunkWrapper(
+  'getProcessors',
+  async ({ activeToken, page, search, userId, startDate, endDate }) => {
+    const params = {
+      page,
+      search,
+      userId,
+      startDate: startDate ? startDate.toISOString() : null, // Convert date to ISO string
+      endDate: endDate ? endDate.toISOString() : null,
+    }
 
-  return axios.get(`${API_URL}/api/v1/processors`, {
-    params,
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+    console.log(params)
+
+    return axios.get(`${API_URL}/api/v1/processors`, {
+      params,
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
 
 // Thunk for creating a new processor (POST)
 export const createProcessor = createAsyncThunkWrapper('createProcessor', async ({ activeToken, processorData }) => {

@@ -62,10 +62,15 @@ export const fetchCustomerOptions = createAsyncThunkWrapper(
 // Thunk for retrieving clients (GET)
 export const getCustomers = createAsyncThunkWrapper(
   'getCustomers',
-  async ({ activeToken, page, search, userId, processorId }) => {
-    const params = { page }
-    if (search) params.search = search
-    if (userId) params.userId = userId
+  async ({ activeToken, page, search, userId, processorId, startDate, endDate }) => {
+    const params = {
+      page,
+      search: search && search,
+      userId: userId && userId,
+      startDate: startDate ? startDate.toISOString() : null, // Convert date to ISO string
+      endDate: endDate ? endDate.toISOString() : null,
+    }
+
     if (processorId || processorId === 0) params.processorId = processorId
 
     return axios.get(`${API_URL}/api/v1/customers`, {

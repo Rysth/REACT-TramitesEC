@@ -20,10 +20,14 @@ function SupplierPage() {
     showModal,
     closeModal,
     handlePageChange,
-    resetToFirstPage,
     setSearch,
     setSelectedUserId,
     handleDelete,
+    refetchEntities,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   } = useEntityManagement(getSuppliers, 'supplier', 'suppliersArray')
 
   return (
@@ -36,7 +40,7 @@ function SupplierPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={SupplierForm}
-        refetchFunction={resetToFirstPage}
+        refetchFunction={refetchEntities}
         slice="supplier"
         title="Proveedor"
         setEntitySelected={supplierActions.setSupplierSelected}
@@ -45,9 +49,12 @@ function SupplierPage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Proveedores"
-            restartCurrentPage={resetToFirstPage}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
           <TableLayout>
             {Array.isArray(suppliersArray) ? (

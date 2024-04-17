@@ -46,19 +46,26 @@ const createAsyncThunkWrapper = (type, requestFn) =>
     }
   })
 
-export const getSuppliers = createAsyncThunkWrapper('getSuppliers', async ({ activeToken, page, search, userId }) => {
-  const params = { page }
-  if (search) params.search = search
-  if (userId) params.userId = userId
+export const getSuppliers = createAsyncThunkWrapper(
+  'getSuppliers',
+  async ({ activeToken, page, search, userId, startDate, endDate }) => {
+    const params = {
+      page,
+      search: search && search,
+      userId: userId && userId,
+      startDate: startDate ? startDate.toISOString() : null, // Convert date to ISO string
+      endDate: endDate ? endDate.toISOString() : null,
+    }
 
-  return axios.get(`${API_URL}/api/v1/suppliers`, {
-    params,
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+    return axios.get(`${API_URL}/api/v1/suppliers`, {
+      params,
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
 
 // Thunk for loading processor options
 export const fetchSupplierOptions = createAsyncThunkWrapper('supplier/fetchOptions', async ({ activeToken, query }) => {

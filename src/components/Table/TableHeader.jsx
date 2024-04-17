@@ -9,7 +9,6 @@ import { useLocation } from 'react-router-dom'
 import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
 function TableHeader({
-  restartCurrentPage,
   setSearch,
   setSelectedUserId,
   setSelectedProcessorId,
@@ -19,6 +18,10 @@ function TableHeader({
   showProcessorFilter,
   showStatusFilter,
   showProcedureTypeFilter,
+  setStartDate,
+  setEndDate,
+  startDate,
+  endDate,
 }) {
   const dispatch = useDispatch()
   const [userID, setUserID] = useState('')
@@ -34,38 +37,33 @@ function TableHeader({
   const debouncedSearch = useCallback(
     debounce((input) => {
       setSearch(input)
-      restartCurrentPage()
     }, 700),
     [dispatch, userID, processorID], // Dependencias
   )
 
   const handleSearchData = (event) => {
-    const input = event.target.value.toLowerCase().trim()
+    const input = event.toLowerCase().trim()
     debouncedSearch(input)
   }
 
   const handleSelectChange = (selectedValue) => {
     setUserID(selectedValue)
     setSelectedUserId(selectedValue)
-    restartCurrentPage()
   }
 
   const handleProcessorSelectChange = (selectedValue) => {
     setProcessorID(selectedValue)
     setSelectedProcessorId(selectedValue)
-    restartCurrentPage()
   }
 
   const handleStatusSelectChange = (selectedValue) => {
     setStatusID(selectedValue)
     setSelectedStatusId(selectedValue)
-    restartCurrentPage()
   }
 
   const handleProcedureTypeSelectChange = (selectedValue) => {
     setProcedureTypeId(selectedValue)
     setSelectedProcedureTypeId(selectedValue)
-    restartCurrentPage()
   }
 
   const handleProcessorInputChange = useCallback(
@@ -91,8 +89,6 @@ function TableHeader({
   const newFilterArray = isRouteLicenses
     ? typesOriginal.filter((item) => item.has_licenses)
     : typesOriginal.filter((item) => !item.has_licenses)
-
-  const [value, setValue] = useState('')
 
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
@@ -163,14 +159,27 @@ function TableHeader({
           )}
         </div>
         <div className="flex items-center gap-2">
-          {/* <DatePicker className="z-[60] w-40" placeholder="Fecha Inicial" />
-          <DatePicker className="z-[60] w-40" placeholder="Fecha Fin" /> */}
+          <DatePicker
+            className="z-[60] w-40"
+            placeholder="Fecha Inicial"
+            selected={startDate}
+            onValueChange={(date) => setStartDate(date)}
+          />
+          <DatePicker
+            className="z-[60] w-40"
+            placeholder="Fecha Fin"
+            selected={endDate}
+            onValueChange={(date) => {
+              console.log(date)
+              setEndDate(date)
+            }}
+          />
           <TextInput
             id="search"
             type="text"
             icon={IoSearch}
             placeholder="Buscar..."
-            onChange={handleSearchData}
+            onValueChange={handleSearchData}
             color="purple"
             className="md:max-w-60"
             required
@@ -182,8 +191,6 @@ function TableHeader({
 }
 
 TableHeader.propTypes = {
-  restartCurrentPage: PropTypes.func.isRequired,
-
   setSearch: PropTypes.func.isRequired,
   setSelectedUserId: PropTypes.func.isRequired,
   setSelectedProcessorId: PropTypes.func,

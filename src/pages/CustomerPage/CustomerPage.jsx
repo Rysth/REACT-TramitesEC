@@ -21,11 +21,15 @@ function CustomerPage() {
     showModal,
     closeModal,
     handlePageChange,
-    resetToFirstPage,
     setSearch,
     setSelectedUserId,
     setSelectedProcessorId,
     handleDelete,
+    refetchEntities,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   } = useEntityManagement(getCustomers, 'customer', 'customersArray')
 
   return (
@@ -34,7 +38,7 @@ function CustomerPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={CustomerForm}
-        refetchFunction={resetToFirstPage}
+        refetchFunction={refetchEntities}
         slice="customer"
         title="Cliente"
         setEntitySelected={customerActions.setCustomerSelected}
@@ -43,12 +47,15 @@ function CustomerPage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Clientes"
-            restartCurrentPage={resetToFirstPage}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
             setSelectedProcessorId={setSelectedProcessorId}
             showProcessorFilter
             showUserFilter={false}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
           <TableLayout>
             {Array.isArray(customersArray) ? (

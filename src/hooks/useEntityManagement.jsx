@@ -15,6 +15,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [selectedProcedureTypeId, setSelectedProcedureTypeId] = useState(null)
   const [openModal, setOpenModal] = useState(false)
   const [hasLicenses, setHasLicenses] = useState(false)
+  const [startDate, setStartDate] = useState(null) // Add startDate state
+  const [endDate, setEndDate] = useState(null)
 
   const refetchEntities = () => {
     dispatch(
@@ -27,6 +29,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         statusId: selectedStatusId,
         procedureTypeId: selectedProcedureTypeId,
         hasLicenses,
+        startDate, // Include selected start date
+        endDate,
       }),
     )
   }
@@ -43,6 +47,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     if (entitiesArray.length === 1 && currentPage > 1) {
       setCurrentPage(currentPage - 1)
     }
+    refetchEntities()
   }
 
   const showModal = () => setOpenModal(true)
@@ -60,13 +65,23 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     selectedStatusId,
     selectedProcedureTypeId,
     hasLicenses,
+    startDate, // Include startDate in dependencies
+    endDate,
   ]) // Include currentPage in dependencies
 
   useEffect(() => {
-    if (selectedUserId || selectedProcessorId || selectedStatusId || selectedProcedureTypeId || hasLicenses) {
+    if (
+      selectedUserId ||
+      selectedProcessorId ||
+      selectedStatusId ||
+      selectedProcedureTypeId ||
+      hasLicenses ||
+      startDate ||
+      endDate
+    ) {
       setCurrentPage(1)
     }
-  }, [selectedUserId, selectedProcessorId, selectedStatusId, selectedProcedureTypeId, hasLicenses])
+  }, [selectedUserId, selectedProcessorId, selectedStatusId, selectedProcedureTypeId, hasLicenses, startDate, endDate])
 
   return {
     entitiesArray,
@@ -76,14 +91,18 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     showModal,
     closeModal,
     handlePageChange,
-    resetToFirstPage,
     setSearch,
     setSelectedUserId,
     setSelectedProcessorId,
     setSelectedStatusId,
     setSelectedProcedureTypeId,
     setHasLicenses,
+    refetchEntities,
     handleDelete,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   }
 }
 

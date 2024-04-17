@@ -20,10 +20,14 @@ function ProcessorPage() {
     showModal,
     closeModal,
     handlePageChange,
-    resetToFirstPage,
     setSearch,
     setSelectedUserId,
     handleDelete,
+    refetchEntities,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   } = useEntityManagement(getProcessors, 'processor', 'processorsArray')
 
   return (
@@ -36,7 +40,7 @@ function ProcessorPage() {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={ProcessorForm}
-        refetchFunction={resetToFirstPage}
+        refetchFunction={refetchEntities}
         slice="processor"
         title="Trámitador"
         setEntitySelected={processorActions.setProcessorSelected}
@@ -45,9 +49,12 @@ function ProcessorPage() {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámitadores"
-            restartCurrentPage={resetToFirstPage}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
           <TableLayout>
             {Array.isArray(processorsArray) ? (

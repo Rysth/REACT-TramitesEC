@@ -22,7 +22,6 @@ function ProcedurePage({ routeName }) {
     showModal,
     closeModal,
     handlePageChange,
-    resetToFirstPage,
     setSearch,
     setSelectedUserId,
     setSelectedProcessorId,
@@ -30,6 +29,11 @@ function ProcedurePage({ routeName }) {
     setSelectedProcedureTypeId,
     setHasLicenses,
     handleDelete,
+    refetchEntities,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -48,7 +52,7 @@ function ProcedurePage({ routeName }) {
         openModal={openModal}
         closeModal={closeModal}
         formComponent={ProcedureForm}
-        refetchFunction={resetToFirstPage}
+        refetchFunction={refetchEntities}
         slice="procedure"
         title="Trámite"
         modalSize={`${procedureSelected ? '6xl' : '2xl'}`}
@@ -58,7 +62,6 @@ function ProcedurePage({ routeName }) {
         <Card className="p-0 mt-4">
           <TableHeader
             title="Listado de Trámites"
-            restartCurrentPage={resetToFirstPage}
             setSearch={setSearch}
             setSelectedUserId={setSelectedUserId}
             setSelectedProcessorId={setSelectedProcessorId}
@@ -67,6 +70,10 @@ function ProcedurePage({ routeName }) {
             showUserFilter={false}
             showProcessorFilter
             showStatusFilter
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
           <TableLayout>
             {Array.isArray(proceduresArray) ? (
