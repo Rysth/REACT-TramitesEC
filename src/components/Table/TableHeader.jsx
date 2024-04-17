@@ -170,7 +170,6 @@ function TableHeader({
             placeholder="Fecha Fin"
             selected={endDate}
             onValueChange={(date) => {
-              console.log(date)
               setEndDate(date)
             }}
           />

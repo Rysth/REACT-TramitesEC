@@ -66,7 +66,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
         }
 
         if (key === 'status_id') {
-          console.log(parseInt(procedureData[key]) !== parseInt(procedureSelected[key]))
           return parseInt(procedureData[key]) !== parseInt(procedureSelected[key])
         }
 
@@ -138,7 +137,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
 
   useEffect(() => {
     if (procedureSelected) {
-      console.log(procedureSelected)
       dispatch(sharedActions.setProcedureTypeSelected(procedureSelected.procedure_type.id))
       Object.keys(procedureSelected).forEach((key) => {
         if (key === 'created_at') {

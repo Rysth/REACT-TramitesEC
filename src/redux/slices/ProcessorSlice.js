@@ -74,8 +74,6 @@ export const getProcessors = createAsyncThunkWrapper(
       endDate: endDate ? endDate.toISOString() : null,
     }
 
-    console.log(params)
-
     return axios.get(`${API_URL}/api/v1/processors`, {
       params,
       headers: {
@@ -98,8 +96,6 @@ export const createProcessor = createAsyncThunkWrapper('createProcessor', async 
 
 // Thunk for updating an existing processor (PUT)
 export const updateProcessor = createAsyncThunkWrapper('updateProcessor', async ({ activeToken, processorData }) => {
-  console.log(processorData.id)
-
   return axios.put(`${API_URL}/api/v1/processors/${processorData.id}`, processorData, {
     headers: {
       Authorization: activeToken,

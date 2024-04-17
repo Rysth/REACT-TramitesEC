@@ -94,7 +94,6 @@ export const fetchProcedureDetails = createAsyncThunkWrapper(
 
 // Thunk for creating a new processor (POST)
 export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
-  console.log(procedureData)
   return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
     headers: {
       Authorization: activeToken,
@@ -220,7 +219,6 @@ const proceduresSlice = createSlice({
 
       const procedureID = parseInt(content)
       const procedureFound = state.procedureOriginal.find((procedure) => procedure.id === procedureID)
-      console.log('ProcedureID:', procedureFound)
       state.procedureSelected = procedureFound
       state.procedureChange = true
     },

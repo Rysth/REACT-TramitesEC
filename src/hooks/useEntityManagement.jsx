@@ -39,10 +39,6 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     setCurrentPage(selectedItem.selected + 1)
   }
 
-  const resetToFirstPage = () => {
-    setCurrentPage(1)
-  }
-
   const handleDelete = () => {
     if (entitiesArray.length === 1 && currentPage > 1) {
       setCurrentPage(currentPage - 1)
