@@ -446,7 +446,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
                     : undefined
                 }
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted || hasPayments || disableProcessor}
+                isDisabled={isCompleted || hasPayments}
               />
             </div>
           </fieldset>
