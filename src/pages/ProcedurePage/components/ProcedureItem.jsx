@@ -5,6 +5,7 @@ import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
+import { FaWhatsapp } from 'react-icons/fa'
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -62,9 +63,9 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
         {procedure.customer && isRouteLicenses ? (
           <a
             href={`/clientes/${procedure.customer.id}`}
-            className=" transition hover:text-blue-500 hover:underline max-w-[5rem]"
+            className="uppercase transition hover:text-blue-500 hover:underline"
           >
-            {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name.split(' ')[0]}`}
+            {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name}`}
           </a>
         ) : (
           <p>{procedure.plate}</p>
@@ -81,7 +82,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           </Badge>
         )}
       </TableCell>
-      {/*  <TableCell className="py-1.5 truncate">
+      <TableCell className="py-1.5 truncate">
         {procedure.customer?.is_direct ? (
           <a
             href={`https://api.whatsapp.com/send?phone=593${procedure.customer.phone}`}
@@ -99,7 +100,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
             <FaWhatsapp /> Contactar
           </a>
         )}
-      </TableCell> */}
+      </TableCell>
       <TableCell className="flex items-center w-full gap-1 py-1.5">
         <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
           <span className="sr-only">Editar</span>

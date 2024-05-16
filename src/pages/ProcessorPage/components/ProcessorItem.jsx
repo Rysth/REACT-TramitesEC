@@ -25,12 +25,12 @@ function ProcessorItem({ index, processor, showModal, showConfirmation }) {
           {processor.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 truncate">
+      <TableCell className="py-1.5 truncate font-semibold">
         <a href={`/tramitadores/${processor.id}`} className="transition hover:text-blue-500 hover:underline">
           {processor.code}
         </a>
       </TableCell>
-      <TableCell className="py-1.5 truncate">{`${processor.first_name} ${processor.last_name}`}</TableCell>
+      <TableCell className="py-1.5 truncate uppercase">{`${processor.first_name} ${processor.last_name}`}</TableCell>
       <TableCell className="py-1.5 truncate">
         <a
           href={`https://api.whatsapp.com/send?phone=593${processor.phone}`}

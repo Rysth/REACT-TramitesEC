@@ -35,12 +35,12 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
           <Badge className="grid place-items-center">Cliente Directo</Badge>
         )}
       </TableCell>
-      <TableCell className="py-1.5 truncate">
+      <TableCell className="py-1.5 truncate font-semibold">
         <a href={`/clientes/${customer.id}`} className="transition hover:text-blue-500 hover:underline">
           {customer.identification}
         </a>
       </TableCell>
-      <TableCell className="py-1.5 truncate">{`${customer.first_name} ${customer.last_name}`}</TableCell>
+      <TableCell className="py-1.5 truncate uppercase">{`${customer.first_name} ${customer.last_name}`}</TableCell>
       <TableCell className="py-1.5 truncate">
         {isDirect ? (
           <a

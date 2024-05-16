@@ -11,7 +11,7 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
   return (
     <section className="h-full p-4 overflow-hidden md:p-8 md:ml-60" id="customerSection">
       <article className="">
-        <div className="flex items-center justify-between h-full">
+        <div className="flex flex-col items-center justify-between h-full gap-2 text-center md:text-left md:flex-row">
           <div>
             <Title className="!text-3xl font-bold text-gray-900 sm:!text-4xl">{title}</Title>
             <Text className="text-sm sm:text-base">{subtitle}</Text>

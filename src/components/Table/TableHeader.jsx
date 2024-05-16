@@ -98,11 +98,11 @@ function TableHeader({
             <SearchSelect
               value={userID}
               onValueChange={handleSelectChange}
-              className="z-50 w-full capitalize md:w-52 "
+              className="z-50 w-full capitalize "
               placeholder="Usuario"
             >
               {usersArray.map((user) => (
-                <SearchSelectItem className="text-sm" key={user.id} value={user.id}>
+                <SearchSelectItem className="text-xs" key={user.id} value={user.id}>
                   {user.username}
                 </SearchSelectItem>
               ))}
@@ -112,7 +112,7 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-40 w-full capitalize md:w-52 "
+              className="z-40 w-full uppercase md:w-auto"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
@@ -122,8 +122,9 @@ function TableHeader({
               </SearchSelectItem>
               {processorOptions.map((processor) => {
                 return (
-                  <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
-                    {`${processor.code} - ${processor.first_name} ${processor.last_name}`}
+                  <SearchSelectItem className="text-xs !uppercase" key={processor.id} value={processor.id}>
+                    <span className="font-semibold">{processor.code}</span>
+                    {` - ${processor.first_name} ${processor.last_name}`}
                   </SearchSelectItem>
                 )
               })}
@@ -133,7 +134,7 @@ function TableHeader({
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-30 w-full uppercase col-span-full md:w-52 "
+              className="z-30 w-full uppercase col-span-full "
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
@@ -147,7 +148,7 @@ function TableHeader({
             <SearchSelect
               value={procedureTypeId}
               onValueChange={handleProcedureTypeSelectChange}
-              className="z-30 w-full uppercase col-span-full md:w-52 "
+              className="z-30 w-full uppercase col-span-full "
               placeholder="Trámite"
             >
               {newFilterArray.map((type) => (
@@ -158,15 +159,15 @@ function TableHeader({
             </SearchSelect>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center justify-end w-full gap-2 md:flex-row">
           <DatePicker
-            className="z-[60] w-40"
+            className="z-[60] md:w-40"
             placeholder="Fecha Inicial"
             selected={startDate}
             onValueChange={(date) => setStartDate(date)}
           />
           <DatePicker
-            className="z-[60] w-40"
+            className="z-[60] md:w-40"
             placeholder="Fecha Fin"
             selected={endDate}
             onValueChange={(date) => {

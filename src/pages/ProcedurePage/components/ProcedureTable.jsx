@@ -48,7 +48,7 @@ function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, ha
             <TableHeaderCell className="w-[5%]">Fecha</TableHeaderCell>
             <TableHeaderCell className="w-max">Cliente</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Pago</TableHeaderCell>
-            {/* <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell> */}
+            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
             <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>

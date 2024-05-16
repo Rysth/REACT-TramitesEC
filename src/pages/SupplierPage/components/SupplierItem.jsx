@@ -26,12 +26,12 @@ function SupplierItem({ index, supplier, showModal, showConfirmation }) {
           {supplier.user.username}
         </Badge>
       </TableCell>
-      <TableCell className="py-1.5 truncate">
+      <TableCell className="py-1.5 truncate font-semibold">
         <a href={`/proveedores/${supplier.id}`} className="transition hover:text-blue-500 hover:underline">
           {supplier.identification}
         </a>
       </TableCell>
-      <TableCell className="py-1.5 truncate">{supplier.name}</TableCell>
+      <TableCell className="py-1.5 truncate uppercase">{supplier.name}</TableCell>
       <TableCell className="py-1.5 truncate">
         <a
           href={`https://api.whatsapp.com/send?phone=593${supplier.phone}`}
