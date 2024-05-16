@@ -93,7 +93,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
           </a>
         ) : (
           <a
-            href={`https://api.whatsapp.com/send?phone=593${procedure.customer?.processor?.phone}`}
+            href={`https://api.whatsapp.com/send?phone=593${procedure.processor?.phone}`}
             className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
             target="_blank"
           >
