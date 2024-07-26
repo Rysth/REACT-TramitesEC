@@ -107,11 +107,13 @@ export const destroySupplier = createAsyncThunkWrapper('destroySupplier', async 
 
 export const generateExcelFile = createAsyncThunk(
   'supplier/generateExcelFile',
-  async ({ activeToken, isAdmin = false }) => {
+  async ({ activeToken, isAdmin = false, startDate, endDate }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/suppliers/generate_excel`, {
         params: {
           is_admin: isAdmin,
+          start_date: startDate,
+          end_date: endDate,
         },
         headers: {
           Authorization: activeToken,

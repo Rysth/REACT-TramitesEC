@@ -125,11 +125,13 @@ export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', asyn
 // Thunk for generating Excel file for procedures
 export const generateProcedureExcelFile = createAsyncThunk(
   'procedures/generateExcelFile',
-  async ({ activeToken, isAdmin = false }) => {
+  async ({ activeToken, isAdmin = false, startDate, endDate }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/procedures/generate_excel`, {
         params: {
           is_admin: isAdmin,
+          start_date: startDate,
+          end_date: endDate,
         },
         headers: {
           Authorization: activeToken,
