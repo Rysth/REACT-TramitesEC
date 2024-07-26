@@ -16,7 +16,7 @@ function DateRangeModal({ openModal, closeModal, onGenerate }) {
     <Modal
       show={openModal}
       onClose={closeModal}
-      size="lg" // You can adjust the size according to your needs
+      size="md" // You can adjust the size according to your needs
       className={`z-[9000]`} // Ensure the modal is on top
     >
       <header className="p-2 py-4 sm:p-6 text-center text-white rounded-t-md bg-[var(--CL-primary)]">
@@ -24,14 +24,14 @@ function DateRangeModal({ openModal, closeModal, onGenerate }) {
         <p className="text-sm text-gray-300">Dejar en blanco si deseas traer todos los registros</p>
       </header>
       <Modal.Body>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col justify-between gap-2 md:items-center md:flex-row">
           <div>
             <label className="block text-sm font-medium text-gray-700">Fecha Inicial</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+              className="block w-full mt-1 transition border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
             />
           </div>
           <div>
@@ -40,7 +40,7 @@ function DateRangeModal({ openModal, closeModal, onGenerate }) {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50"
+              className="block w-full mt-1 transition border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
             />
           </div>
         </div>
