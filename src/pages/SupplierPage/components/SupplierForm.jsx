@@ -56,67 +56,81 @@ function SupplierForm({ closeModal, refetchFunction }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="name" value="Nombre" />
-            {errors.name && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+            <label htmlFor="name" className="label-text">
+              Nombre
+            </label>
+            {errors.name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <TextInput
-            id="name"
-            placeholder=""
-            defaultValue={supplierSelected && supplierSelected.name}
-            icon={HiMiniUserCircle}
-            {...register('name', { required: true })}
-          />
+          <div className="relative">
+            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="name"
+              type="text"
+              placeholder=""
+              defaultValue={supplierSelected && supplierSelected.name}
+              {...register('name', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="identification" value="Cédula/RUC" />
+            <label htmlFor="identification" className="label-text">
+              Cédula/RUC
+            </label>
             {errors.identification && (
-              <Badge className="text-xs" color="failure">
+              <span className="badge-sm badge badge-error">
                 {errors.identification.type === 'required' && 'Campo requerido'}
                 {errors.identification.type === 'pattern' && 'Solo números'}
-              </Badge>
+              </span>
             )}
           </div>
-          <TextInput
-            id="identification"
-            placeholder=""
-            defaultValue={supplierSelected && supplierSelected.identification}
-            icon={HiIdentification}
-            {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
-          />
+          <div className="relative">
+            <HiIdentification className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="identification"
+              type="text"
+              placeholder=""
+              defaultValue={supplierSelected && supplierSelected.identification}
+              {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
       </fieldset>
       <fieldset className="grid">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="phone" value="Teléfono" />
+            <label htmlFor="phone" className="label-text">
+              Teléfono
+            </label>
             {errors.phone && (
-              <Badge className="text-xs" color="failure">
+              <span className="badge-sm badge badge-error">
                 {errors.phone.type === 'required' && 'Campo requerido'}
                 {errors.phone.type === 'pattern' && 'Solo números'}
-              </Badge>
+              </span>
             )}
           </div>
-          <TextInput
-            id="phone"
-            placeholder=""
-            defaultValue={supplierSelected && supplierSelected.phone}
-            icon={HiMiniDevicePhoneMobile}
-            {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
-          />
+          <div className="relative">
+            <HiMiniDevicePhoneMobile className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="phone"
+              type="text"
+              placeholder=""
+              defaultValue={supplierSelected && supplierSelected.phone}
+              {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
       </fieldset>
-      <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit">
+      <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
+        <button type="submit" className="btn btn-success">
           Guardar
-        </Button>
-        <Button color="red" onClick={closeModal}>
+        </button>
+        <button type="button" className="btn btn-error" onClick={closeModal}>
           Cancelar
-        </Button>
+        </button>
       </fieldset>
     </form>
   )

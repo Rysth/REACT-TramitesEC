@@ -1,11 +1,10 @@
 // SupplierTable.js
-import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
+import TableDelete from '../../../components/Table/TableDelete'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Error from '../../../components/Error/Error'
 import Loading from '../../../components/Loading/Loading'
-import TableDelete from '../../../components/Table/TableDelete'
 import { destroySupplier, supplierActions } from '../../../redux/slices/SupplierSlice'
 import SupplierItem from './SupplierItem'
 
@@ -38,33 +37,35 @@ function SupplierTable({ currentItems, currentPage, itemsPerPage, showModal, han
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table>
-        <TableHead>
-          <TableRow className="border-b border-x-0">
-            <TableHeaderCell className="w-[4%]">#</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Identificación</TableHeaderCell>
-            <TableHeaderCell className="w-max">Nombre</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="text-xs">
-          {currentItems.map((supplier, index) => {
-            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+      <div className="overflow-x-auto">
+        <table className="table w-full bg-white">
+          <thead className="font-normal">
+            <tr>
+              <th style={{ width: '5%' }}>#</th>
+              <th style={{ width: '12%' }}>Usuario</th>
+              <th style={{ width: '10%' }}>Identificación</th>
+              <th style={{ width: '25%' }}>Nombre</th>
+              <th style={{ width: '20%' }}>Teléfono</th>
+              <th style={{ width: '15%' }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((supplier, index) => {
+              const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
 
-            return (
-              <SupplierItem
-                key={calculatedIndex}
-                index={calculatedIndex}
-                supplier={supplier}
-                showModal={showModal}
-                showConfirmation={setConfirmationModal}
-              />
-            )
-          })}
-        </TableBody>
-      </Table>
+              return (
+                <SupplierItem
+                  key={calculatedIndex}
+                  index={calculatedIndex}
+                  supplier={supplier}
+                  showModal={showModal}
+                  showConfirmation={setConfirmationModal}
+                />
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

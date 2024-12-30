@@ -19,7 +19,7 @@ function DateRangeModal({ onGenerate }) {
         </header>
         <div className="p-6 pb-0 modal-body ">
           <div className="grid grid-cols-2 gap-2">
-            <div class="space-y-2 ">
+            <div className="space-y-2 ">
               <label className="block text-sm font-medium text-gray-700">Fecha Inicial</label>
               <input
                 type="date"
@@ -28,7 +28,7 @@ function DateRangeModal({ onGenerate }) {
                 className="w-full input input-bordered"
               />
             </div>
-            <div class="space-y-2">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Fecha Final</label>
               <input
                 type="date"

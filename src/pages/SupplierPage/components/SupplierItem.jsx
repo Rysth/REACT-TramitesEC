@@ -1,11 +1,9 @@
 // SupplierItem.js
-import { Button, TableCell, TableRow } from '@tremor/react'
-import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
+import { FaWhatsapp } from 'react-icons/fa'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { supplierActions } from '../../../redux/slices/SupplierSlice'
-import { FaWhatsapp } from 'react-icons/fa'
 
 function SupplierItem({ index, supplier, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -19,48 +17,47 @@ function SupplierItem({ index, supplier, showModal, showConfirmation }) {
   const isAdmin = activeUser.is_admin
 
   return (
-    <TableRow className="hover:bg-neutral-100">
-      <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      <TableCell className="py-1.5 truncate">
-        <Badge color="indigo" className="grid place-items-center">
-          {supplier.user.username}
-        </Badge>
-      </TableCell>
-      <TableCell className="py-1.5 truncate font-semibold">
-        <a href={`/proveedores/${supplier.id}`} className="transition hover:text-blue-500 hover:underline">
+    <tr className="hover *:py-1 ">
+      <th>{index}</th>
+      <td>
+        <span className="w-full text-white badge badge-primary">{supplier.user.username}</span>
+      </td>
+      <td>
+        <a href={`/proveedores/${supplier.id}`} className="font-bold link link-hover">
           {supplier.identification}
         </a>
-      </TableCell>
-      <TableCell className="py-1.5 truncate uppercase">{supplier.name}</TableCell>
-      <TableCell className="py-1.5 truncate">
+      </td>
+      <td className="uppercase">{supplier.name}</td>
+      <td>
         <a
           href={`https://api.whatsapp.com/send?phone=593${supplier.phone}`}
-          className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+          className="btn btn-success btn-sm"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <FaWhatsapp /> Contactar
         </a>
-      </TableCell>
-
-      <TableCell className="flex items-center w-full gap-1 py-1.5">
-        <Button size="xs" color="blue" onClick={() => handleSupplierSelected(supplier.id)} disabled={!isAdmin}>
-          <span className="sr-only">Editar</span>
+      </td>
+      <td className="flex items-center gap-1">
+        <button
+          className="btn btn-sm btn-primary"
+          onClick={() => handleSupplierSelected(supplier.id)}
+          disabled={!isAdmin}
+        >
           <HiPencilSquare />
-        </Button>
-        <Button
-          color="red"
-          size="xs"
+        </button>
+        <button
+          className="btn btn-sm btn-error"
           onClick={() => {
             dispatch(supplierActions.setSupplierSelected(supplier.id))
             showConfirmation(true)
           }}
           disabled={!isAdmin}
         >
-          <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
-        </Button>
-      </TableCell>
-    </TableRow>
+        </button>
+      </td>
+    </tr>
   )
 }
 
@@ -71,6 +68,10 @@ SupplierItem.propTypes = {
     name: PropTypes.string.isRequired,
     identification: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
+    }),
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,
