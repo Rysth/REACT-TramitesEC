@@ -19,67 +19,64 @@ function CustomerItem({ index, customer, showModal, showConfirmation }) {
   const isAdmin = activeUser.is_admin
 
   return (
-    <TableRow className="hover:bg-neutral-100">
-      <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      {/* <TableCell className="py-1.5 truncate">
-        <Badge color="indigo" className="grid place-items-center">
-          {customer.user.username}
-        </Badge>
-      </TableCell> */}
-      <TableCell className="py-1.5 uppercase">
+    <tr className="hover *:py-1 *:text-[0.8rem]">
+      <th>{index}</th>
+      <td>
         {!isDirect ? (
-          <Badge className="grid place-items-center" href={`/tramitadores/${customer.processor.id}`} color="purple">
+          <span className="w-full text-white uppercase badge badge-primary badge-sm">
             {`${customer.processor.first_name.split(' ')[0]} ${customer.processor.last_name.split(' ')[0]}`}
-          </Badge>
+          </span>
         ) : (
-          <Badge className="grid place-items-center">Cliente Directo</Badge>
+          <span className="w-full text-white badge badge-primary">Cliente Directo</span>
         )}
-      </TableCell>
-      <TableCell className="py-1.5 truncate font-semibold">
-        <a href={`/clientes/${customer.id}`} className="transition hover:text-blue-500 hover:underline">
+      </td>
+      <td>
+        <a href={`/clientes/${customer.id}`} className="font-bold link link-hover">
           {customer.identification}
         </a>
-      </TableCell>
-      <TableCell className="py-1.5 truncate uppercase">{`${customer.first_name} ${customer.last_name}`}</TableCell>
-      <TableCell className="py-1.5 truncate">
+      </td>
+      <td className="uppercase">{`${customer.first_name} ${customer.last_name}`}</td>
+      <td>
         {isDirect ? (
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.phone}`}
-            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            className="btn btn-success btn-sm"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FaWhatsapp /> Contactar
           </a>
         ) : (
           <a
             href={`https://api.whatsapp.com/send?phone=593${customer.processor.phone}`}
-            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            className="btn btn-success btn-sm"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FaWhatsapp /> Contactar
           </a>
         )}
-      </TableCell>
-
-      <TableCell className="flex items-center w-full gap-1 py-1.5">
-        <Button size="xs" color="blue" onClick={() => handleCustomerSelected(customer.id)} disabled={!isAdmin}>
-          <span className="sr-only">Editar</span>
+      </td>
+      <td className="flex items-center gap-1">
+        <button
+          className="btn btn-sm btn-primary"
+          onClick={() => handleCustomerSelected(customer.id)}
+          disabled={!isAdmin}
+        >
           <HiPencilSquare />
-        </Button>
-        <Button
-          size="xs"
-          color="red"
+        </button>
+        <button
+          className="btn btn-sm btn-error"
           onClick={() => {
             dispatch(customerActions.setCustomerSelected(customer.id))
             showConfirmation(true)
           }}
           disabled={!isAdmin}
         >
-          <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
-        </Button>
-      </TableCell>
-    </TableRow>
+        </button>
+      </td>
+    </tr>
   )
 }
 

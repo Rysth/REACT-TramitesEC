@@ -17,10 +17,10 @@ function SupplierItem({ index, supplier, showModal, showConfirmation }) {
   const isAdmin = activeUser.is_admin
 
   return (
-    <tr className="hover *:py-1 ">
+    <tr className="hover *:py-1 *:text-[0.8rem]">
       <th>{index}</th>
       <td>
-        <span className="w-full text-white badge badge-primary">{supplier.user.username}</span>
+        <span className="w-full text-white uppercase badge badge-primary badge-sm">{supplier.user.username}</span>
       </td>
       <td>
         <a href={`/proveedores/${supplier.id}`} className="font-bold link link-hover">

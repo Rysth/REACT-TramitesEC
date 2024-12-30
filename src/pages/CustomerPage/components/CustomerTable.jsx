@@ -37,34 +37,35 @@ function CustomerTable({ currentItems, currentPage, itemsPerPage, showModal, han
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table>
-        <TableHead>
-          <TableRow className="border-b border-x-0">
-            <TableHeaderCell className="w-[4%]">#</TableHeaderCell>
-            {/* <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell> */}
-            <TableHeaderCell className="w-[10%]">Trámitador</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Cédula</TableHeaderCell>
-            <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="text-xs divide-y">
-          {currentItems.map((customer, index) => {
-            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+      <div className="overflow-x-auto">
+        <table className="table w-full bg-white">
+          <thead className="font-normal">
+            <tr>
+              <th style={{ width: '5%' }}>#</th>
+              <th style={{ width: '12%' }}>Trámitador</th>
+              <th style={{ width: '10%' }}>Cédula</th>
+              <th style={{ width: '28%' }}>Nombre Completo</th>
+              <th style={{ width: '15%' }}>Teléfono</th>
+              <th style={{ width: '15%' }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((customer, index) => {
+              const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
 
-            return (
-              <CustomerItem
-                key={calculatedIndex}
-                index={calculatedIndex}
-                customer={customer}
-                showModal={showModal}
-                showConfirmation={setConfirmationModal}
-              />
-            )
-          })}
-        </TableBody>
-      </Table>
+              return (
+                <CustomerItem
+                  key={calculatedIndex}
+                  index={calculatedIndex}
+                  customer={customer}
+                  showModal={showModal}
+                  showConfirmation={setConfirmationModal}
+                />
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

@@ -1,6 +1,3 @@
-import { TextInput, Button } from '@tremor/react'
-import { Badge, Label, Checkbox } from 'flowbite-react'
-import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -9,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AsyncSelect from 'react-select/async'
 import { createCustomer, updateCustomer } from '../../../redux/slices/CustomerSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
+import { debounce } from 'lodash'
 
 function CustomerForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -26,13 +24,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const onSubmit = (customerData) => {
     if (customerSelected) {
       const isDifferent = Object.keys(customerData).some((key) => {
-        // Exclude the 'user' key from comparison
         if (key === 'user') return false
-
-        // Skip comparison for Processor data if the customer is direct
         if (key === 'is_direct' && customerSelected.is_direct) return false
-
-        // Check if the value is different
         return customerData[key] !== customerSelected[key]
       })
 
@@ -44,7 +37,6 @@ function CustomerForm({ closeModal, refetchFunction }) {
           },
         )
       } else {
-        // No need to update if the data is the same
         closeModal()
       }
     } else {
@@ -75,7 +67,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         setValue(key, customerSelected[key])
       })
     } else {
-      reset() // Reset the form if no customer is selected
+      reset()
     }
   }, [customerSelected, reset, setValue])
 
@@ -87,29 +79,27 @@ function CustomerForm({ closeModal, refetchFunction }) {
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid">
         <div className="flex items-center justify-center gap-2">
-          <Checkbox
+          <input
+            type="checkbox"
             id="accept"
             onClick={() => setIsDirect(!isDirect)}
             {...register('is_direct')}
             disabled={customerSelected}
-            color="blue"
+            className="checkbox checkbox-primary"
           />
-          <Label htmlFor="accept" className="flex" disabled={customerSelected}>
+          <label htmlFor="accept" className="flex" disabled={customerSelected}>
             ¿Deseas crear un Cliente Directo?
-          </Label>
+          </label>
         </div>
       </fieldset>
       {!isDirect && (
         <fieldset className="grid">
-          {/* Render AsyncSelect only if isDirect is false */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="processor_id" value="Trámitador" />
-              {errors.processor_id && (
-                <Badge className="text-xs" color="failure">
-                  Campo Requerido
-                </Badge>
-              )}
+              <label htmlFor="processor_id" className="label-text">
+                Trámitador
+              </label>
+              {errors.processor_id && <span className="badge-sm badge badge-error">Campo Requerido</span>}
             </div>
             <AsyncSelect
               cacheOptions
@@ -136,114 +126,140 @@ function CustomerForm({ closeModal, refetchFunction }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="cedula" value="Cédula" />
+            <label htmlFor="identification" className="label-text">
+              Cédula
+            </label>
             {errors.identification && (
-              <Badge className="text-xs" color="failure">
+              <span className="badge-sm badge badge-error">
                 {errors.identification.type === 'required' && 'Campo requerido'}
                 {errors.identification.type === 'pattern' && 'Solo números'}
-              </Badge>
+              </span>
             )}
           </div>
-          <TextInput
-            id="identification"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.identification}
-            icon={HiIdentification}
-            {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
-          />
+          <div className="relative">
+            <HiIdentification className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="identification"
+              type="text"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.identification}
+              {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="email" value="Email" />
-            {errors.email && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+            <label htmlFor="email" className="label-text">
+              Email
+            </label>
+            {errors.email && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <TextInput
-            id="email"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.email}
-            icon={HiMiniEnvelope}
-            {...register('email', { required: true })}
-          />
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="first_name" value="Nombres" />
-            {errors.first_name && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+          <div className="relative">
+            <HiMiniEnvelope className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="email"
+              type="email"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.email}
+              {...register('email', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
           </div>
-          <TextInput
-            id="first_name"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.first_name}
-            icon={HiMiniUserCircle}
-            {...register('first_name', { required: true })}
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="last_name" value="Apellidos" />
-            {errors.last_name && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
-          </div>
-          <TextInput
-            id="last_name"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.last_name}
-            icon={HiMiniUserCircle}
-            {...register('last_name', { required: true })}
-          />
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="phone" value="Teléfono" />
+            <label htmlFor="first_name" className="label-text">
+              Nombres
+            </label>
+            {errors.first_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
+          </div>
+          <div className="relative">
+            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="first_name"
+              type="text"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.first_name}
+              {...register('first_name', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label htmlFor="last_name" className="label-text">
+              Apellidos
+            </label>
+            {errors.last_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
+          </div>
+          <div className="relative">
+            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="last_name"
+              type="text"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.last_name}
+              {...register('last_name', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
+        </div>
+      </fieldset>
+      <fieldset className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label htmlFor="phone" className="label-text">
+              Teléfono
+            </label>
             {errors.phone && (
-              <Badge className="text-xs" color="failure">
+              <span className="badge-sm badge badge-error">
                 {errors.phone.type === 'required' && 'Campo requerido'}
                 {errors.phone.type === 'pattern' && 'Solo números'}
-              </Badge>
+              </span>
             )}
           </div>
-          <TextInput
-            id="phone"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.phone}
-            icon={HiMiniDevicePhoneMobile}
-            {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
-            disabled={!isDirect || (customerSelected && !customerSelected.is_direct)}
-          />
+          <div className="relative">
+            <HiMiniDevicePhoneMobile className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="phone"
+              type="text"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.phone}
+              {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
+              className="w-full input input-bordered"
+              disabled={!isDirect || (customerSelected && !customerSelected.is_direct)}
+            />
+          </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="address" value="Dirección" />
-          <TextInput
-            id="address"
-            placeholder=""
-            defaultValue={customerSelected && customerSelected.address}
-            icon={HiMapPin}
-            {...register('address')}
-          />
+          <div className="flex items-center justify-between">
+            <label htmlFor="address" className="label-text">
+              Dirección
+            </label>
+          </div>
+          <div className="relative">
+            <HiMapPin className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="address"
+              type="text"
+              placeholder=""
+              defaultValue={customerSelected && customerSelected.address}
+              {...register('address')}
+              className="w-full input input-bordered"
+            />
+          </div>
         </div>
       </fieldset>
-      <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit" disabled={loading}>
+      <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
+        <button type="submit" className="btn btn-success" disabled={loading}>
           Guardar
-        </Button>
-        <Button color="red" onClick={closeModal}>
+        </button>
+        <button type="button" className="btn btn-error" onClick={closeModal}>
           Cancelar
-        </Button>
+        </button>
       </fieldset>
     </form>
   )

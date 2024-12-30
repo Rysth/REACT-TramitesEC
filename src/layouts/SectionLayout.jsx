@@ -23,7 +23,7 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
           </header>
           <button
             onClick={() => document.getElementById('dateRangeModal').showModal()}
-            className="flex items-center text-white btn btn-success"
+            className="flex items-center text-white btn btn-success btn-sm"
           >
             <span className="inline-block">Generar Excel</span>
             <FaFileExcel className="inline-block ml-1" />
