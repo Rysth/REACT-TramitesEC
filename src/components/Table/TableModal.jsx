@@ -3,16 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-function TableModal({
-  openModal,
-  closeModal,
-  formComponent,
-  slice,
-  title,
-  setEntitySelected,
-  modalSize,
-  refetchFunction,
-}) {
+function TableModal({ openModal, closeModal, formComponent, slice, title, setEntitySelected, refetchFunction }) {
   const dispatch = useDispatch()
   const { [`${slice}Selected`]: entitySelected, loading } = useSelector((store) => store[slice])
 
@@ -23,18 +14,14 @@ function TableModal({
   }, [openModal, dispatch, setEntitySelected])
 
   return (
-    <Modal
-      show={openModal}
-      position="center"
-      onClose={closeModal}
-      className={`z-[9000] ${loading && 'pointer-events-none grayscale'}`}
-      size={modalSize ? modalSize : 'lg'}
-    >
-      <header className="p-2 py-4 sm:p-6 text-center text-white rounded-t-md bg-[var(--CL-primary)]">
-        <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
-      </header>
-      <Modal.Body>{React.createElement(formComponent, { closeModal, refetchFunction })}</Modal.Body>
-    </Modal>
+    <dialog id="tableModal" className={`modal ${openModal ? 'modal-open' : ''} modal-bottom sm:modal-middle`}>
+      <div className={`modal-box p-0 ${loading && 'pointer-events-none grayscale'}`}>
+        <header className="p-4 py-5 text-center text-white bg-[var(--CL-primary)]">
+          <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
+        </header>
+        <div className="p-6 pb-0 modal-body">{React.createElement(formComponent, { closeModal, refetchFunction })}</div>
+      </div>
+    </dialog>
   )
 }
 
@@ -46,7 +33,6 @@ TableModal.propTypes = {
   slice: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   setEntitySelected: PropTypes.func.isRequired,
-  modalSize: PropTypes.string,
 }
 
 export default TableModal

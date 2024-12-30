@@ -1,65 +1,58 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Modal } from 'flowbite-react'
-import { Button, TextInput } from '@tremor/react'
 
-function DateRangeModal({ openModal, closeModal, onGenerate }) {
+function DateRangeModal({ onGenerate }) {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
   const handleGenerate = () => {
     onGenerate(startDate, endDate)
-    closeModal()
+    document.getElementById('dateRangeModal').close()
   }
 
   return (
-    <Modal
-      show={openModal}
-      onClose={closeModal}
-      size="md" // You can adjust the size according to your needs
-      className={`z-[9000]`} // Ensure the modal is on top
-    >
-      <header className="p-2 py-4 sm:p-6 text-center text-white rounded-t-md bg-[var(--CL-primary)]">
-        <h3 className="text-xl sm:text-2xl">Seleccionar Rango de Fechas</h3>
-        <p className="text-sm text-gray-300">Dejar en blanco si deseas traer todos los registros</p>
-      </header>
-      <Modal.Body>
-        <div className="flex flex-col justify-between gap-2 md:items-center md:flex-row">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Fecha Inicial</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="block w-full mt-1 transition border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Fecha Final</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="block w-full mt-1 transition border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-            />
+    <dialog id="dateRangeModal" className="modal modal-bottom sm:modal-middle">
+      <div className="p-0 modal-box">
+        <header className="p-4 text-white bg-[var(--CL-primary)]">
+          <h3 className="text-xl sm:text-2xl">Seleccionar Rango de Fechas</h3>
+          <p className="text-sm text-gray-300">Dejar en blanco si deseas traer todos los registros</p>
+        </header>
+        <div className="p-6 pb-0 modal-body ">
+          <div className="grid grid-cols-2 gap-2">
+            <div class="space-y-2 ">
+              <label className="block text-sm font-medium text-gray-700">Fecha Inicial</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full input input-bordered"
+              />
+            </div>
+            <div class="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Fecha Final</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full input input-bordered"
+              />
+            </div>
           </div>
         </div>
-      </Modal.Body>
-      <Modal.Footer className="flex justify-end">
-        <Button color="red" onClick={closeModal}>
-          Cancelar
-        </Button>
-        <Button color="green" onClick={handleGenerate}>
-          Generar Excel
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        <div className="flex justify-end p-4 pt-0 modal-action ">
+          <button className="btn btn-error" onClick={() => document.getElementById('dateRangeModal').close()}>
+            Cancelar
+          </button>
+          <button className="btn btn-success" onClick={handleGenerate}>
+            Generar Excel
+          </button>
+        </div>
+      </div>
+    </dialog>
   )
 }
 
 DateRangeModal.propTypes = {
-  openModal: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
   onGenerate: PropTypes.func.isRequired,
 }
 

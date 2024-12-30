@@ -1,4 +1,3 @@
-import { Button, Label, TextInput } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import { HiMail } from 'react-icons/hi'
 import { RiLockPasswordFill } from 'react-icons/ri'
@@ -30,11 +29,11 @@ function SessionPage() {
             <fieldset className="w-full">
               <div className="w-full form-control">
                 <div className="label">
-                  <Label htmlFor="email" value="Correo Electrónico" className="label-text" />
+                  <label htmlFor="email" className="label-text">Correo Electrónico</label>
                 </div>
                 <label className="flex items-center gap-2 input input-bordered">
                   <HiMail className="opacity-50" />
-                  <TextInput
+                  <input
                     id="email"
                     type="email"
                     placeholder="usuario@dominio.com"
@@ -48,11 +47,11 @@ function SessionPage() {
             <fieldset className="w-full">
               <div className="w-full form-control">
                 <div className="label">
-                  <Label htmlFor="password" value="Contraseña" className="label-text" />
+                  <label htmlFor="password" className="label-text">Contraseña</label>
                 </div>
                 <label className="flex items-center gap-2 input input-bordered">
                   <RiLockPasswordFill className="opacity-50" />
-                  <TextInput
+                  <input
                     id="password"
                     type="password"
                     placeholder="********"
@@ -64,15 +63,9 @@ function SessionPage() {
               </div>
             </fieldset>
             <div className="mt-6 actions">
-              <Button type="submit" className="w-full btn btn-primary">
+              <button type="submit" className="w-full btn btn-primary">
                 <span>Iniciar Sesión</span>
-              </Button>
-            </div>
-            <div className="flex items-center justify-center gap-1 mt-4 text-sm text-center">
-              <p className="text-neutral-500">¿No tienes una cuenta?</p>
-              <a href="/register" className="link link-secondary w-max text-secondary">
-                Crear una cuenta
-              </a>
+              </button>
             </div>
           </form>
           <footer className="fixed text-white transition opacity-50 top-3 right-3 lg:top-auto lg:bottom-5 lg:right-5 hover:opacity-100">

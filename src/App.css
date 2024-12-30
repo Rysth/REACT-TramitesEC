@@ -1,5 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/poppins');
-
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 /* For WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
   width: 8px; /* Adjust the width as needed */
@@ -14,6 +13,8 @@
 }
 
 :root {
+  --CL-neutral-white: #f4faff;
+  --CL-neutral-black: #08090a;
   --CL-blue-dark: #001d7a;
 
   /* Pattern */
@@ -21,8 +22,9 @@
   --CL-secondary: #3b38ff;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
+html {
+  font-family: 'Figtree', system-ui;
+  color: var(--CL-neutral-black) !important;
 }
 
 .bg-blue-dark {
@@ -42,4 +44,35 @@ h4,
 h5,
 h6 {
   font-weight: bold;
+}
+
+.btn {
+  @apply font-normal;
+}
+
+.input {
+  @apply !text-sm;
+}
+
+.btn-primary,
+.btn-secondary {
+  @apply !text-white border-transparent;
+}
+
+.badge-error,
+.alert-error,
+.btn-error {
+  @apply text-white bg-red-600 border-transparent;
+}
+
+.btn-success,
+.badge-success,
+.alert-success {
+  @apply text-white bg-green-600 border-transparent;
+}
+
+.btn-info,
+.badge-info,
+.alert-info {
+  @apply text-white bg-blue-600 border-transparent;
 }

@@ -98,11 +98,11 @@ function TableHeader({
             <SearchSelect
               value={userID}
               onValueChange={handleSelectChange}
-              className="z-50 w-full capitalize md:max-w-max"
+              className="z-50 w-full capitalize md:max-w-max "
               placeholder="Usuario"
             >
               {usersArray.map((user) => (
-                <SearchSelectItem className="text-xs" key={user.id} value={user.id}>
+                <SearchSelectItem className="text-sm" key={user.id} value={user.id}>
                   {user.username}
                 </SearchSelectItem>
               ))}
@@ -117,12 +117,12 @@ function TableHeader({
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
             >
-              <SearchSelectItem className="text-xs" value={0}>
+              <SearchSelectItem className="text-sm" value={0}>
                 Cliente Directos
               </SearchSelectItem>
               {processorOptions.map((processor) => {
                 return (
-                  <SearchSelectItem className="text-xs !uppercase" key={processor.id} value={processor.id}>
+                  <SearchSelectItem className="" key={processor.id} value={processor.id}>
                     <span className="font-semibold">{processor.code}</span>
                     {` - ${processor.first_name} ${processor.last_name}`}
                   </SearchSelectItem>

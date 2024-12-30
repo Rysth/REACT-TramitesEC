@@ -60,66 +60,76 @@ function ProcessorForm({ closeModal, refetchFunction }) {
       <fieldset className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="nombres" value="Nombres" />
-            {errors.first_name && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+            <label htmlFor="first_name" className="label-text">
+              Nombres
+            </label>
+            {errors.first_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <TextInput
-            id="first_name"
-            placeholder=""
-            defaultValue={processorSelected && processorSelected.first_name}
-            icon={HiMiniUserCircle}
-            {...register('first_name', { required: true })}
-          />
+          <div className="relative">
+            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="first_name"
+              type="text"
+              placeholder=""
+              defaultValue={processorSelected && processorSelected.first_name}
+              {...register('first_name', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="last_name" value="Apellidos" />
-            {errors.last_name && (
-              <Badge className="text-xs" color="failure">
-                Campo Requerido
-              </Badge>
-            )}
+            <label htmlFor="last_name" className="label-text">
+              Apellidos
+            </label>
+            {errors.last_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <TextInput
-            id="last_name"
-            placeholder=""
-            defaultValue={processorSelected && processorSelected.apellidos}
-            icon={HiMiniUserCircle}
-            {...register('last_name', { required: true })}
-          />
+          <div className="relative">
+            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="last_name"
+              type="text"
+              placeholder=""
+              defaultValue={processorSelected && processorSelected.last_name}
+              {...register('last_name', { required: true })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
       </fieldset>
       <fieldset className="grid">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="celular" value="Teléfono" />
+            <label htmlFor="phone" className="label-text">
+              Teléfono
+            </label>
             {errors.phone && (
-              <Badge className="text-xs" color="failure">
+              <span className="badge-sm badge badge-error">
                 {errors.phone.type === 'required' && 'Campo requerido'}
                 {errors.phone.type === 'pattern' && 'Solo números'}
-              </Badge>
+              </span>
             )}
           </div>
-          <TextInput
-            id="phone"
-            placeholder=""
-            defaultValue={processorSelected && processorSelected.celular}
-            icon={HiMiniDevicePhoneMobile}
-            {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
-          />
+          <div className="relative">
+            <HiMiniDevicePhoneMobile className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+            <input
+              id="phone"
+              type="text"
+              placeholder=""
+              defaultValue={processorSelected && processorSelected.phone}
+              {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
+              className="w-full pl-10 input input-bordered"
+            />
+          </div>
         </div>
       </fieldset>
-      <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit">
+      <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
+        <button type="submit" className="btn btn-success">
           Guardar
-        </Button>
-        <Button color="red" onClick={closeModal}>
+        </button>
+        <button type="button" className="btn btn-error" onClick={closeModal}>
           Cancelar
-        </Button>
+        </button>
       </fieldset>
     </form>
   )

@@ -6,14 +6,16 @@ import ReactPaginate from 'react-paginate'
 
 function TablePaginate({ currentPage, pageCount, handlePageChange, showModal }) {
   return (
-    <footer className={`flex items-center justify-between p-2 md:p-4 ${!showModal && '!justify-end !px-2'}`}>
+    <footer
+      className={`flex items-center justify-between p-2 md:p-4 rounded-b-lg border-t mt-1 ${!showModal && '!justify-end !px-2'}`}
+    >
       {showModal && (
         <div>
           <div className="flex items-center justify-end w-full gap-1 sm:max-w-max">
-            <Button color="green" onClick={showModal} className="flex items-center">
+            <button className="flex items-center btn btn-success btn-sm" onClick={showModal}>
               Crear
               <IoCreateSharp className="inline-block ml-1" />
-            </Button>
+            </button>
           </div>
         </div>
       )}
@@ -25,11 +27,11 @@ function TablePaginate({ currentPage, pageCount, handlePageChange, showModal }) 
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
         onPageChange={handlePageChange}
-        nextClassName="ml-1"
-        previousClassName="mr-1"
-        containerClassName={'flex items-center gap-1 justify-center text-xs p-3'}
-        activeClassName={'rounded-md bg-[var(--CL-primary)] text-white'}
-        pageLinkClassName="p-2 outline-1 block px-3.5 transition rounded font-semibold hover:bg-gray-200"
+        nextClassName="btn btn-primary btn-sm ml-1 max-w-[2.25rem]"
+        previousClassName="btn btn-primary btn-sm mr-1 max-w-[2.25rem]"
+        containerClassName={'flex items-center gap-1 '}
+        activeClassName={'btn btn-primary btn-sm h-full max-w-[2.25rem]'}
+        pageLinkClassName="btn btn-ghost btn-sm"
       />
     </footer>
   )

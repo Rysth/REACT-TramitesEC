@@ -112,25 +112,7 @@ function Sidebar() {
                   </li>
                 </ul>
               </li>
-              {/* {isAdmin && (
-                <>
-                  {' '}
-                  <li className="mt-3 mb-3">
-                    <hr />
-                  </li>
-                  <li>
-                    <NavLink
-                      to={`/profiles/${id}`}
-                      className="flex items-center gap-2 p-2.5 text-slate-300 hover:!text-white rounded-md hover:bg-[var(--CL-secondary)] transition"
-                    >
-                      <MdAccountCircle className="text-xl" />
-                      <span>{username}</span>
-                    </NavLink>
-                  </li>
-                </>
-              )} */}
             </ul>
-
             <footer className="grid gap-2">
               <SidebarLogout />
             </footer>

@@ -1,4 +1,3 @@
-import { Table, TableBody, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,33 +36,35 @@ function ProcessorTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table hoverable>
-        <TableHead>
-          <TableRow className="border-b border-x-0">
-            <TableHeaderCell className="w-[4%]">#</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Código</TableHeaderCell>
-            <TableHeaderCell className="w-max">Nombre Completo</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="text-xs">
-          {currentItems.map((processor, index) => {
-            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+      <div className="overflow-x-auto">
+        <table className="table w-full bg-white">
+          <thead className="font-normal">
+            <tr>
+              <th style={{ width: '5%' }}>#</th>
+              <th style={{ width: '12%' }}>Usuario</th>
+              <th style={{ width: '10%' }}>Código</th>
+              <th style={{ width: '25%' }}>Nombre Completo</th>
+              <th style={{ width: '20%' }}>Teléfono</th>
+              <th style={{ width: '15%' }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((processor, index) => {
+              const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
 
-            return (
-              <ProcessorItem
-                key={calculatedIndex}
-                index={calculatedIndex}
-                processor={processor}
-                showModal={showModal}
-                showConfirmation={setConfirmationModal}
-              />
-            )
-          })}
-        </TableBody>
-      </Table>
+              return (
+                <ProcessorItem
+                  key={calculatedIndex}
+                  index={calculatedIndex}
+                  processor={processor}
+                  showModal={showModal}
+                  showConfirmation={setConfirmationModal}
+                />
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }
