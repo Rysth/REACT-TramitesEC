@@ -84,16 +84,16 @@ function CustomerForm({ closeModal, refetchFunction }) {
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <fieldset className="grid">
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-between gap-2 alert alert-info">
           <input
             type="checkbox"
             id="accept"
             checked={isDirect}
             onChange={() => setIsDirect(!isDirect)}
             disabled={customerSelected}
-            className="checkbox checkbox-primary"
+            className="checkbox checkbox-neutral"
           />
-          <label htmlFor="accept" className="flex" disabled={customerSelected}>
+          <label htmlFor="accept" className="flex w-full cursor-pointer" disabled={customerSelected}>
             ¿Deseas crear un Cliente Directo?
           </label>
         </div>
