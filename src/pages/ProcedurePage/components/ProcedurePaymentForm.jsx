@@ -50,6 +50,14 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
     dispatch(deletePayment({ activeToken, paymentID }))
       .then(() => refetchFunction())
       .then(() => reset())
+      .then(() => {
+        document.getElementById('confirmDeleteModal').close()
+      })
+      .then(() => {
+        dispatch(fetchProcedureDetails({ activeToken, procedureId: procedureSelected.id })).catch((error) => {
+          console.error('Error fetching procedure details:', error)
+        })
+      })
   }
 
   const confirmDeletePayment = (paymentID) => {
