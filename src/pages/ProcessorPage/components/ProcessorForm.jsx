@@ -39,7 +39,10 @@ function ProcessorForm({ closeModal, refetchFunction }) {
       }
     } else {
       dispatch(createProcessor({ activeToken, processorData }))
-        .then(() => refetchFunction())
+        .then(() => {
+          refetchFunction()
+          reset() // Reset the form fields after creating a new processor
+        })
         .then(() => closeModal())
     }
   }

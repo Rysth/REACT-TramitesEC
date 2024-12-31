@@ -14,6 +14,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((state) => state.authentication)
   const [paymentType, setPaymentType] = useState(1)
+  const [paymentToDelete, setPaymentToDelete] = useState(null)
 
   const {
     register,
@@ -45,6 +46,11 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
       .then(() => refetchFunction())
       .then(() => reset())
       .then(() => closeModal())
+  }
+
+  const confirmDeletePayment = (paymentID) => {
+    setPaymentToDelete(paymentID)
+    document.getElementById('confirmDeleteModal').showModal()
   }
 
   useEffect(() => {
@@ -185,7 +191,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
                     <button
                       type="button"
                       className="btn btn-sm btn-error"
-                      onClick={() => handleDeletePayment(payment.id)}
+                      onClick={() => confirmDeletePayment(payment.id)}
                     >
                       <span className="sr-only">Eliminar</span>
                       <HiMiniTrash />
@@ -196,6 +202,22 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
           </tbody>
         </table>
       </fieldset>
+
+      {/* Confirmation Modal */}
+      <dialog id="confirmDeleteModal" className="modal">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold">Confirmar Eliminación</h3>
+          <p className="py-4">¿Estás seguro de que deseas eliminar este pago?</p>
+          <div className="modal-action">
+            <button className="btn btn-error" onClick={() => handleDeletePayment(paymentToDelete)}>
+              Eliminar
+            </button>
+            <button className="btn" onClick={() => document.getElementById('confirmDeleteModal').close()}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   )
 }
