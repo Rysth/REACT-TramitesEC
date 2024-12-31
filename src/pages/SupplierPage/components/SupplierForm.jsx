@@ -64,17 +64,17 @@ function SupplierForm({ closeModal, refetchFunction }) {
             </label>
             {errors.name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <div className="relative">
-            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniUserCircle className="w-4 h-4 opacity-70" />
             <input
               id="name"
               type="text"
               placeholder=""
               defaultValue={supplierSelected && supplierSelected.name}
               {...register('name', { required: true })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -88,17 +88,17 @@ function SupplierForm({ closeModal, refetchFunction }) {
               </span>
             )}
           </div>
-          <div className="relative">
-            <HiIdentification className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiIdentification className="w-4 h-4 opacity-70" />
             <input
               id="identification"
               type="text"
               placeholder=""
               defaultValue={supplierSelected && supplierSelected.identification}
               {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
       </fieldset>
       <fieldset className="grid">
@@ -114,17 +114,17 @@ function SupplierForm({ closeModal, refetchFunction }) {
               </span>
             )}
           </div>
-          <div className="relative">
-            <HiMiniDevicePhoneMobile className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniDevicePhoneMobile className="w-4 h-4 opacity-70" />
             <input
               id="phone"
               type="text"
               placeholder=""
               defaultValue={supplierSelected && supplierSelected.phone}
               {...register('phone', { required: true, pattern: /^[0-9]+$/i })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
       </fieldset>
       <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
