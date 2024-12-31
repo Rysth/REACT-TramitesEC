@@ -22,6 +22,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const [isDirect, setIsDirect] = useState(false)
 
   const onSubmit = (customerData) => {
+    customerData.is_direct = isDirect // Ensure is_direct is correctly set
+
     if (customerSelected) {
       const isDifferent = Object.keys(customerData).some((key) => {
         if (key === 'user') return false
@@ -40,10 +42,13 @@ function CustomerForm({ closeModal, refetchFunction }) {
         closeModal()
       }
     } else {
-      dispatch(createCustomer({ activeToken, customerData })).then(() => {
-        refetchFunction()
-        closeModal()
-      })
+      dispatch(createCustomer({ activeToken, customerData }))
+        .then(() => {
+          refetchFunction()
+          reset() // Reset the form fields after creating a new customer
+          setIsDirect(false) // Reset the isDirect state
+        })
+        .then(() => closeModal())
     }
   }
 
@@ -68,6 +73,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
       })
     } else {
       reset()
+      setIsDirect(false) // Reset the isDirect state when no customer is selected
     }
   }, [customerSelected, reset, setValue])
 
@@ -82,8 +88,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <input
             type="checkbox"
             id="accept"
-            onClick={() => setIsDirect(!isDirect)}
-            {...register('is_direct')}
+            checked={isDirect}
+            onChange={() => setIsDirect(!isDirect)}
             disabled={customerSelected}
             className="checkbox checkbox-primary"
           />
