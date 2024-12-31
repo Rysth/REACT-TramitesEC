@@ -34,7 +34,7 @@ html {
 /* NavLinks */
 
 .active {
-  @apply text-white rounded-md bg-[var(--CL-secondary)];
+  @apply text-white  bg-[var(--CL-secondary)];
 }
 
 h1,
