@@ -172,20 +172,20 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="created_at" value="Fecha del Trámite" />
+                <label htmlFor="created_at" className="label label-text">
+                  Fecha del Trámite
+                </label>
                 {errors.created_at && (
-                  <Badge className="text-xs" color="failure">
+                  <span className="text-xs badge badge-error">
                     {errors.created_at.type === 'required' && 'Campo requerido'}
-                  </Badge>
+                  </span>
                 )}
               </div>
-              <TextInput
+              <input
                 id="created_at"
-                icon={HiCalendar}
+                className="w-full input input-bordered"
                 {...register('created_at', { required: true })}
-                placeholder=""
                 type="date"
-                /* disabled={isCompleted} */
                 defaultValue={
                   procedureSelected
                     ? String(procedureSelected.created_at).split('T')[0]
@@ -195,35 +195,31 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="status_id" value="Estado" />
-                {errors.status_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="status_id" className="label label-text">
+                  Estado
+                </label>
+                {errors.status_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
-              <Select icon={HiListBullet} id="status_id" {...register('status_id')} required>
+              <select id="status_id" className="w-full select select-bordered" {...register('status_id')} required>
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
                     {status.name}
                   </option>
                 ))}
-              </Select>
+              </select>
             </div>
           </fieldset>
           <fieldset className={`grid gap-4  ${isRouteLicenses && 'sm:grid-cols-2'}`}>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="procedure_type_id" value="Tipo Trámite" />
-                {errors.procedure_type_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="procedure_type_id" className="label label-text">
+                  Tipo Trámite
+                </label>
+                {errors.procedure_type_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
-              <Select
-                icon={HiDocument}
+              <select
                 id="procedure_type_id"
+                className="w-full select select-bordered"
                 {...register('procedure_type_id')}
                 onChange={(e) => handleProcedureSelectedChange(e)}
                 disabled={procedureSelected && (isCompleted || hasPayments)}
@@ -234,21 +230,19 @@ function CustomerForm({ closeModal, refetchFunction }) {
                     {procedure_type.name}
                   </option>
                 ))}
-              </Select>
+              </select>
             </div>
             {isRouteLicenses && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="license_id" value="Licencia" />
-                  {errors.license_id && (
-                    <Badge className="text-xs" color="failure">
-                      Campo Requerido
-                    </Badge>
-                  )}
+                  <label htmlFor="license_id" className="label label-text">
+                    Licencia
+                  </label>
+                  {errors.license_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
                 </div>
-                <Select
-                  icon={HiIdentification}
+                <select
                   id="license_id"
+                  className="w-full select select-bordered "
                   {...register('license_id')}
                   disabled={procedureSelected && (isCompleted || hasPayments)}
                   required
@@ -258,19 +252,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
                       {license.name}
                     </option>
                   ))}
-                </Select>
+                </select>
               </div>
             )}
           </fieldset>
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="processor_id" value="Trámitador" />
-                {errors.processor_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="processor_id" className="label label-text">
+                  Trámitador
+                </label>
+                {errors.processor_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
               <AsyncSelect
                 cacheOptions
@@ -296,12 +288,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="customer_id" value="Cliente" />
-                {errors.customer_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="customer_id" className="label label-text">
+                  Cliente
+                </label>
+                {errors.customer_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
               <AsyncSelect
                 cacheOptions
@@ -310,12 +300,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
                 placeholder="Buscar Cliente..."
                 onChange={(selectedOption) => {
                   setValue('customer_id', selectedOption.value)
-                  // Check if the selected customer has is_direct set to true
                   if (selectedOption && selectedOption.isDirect) {
-                    setValue('processor_id', null) // Set processor_id to null
+                    setValue('processor_id', null)
                     setDisableProcessor(true)
                   } else {
-                    // Enable the processor selector if the customer is not direct
                     setDisableProcessor(false)
                   }
                 }}
@@ -337,17 +325,19 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="cost" value="Valor" />
+                <label htmlFor="cost" className="label label-text">
+                  Valor
+                </label>
                 {errors.cost && (
-                  <Badge className="text-xs" color="failure">
+                  <span className="text-xs badge badge-error">
                     {errors.cost.type === 'required' && 'Campo requerido'}
                     {errors.cost.type === 'pattern' && 'Solo números'}
-                  </Badge>
+                  </span>
                 )}
               </div>
-              <TextInput
+              <input
                 id="cost"
-                icon={HiCurrencyDollar}
+                className="input input-bordered"
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
@@ -356,11 +346,13 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="cost_pending" value="Valor Pendiente" />
+                <label htmlFor="cost_pending" className="label label-text">
+                  Valor Pendiente
+                </label>
               </div>
-              <TextInput
+              <input
                 id="cost_pending"
-                icon={HiCurrencyDollar}
+                className="w-full input input-bordered "
                 {...register('cost_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled
@@ -370,17 +362,19 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="profit" value="Ganancia" />
+                <label htmlFor="profit" className="label label-text">
+                  Ganancia
+                </label>
                 {errors.profit && (
-                  <Badge className="text-xs" color="failure">
+                  <span className="text-xs badge badge-error">
                     {errors.profit.type === 'required' && 'Campo requerido'}
                     {errors.profit.type === 'pattern' && 'Solo números'}
-                  </Badge>
+                  </span>
                 )}
               </div>
-              <TextInput
+              <input
                 id="profit"
-                icon={HiCurrencyDollar}
+                className="w-full input input-bordered "
                 {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleProfitChange}
@@ -389,11 +383,13 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="profit_pending" value="Ganancia Pendiente" />
+                <label htmlFor="profit_pending" className="label label-text">
+                  Ganancia Pendiente
+                </label>
               </div>
-              <TextInput
+              <input
                 id="profit_pending"
-                icon={HiCurrencyDollar}
+                className="w-full input input-bordered "
                 {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled
@@ -403,17 +399,19 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="supplier_amount" value="Valor a Proveedor" />
+                <label htmlFor="supplier_amount" className="label label-text">
+                  Valor a Proveedor
+                </label>
                 {errors.supplier_amount && (
-                  <Badge className="text-xs" color="failure">
+                  <span className="text-xs badge badge-error">
                     {errors.supplier_amount.type === 'required' && 'Campo requerido'}
                     {errors.supplier_amount.type === 'pattern' && 'Solo números'}
-                  </Badge>
+                  </span>
                 )}
               </div>
-              <TextInput
+              <input
                 id="supplier_amount"
-                icon={HiCurrencyDollar}
+                className="w-full input input-bordered "
                 {...register('supplier_amount', { required: false, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
@@ -421,12 +419,10 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="supplier_id" value="Proveedor" />
-                {errors.supplier_id && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="supplier_id" className="label label-text">
+                  Proveedor
+                </label>
+                {errors.supplier_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
               <AsyncSelect
                 cacheOptions
@@ -453,22 +449,22 @@ function CustomerForm({ closeModal, refetchFunction }) {
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="comments" value="Comentarios" />
+                <label htmlFor="comments" className="label label-text ">
+                  Comentarios
+                </label>
               </div>
-              <TextInput id="comments" icon={HiChatBubbleBottomCenterText} placeholder="" {...register('comments')} />
+              <input id="comments" className="w-full input input-bordered " placeholder="" {...register('comments')} />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="plate" value="Placa" />
-                {errors.plate && (
-                  <Badge className="text-xs" color="failure">
-                    Campo Requerido
-                  </Badge>
-                )}
+                <label htmlFor="plate" className="label label-text">
+                  Placa
+                </label>
+                {errors.plate && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
-              <TextInput
+              <input
                 id="plate"
-                icon={HiIdentification}
+                className="w-full input input-bordered "
                 placeholder=""
                 disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
                 {...register('plate', { required: !isRouteLicenses })}
@@ -478,13 +474,13 @@ function CustomerForm({ closeModal, refetchFunction }) {
         </div>
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
-      <fieldset className="flex items-center justify-end gap-2 mt-4">
-        <Button color="green" type="submit" disabled={loading}>
+      <fieldset className="flex items-center justify-end gap-2 px-0 pb-6">
+        <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
           Guardar
-        </Button>
-        <Button color="red" onClick={closeModal}>
+        </button>
+        <button className="btn btn-error btn-sm" onClick={closeModal}>
           Cancelar
-        </Button>
+        </button>
       </fieldset>
     </form>
   )

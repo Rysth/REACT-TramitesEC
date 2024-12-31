@@ -37,37 +37,37 @@ function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, ha
         setConfirmationModal={setConfirmationModal}
         confirmDelete={confirmDelete}
       />
-      <Table>
-        <TableHead>
-          <TableRow className="border-b border-x-0">
-            <TableHeaderCell className="w-[4%]">#</TableHeaderCell>
-            {/* <TableHeaderCell className="w-[10%]">Usuario</TableHeaderCell> */}
-            <TableHeaderCell className="w-[10%]">Trámitador</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Estado</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Trámite</TableHeaderCell>
-            <TableHeaderCell className="w-[5%]">Fecha</TableHeaderCell>
-            <TableHeaderCell className="w-max">Cliente</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Pago</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Teléfono</TableHeaderCell>
-            <TableHeaderCell className="w-[10%]">Acciones</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="text-xs divide-y">
-          {currentItems.map((procedure, index) => {
-            const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
+      <div className="overflow-x-auto">
+        <table className="table w-full bg-white">
+          <thead className="font-normal">
+            <tr>
+              <th style={{ width: '3%' }}>#</th>
+              <th style={{ width: '15%' }}>Trámitador</th>
+              <th style={{ width: '15%' }}>Estado</th>
+              <th style={{ width: '11%' }}>Trámite</th>
+              <th style={{ width: '10%' }}>Fecha</th>
+              <th style={{ width: '25%' }}>Cliente</th>
+              <th style={{ width: '8%' }}>Pago</th>
+              <th style={{ width: '15%' }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((procedure, index) => {
+              const calculatedIndex = (currentPage - 1) * itemsPerPage + index + 1
 
-            return (
-              <ProcedureItem
-                key={calculatedIndex}
-                index={calculatedIndex}
-                procedure={procedure}
-                showModal={showModal}
-                showConfirmation={setConfirmationModal}
-              />
-            )
-          })}
-        </TableBody>
-      </Table>
+              return (
+                <ProcedureItem
+                  key={calculatedIndex}
+                  index={calculatedIndex}
+                  procedure={procedure}
+                  showModal={showModal}
+                  showConfirmation={setConfirmationModal}
+                />
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

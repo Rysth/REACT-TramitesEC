@@ -14,7 +14,7 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
   }
 
   return (
-    <section className="h-full p-4 overflow-hidden md:p-8 md:ml-60" id="customerSection">
+    <section className="h-full p-4 overflow-hidden  md:p-8 md:ml-60" id="customerSection">
       <article className="">
         <div className="flex flex-col items-center justify-between h-full gap-2 text-center md:text-left md:flex-row">
           <header className="space-y-1">

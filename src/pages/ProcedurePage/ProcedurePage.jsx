@@ -55,7 +55,7 @@ function ProcedurePage({ routeName }) {
         refetchFunction={refetchEntities}
         slice="procedure"
         title="Trámite"
-        modalSize={`${procedureSelected ? '6xl' : '2xl'}`}
+        modalSize={`${procedureSelected ? 'w-11/12' : '2xl'}`}
         setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>

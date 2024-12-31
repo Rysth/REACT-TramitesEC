@@ -1,11 +1,9 @@
-import { Button, TableCell, TableRow } from '@tremor/react'
-import { Badge } from 'flowbite-react'
 import PropTypes from 'prop-types'
+import { FaWhatsapp } from 'react-icons/fa'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
-import { FaWhatsapp } from 'react-icons/fa'
 
 function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const dispatch = useDispatch()
@@ -22,108 +20,81 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   }
 
   const statusColor =
-    procedure.status.id === 1 || procedure.status.id === 3 ? 'gray' : procedure.status.id === 2 ? 'indigo' : 'success'
+    procedure.status.id === 1 || procedure.status.id === 3 ? 'info' : procedure.status.id === 2 ? 'accent' : 'success'
   const isDirect = procedure.customer?.is_direct
 
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
 
   return (
-    <TableRow className="hover:bg-neutral-100">
-      <TableCell className="py-1.5 font-bold text-gray-900 truncate whitespace-nowrap">{index}</TableCell>
-      {/*  <TableCell className="py-1.5 truncate">
-        <Badge color="indigo" className="grid place-items-center">
-          {procedure.user.username}
-        </Badge>
-      </TableCell> */}
-      <TableCell className="py-1.5 uppercase">
+    <tr className="hover *:py-1 *:text-[0.8rem]">
+      <th>{index}</th>
+      <td>
         {!isDirect && procedure.processor ? (
-          <Badge
-            className="grid truncate place-items-center max-w-[8rem]"
-            href={`/tramitadores/${procedure.processor.id}`}
-            color="purple"
-          >
+          <span className="w-full text-white badge-sm badge badge-primary">
             {`${procedure.processor.first_name.split(' ')[0]} ${procedure.processor.last_name.split(' ')[0]}`}
-          </Badge>
+          </span>
         ) : (
-          <Badge className="grid place-items-center">Cliente Directo</Badge>
+          <span className="w-full text-white badge-sm badge badge-primary">Cliente Directo</span>
         )}
-      </TableCell>
-      <TableCell className="py-1.5 ">
-        <Badge color={statusColor} className="grid truncate place-items-center">
-          {procedure.status.name}
-        </Badge>
-      </TableCell>
-      <TableCell className="py-1.5 ">
-        <Badge className="grid truncate place-items-center">{procedure.procedure_type.name}</Badge>
-      </TableCell>
-      <TableCell className="py-1.5">{new Date(procedure.created_at).toISOString().split('T')[0]}</TableCell>
-
-      <TableCell className="py-1.5 capitalize">
+      </td>
+      <td>
+        <span className={` badge badge-${statusColor}`}>{procedure.status.name}</span>
+      </td>
+      <td>{procedure.procedure_type.name}</td>
+      <td>{new Date(procedure.created_at).toISOString().split('T')[0]}</td>
+      <td className="uppercase">
         {procedure.customer && isRouteLicenses ? (
-          <a
-            href={`/clientes/${procedure.customer.id}`}
-            className="uppercase transition hover:text-blue-500 hover:underline"
-          >
+          <a href={`/clientes/${procedure.customer.id}`} className="font-bold link link-hover">
             {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name}`}
           </a>
         ) : (
           <p>{procedure.plate}</p>
         )}
-      </TableCell>
-      <TableCell className="py-1.5">
+      </td>
+      <td>
         {procedure.is_paid ? (
-          <Badge className="grid place-items-center" color="green">
-            Pagado
-          </Badge>
+          <span className="badge-sm badge badge-success">Pagado</span>
         ) : (
-          <Badge className="grid place-items-center" color="red">
-            Pendiente
-          </Badge>
+          <span className="badge-sm badge badge-error">Pendiente</span>
         )}
-      </TableCell>
-      <TableCell className="py-1.5 truncate">
+      </td>
+      <td className="flex items-center gap-1">
         {procedure.customer?.is_direct ? (
           <a
             href={`https://api.whatsapp.com/send?phone=593${procedure.customer.phone}`}
-            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            className="btn btn-success btn-sm"
             target="_blank"
+            rel="noopener noreferrer"
           >
-            <FaWhatsapp /> Contactar
+            <FaWhatsapp />
           </a>
         ) : (
           <a
             href={`https://api.whatsapp.com/send?phone=593${procedure.processor?.phone}`}
-            className="flex items-center justify-center w-24 gap-1 p-1.5 font-bold text-center text-white bg-green-400 rounded md:hover:bg-black"
+            className="btn btn-success btn-sm"
             target="_blank"
+            rel="noopener noreferrer"
           >
-            <FaWhatsapp /> Contactar
+            <FaWhatsapp />
           </a>
         )}
-      </TableCell>
-      <TableCell className="flex items-center w-full gap-1 py-1.5">
-        <Button size="xs" color="blue" onClick={() => handleProcedureSelected(procedure.id)}>
-          <span className="sr-only">Editar</span>
+        <button className="btn btn-sm btn-primary" onClick={() => handleProcedureSelected(procedure.id)}>
           <HiPencilSquare />
-        </Button>
-
-        <Button
-          size="xs"
-          color="red"
+        </button>
+        <button
+          className="btn btn-sm btn-error"
           onClick={() => {
             dispatch(procedureActions.setProcedureSelected(procedure.id))
             showConfirmation(true)
           }}
         >
-          <span className="sr-only">Eliminar</span>
           <HiMiniTrash />
-        </Button>
-      </TableCell>
-    </TableRow>
+        </button>
+      </td>
+    </tr>
   )
 }
-
-// TODO: Display the Table and Items.
 
 ProcedureItem.propTypes = {
   index: PropTypes.number.isRequired,

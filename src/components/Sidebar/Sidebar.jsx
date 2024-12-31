@@ -38,9 +38,9 @@ function Sidebar() {
         {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
 
-      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[1000] md:w-60'}`} onClick={closeSideBar}>
+      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[100] md:w-60'}`} onClick={closeSideBar}>
         <aside
-          className={`fixed w-60 -translate-x-60 h-screen transition inset-0 z-[9000] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
+          className={`fixed w-60 -translate-x-60 h-screen transition inset-0 z-[100] bg-[var(--CL-primary)] shadow-lg  md:translate-x-0  ${
             open && 'translate-x-0'
           }`}
         >
