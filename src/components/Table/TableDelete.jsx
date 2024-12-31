@@ -8,7 +8,7 @@ function TableDelete({ confirmationModal, setConfirmationModal, confirmDelete })
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
-          <HiOutlineExclamationCircle className="w-24 h-24 mx-auto text-gray-800 sm:h-32 sm:w-32 dark:text-gray-200" />
+          <HiOutlineExclamationCircle className="w-24 h-24 mx-auto" />
           <h3 className="text-lg leading-5 text-gray-700 sm:text-xl md:text-2xl">
             ¿Estás seguro/a de querer eliminarlo?
           </h3>
@@ -23,7 +23,7 @@ function TableDelete({ confirmationModal, setConfirmationModal, confirmDelete })
             >
               Confirmar
             </Button>
-            <Button color="dark" onClick={() => setConfirmationModal(false)}>
+            <Button color="light" onClick={() => setConfirmationModal(false)}>
               Cancelar
             </Button>
           </div>

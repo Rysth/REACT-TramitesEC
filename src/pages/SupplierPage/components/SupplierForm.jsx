@@ -36,7 +36,10 @@ function SupplierForm({ closeModal, refetchFunction }) {
       }
     } else {
       dispatch(createSupplier({ activeToken, supplierData }))
-        .then(() => refetchFunction())
+        .then(() => {
+          refetchFunction()
+          reset()
+        })
         .then(() => closeModal())
     }
   }
