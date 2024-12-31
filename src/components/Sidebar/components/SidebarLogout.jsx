@@ -11,9 +11,9 @@ function SidebarLogout() {
   const closeUserSession = () => dispatch(destroySession(activeToken)).then(() => navigator('/session'))
 
   return (
-    <Button color="red" className="w-full" onClick={closeUserSession}>
+    <button className="w-full btn btn-error" onClick={closeUserSession}>
       Cerrar Sesión
-    </Button>
+    </button>
   )
 }
 
