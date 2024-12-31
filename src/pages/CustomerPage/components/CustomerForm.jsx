@@ -142,17 +142,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </span>
             )}
           </div>
-          <div className="relative">
-            <HiIdentification className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiIdentification className="w-4 h-4 opacity-70" />
             <input
               id="identification"
               type="text"
               placeholder=""
               defaultValue={customerSelected && customerSelected.identification}
               {...register('identification', { required: true, pattern: /^[0-9]+$/i })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -161,17 +161,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </label>
             {errors.email && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <div className="relative">
-            <HiMiniEnvelope className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniEnvelope className="w-4 h-4 opacity-70" />
             <input
               id="email"
               type="email"
               placeholder=""
               defaultValue={customerSelected && customerSelected.email}
               {...register('email', { required: true })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
@@ -182,17 +182,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </label>
             {errors.first_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <div className="relative">
-            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniUserCircle className="w-4 h-4 opacity-70" />
             <input
               id="first_name"
               type="text"
               placeholder=""
               defaultValue={customerSelected && customerSelected.first_name}
               {...register('first_name', { required: true })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -201,17 +201,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </label>
             {errors.last_name && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <div className="relative">
-            <HiMiniUserCircle className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniUserCircle className="w-4 h-4 opacity-70" />
             <input
               id="last_name"
               type="text"
               placeholder=""
               defaultValue={customerSelected && customerSelected.last_name}
               {...register('last_name', { required: true })}
-              className="w-full pl-10 input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
       </fieldset>
       <fieldset className="grid gap-4 sm:grid-cols-2">
@@ -227,18 +227,18 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </span>
             )}
           </div>
-          <div className="relative">
-            <HiMiniDevicePhoneMobile className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMiniDevicePhoneMobile className="w-4 h-4 opacity-70" />
             <input
               id="phone"
               type="text"
               placeholder=""
               defaultValue={customerSelected && customerSelected.phone}
               {...register('phone', { required: isDirect, pattern: /^[0-9]+$/i })}
-              className="w-full input input-bordered"
+              className="grow"
               disabled={!isDirect || (customerSelected && !customerSelected.is_direct)}
             />
-          </div>
+          </label>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -246,17 +246,17 @@ function CustomerForm({ closeModal, refetchFunction }) {
               Dirección
             </label>
           </div>
-          <div className="relative">
-            <HiMapPin className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+          <label className="flex items-center gap-2 input input-bordered">
+            <HiMapPin className="w-4 h-4 opacity-70" />
             <input
               id="address"
               type="text"
               placeholder=""
               defaultValue={customerSelected && customerSelected.address}
               {...register('address')}
-              className="w-full input input-bordered"
+              className="grow"
             />
-          </div>
+          </label>
         </div>
       </fieldset>
       <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
