@@ -7,6 +7,7 @@ import { HiCurrencyDollar, HiDocument, HiDocumentCheck, HiMiniTrash } from 'reac
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { createPayment, deletePayment, getPayments } from '../../../redux/slices/SharedSlice'
+import { fetchProcedureDetails } from '../../../redux/slices/ProcedureSlice'
 
 const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
   const { procedureSelected } = useSelector((store) => store.procedure)
@@ -32,7 +33,11 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
           .then(() => refetchFunction())
           .then(() => reset())
-          .then(() => closeModal())
+      })
+      .then(() => {
+        dispatch(fetchProcedureDetails({ activeToken, procedureId: procedure_id })).catch((error) => {
+          console.error('Error fetching procedure details:', error)
+        })
       })
       .catch((error) => {
         // Display error message if payment creation fails
@@ -45,7 +50,6 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
     dispatch(deletePayment({ activeToken, paymentID }))
       .then(() => refetchFunction())
       .then(() => reset())
-      .then(() => closeModal())
   }
 
   const confirmDeletePayment = (paymentID) => {
@@ -69,7 +73,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         <fieldset className="grid gap-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="payment_type_id" className="label-text">
+              <label htmlFor="payment_type_id" className="label label-text">
                 Forma de Pago
               </label>
               {errors.payment_type_id && (
@@ -103,7 +107,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         <fieldset className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="value" className="label-text">
+              <label htmlFor="value" className="label label-text">
                 Valor
               </label>
               {errors.value && (
@@ -137,7 +141,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="receipt_number" className="label-text">
+              <label htmlFor="receipt_number" className="label label-text">
                 Comprobante
               </label>
               {errors.receipt_number && (
@@ -159,9 +163,10 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
             </div>
           </div>
         </fieldset>
-        <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
-          <button type="submit" className="btn btn-sm btn-success" disabled={isNotPending}>
-            Guardar
+        <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-4">
+          <button type="submit" className="gap-1 btn btn-sm btn-success" disabled={isNotPending}>
+            <HiCurrencyDollar className="text-lg" />
+            Guardar Pago
           </button>
           <button type="button" className="btn btn-sm btn-error" onClick={closeModal}>
             Cancelar

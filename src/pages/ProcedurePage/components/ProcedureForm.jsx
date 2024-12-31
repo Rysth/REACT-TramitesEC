@@ -153,6 +153,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, reset, setValue])
 
+  useEffect(() => {}, [procedureSelected])
+
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
@@ -166,8 +168,8 @@ function CustomerForm({ closeModal, refetchFunction }) {
     : typesOriginal.filter((item) => !item.has_licenses)
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
+    <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid space-y-4">
           <fieldset className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
@@ -472,17 +474,19 @@ function CustomerForm({ closeModal, refetchFunction }) {
             </div>
           </fieldset>
         </div>
+        <fieldset className="flex items-center justify-end gap-2 px-0 pb-6 mt-4">
+          <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
+            Guardar
+          </button>
+          <button className="btn btn-error btn-sm" onClick={closeModal}>
+            Cancelar
+          </button>
+        </fieldset>
+      </form>
+      <div>
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
-      <fieldset className="flex items-center justify-end gap-2 px-0 pb-6 mt-4">
-        <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
-          Guardar
-        </button>
-        <button className="btn btn-error btn-sm" onClick={closeModal}>
-          Cancelar
-        </button>
-      </fieldset>
-    </form>
+    </div>
   )
 }
 
