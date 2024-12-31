@@ -2,7 +2,9 @@ import { useForm } from 'react-hook-form'
 import { HiMail } from 'react-icons/hi'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { useDispatch } from 'react-redux'
-import UndrawLogin from '../../assets/images/illustrations/undraw_login.svg'
+import BrandImage from '../../assets/images/brands/brand_dark.svg'
+import BrandImageWhite from '../../assets/images/brands/brand.svg'
+import RysthDesignLogo from '../../assets/images/rysthdesign/logo_dark.svg'
 import { createSession } from '../../redux/slices/AuthenticationSlice'
 
 function SessionPage() {
@@ -20,8 +22,8 @@ function SessionPage() {
           <form className="flex flex-col w-full gap-1.5" onSubmit={handleSubmit(onSubmit)}>
             <header className="mb-4 md:col-span-2">
               <div className="flex items-center gap-2 mb-6">
-                <img src={UndrawLogin} alt="TramitesEC Logo" className="w-10" />
-                <h3 className="font-medium text-blue-500">TramitesEC</h3>
+                <img src={BrandImage} alt="TramitesEC Logo" className="w-12" />
+                <h3 className="font-medium text-blue-500">TramitesEC | Sistema de Trámites</h3>
               </div>
               <h2 className="w-full mb-0.5 text-3xl font-bold">Inicia sesión con tu cuenta.</h2>
               <p className="text-neutral-500">¡Bienvenido nuevamente!</p>
@@ -29,7 +31,9 @@ function SessionPage() {
             <fieldset className="w-full">
               <div className="w-full form-control">
                 <div className="label">
-                  <label htmlFor="email" className="label-text">Correo Electrónico</label>
+                  <label htmlFor="email" className="label-text">
+                    Correo Electrónico
+                  </label>
                 </div>
                 <label className="flex items-center gap-2 input input-bordered">
                   <HiMail className="opacity-50" />
@@ -47,7 +51,9 @@ function SessionPage() {
             <fieldset className="w-full">
               <div className="w-full form-control">
                 <div className="label">
-                  <label htmlFor="password" className="label-text">Contraseña</label>
+                  <label htmlFor="password" className="label-text">
+                    Contraseña
+                  </label>
                 </div>
                 <label className="flex items-center gap-2 input input-bordered">
                   <RiLockPasswordFill className="opacity-50" />
@@ -75,13 +81,13 @@ function SessionPage() {
               target="_blank"
               rel="noreferrer"
             >
-              Creado Por <img src="/src/assets/images/brands/brand.svg" alt="RysthDesign Logo" className="w-12" />
+              Creado Por <img src={RysthDesignLogo} alt="RysthDesign Logo" className="w-12" />
             </a>
           </footer>
         </div>
         <div className="flex items-center justify-center order-first w-full h-full bg-gradient-to-r lg:order-last from-indigo-500 to-blue-500">
           <div className="flex items-center gap-2 py-2">
-            <img src={UndrawLogin} alt="Login Illustration" className="w-20 md:w-40" />
+            <img src={BrandImageWhite} alt="Login Illustration" className="w-20 md:w-40" />
             <h3 className="font-medium text-blue-500 sr-only">TramitesEC Template</h3>
           </div>
         </div>
