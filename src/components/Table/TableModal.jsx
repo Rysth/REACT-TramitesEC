@@ -25,12 +25,10 @@ function TableModal({
   return (
     <dialog id="tableModal" className={`modal ${openModal ? 'modal-open' : ''} modal-bottom sm:modal-middle z-[1000]`}>
       <div
-        className={`modal-box ${modalSize && '!min-w-[70rem]'} z-[1000] p-0 ${loading && 'pointer-events-none grayscale '} $`}
+        className={`modal-box ${modalSize === 'large' ? 'min-w-[80rem]' : ''} z-[1000] p-0 ${loading && 'pointer-events-none grayscale'}`}
       >
         <header className="p-4 py-5 text-center text-white bg-[var(--CL-primary)]">
-          <h3 className="text-xl sm:text-3xl">
-            {headerMessage} {modalSize}
-          </h3>
+          <h3 className="text-xl sm:text-3xl">{headerMessage}</h3>
         </header>
         <div className="p-6 pb-0 modal-body">{React.createElement(formComponent, { closeModal, refetchFunction })}</div>
       </div>

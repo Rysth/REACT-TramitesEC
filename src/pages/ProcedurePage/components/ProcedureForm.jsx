@@ -337,7 +337,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
               </div>
               <input
                 id="cost"
-                className="input input-bordered"
+                className="w-full input input-bordered"
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
@@ -474,7 +474,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         </div>
         {procedureSelected && <ProcedurePaymentForm refetchFunction={refetchFunction} closeModal={closeModal} />}
       </div>
-      <fieldset className="flex items-center justify-end gap-2 px-0 pb-6">
+      <fieldset className="flex items-center justify-end gap-2 px-0 pb-6 mt-4">
         <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
           Guardar
         </button>

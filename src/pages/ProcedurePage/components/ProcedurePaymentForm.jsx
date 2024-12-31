@@ -49,7 +49,7 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
 
   useEffect(() => {
     dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
-  }, [])
+  }, [dispatch, activeToken, procedureSelected.id])
 
   useEffect(() => {
     setValue('payment_type_id', 1)
@@ -59,124 +59,142 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
 
   return (
     <div className="space-y-4">
-      <fieldset className="grid gap-4">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="payment_type_id" value="Forma de Pago" />
-            {errors.payment_type_id && (
-              <Badge className="text-xs" color="failure">
-                {errors.payment_type_id.type === 'required' && 'Campo requerido'}
-                {errors.payment_type_id.type === 'pattern' && 'Solo números'}
-              </Badge>
-            )}
+      <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className="grid gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="payment_type_id" className="label-text">
+                Forma de Pago
+              </label>
+              {errors.payment_type_id && (
+                <span className="badge-sm badge badge-error">
+                  {errors.payment_type_id.type === 'required' && 'Campo requerido'}
+                  {errors.payment_type_id.type === 'pattern' && 'Solo números'}
+                </span>
+              )}
+            </div>
+            <div className="relative">
+              <HiDocument className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+              <select
+                id="payment_type_id"
+                {...register('payment_type_id')}
+                defaultValue={1}
+                onChange={(e) => setPaymentType(parseInt(e.target.value))}
+                required
+                disabled={isNotPending}
+                className="w-full pl-10 input input-bordered"
+              >
+                {paymentsTypeOriginal.length > 0 &&
+                  paymentsTypeOriginal.map((payment_type) => (
+                    <option key={payment_type.id} value={payment_type.id}>
+                      {payment_type.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
-          <Select
-            icon={HiDocument}
-            id="payment_type_id"
-            {...register('payment_type_id')}
-            defaultValue={1}
-            onChange={(e) => setPaymentType(parseInt(e.target.value))}
-            required
-            disabled={isNotPending}
-          >
-            {paymentsTypeOriginal.length > 0 &&
-              paymentsTypeOriginal.map((payment_type) => (
-                <option key={payment_type.id} value={payment_type.id}>
-                  {payment_type.name}
-                </option>
-              ))}
-          </Select>
-        </div>
-      </fieldset>
-      <fieldset className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="value" value="Valor" />
-            {errors.value && (
-              <Badge className="text-xs" color="failure">
-                {errors.value.type === 'required' && 'Campo requerido'}
-                {errors.value.type === 'pattern' && 'Solo números'}
-                {errors.value.type === 'positive' && 'Solo valores positivos'}
-                {errors.value.type === 'max' && 'Solo valores menores al valor pendiente'}
-              </Badge>
-            )}
+        </fieldset>
+        <fieldset className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="value" className="label-text">
+                Valor
+              </label>
+              {errors.value && (
+                <span className="badge-sm badge badge-error">
+                  {errors.value.type === 'required' && 'Campo requerido'}
+                  {errors.value.type === 'pattern' && 'Solo números'}
+                  {errors.value.type === 'positive' && 'Solo valores positivos'}
+                  {errors.value.type === 'max' && 'Solo valores menores al valor pendiente'}
+                </span>
+              )}
+            </div>
+            <div className="relative">
+              <HiCurrencyDollar className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+              <input
+                id="value"
+                defaultValue={procedureSelected && procedureSelected.value}
+                {...register('value', {
+                  required: true,
+                  pattern: /^[0-9.]+$/i,
+                  validate: {
+                    positive: (value) => parseFloat(value) >= 0 || 'Solo valores positivos',
+                    max: (value) =>
+                      parseFloat(value) <= procedureSelected.cost_pending || 'Solo valores menores al valor pendiente',
+                  },
+                })}
+                placeholder=""
+                disabled={isNotPending}
+                className="w-full pl-10 input input-bordered"
+              />
+            </div>
           </div>
-          <TextInput
-            id="value"
-            defaultValue={procedureSelected && procedureSelected.value}
-            icon={HiCurrencyDollar}
-            {...register('value', {
-              required: true,
-              pattern: /^[0-9.]+$/i,
-              validate: {
-                positive: (value) => parseFloat(value) >= 0 || 'Solo valores positivos',
-                max: (value) =>
-                  parseFloat(value) <= procedureSelected.cost_pending || 'Solo valores menores al valor pendiente',
-              },
-            })}
-            placeholder=""
-            disabled={isNotPending}
-          />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="receipt_number" value="Comprobante" />
-            {errors.receipt_number && (
-              <Badge className="text-xs" color="failure">
-                {errors.receipt_number.type === 'required' && 'Campo requerido'}
-              </Badge>
-            )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="receipt_number" className="label-text">
+                Comprobante
+              </label>
+              {errors.receipt_number && (
+                <span className="badge-sm badge badge-error">
+                  {errors.receipt_number.type === 'required' && 'Campo requerido'}
+                </span>
+              )}
+            </div>
+            <div className="relative">
+              <HiDocumentCheck className="absolute text-gray-400 transform -translate-y-1/2 top-1/2 left-3" />
+              <input
+                id="receipt_number"
+                defaultValue={procedureSelected && procedureSelected.value}
+                {...register('receipt_number', { required: paymentType !== 1 })}
+                disabled={paymentType === 1}
+                placeholder=""
+                className="w-full pl-10 input input-bordered"
+              />
+            </div>
           </div>
-          <TextInput
-            id="receipt_number"
-            defaultValue={procedureSelected && procedureSelected.value}
-            icon={HiDocumentCheck}
-            {...register('receipt_number', { required: paymentType !== 1 })}
-            disabled={paymentType === 1}
-            placeholder=""
-          />
-        </div>
-      </fieldset>
-      <fieldset className="flex items-center justify-end">
-        <Button type="button" onClick={handleSubmit(onSubmit)} disabled={isNotPending}>
-          Guardar
-        </Button>
-      </fieldset>
+        </fieldset>
+        <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
+          <button type="submit" className="btn btn-sm btn-success" disabled={isNotPending}>
+            Guardar
+          </button>
+          <button type="button" className="btn btn-sm btn-error" onClick={closeModal}>
+            Cancelar
+          </button>
+        </fieldset>
+      </form>
       <fieldset className="relative overflow-x-auto max-h-64">
-        <Table>
-          <TableHead className="bg-neutral-100">
-            <TableHeaderCell className="w-[5%] text-xs">Fecha</TableHeaderCell>
-            <TableHeaderCell className="text-xs w-max">Forma de Pago</TableHeaderCell>
-            <TableHeaderCell className="w-[10%] text-xs">Valor</TableHeaderCell>
-            <TableHeaderCell className="w-[20%] text-xs">Comprobante</TableHeaderCell>
-            <TableHeaderCell className="w-[10%] text-xs">Acciones</TableHeaderCell>
-          </TableHead>
-          <TableBody className="text-xs divide-y">
+        <table className="table w-full bg-white">
+          <thead className="bg-neutral-100">
+            <tr>
+              <th className="w-[5%] text-xs">Fecha</th>
+              <th className="text-xs w-max">Forma de Pago</th>
+              <th className="w-[10%] text-xs">Valor</th>
+              <th className="w-[20%] text-xs">Comprobante</th>
+              <th className="w-[10%] text-xs">Acciones</th>
+            </tr>
+          </thead>
+          <tbody className="text-xs divide-y">
             {paymentsOriginal.length > 0 &&
               paymentsOriginal.map((payment) => (
-                <TableRow key={payment.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white  !py-1">
-                    {payment.date}
-                  </TableCell>
-                  <TableCell className="truncate">{payment.payment_type.name}</TableCell>
-                  <TableCell>${payment.value}</TableCell>
-                  <TableCell>{payment?.receipt_number}</TableCell>
-                  <TableCell className="!py-1">
-                    <Button
+                <tr key={payment.id} className="bg-white hover">
+                  <td className="font-medium text-gray-900 whitespace-nowrap  !py-1">{payment.date}</td>
+                  <td className="truncate">{payment.payment_type.name}</td>
+                  <td>${payment.value}</td>
+                  <td>{payment?.receipt_number}</td>
+                  <td className="!py-1">
+                    <button
                       type="button"
-                      className="!text-xs"
+                      className="btn btn-sm btn-error"
                       onClick={() => handleDeletePayment(payment.id)}
-                      size="xs"
-                      color="red"
                     >
                       <span className="sr-only">Eliminar</span>
                       <HiMiniTrash />
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                    </button>
+                  </td>
+                </tr>
               ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </fieldset>
     </div>
   )

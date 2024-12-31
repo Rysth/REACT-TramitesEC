@@ -42,6 +42,8 @@ function ProcedurePage({ routeName }) {
     setHasLicenses(routeName === 'licencias')
   }, [routeName])
 
+  useEffect(() => {}, [procedureSelected]) // eslint-disable-line
+
   return (
     <SectionLayout
       title="Trámites"
@@ -55,7 +57,7 @@ function ProcedurePage({ routeName }) {
         refetchFunction={refetchEntities}
         slice="procedure"
         title="Trámite"
-        modalSize={`${procedureSelected ? 'w-11/12' : '2xl'}`}
+        modalSize={procedureSelected ? 'large' : 'small'}
         setEntitySelected={procedureActions.setProcedureSelected}
       />
       <MainLayout>
