@@ -20,6 +20,12 @@ function CustomerForm({ closeModal, refetchFunction }) {
     formState: { errors },
   } = useForm()
   const [isDirect, setIsDirect] = useState(false)
+  const [selectedProcessor, setSelectedProcessor] = useState([])
+
+  const handleCancel = () => {
+    reset()
+    setSelectedProcessor([])
+  }
 
   const onSubmit = (customerData) => {
     customerData.is_direct = isDirect // Ensure is_direct is correctly set
@@ -50,6 +56,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         })
         .then(() => closeModal())
     }
+    setSelectedProcessor([])
   }
 
   const loadProcessorOptions = debounce((inputValue, callback) => {
@@ -80,6 +87,18 @@ function CustomerForm({ closeModal, refetchFunction }) {
   useEffect(() => {
     dispatch(fetchProcessorOptions({ activeToken, query: '' }))
   }, [dispatch, activeToken])
+
+  useEffect(() => {
+    if (customerSelected && customerSelected.processor) {
+      setSelectedProcessor([
+        {
+          label: `${customerSelected.processor.code} - ${customerSelected.processor.first_name} ${customerSelected.processor.last_name}`,
+          value: customerSelected.processor.id,
+          phone: customerSelected.processor.phone,
+        },
+      ])
+    }
+  }, [customerSelected])
 
   return (
     <form className="grid space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -114,16 +133,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
               placeholder="Buscar..."
               onChange={(selectedOption) => {
                 setValue('processor_id', selectedOption.value)
+                setSelectedProcessor([selectedOption])
               }}
-              defaultValue={
-                customerSelected && customerSelected.processor
-                  ? {
-                      label: `${customerSelected.processor.code} - ${customerSelected.processor.first_name} ${customerSelected.processor.last_name}`,
-                      value: customerSelected.processor.id,
-                      phone: customerSelected.processor.phone,
-                    }
-                  : undefined
-              }
+              value={selectedProcessor}
               className="text-sm shadow shadow-gray-200"
             />
           </div>
@@ -263,7 +275,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
         <button type="submit" className="btn btn-success" disabled={loading}>
           Guardar
         </button>
-        <button type="button" className="btn btn-error" onClick={closeModal}>
+        <button type="button" className="btn btn-error" onClick={handleCancel}>
           Cancelar
         </button>
       </fieldset>

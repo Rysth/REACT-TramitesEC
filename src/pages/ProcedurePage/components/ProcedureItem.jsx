@@ -31,11 +31,11 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <th>{index}</th>
       <td>
         {!isDirect && procedure.processor ? (
-          <span className="w-full text-white badge-sm badge badge-primary">
+          <span className="w-full text-white uppercase badge-sm badge badge-primary">
             {`${procedure.processor.first_name.split(' ')[0]} ${procedure.processor.last_name.split(' ')[0]}`}
           </span>
         ) : (
-          <span className="w-full text-white badge-sm badge badge-primary">Cliente Directo</span>
+          <span className="w-full text-white uppercase badge-sm badge badge-primary">Cliente Directo</span>
         )}
       </td>
       <td>

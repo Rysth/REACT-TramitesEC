@@ -77,6 +77,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         .then(() => refetchFunction())
         .then(() => closeModal())
     }
+    setSelectedProcessor([])
+    setSelectedCustomer([])
   }
 
   // Load processor options
@@ -165,6 +167,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     reset()
     setSelectedProcessor([])
     setSelectedCustomer([])
+    closeModal()
   }
 
   useEffect(() => {
