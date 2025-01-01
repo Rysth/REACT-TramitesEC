@@ -18,6 +18,9 @@ function ProcedureTypeForm({ closeModal, refetchFunction }) {
   } = useForm()
 
   const onSubmit = (procedureTypeData) => {
+    // Set has_licenses based on the selected type
+    procedureTypeData.has_licenses = procedureTypeData.type === 'Licencias'
+
     if (procedureTypeSelected) {
       // Check if the procedureTypeData is different from procedureTypeSelected
       const isDifferent = Object.keys(procedureTypeData).some((key) => {
@@ -53,6 +56,8 @@ function ProcedureTypeForm({ closeModal, refetchFunction }) {
       Object.keys(procedureTypeSelected).forEach((key) => {
         setValue(key, procedureTypeSelected[key])
       })
+      // Set the type field based on has_licenses
+      setValue('type', procedureTypeSelected.has_licenses ? 'Licencias' : 'Vehicular')
     } else {
       reset() // Reset the form if no procedure type is selected
     }
@@ -82,21 +87,21 @@ function ProcedureTypeForm({ closeModal, refetchFunction }) {
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label htmlFor="description" className="label-text">
-              Descripción
+            <label htmlFor="type" className="label-text">
+              Tipo
             </label>
-            {errors.description && <span className="badge-sm badge badge-error">Campo Requerido</span>}
+            {errors.type && <span className="badge-sm badge badge-error">Campo Requerido</span>}
           </div>
-          <label className="flex items-center gap-2 input input-bordered">
-            <HiMiniDocumentText className="w-4 h-4 opacity-70" />
-            <input
-              id="description"
-              type="text"
-              placeholder=""
-              defaultValue={procedureTypeSelected && procedureTypeSelected.description}
-              {...register('description', { required: true })}
-              className="grow"
-            />
+          <label className="flex items-center gap-2">
+            <select
+              id="type"
+              defaultValue={procedureTypeSelected && (procedureTypeSelected.has_licenses ? 'Licencias' : 'Vehicular')}
+              {...register('type', { required: true })}
+              className="grow select select-bordered"
+            >
+              <option value="Vehicular">Vehicular</option>
+              <option value="Licencias">Licencias</option>
+            </select>
           </label>
         </div>
       </fieldset>
