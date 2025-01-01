@@ -37,7 +37,7 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation }
           <HiPencilSquare />
         </button>
         <button
-          className="btn btn-sm btn-error"
+          className="hidden btn btn-sm btn-error"
           onClick={() => {
             dispatch(procedureTypeActions.setProcedureTypeSelected(procedureType.id))
             showConfirmation(true)

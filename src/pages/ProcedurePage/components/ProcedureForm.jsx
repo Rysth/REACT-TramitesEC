@@ -28,6 +28,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setValue,
     formState: { errors },
   } = useForm({ mode: 'onChange' })
+  const [selectedProcessor, setSelectedProcessor] = useState([])
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -159,6 +160,23 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       : typesOriginal.filter((item) => !item.has_licenses)
     : []
 
+  const handleCancel = () => {
+    reset()
+    setSelectedProcessor([])
+    closeModal()
+  }
+
+  useEffect(() => {
+    if (procedureSelected && procedureSelected.processor) {
+      setSelectedProcessor([
+        {
+          label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
+          value: procedureSelected.processor.id,
+        },
+      ])
+    }
+  }, [procedureSelected])
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -266,15 +284,9 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 placeholder="Buscar Trámitador..."
                 onChange={(selectedOption) => {
                   setValue('processor_id', selectedOption.value)
+                  setSelectedProcessor([selectedOption])
                 }}
-                defaultValue={
-                  procedureSelected && procedureSelected.processor
-                    ? {
-                        label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
-                        value: procedureSelected.processor.id,
-                      }
-                    : undefined
-                }
+                value={selectedProcessor}
                 className="text-sm shadow shadow-gray-200"
                 isDisabled={isCompleted || hasPayments || disableProcessor}
                 required={!shouldUsePlate || !disableProcessor}
@@ -296,6 +308,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   setValue('customer_id', selectedOption.value)
                   if (selectedOption && selectedOption.isDirect) {
                     setValue('processor_id', null)
+                    setSelectedProcessor([])
                     setDisableProcessor(true)
                   } else {
                     setDisableProcessor(false)
@@ -307,7 +320,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                         label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
                         value: procedureSelected.customer.id,
                       }
-                    : undefined
+                    : null
                 }
                 isDisabled={isCompleted || hasPayments}
                 className="text-sm shadow shadow-gray-200"
@@ -470,7 +483,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
             Guardar
           </button>
-          <button className="btn btn-error btn-sm" onClick={closeModal}>
+          <button className="btn btn-error btn-sm" type="button" onClick={handleCancel}>
             Cancelar
           </button>
         </fieldset>

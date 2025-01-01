@@ -33,7 +33,7 @@ export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', as
       },
       withCredentials: true,
     })
-    return response.data
+    return response.data.procedure_types // Adjusted to match the nested structure
   } catch (error) {
     handleRequestError(error)
   }

@@ -18,8 +18,6 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [startDate, setStartDate] = useState(null) // Add startDate state
   const [endDate, setEndDate] = useState(null)
 
-  console.log(useSelector((store) => store[entitySlice]))
-
   const refetchEntities = () => {
     dispatch(
       getEntitiesAction({
