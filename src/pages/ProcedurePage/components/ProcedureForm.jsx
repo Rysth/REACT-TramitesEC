@@ -29,6 +29,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     formState: { errors },
   } = useForm({ mode: 'onChange' })
   const [selectedProcessor, setSelectedProcessor] = useState([])
+  const [selectedCustomer, setSelectedCustomer] = useState([])
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -163,7 +164,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const handleCancel = () => {
     reset()
     setSelectedProcessor([])
-    closeModal()
+    setSelectedCustomer([])
   }
 
   useEffect(() => {
@@ -172,6 +173,17 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         {
           label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
           value: procedureSelected.processor.id,
+        },
+      ])
+    }
+  }, [procedureSelected])
+
+  useEffect(() => {
+    if (procedureSelected && procedureSelected.customer) {
+      setSelectedCustomer([
+        {
+          label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
+          value: procedureSelected.customer.id,
         },
       ])
     }
@@ -308,20 +320,15 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   setValue('customer_id', selectedOption.value)
                   if (selectedOption && selectedOption.isDirect) {
                     setValue('processor_id', null)
+                    setSelectedCustomer([selectedOption])
                     setSelectedProcessor([])
                     setDisableProcessor(true)
                   } else {
+                    setSelectedCustomer([selectedOption])
                     setDisableProcessor(false)
                   }
                 }}
-                defaultValue={
-                  procedureSelected && procedureSelected.customer
-                    ? {
-                        label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
-                        value: procedureSelected.customer.id,
-                      }
-                    : null
-                }
+                value={selectedCustomer}
                 isDisabled={isCompleted || hasPayments}
                 className="text-sm shadow shadow-gray-200"
                 required={isRouteLicenses}
