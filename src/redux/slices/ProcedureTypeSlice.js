@@ -138,7 +138,7 @@ export const generateExcelFile = createAsyncThunk(
 
 // Function to update state after successful API response
 const updateState = (state, action, successMessage) => {
-  if (action.payload) {
+  if (action.payload.procedure_types) {
     const { procedure_types, pagination } = action.payload
     state.procedureTypesOriginal = procedure_types
     state.procedureTypesArray = procedure_types
@@ -167,7 +167,7 @@ const procedureTypeSlice = createSlice({
       }
 
       const procedureTypeID = parseInt(content)
-      const procedureTypeFound = state.procedureTypes.find((procedureType) => procedureType.id === procedureTypeID)
+      const procedureTypeFound = state.procedureTypesArray.find((procedureType) => procedureType.id === procedureTypeID)
       state.procedureTypeSelected = procedureTypeFound
     },
   },

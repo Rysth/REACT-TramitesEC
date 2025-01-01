@@ -17,10 +17,17 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation }
   return (
     <tr className="hover *:py-1 *:text-[0.8rem]">
       <th>{index}</th>
+
       <td>
-        <span className="w-full text-white uppercase badge badge-primary badge-sm">{procedureType.name}</span>
+        {procedureType.has_licenses ? (
+          <span className="badge badge-success badge-sm">Licencias</span>
+        ) : (
+          <span className="badge badge-info badge-sm">Vehicular</span>
+        )}
       </td>
-      <td>{procedureType.description}</td>
+      <td>
+        <span className="w-full uppercase">{procedureType.name}</span>
+      </td>
       <td className="flex items-center gap-1">
         <button
           className="btn btn-sm btn-primary"
@@ -49,7 +56,7 @@ ProcedureTypeItem.propTypes = {
   procedureType: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    has_licenses: PropTypes.bool.isRequired,
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,
