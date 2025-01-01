@@ -25,6 +25,7 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const handleCancel = () => {
     reset()
     setSelectedProcessor([])
+    closeModal()
   }
 
   const onSubmit = (customerData) => {

@@ -55,6 +55,7 @@ function ProcedureTypePage() {
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
+            showUserFilter={false}
           />
           <TableLayout>
             {Array.isArray(procedureTypesArray) ? (
