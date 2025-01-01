@@ -11,7 +11,7 @@ const initialState = {
   loading: true,
   currentPage: 1,
   totalPages: 0,
-  totalProcessors: 0,
+  totalProcedureTypes: 0,
 }
 
 const handleRequestError = (error) => {
@@ -44,16 +44,25 @@ const createAsyncThunkWrapper = (type, requestFn) =>
   })
 
 // Thunk for retrieving procedure types (GET)
-export const getProcedureTypes = createAsyncThunkWrapper('getProcedureTypes', async ({ activeToken }) => {
-  console.log('activeToken', activeToken)
+export const getProcedureTypes = createAsyncThunkWrapper(
+  'getProcedureTypes',
+  async ({ activeToken, page, search, startDate, endDate }) => {
+    const params = {
+      page,
+      search,
+      start_date: startDate ? startDate.toISOString() : null,
+      end_date: endDate ? endDate.toISOString() : null,
+    }
 
-  return axios.get(`${API_URL}/api/v1/procedure_types`, {
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+    return axios.get(`${API_URL}/api/v1/procedure_types`, {
+      params,
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
 
 // Thunk for creating a new procedure type (POST)
 export const createProcedureType = createAsyncThunkWrapper(
