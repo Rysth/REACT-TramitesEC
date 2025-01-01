@@ -1,16 +1,7 @@
-import { Button, TextInput } from '@tremor/react'
-import { Badge, Label, Select } from 'flowbite-react'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import {
-  HiChatBubbleBottomCenterText,
-  HiCurrencyDollar,
-  HiDocument,
-  HiIdentification,
-  HiListBullet,
-} from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import AsyncSelect from 'react-select/async'
@@ -19,11 +10,10 @@ import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
-import ProcedurePaymentForm from './ProcedurePaymentForm'
-import { HiCalendar } from 'react-icons/hi'
 import { fetchSupplierOptions } from '../../../redux/slices/SupplierSlice'
+import ProcedurePaymentForm from './ProcedurePaymentForm'
 
-function CustomerForm({ closeModal, refetchFunction }) {
+function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
   const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
@@ -163,9 +153,11 @@ function CustomerForm({ closeModal, refetchFunction }) {
   const routeName = useLocation().pathname
   const isRouteLicenses = routeName.includes('licencias')
 
-  const newFilterArray = isRouteLicenses
-    ? typesOriginal.filter((item) => item.has_licenses)
-    : typesOriginal.filter((item) => !item.has_licenses)
+  const newFilterArray = Array.isArray(typesOriginal)
+    ? isRouteLicenses
+      ? typesOriginal.filter((item) => item.has_licenses)
+      : typesOriginal.filter((item) => !item.has_licenses)
+    : []
 
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
@@ -490,9 +482,9 @@ function CustomerForm({ closeModal, refetchFunction }) {
   )
 }
 
-CustomerForm.propTypes = {
+ProcedureForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
   refetchFunction: PropTypes.func.isRequired,
 }
 
-export default CustomerForm
+export default ProcedureForm

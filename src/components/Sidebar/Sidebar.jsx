@@ -10,6 +10,7 @@ import {
   IoPeople,
   IoPerson,
   IoBusiness,
+  IoList,
 } from 'react-icons/io5'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -100,7 +101,7 @@ function Sidebar() {
                       Licencias
                     </NavLink>
                   </li>
-                  <li class="w-full">
+                  <li className="w-full">
                     <NavLink
                       to="/tramites/vehiculares"
                       className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
@@ -110,6 +111,15 @@ function Sidebar() {
                     </NavLink>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <NavLink
+                  to="/tipo-tramites"
+                  className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <IoList className="text-xl" />
+                  <span>Tipos de Trámites</span>
+                </NavLink>
               </li>
             </ul>
             <footer className="grid gap-2">

@@ -22,6 +22,7 @@ import {
 import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
 import SupplierPage from './pages/SupplierPage/SupplierPage'
+import ProcedureTypePage from './pages/ProcedureTypePage/ProcedureTypePage' // Import ProcedureTypePage
 
 function App() {
   const dispatch = useDispatch()
@@ -109,7 +110,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/tipo-tramites" // Add route for Procedure Types
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <ProcedureTypePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profiles/:id"
             element={

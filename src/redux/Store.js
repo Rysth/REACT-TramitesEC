@@ -6,6 +6,7 @@ import ProcessorReducer from './slices/ProcessorSlice'
 import SupplierReducer from './slices/SupplierSlice'
 import ProfileReducer from './slices/ProfileSlice'
 import ProcedureReducer from './slices/ProcedureSlice'
+import ProcedureTypeReducer from './slices/ProcedureTypeSlice'
 import SharedReducer from './slices/SharedSlice'
 
 const Store = configureStore({
@@ -17,6 +18,7 @@ const Store = configureStore({
     supplier: SupplierReducer,
     profile: ProfileReducer,
     procedure: ProcedureReducer,
+    procedureType: ProcedureTypeReducer,
     shared: SharedReducer,
   },
 })

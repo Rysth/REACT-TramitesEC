@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
 import { IoSearch } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import { fetchProcessorOptions } from '../../redux/slices/ProcessorSlice'
 
 function TableHeader({
@@ -83,13 +82,6 @@ function TableHeader({
     handleProcessorInputChange('')
   }, [])
 
-  const routeName = useLocation().pathname
-  const isRouteLicenses = routeName.includes('licencias')
-
-  const newFilterArray = isRouteLicenses
-    ? typesOriginal.filter((item) => item.has_licenses)
-    : typesOriginal.filter((item) => !item.has_licenses)
-
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
       <header className="flex flex-col items-center justify-between gap-2 ml-auto lg:flex-row ">
@@ -123,7 +115,7 @@ function TableHeader({
               {processorOptions.map((processor) => {
                 return (
                   <SearchSelectItem className="" key={processor.id} value={processor.id}>
-                    <span className="font-semibold">{processor.code}</span>
+                    {processor.code}
                     {` - ${processor.first_name} ${processor.last_name}`}
                   </SearchSelectItem>
                 )
