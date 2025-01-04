@@ -33,6 +33,9 @@ const ProcedurePaymentForm = ({ refetchFunction, closeModal }) => {
         dispatch(getPayments({ activeToken, procedureID: procedureSelected.id }))
           .then(() => refetchFunction())
           .then(() => reset())
+          .then(() => {
+            setPaymentType(1)
+          })
       })
       .then(() => {
         dispatch(fetchProcedureDetails({ activeToken, procedureId: procedure_id })).catch((error) => {
