@@ -93,7 +93,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         callback(options)
       })
       .catch(() => callback([]))
-  }, 700)
+  }, 300)
 
   // Load customer options
   const loadCustomerOptions = debounce((inputValue, callback) => {
@@ -108,7 +108,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         callback(options)
       })
       .catch(() => callback([]))
-  }, 700)
+  }, 300)
 
   // Load supplier options
   const loadSupplierOptions = debounce((inputValue, callback) => {
@@ -122,7 +122,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         callback(options)
       })
       .catch(() => callback([]))
-  }, 700)
+  }, 300)
 
   const handleProcedureSelectedChange = (e) => {
     const procedureTypeID = parseInt(e.target.value)

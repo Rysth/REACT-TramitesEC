@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import FileSaver from 'file-saver'
@@ -237,6 +237,13 @@ const proceduresSlice = createSlice({
     },
     setYear: (state, action) => {
       state.selectedYear = action.payload
+
+      if (action.payload === '') {
+        sessionStorage.removeItem('selectedYear')
+        return
+      }
+
+      sessionStorage.setItem('selectedYear', action.payload)
     },
   },
   extraReducers: (builder) => {

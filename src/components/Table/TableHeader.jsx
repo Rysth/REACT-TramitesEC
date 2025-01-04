@@ -36,7 +36,7 @@ function TableHeader({
   const debouncedSearch = useCallback(
     debounce((input) => {
       setSearch(input)
-    }, 700),
+    }, 300),
     [dispatch, userID, processorID], // Dependencias
   )
 
@@ -74,7 +74,7 @@ function TableHeader({
       } else {
         dispatch(fetchProcessorOptions({ activeToken, query: inputValue }))
       }
-    }, 700),
+    }, 300),
     [dispatch, activeToken],
   )
 

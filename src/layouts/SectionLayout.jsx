@@ -10,8 +10,8 @@ import { procedureActions } from '../redux/slices/ProcedureSlice'
 function SectionLayout({ children, title, subtitle, excelMethod }) {
   const dispatch = useDispatch()
   const { activeToken, activeUser } = useSelector((state) => state.authentication)
+  const { selectedYear } = useSelector((state) => state.procedure)
   const isAdmin = activeUser.is_admin
-  const [selectedYear, setSelectedYear] = useState(sessionStorage.getItem('selectedYear') || '')
   const location = useLocation()
 
   const handleGenerateExcel = (startDate, endDate) => {
@@ -20,16 +20,12 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
 
   const handleYearChange = (event) => {
     const year = event.target.value
-    setSelectedYear(year)
-    sessionStorage.setItem('selectedYear', year)
     dispatch(procedureActions.setYear(year))
   }
 
-  useEffect(() => {
-    if (selectedYear) {
-      dispatch(procedureActions.setYear(selectedYear))
-    }
-  }, [dispatch, selectedYear])
+  const handleClearYear = () => {
+    dispatch(procedureActions.setYear(''))
+  }
 
   const isTramitesPage = location.pathname.includes('tramites')
 
@@ -49,14 +45,7 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
                 </select>
-                <button
-                  className="text-white btn btn-sm btn-primary"
-                  onClick={() => {
-                    setSelectedYear('')
-                    sessionStorage.removeItem('selectedYear')
-                    dispatch(procedureActions.setYear(''))
-                  }}
-                >
+                <button className="text-white btn btn-sm btn-primary" onClick={handleClearYear}>
                   <RiRefreshLine className="" />
                   <span className="sr-only">Limpiar</span>
                 </button>

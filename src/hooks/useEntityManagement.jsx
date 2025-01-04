@@ -6,6 +6,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const { activeToken } = useSelector((store) => store.authentication)
   const entitiesArray = useSelector((store) => store[entitySlice][arraysName])
   const totalPages = useSelector((store) => store[entitySlice].totalPages)
+  const selectedYear = useSelector((store) => store.procedure.selectedYear)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -15,7 +16,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [selectedProcedureTypeId, setSelectedProcedureTypeId] = useState(null)
   const [openModal, setOpenModal] = useState(false)
   const [hasLicenses, setHasLicenses] = useState(false)
-  const [startDate, setStartDate] = useState(null) // Add startDate state
+  const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
 
   const refetchEntities = () => {
@@ -29,8 +30,9 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         statusId: selectedStatusId,
         procedureTypeId: selectedProcedureTypeId,
         hasLicenses,
-        startDate, // Include selected start date
+        startDate,
         endDate,
+        selectedYear,
       }),
     )
   }
@@ -61,9 +63,10 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     selectedStatusId,
     selectedProcedureTypeId,
     hasLicenses,
-    startDate, // Include startDate in dependencies
+    startDate,
     endDate,
-  ]) // Include currentPage in dependencies
+    selectedYear,
+  ])
 
   useEffect(() => {
     if (
@@ -73,11 +76,21 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
       selectedProcedureTypeId ||
       hasLicenses ||
       startDate ||
-      endDate
+      endDate ||
+      selectedYear
     ) {
       setCurrentPage(1)
     }
-  }, [selectedUserId, selectedProcessorId, selectedStatusId, selectedProcedureTypeId, hasLicenses, startDate, endDate])
+  }, [
+    selectedUserId,
+    selectedProcessorId,
+    selectedStatusId,
+    selectedProcedureTypeId,
+    hasLicenses,
+    startDate,
+    endDate,
+    selectedYear,
+  ])
 
   return {
     entitiesArray,
@@ -99,6 +112,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     setStartDate,
     endDate,
     setEndDate,
+    selectedYear,
   }
 }
 
