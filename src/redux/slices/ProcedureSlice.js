@@ -14,6 +14,7 @@ const initialState = {
   loading: true,
   startDate: null,
   endDate: null,
+  selectedYear: sessionStorage.getItem('selectedYear') || '',
 }
 
 const handleRequestError = (error) => {
@@ -63,6 +64,7 @@ export const getProcedures = createAsyncThunkWrapper(
     hasLicenses,
     startDate,
     endDate,
+    selectedYear,
   }) => {
     const params = { page }
     if (search) params.search = search
@@ -73,6 +75,7 @@ export const getProcedures = createAsyncThunkWrapper(
     if (hasLicenses !== undefined) params.hasLicenses = hasLicenses
     if (startDate) params.startDate = startDate
     if (endDate) params.endDate = endDate
+    if (selectedYear) params.selectedYear = selectedYear
 
     return axios.get(`${API_URL}/api/v1/procedures`, {
       params,
@@ -231,6 +234,9 @@ const proceduresSlice = createSlice({
     // Reducer for setting end date
     setEndDate: (state, action) => {
       state.endDate = action.payload
+    },
+    setYear: (state, action) => {
+      state.selectedYear = action.payload
     },
   },
   extraReducers: (builder) => {

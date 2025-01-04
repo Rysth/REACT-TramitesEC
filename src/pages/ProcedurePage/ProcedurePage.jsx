@@ -1,6 +1,6 @@
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Card } from '@tremor/react'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
 import TableModal from '../../components/Table/TableModal'
@@ -14,6 +14,10 @@ import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage({ routeName }) {
+  const dispatch = useDispatch()
+  const { activeToken } = useSelector((state) => state.authentication)
+  const { selectedYear } = useSelector((state) => state.procedure)
+
   const {
     entitiesArray: proceduresArray,
     totalPages,
@@ -42,14 +46,14 @@ function ProcedurePage({ routeName }) {
     setHasLicenses(routeName === 'licencias')
   }, [routeName])
 
+  useEffect(() => {
+    dispatch(getProcedures({ activeToken, selectedYear }))
+  }, [dispatch, activeToken, selectedYear])
+
   useEffect(() => {}, [procedureSelected]) // eslint-disable-line
 
   return (
-    <SectionLayout
-      title="Trámites"
-      subtitle="Información General de los Trámites"
-      excelMethod={generateProcedureExcelFile}
-    >
+    <SectionLayout title="Trámites" subtitle="Gestión de Trámites" excelMethod={generateProcedureExcelFile}>
       <TableModal
         openModal={openModal}
         closeModal={closeModal}
