@@ -46,10 +46,6 @@ function ProcedurePage({ routeName }) {
     setHasLicenses(routeName === 'licencias')
   }, [routeName])
 
-  useEffect(() => {
-    dispatch(getProcedures({ activeToken, selectedYear }))
-  }, [dispatch, activeToken, selectedYear])
-
   useEffect(() => {}, [procedureSelected]) // eslint-disable-line
 
   return (
