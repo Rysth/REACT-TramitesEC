@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Card } from '@tremor/react'
 import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
@@ -14,10 +14,6 @@ import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage({ routeName }) {
-  const dispatch = useDispatch()
-  const { activeToken } = useSelector((state) => state.authentication)
-  const { selectedYear } = useSelector((state) => state.procedure)
-
   const {
     entitiesArray: proceduresArray,
     totalPages,
@@ -44,9 +40,7 @@ function ProcedurePage({ routeName }) {
 
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
-  }, [routeName])
-
-  useEffect(() => {}, [procedureSelected]) // eslint-disable-line
+  }, [routeName, setHasLicenses])
 
   return (
     <SectionLayout title="Trámites" subtitle="Gestión de Trámites" excelMethod={generateProcedureExcelFile}>

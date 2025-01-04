@@ -27,7 +27,7 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
     dispatch(procedureActions.setYear(''))
   }
 
-  const isTramitesPage = location.pathname.includes('tramites')
+  const isTramitesPage = location.pathname.includes('tramites/licencias' || 'tramites/vehiculares')
 
   return (
     <section className="h-full p-4 overflow-hidden md:p-8 md:ml-60" id="customerSection">

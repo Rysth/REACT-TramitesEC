@@ -20,6 +20,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [endDate, setEndDate] = useState(null)
 
   const refetchEntities = () => {
+    setCurrentPage(1)
     dispatch(
       getEntitiesAction({
         activeToken,
@@ -53,36 +54,13 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
 
   useEffect(() => {
     refetchEntities()
+    console.log('useEffect 1')
   }, [
     dispatch,
     activeToken,
     search,
     selectedUserId,
     currentPage,
-    selectedProcessorId,
-    selectedStatusId,
-    selectedProcedureTypeId,
-    hasLicenses,
-    startDate,
-    endDate,
-    selectedYear,
-  ])
-
-  useEffect(() => {
-    if (
-      selectedUserId ||
-      selectedProcessorId ||
-      selectedStatusId ||
-      selectedProcedureTypeId ||
-      hasLicenses ||
-      startDate ||
-      endDate ||
-      selectedYear
-    ) {
-      setCurrentPage(1)
-    }
-  }, [
-    selectedUserId,
     selectedProcessorId,
     selectedStatusId,
     selectedProcedureTypeId,
