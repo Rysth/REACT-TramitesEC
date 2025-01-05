@@ -20,7 +20,6 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [endDate, setEndDate] = useState(null)
 
   const refetchEntities = () => {
-    setCurrentPage(1)
     dispatch(
       getEntitiesAction({
         activeToken,
@@ -38,23 +37,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     )
   }
 
-  const handlePageChange = (selectedItem) => {
-    setCurrentPage(selectedItem.selected + 1)
-  }
-
-  const handleDelete = () => {
-    if (entitiesArray.length === 1 && currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-    refetchEntities()
-  }
-
-  const showModal = () => setOpenModal(true)
-  const closeModal = () => setOpenModal(false)
-
   useEffect(() => {
     refetchEntities()
-    console.log('useEffect 1')
   }, [
     dispatch,
     activeToken,
@@ -69,6 +53,44 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     endDate,
     selectedYear,
   ])
+
+  useEffect(() => {
+    if (
+      selectedUserId ||
+      selectedProcessorId ||
+      selectedStatusId ||
+      selectedProcedureTypeId ||
+      hasLicenses ||
+      startDate ||
+      endDate ||
+      selectedYear
+    ) {
+      setCurrentPage(1)
+    }
+  }, [
+    selectedUserId,
+    selectedProcessorId,
+    selectedStatusId,
+    selectedProcedureTypeId,
+    hasLicenses,
+    startDate,
+    endDate,
+    selectedYear,
+  ])
+
+  const handlePageChange = (selectedItem) => {
+    setCurrentPage(selectedItem.selected + 1)
+  }
+
+  const handleDelete = () => {
+    if (entitiesArray.length === 1 && currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+    refetchEntities()
+  }
+
+  const showModal = () => setOpenModal(true)
+  const closeModal = () => setOpenModal(false)
 
   return {
     entitiesArray,
