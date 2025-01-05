@@ -85,12 +85,12 @@ function TableHeader({
   return (
     <article className="p-2 md:p-4 bg-[var(--CL-primary)] rounded-t-lg space-y-2">
       <header className="flex flex-col items-center justify-between gap-2 ml-auto lg:flex-row ">
-        <div className="grid w-full grid-cols-2 gap-2 xl:flex md:max-w-[40%] md:items-center">
+        <div className="w-full xl:flex md:max-w-[40%] lg:max-w-max gap-1 md:items-center">
           {showUserFilter && (
             <SearchSelect
               value={userID}
               onValueChange={handleSelectChange}
-              className="z-50 w-full capitalize md:max-w-max "
+              className="z-50 w-full capitalize "
               placeholder="Usuario"
             >
               {usersArray.map((user) => (
@@ -104,17 +104,17 @@ function TableHeader({
             <SearchSelect
               value={processorID}
               onValueChange={handleProcessorSelectChange}
-              className="z-40 w-full uppercase md:max-w-max"
+              className="z-40 w-full uppercase"
               placeholder="Trámitador"
               searchValue={searchValue}
               onSearchValueChange={handleProcessorInputChange}
             >
-              <SearchSelectItem className="text-sm" value={0}>
+              <SearchSelectItem className="text-xs" value={0}>
                 Cliente Directos
               </SearchSelectItem>
               {processorOptions.map((processor) => {
                 return (
-                  <SearchSelectItem className="" key={processor.id} value={processor.id}>
+                  <SearchSelectItem className="text-xs" key={processor.id} value={processor.id}>
                     {processor.code}
                     {` - ${processor.first_name} ${processor.last_name}`}
                   </SearchSelectItem>
@@ -126,7 +126,7 @@ function TableHeader({
             <SearchSelect
               value={statusID}
               onValueChange={handleStatusSelectChange}
-              className="z-30 w-full uppercase col-span-full "
+              className="z-30 w-full uppercase "
               placeholder="Estado"
             >
               {statusOriginal.map((status) => (
