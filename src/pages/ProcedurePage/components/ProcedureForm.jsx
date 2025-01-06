@@ -87,6 +87,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       dispatch(createProcedure({ activeToken, procedureData })).then(() => {
         refetchFunction()
         closeModal()
+        reset()
       })
     }
     setSelectedProcessor([])
