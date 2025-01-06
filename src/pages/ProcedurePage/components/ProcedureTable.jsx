@@ -42,8 +42,8 @@ function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, ha
           <thead className="font-normal">
             <tr>
               <th style={{ width: '3%' }}>#</th>
-              <th style={{ width: '15%' }}>Trámitador</th>
-              <th style={{ width: '15%' }}>Estado</th>
+              <th style={{ width: '12%' }}>Trámitador</th>
+              <th style={{ width: '12%' }}>Estado</th>
               <th style={{ width: '11%' }}>Trámite</th>
               <th style={{ width: '10%' }}>Fecha</th>
               <th style={{ width: '25%' }}>Cliente</th>

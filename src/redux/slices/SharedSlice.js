@@ -196,11 +196,11 @@ const sharedSlice = createSlice({
       })
       .addCase(createPayment.fulfilled, (state, action) => {
         state.paymentsOriginal = action.payload
-        toast.success('¡Pago creado exitosamente!', { autoClose: 2000 })
+        toast.success('¡Pago creado exitosamente!', { autoClose: 2000, theme: 'colored' })
       })
       .addCase(deletePayment.fulfilled, (state, action) => {
         state.paymentsOriginal = state.paymentsOriginal.filter((payment) => payment.id !== action.payload)
-        toast.success('¡Pago eliminado exitosamente!', { autoClose: 2000 })
+        toast.success('¡Pago eliminado exitosamente!', { autoClose: 2000, theme: 'colored' })
       })
   },
 })

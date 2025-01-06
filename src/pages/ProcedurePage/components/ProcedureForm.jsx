@@ -30,6 +30,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   } = useForm({ mode: 'onChange' })
   const [selectedProcessor, setSelectedProcessor] = useState([])
   const [selectedCustomer, setSelectedCustomer] = useState([])
+  const [selectedSupplier, setSelectedSupplier] = useState([])
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -69,6 +70,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
           .then(() => refetchFunction())
           .then(() => closeModal())
+          .then(() => reset())
       } else {
         closeModal()
       }
@@ -76,9 +78,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       dispatch(createProcedure({ activeToken, procedureData }))
         .then(() => refetchFunction())
         .then(() => closeModal())
+        .then(() => reset())
     }
     setSelectedProcessor([])
     setSelectedCustomer([])
+    setSelectedSupplier([])
+    setDisableProcessor(false)
   }
 
   // Load processor options
@@ -167,6 +172,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     reset()
     setSelectedProcessor([])
     setSelectedCustomer([])
+    setSelectedSupplier([])
     closeModal()
   }
 
@@ -191,6 +197,23 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       ])
     }
   }, [procedureSelected])
+
+  useEffect(() => {
+    if (procedureSelected && procedureSelected.supplier) {
+      setSelectedSupplier([
+        {
+          label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
+          value: procedureSelected.supplier.id,
+        },
+      ])
+    }
+  }, [procedureSelected])
+
+  useEffect(() => {
+    setSelectedProcessor([])
+    setSelectedCustomer([])
+    setSelectedSupplier([])
+  }, [])
 
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
@@ -227,7 +250,13 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 </label>
                 {errors.status_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
               </div>
-              <select id="status_id" className="w-full select select-bordered" {...register('status_id')} required>
+              <select
+                id="status_id"
+                className="w-full select select-bordered"
+                {...register('status_id')}
+                defaultValue={1} // Add default value
+                required
+              >
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
                     {status.name}
@@ -249,6 +278,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 className="w-full select select-bordered"
                 {...register('procedure_type_id')}
                 onChange={(e) => handleProcedureSelectedChange(e)}
+                defaultValue={1} // Add default value
                 disabled={procedureSelected && (isCompleted || hasPayments)}
                 required
               >
@@ -449,15 +479,9 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 placeholder="Buscar Proveedor..."
                 onChange={(selectedOption) => {
                   setValue('supplier_id', selectedOption.value)
+                  setSelectedSupplier([selectedOption])
                 }}
-                defaultValue={
-                  procedureSelected && procedureSelected.supplier
-                    ? {
-                        label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
-                        value: procedureSelected.supplier.id,
-                      }
-                    : undefined
-                }
+                value={selectedSupplier}
                 className="text-sm shadow shadow-gray-200"
                 isDisabled={isCompleted || hasPayments}
               />

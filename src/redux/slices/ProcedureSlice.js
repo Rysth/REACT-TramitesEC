@@ -30,7 +30,7 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡La placa ya está asociada a un trámite similar!', { theme: 'colored' })
+    toast.error('¡Se ha producido un problema de autorización!', { theme: 'colored' })
   }
 
   if (error.response.status === 500) {
