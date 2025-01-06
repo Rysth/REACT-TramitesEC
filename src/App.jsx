@@ -34,7 +34,7 @@ function App() {
       dispatch(getStatuses(activeToken))
       dispatch(getLicenses(activeToken))
       dispatch(getLicenseTypes(activeToken))
-      dispatch(getProcedureTypes(activeToken))
+      dispatch(getProcedureTypes({ activeToken, full: true }))
       dispatch(getPaymentTypes(activeToken))
     }
   }, [dispatch, activeToken, active])

@@ -25,9 +25,10 @@ const handleRequestError = (error) => {
 }
 
 // Async thunk for fetching procedure types
-export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', async (activeToken) => {
+export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', async ({ activeToken, full = false }) => {
   try {
     const response = await axios.get(`${API_URL}/api/v1/procedure_types`, {
+      params: { full },
       headers: {
         Authorization: activeToken,
       },
@@ -35,6 +36,7 @@ export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', as
     })
     return response.data.procedure_types // Adjusted to match the nested structure
   } catch (error) {
+    console.log(error)
     handleRequestError(error)
   }
 })
