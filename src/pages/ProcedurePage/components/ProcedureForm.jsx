@@ -43,7 +43,14 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setValue('profit_pending', profit)
   }
 
+  // Update onSubmit to validate required fields
   const onSubmit = (procedureData) => {
+    // Validate required fields
+    if (!procedureData.status_id || !procedureData.procedure_type_id) {
+      toast.error('Estado y Tipo de Trámite son requeridos')
+      return
+    }
+
     if (procedureSelected) {
       // Check if the processorData is different from processorSelected
       const isDifferent = Object.keys(procedureSelected).some((key) => {
@@ -67,18 +74,20 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       })
 
       if (isDifferent) {
-        dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
-          .then(() => refetchFunction())
-          .then(() => closeModal())
-          .then(() => reset())
+        dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } })).then(
+          () => {
+            refetchFunction()
+            closeModal()
+          },
+        )
       } else {
         closeModal()
       }
     } else {
-      dispatch(createProcedure({ activeToken, procedureData }))
-        .then(() => refetchFunction())
-        .then(() => closeModal())
-        .then(() => reset())
+      dispatch(createProcedure({ activeToken, procedureData })).then(() => {
+        refetchFunction()
+        closeModal()
+      })
     }
     setSelectedProcessor([])
     setSelectedCustomer([])
@@ -215,6 +224,17 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setSelectedSupplier([])
   }, [])
 
+  // Set default form values on mount
+  useEffect(() => {
+    if (!procedureSelected) {
+      setValue('status_id', '1') // Set default status
+      setValue('procedure_type_id', newFilterArray[0]?.id.toString()) // Set first procedure type
+      if (isRouteLicenses) {
+        setValue('license_id', licensesOriginal[0]?.id.toString())
+      }
+    }
+  }, [])
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -253,9 +273,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               <select
                 id="status_id"
                 className="w-full select select-bordered"
-                {...register('status_id')}
-                defaultValue={1} // Add default value
-                required
+                {...register('status_id', { required: true })}
+                defaultValue="1"
               >
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
@@ -276,11 +295,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               <select
                 id="procedure_type_id"
                 className="w-full select select-bordered"
-                {...register('procedure_type_id')}
+                {...register('procedure_type_id', { required: true })}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                defaultValue={1} // Add default value
+                defaultValue={newFilterArray[0]?.id}
                 disabled={procedureSelected && (isCompleted || hasPayments)}
-                required
               >
                 {newFilterArray.map((procedure_type) => (
                   <option key={procedure_type.id} value={procedure_type.id}>
