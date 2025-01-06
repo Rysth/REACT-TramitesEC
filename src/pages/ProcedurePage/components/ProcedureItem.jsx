@@ -58,7 +58,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       </td>
       <td>
         {procedure.is_paid ? (
-          <span className="badge-sm badge badge-success">Pagado</span>
+          <span className="badge-sm badge">Pagado</span>
         ) : (
           <span className="badge-sm badge badge-error">Pendiente</span>
         )}
