@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { Card } from '@tremor/react'
 import Loading from '../../components/Loading/Loading'
 import TableHeader from '../../components/Table/TableHeader'
@@ -37,13 +38,25 @@ function ProcedurePage({ routeName }) {
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
   const { procedureSelected } = useSelector((store) => store.procedure)
+  const [showUnpaid, setShowUnpaid] = useState(false)
+  const location = useLocation()
+  const isTramitesPage =
+    location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
+
+  const filteredProcedures = showUnpaid ? proceduresArray.filter((procedure) => !procedure.is_paid) : proceduresArray
 
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
   }, [routeName, setHasLicenses])
 
   return (
-    <SectionLayout title="Trámites" subtitle="Gestión de Trámites" excelMethod={generateProcedureExcelFile}>
+    <SectionLayout
+      title="Trámites"
+      subtitle="Gestión de Trámites"
+      excelMethod={generateProcedureExcelFile}
+      showUnpaid={showUnpaid}
+      setShowUnpaid={setShowUnpaid}
+    >
       <TableModal
         openModal={openModal}
         closeModal={closeModal}
@@ -70,11 +83,13 @@ function ProcedurePage({ routeName }) {
             endDate={endDate}
             setStartDate={setStartDate}
             setEndDate={setEndDate}
+            showUnpaidFilter={isTramitesPage}
+            setShowUnpaid={setShowUnpaid}
           />
           <TableLayout>
             {Array.isArray(proceduresArray) ? (
               <ProcedureTable
-                currentItems={proceduresArray}
+                currentItems={filteredProcedures}
                 currentPage={currentPage}
                 itemsPerPage={15}
                 showModal={showModal}

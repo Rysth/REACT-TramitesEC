@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 import DateRangeModal from '../components/DateRangeModal/DateRangeModal'
 import { procedureActions } from '../redux/slices/ProcedureSlice'
 
-function SectionLayout({ children, title, subtitle, excelMethod }) {
+function SectionLayout({ children, title, subtitle, excelMethod, showUnpaid, setShowUnpaid }) {
   const dispatch = useDispatch()
   const { activeToken, activeUser } = useSelector((state) => state.authentication)
   const { selectedYear } = useSelector((state) => state.procedure)
@@ -40,17 +40,30 @@ function SectionLayout({ children, title, subtitle, excelMethod }) {
           </header>
           <div className="flex items-center gap-2">
             {isTramitesPage && (
-              <fieldset className="flex items-center gap-2">
-                <select value={selectedYear} onChange={handleYearChange} className="select select-bordered select-sm">
-                  <option value="">Todos los Años</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                </select>
-                <button className="text-white btn btn-sm btn-primary" onClick={handleClearYear}>
-                  <RiRefreshLine className="" />
-                  <span className="sr-only">Limpiar</span>
-                </button>
-              </fieldset>
+              <>
+                <div className="form-control">
+                  <label className="gap-2 cursor-pointer label">
+                    <span className="text-sm label-text">Trámites sin Pago</span>
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-primary toggle-sm"
+                      checked={showUnpaid}
+                      onChange={(e) => setShowUnpaid(e.target.checked)}
+                    />
+                  </label>
+                </div>
+                <fieldset className="flex items-center gap-2">
+                  <select value={selectedYear} onChange={handleYearChange} className="select select-bordered select-sm">
+                    <option value="">Todos los Años</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                  </select>
+                  <button className="text-white btn btn-sm btn-primary" onClick={handleClearYear}>
+                    <RiRefreshLine className="" />
+                    <span className="sr-only">Limpiar</span>
+                  </button>
+                </fieldset>
+              </>
             )}
             <button
               onClick={() => document.getElementById('dateRangeModal').showModal()}
@@ -73,6 +86,8 @@ SectionLayout.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   excelMethod: PropTypes.func.isRequired,
+  showUnpaid: PropTypes.bool,
+  setShowUnpaid: PropTypes.func,
 }
 
 export default SectionLayout
