@@ -35,19 +35,25 @@ function ProcedurePage({ routeName }) {
     setStartDate,
     endDate,
     setEndDate,
+    showUnpaid,
+    setShowUnpaid,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
   const { procedureSelected } = useSelector((store) => store.procedure)
-  const [showUnpaid, setShowUnpaid] = useState(false)
   const location = useLocation()
   const isTramitesPage =
     location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
 
-  const filteredProcedures = showUnpaid ? proceduresArray.filter((procedure) => !procedure.is_paid) : proceduresArray
+  const filteredProcedures = proceduresArray
 
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
   }, [routeName, setHasLicenses])
+
+  // Add new effect to handle showUnpaid changes
+  useEffect(() => {
+    refetchEntities()
+  }, [showUnpaid])
 
   return (
     <SectionLayout

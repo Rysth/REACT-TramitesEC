@@ -65,6 +65,7 @@ export const getProcedures = createAsyncThunkWrapper(
     startDate,
     endDate,
     selectedYear,
+    showUnpaid, // Add this parameter
   }) => {
     const params = { page }
     if (search) params.search = search
@@ -76,6 +77,7 @@ export const getProcedures = createAsyncThunkWrapper(
     if (startDate) params.startDate = startDate
     if (endDate) params.endDate = endDate
     if (selectedYear) params.selectedYear = selectedYear
+    if (showUnpaid) params.showUnpaid = showUnpaid // Add this line
 
     return axios.get(`${API_URL}/api/v1/procedures`, {
       params,

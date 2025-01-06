@@ -18,6 +18,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [hasLicenses, setHasLicenses] = useState(false)
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
+  const [showUnpaid, setShowUnpaid] = useState(false)
 
   const refetchEntities = () => {
     dispatch(
@@ -33,6 +34,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         startDate,
         endDate,
         selectedYear,
+        showUnpaid,
       }),
     )
   }
@@ -63,7 +65,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
       hasLicenses ||
       startDate ||
       endDate ||
-      selectedYear
+      selectedYear ||
+      showUnpaid
     ) {
       setCurrentPage(1)
     }
@@ -76,6 +79,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     startDate,
     endDate,
     selectedYear,
+    showUnpaid,
   ])
 
   const handlePageChange = (selectedItem) => {
@@ -113,6 +117,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     endDate,
     setEndDate,
     selectedYear,
+    showUnpaid,
+    setShowUnpaid,
   }
 }
 
