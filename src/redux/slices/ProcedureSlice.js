@@ -68,6 +68,7 @@ export const getProcedures = createAsyncThunkWrapper(
     showUnpaid, // Add this parameter
   }) => {
     const params = { page }
+
     if (search) params.search = search
     if (userId) params.userId = userId
     if (processorId || processorId === 0) params.processorId = processorId

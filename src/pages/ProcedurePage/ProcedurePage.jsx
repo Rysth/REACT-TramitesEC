@@ -44,16 +44,9 @@ function ProcedurePage({ routeName }) {
   const isTramitesPage =
     location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
 
-  const filteredProcedures = proceduresArray
-
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
   }, [routeName, setHasLicenses])
-
-  // Add new effect to handle showUnpaid changes
-  useEffect(() => {
-    refetchEntities()
-  }, [showUnpaid])
 
   return (
     <SectionLayout
@@ -95,7 +88,7 @@ function ProcedurePage({ routeName }) {
           <TableLayout>
             {Array.isArray(proceduresArray) ? (
               <ProcedureTable
-                currentItems={filteredProcedures}
+                currentItems={proceduresArray}
                 currentPage={currentPage}
                 itemsPerPage={15}
                 showModal={showModal}
