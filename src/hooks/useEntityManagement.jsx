@@ -54,6 +54,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     startDate,
     endDate,
     selectedYear,
+    showUnpaid,
   ])
 
   useEffect(() => {
