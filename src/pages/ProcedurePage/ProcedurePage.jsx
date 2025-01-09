@@ -39,14 +39,14 @@ function ProcedurePage({ routeName }) {
     setShowUnpaid,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
-  const { procedureSelected } = useSelector((store) => store.procedure)
+  const { procedureSelected, loading } = useSelector((store) => store.procedure)
   const location = useLocation()
   const isTramitesPage =
     location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
 
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
-  }, [routeName, setHasLicenses])
+  }, [routeName])
 
   return (
     <SectionLayout
@@ -86,7 +86,9 @@ function ProcedurePage({ routeName }) {
             setShowUnpaid={setShowUnpaid}
           />
           <TableLayout>
-            {Array.isArray(proceduresArray) ? (
+            {loading ? (
+              <Loading />
+            ) : (
               <ProcedureTable
                 currentItems={proceduresArray}
                 currentPage={currentPage}
@@ -94,8 +96,6 @@ function ProcedurePage({ routeName }) {
                 showModal={showModal}
                 handleDelete={handleDelete}
               />
-            ) : (
-              <Loading />
             )}
           </TableLayout>
           <TablePaginate

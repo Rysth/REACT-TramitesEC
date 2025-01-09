@@ -178,6 +178,7 @@ const updateStateAndStats = (state, action, successMessage) => {
     state.currentPage = pagination.current_page
     state.totalPages = pagination.total_pages
     state.totalProcessors = pagination.total_count
+    state.loading = false
   }
 
   if (successMessage) {
@@ -250,13 +251,18 @@ const proceduresSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getProcedures.pending, (state) => {
-      state.loading = true
-    })
-    builder.addCase(getProcedures.fulfilled, (state, action) => {
-      updateStateAndStats(state, action)
-      state.loading = false
-    })
+    builder
+      .addCase(getProcedures.pending, (state) => {
+        state.loading = true
+        state.proceduresArray = [] // Clear array while loading
+      })
+      .addCase(getProcedures.fulfilled, (state, action) => {
+        updateStateAndStats(state, action)
+      })
+      .addCase(getProcedures.rejected, (state) => {
+        state.loading = false
+        state.proceduresArray = []
+      })
     builder.addCase(fetchProcedureDetails.fulfilled, (state, action) => {
       state.loading = false
       state.procedureSelected = action.payload
