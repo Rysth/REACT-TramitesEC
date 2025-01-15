@@ -45,9 +45,13 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation, hasLicen
       <td>{new Date(procedure.created_at).toISOString().split('T')[0]}</td>
       <td className="uppercase">
         {hasLicenses ? (
-          <a href={`/clientes/${procedure.customer.id}`} className=" link link-hover">
-            {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name}`}
-          </a>
+          procedure.customer ? (
+            <a href={`/clientes/${procedure.customer.id}`} className="link link-hover">
+              {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name}`}
+            </a>
+          ) : (
+            <p>No Customer</p>
+          )
         ) : (
           <p>{procedure.plate}</p>
         )}

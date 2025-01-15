@@ -257,6 +257,7 @@ const proceduresSlice = createSlice({
         state.proceduresArray = [] // Clear array while loading
       })
       .addCase(getProcedures.fulfilled, (state, action) => {
+        console.log(action.payload)
         updateStateAndStats(state, action)
       })
       .addCase(getProcedures.rejected, (state) => {
