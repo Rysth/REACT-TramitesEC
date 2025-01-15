@@ -156,13 +156,35 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         }
       })
       if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
+      if (procedureSelected && procedureSelected.processor) {
+        setSelectedProcessor([
+          {
+            label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
+            value: procedureSelected.processor.id,
+          },
+        ])
+      }
+      if (procedureSelected && procedureSelected.customer) {
+        setSelectedCustomer([
+          {
+            label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
+            value: procedureSelected.customer.id,
+          },
+        ])
+      }
+      if (procedureSelected && procedureSelected.supplier) {
+        setSelectedSupplier([
+          {
+            label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
+            value: procedureSelected.supplier.id,
+          },
+        ])
+      }
     } else {
       dispatch(sharedActions.setProcedureTypeSelected(0))
       reset()
     }
   }, [procedureSelected, reset, setValue])
-
-  useEffect(() => {}, [procedureSelected])
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
@@ -185,56 +207,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setSelectedSupplier([])
     closeModal()
   }
-
-  useEffect(() => {
-    if (procedureSelected && procedureSelected.processor) {
-      setSelectedProcessor([
-        {
-          label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
-          value: procedureSelected.processor.id,
-        },
-      ])
-    }
-  }, [procedureSelected])
-
-  useEffect(() => {
-    if (procedureSelected && procedureSelected.customer) {
-      setSelectedCustomer([
-        {
-          label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
-          value: procedureSelected.customer.id,
-        },
-      ])
-    }
-  }, [procedureSelected])
-
-  useEffect(() => {
-    if (procedureSelected && procedureSelected.supplier) {
-      setSelectedSupplier([
-        {
-          label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
-          value: procedureSelected.supplier.id,
-        },
-      ])
-    }
-  }, [procedureSelected])
-
-  useEffect(() => {
-    setSelectedProcessor([])
-    setSelectedCustomer([])
-    setSelectedSupplier([])
-  }, [])
-
-  // Set default form values on mount
-  useEffect(() => {
-    if (!procedureSelected) {
-      setValue('status_id', '1') // Set default status
-      setValue('procedure_type_id', newFilterArray[0]?.id.toString()) // Set first procedure type
-      if (isRouteLicenses) {
-        setValue('license_id', licensesOriginal[0]?.id.toString())
-      }
-    }
-  }, [])
 
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
