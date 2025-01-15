@@ -95,6 +95,7 @@ function ProcedurePage({ routeName }) {
                 itemsPerPage={15}
                 showModal={showModal}
                 handleDelete={handleDelete}
+                hasLicenses={routeName === 'licencias'}
               />
             )}
           </TableLayout>

@@ -2,10 +2,9 @@ import PropTypes from 'prop-types'
 import { FaWhatsapp } from 'react-icons/fa'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/ProcedureSlice'
 
-function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
+function ProcedureItem({ index, procedure, showModal, showConfirmation, hasLicenses }) {
   const dispatch = useDispatch()
   const { activeToken, activeUser } = useSelector((store) => store.authentication)
 
@@ -22,9 +21,6 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
   const statusColor =
     procedure.status.id === 1 || procedure.status.id === 3 ? 'info' : procedure.status.id === 2 ? 'accent' : 'success'
   const isDirect = procedure.customer?.is_direct
-
-  const routeName = useLocation().pathname
-  const isRouteLicenses = routeName.includes('licencias')
 
   return (
     <tr className="hover *:py-1 *:text-[0.8rem]">
@@ -48,7 +44,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation }) {
       <td>{procedure.procedure_type.name}</td>
       <td>{new Date(procedure.created_at).toISOString().split('T')[0]}</td>
       <td className="uppercase">
-        {procedure.customer && isRouteLicenses ? (
+        {hasLicenses ? (
           <a href={`/clientes/${procedure.customer.id}`} className=" link link-hover">
             {`${procedure.customer.first_name.split(' ')[0]} ${procedure.customer.last_name}`}
           </a>
@@ -135,6 +131,7 @@ ProcedureItem.propTypes = {
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,
+  hasLicenses: PropTypes.bool.isRequired,
 }
 
 export default ProcedureItem

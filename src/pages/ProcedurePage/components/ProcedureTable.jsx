@@ -8,7 +8,7 @@ import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcedure, procedureActions } from '../../../redux/slices/ProcedureSlice'
 import ProcedureItem from './ProcedureItem'
 
-function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete }) {
+function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete, hasLicenses }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -62,6 +62,7 @@ function ProcedureTable({ currentItems, currentPage, itemsPerPage, showModal, ha
                   procedure={procedure}
                   showModal={showModal}
                   showConfirmation={setConfirmationModal}
+                  hasLicenses={hasLicenses} // Pass hasLicenses here
                 />
               )
             })}
@@ -78,6 +79,7 @@ ProcedureTable.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
+  hasLicenses: PropTypes.bool.isRequired,
 }
 
 export default ProcedureTable
