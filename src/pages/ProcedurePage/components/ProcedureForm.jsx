@@ -27,7 +27,17 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     reset,
     setValue,
     formState: { errors },
-  } = useForm({ mode: 'onChange' })
+  } = useForm({
+    defaultValues: {
+      created_at: new Date().toISOString().split('T')[0],
+      cost: '',
+      cost_pending: '',
+      profit: '',
+      profit_pending: '',
+      comments: '',
+      plate: '',
+    },
+  })
   const [selectedProcessor, setSelectedProcessor] = useState([])
   const [selectedCustomer, setSelectedCustomer] = useState([])
   const [selectedSupplier, setSelectedSupplier] = useState([])
@@ -38,9 +48,16 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setValue('cost_pending', cost)
   }
 
+  // Update handleProfitChange to be more robust
   const handleProfitChange = (e) => {
-    const profit = e.target.value
-    setValue('profit_pending', profit)
+    try {
+      const profit = e.target.value
+      if (profit && !isNaN(profit)) {
+        setValue('profit_pending', profit, { shouldValidate: true })
+      }
+    } catch (error) {
+      console.error('Error updating profit_pending:', error)
+    }
   }
 
   // Update onSubmit to validate required fields
@@ -72,6 +89,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           () => {
             refetchFunction()
             closeModal()
+            setDisableProcessor(false)
           },
         )
       } else {
@@ -82,12 +100,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         refetchFunction()
         closeModal()
         reset()
+        setDisableProcessor(false)
       })
     }
     setSelectedProcessor([])
     setSelectedCustomer([])
     setSelectedSupplier([])
-    setDisableProcessor(false)
   }
 
   // Load processor options
@@ -179,6 +197,26 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, setValue])
 
+  // Handle procedureSelected changes
+  useEffect(() => {
+    if (procedureSelected) {
+      try {
+        dispatch(sharedActions.setProcedureTypeSelected(procedureSelected.procedure_type.id))
+        Object.keys(procedureSelected).forEach((key) => {
+          if (key === 'created_at') {
+            const formattedDate = new Date(procedureSelected[key]).toISOString().split('T')[0]
+            setValue(key, formattedDate, { shouldValidate: true })
+          } else {
+            setValue(key, procedureSelected[key], { shouldValidate: true })
+          }
+        })
+        // ...rest of procedureSelected handling
+      } catch (error) {
+        console.error('Error setting procedure values:', error)
+      }
+    }
+  }, [procedureSelected, setValue, dispatch])
+
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
   const hasPayments = procedureSelected && paymentsOriginal.length > 0
@@ -222,7 +260,13 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               <input
                 id="created_at"
                 className="w-full input input-bordered"
-                {...register('created_at', { required: true })}
+                {...register('created_at', {
+                  required: true,
+                  validate: (value) => {
+                    const date = new Date(value)
+                    return !isNaN(date.getTime()) || 'Invalid date'
+                  },
+                })}
                 type="date"
               />
             </div>
@@ -237,6 +281,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="status_id"
                 className="w-full select select-bordered"
                 {...register('status_id', { required: true })}
+                defaultValue={statusOriginal[0]?.id}
               >
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
@@ -258,6 +303,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="procedure_type_id"
                 className="w-full select select-bordered"
                 {...register('procedure_type_id', { required: true })}
+                defaultValue={newFilterArray[0]?.id}
                 onChange={(e) => handleProcedureSelectedChange(e)}
                 disabled={procedureSelected && (isCompleted || hasPayments)}
               >
@@ -401,9 +447,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               <input
                 id="profit"
                 className="w-full input input-bordered "
-                {...register('profit', { required: true, pattern: /^[0-9.]+$/i })}
+                {...register('profit', {
+                  required: true,
+                  pattern: /^[0-9.]+$/i,
+                  onChange: handleProfitChange, // Add onChange here as backup
+                })}
                 placeholder=""
-                onChange={handleProfitChange}
                 disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
               />
             </div>
