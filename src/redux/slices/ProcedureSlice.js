@@ -172,8 +172,6 @@ export const generateProcedureExcelFile = createAsyncThunk(
 // Function to update state and stats after successful API response
 const updateStateAndStats = (state, action, successMessage) => {
   if (action.payload.procedures) {
-    console.log(action.payload)
-
     const { procedures, pagination } = action.payload
     state.procedureOriginal = procedures
     state.proceduresArray = procedures

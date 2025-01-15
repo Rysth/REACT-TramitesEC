@@ -45,12 +45,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   // Update onSubmit to validate required fields
   const onSubmit = (procedureData) => {
-    // Validate required fields
-    if (!procedureData.status_id || !procedureData.procedure_type_id) {
-      toast.error('Estado y Tipo de Trámite son requeridos')
-      return
-    }
-
     if (procedureSelected) {
       // Check if the processorData is different from processorSelected
       const isDifferent = Object.keys(procedureSelected).some((key) => {
@@ -156,7 +150,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         }
       })
       if (procedureSelected.customer?.is_direct) setDisableProcessor(true)
-      if (procedureSelected && procedureSelected.processor) {
+      if (procedureSelected.processor) {
         setSelectedProcessor([
           {
             label: `${procedureSelected.processor.code} - ${procedureSelected.processor.first_name} ${procedureSelected.processor.last_name}`,
@@ -164,7 +158,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           },
         ])
       }
-      if (procedureSelected && procedureSelected.customer) {
+      if (procedureSelected.customer) {
         setSelectedCustomer([
           {
             label: `${procedureSelected.customer.identification} - ${procedureSelected.customer.first_name} ${procedureSelected.customer.last_name}`,
@@ -172,7 +166,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           },
         ])
       }
-      if (procedureSelected && procedureSelected.supplier) {
+      if (procedureSelected.supplier) {
         setSelectedSupplier([
           {
             label: `${procedureSelected.supplier.identification} - ${procedureSelected.supplier.name}`,
@@ -182,9 +176,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       }
     } else {
       dispatch(sharedActions.setProcedureTypeSelected(0))
-      reset()
     }
-  }, [procedureSelected, reset, setValue])
+  }, [procedureSelected, setValue])
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
@@ -208,9 +201,11 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     closeModal()
   }
 
+  const onInvalid = (errors) => console.error(errors)
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
         <div className="grid space-y-4">
           <fieldset className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
@@ -229,11 +224,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 className="w-full input input-bordered"
                 {...register('created_at', { required: true })}
                 type="date"
-                defaultValue={
-                  procedureSelected
-                    ? String(procedureSelected.created_at).split('T')[0]
-                    : new Date().toISOString().split('T')[0]
-                }
               />
             </div>
             <div className="space-y-2">
@@ -247,7 +237,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="status_id"
                 className="w-full select select-bordered"
                 {...register('status_id', { required: true })}
-                defaultValue="1"
               >
                 {statusOriginal.map((status) => (
                   <option key={status.id} value={status.id}>
@@ -270,7 +259,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 className="w-full select select-bordered"
                 {...register('procedure_type_id', { required: true })}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                defaultValue={newFilterArray[0]?.id}
                 disabled={procedureSelected && (isCompleted || hasPayments)}
               >
                 {newFilterArray.map((procedure_type) => (
