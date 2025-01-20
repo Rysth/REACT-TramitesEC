@@ -25,6 +25,7 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation, hasLicen
   return (
     <tr className="hover *:py-1 *:text-[0.8rem]">
       <th>{index}</th>
+      <td>{procedure.agency?.name}</td>
       <td>
         {!isDirect && procedure.processor ? (
           <span className="!w-max font-bold text-center uppercase border-transparent badge badge-sm">
