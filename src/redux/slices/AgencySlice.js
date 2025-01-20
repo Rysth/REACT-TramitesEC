@@ -155,6 +155,7 @@ const agencySlice = createSlice({
       })
       .addCase(createAgency.fulfilled, (state, action) => {
         state.loading = false
+
         if (action.payload) {
           updateState(state, action, '¡Agencia Registrada!')
         }

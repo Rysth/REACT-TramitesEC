@@ -6,24 +6,25 @@ import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Sidebar from './components/Sidebar/Sidebar'
+import AgencyPage from './pages/AgencyPage/AgencyPage' // Import AgencyPage
 import CustomerPage from './pages/CustomerPage/CustomerPage'
+import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
 import ProcedurePage from './pages/ProcedurePage/ProcedurePage'
+import ProcedureTypePage from './pages/ProcedureTypePage/ProcedureTypePage' // Import ProcedureTypePage
 import ProcessorPage from './pages/ProcessorPage/ProcessorPage'
+import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
-import { getUsers } from './redux/slices/UserSlice'
+import SupplierPage from './pages/SupplierPage/SupplierPage'
+import { getAgencies } from './redux/slices/AgencySlice'
 import {
-  getStatuses,
   getLicenses,
   getLicenseTypes,
-  getProcedureTypes,
   getPaymentTypes,
+  getProcedureTypes,
+  getStatuses,
 } from './redux/slices/SharedSlice'
-import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
-import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
-import SupplierPage from './pages/SupplierPage/SupplierPage'
-import ProcedureTypePage from './pages/ProcedureTypePage/ProcedureTypePage' // Import ProcedureTypePage
-import AgencyPage from './pages/AgencyPage/AgencyPage' // Import AgencyPage
+import { getUsers } from './redux/slices/UserSlice'
 
 function App() {
   const dispatch = useDispatch()
@@ -37,6 +38,7 @@ function App() {
       dispatch(getLicenseTypes(activeToken))
       dispatch(getProcedureTypes({ activeToken, full: true }))
       dispatch(getPaymentTypes(activeToken))
+      dispatch(getAgencies({ activeToken })) // Add this line
     }
   }, [dispatch, activeToken, active])
 

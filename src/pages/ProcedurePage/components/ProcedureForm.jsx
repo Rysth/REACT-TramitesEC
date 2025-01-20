@@ -20,6 +20,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     (store) => store.shared,
   )
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
+  const { agenciesArray } = useSelector((store) => store.agency)
   const [disableProcessor, setDisableProcessor] = useState()
   const {
     register,
@@ -231,6 +232,9 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       : typesOriginal.filter((item) => !item.has_licenses)
     : []
 
+  // Add filtered agencies based on procedure type
+  const filteredAgencies = agenciesArray.filter((agency) => agency.has_licenses === isRouteLicenses)
+
   const handleCancel = () => {
     reset()
     setSelectedProcessor([])
@@ -338,6 +342,27 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </div>
             )}
           </fieldset>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="agency_id" className="label label-text">
+                Agencia
+              </label>
+              {errors.agency_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
+            </div>
+            <select
+              id="agency_id"
+              className="w-full select select-bordered"
+              {...register('agency_id')}
+              disabled={procedureSelected && (isCompleted || hasPayments)}
+            >
+              <option value="">Seleccionar Agencia</option>
+              {filteredAgencies.map((agency) => (
+                <option key={agency.id} value={agency.id}>
+                  {agency.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">

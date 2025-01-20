@@ -100,6 +100,8 @@ export const fetchProcedureDetails = createAsyncThunkWrapper(
 
 // Thunk for creating a new processor (POST)
 export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
+  console.log(procedureData)
+
   return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
     headers: {
       Authorization: activeToken,
@@ -110,6 +112,8 @@ export const createProcedure = createAsyncThunkWrapper('createProcedure', async 
 
 // Thunk for updating an existing processor (PUT)
 export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, procedureData }) => {
+  console.log(procedureData)
+
   return axios.put(`${API_URL}/api/v1/procedures/${procedureData.id}`, procedureData, {
     headers: {
       Authorization: activeToken,
