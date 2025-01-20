@@ -245,6 +245,13 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   const onInvalid = (errors) => console.error(errors)
 
+  // Add cleanup effect
+  useEffect(() => {
+    return () => {
+      reset()
+    }
+  }, [reset])
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
