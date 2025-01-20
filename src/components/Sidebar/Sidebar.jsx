@@ -12,6 +12,7 @@ import {
   IoBusiness,
   IoList,
   IoChevronBackOutline,
+  IoHome, // Add this import
 } from 'react-icons/io5'
 import { NavLink } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -93,6 +94,24 @@ function Sidebar() {
               </li>
               <li>
                 <NavLink
+                  to="/tipo-tramites"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <IoList className="text-xl" />
+                  {!isCollapsed && <span>Tipos de Trámites</span>}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/agencias"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                >
+                  <IoHome className="text-xl" />
+                  {!isCollapsed && <span>Agencias</span>}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/tramites/licencias"
                   className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
                 >
@@ -107,15 +126,6 @@ function Sidebar() {
                 >
                   <FaCar className="text-xl" />
                   {!isCollapsed && 'Vehículares'}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/tipo-tramites"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
-                >
-                  <IoList className="text-xl" />
-                  {!isCollapsed && <span>Tipos de Trámites</span>}
                 </NavLink>
               </li>
             </ul>

@@ -8,7 +8,7 @@ import ProfileReducer from './slices/ProfileSlice'
 import ProcedureReducer from './slices/ProcedureSlice'
 import ProcedureTypeReducer from './slices/ProcedureTypeSlice'
 import SharedReducer from './slices/SharedSlice'
-import AgencyReducer from './slices/AgencyReducer'
+import AgencyReducer from './slices/AgencySlice'
 
 const Store = configureStore({
   reducer: {

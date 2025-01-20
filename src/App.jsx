@@ -23,6 +23,7 @@ import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import CustomerProfilePage from './pages/CustomerPage/CustomerProfilePage'
 import SupplierPage from './pages/SupplierPage/SupplierPage'
 import ProcedureTypePage from './pages/ProcedureTypePage/ProcedureTypePage' // Import ProcedureTypePage
+import AgencyPage from './pages/AgencyPage/AgencyPage' // Import AgencyPage
 
 function App() {
   const dispatch = useDispatch()
@@ -123,6 +124,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agencias"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <AgencyPage />
               </ProtectedRoute>
             }
           />
