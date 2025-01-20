@@ -54,7 +54,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/"
-                  className="btn btn-ghost justify-start text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition w-full"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition w-full"
                 >
                   <IoPerson className="text-xl" />
                   <span>Trámitadores</span>
@@ -63,7 +63,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/proveedores"
-                  className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoBusiness className="text-xl" />
                   <span>Proveedores</span>
@@ -72,7 +72,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/clientes"
-                  className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoPeople className="text-xl" />
                   <span>Clientes</span>
@@ -80,7 +80,7 @@ function Sidebar() {
               </li>
               <li>
                 <button
-                  className="btn btn-ghost text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition w-full"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] text-slate-400 hover:!text-white  hover:bg-[var(--CL-secondary)] transition w-full"
                   onClick={() => setShowSubMenu(!showSubMenu)}
                 >
                   <IoDocument className="text-xl" />
@@ -95,7 +95,7 @@ function Sidebar() {
                   <li>
                     <NavLink
                       to="/tramites/licencias"
-                      className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                      className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
                     >
                       <FaChevronRight className="text-xl" />
                       Licencias
@@ -104,7 +104,7 @@ function Sidebar() {
                   <li className="w-full">
                     <NavLink
                       to="/tramites/vehiculares"
-                      className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                      className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
                     >
                       <FaChevronRight className="text-xl" />
                       Vehículares
@@ -115,7 +115,7 @@ function Sidebar() {
               <li>
                 <NavLink
                   to="/tipo-tramites"
-                  className="btn btn-ghost justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
                 >
                   <IoList className="text-xl" />
                   <span>Tipos de Trámites</span>
