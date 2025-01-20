@@ -14,6 +14,7 @@ const initialState = {
   paymentsOriginal: [],
   selectedProcedureType: { id: 1 },
   selectedLicenseType: {},
+  isSidebarCollapsed: false,
 }
 
 const handleRequestError = (error) => {
@@ -171,6 +172,9 @@ const sharedSlice = createSlice({
     setLicenseTypeSelected: (state, action) => {
       const selectedLicenseTypeId = parseInt(action.payload)
       state.selectedLicenseType = selectedLicenseTypeId
+    },
+    toggleSidebar: (state) => {
+      state.isSidebarCollapsed = !state.isSidebarCollapsed
     },
   },
   extraReducers: (builder) => {

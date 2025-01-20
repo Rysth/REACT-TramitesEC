@@ -13,6 +13,7 @@ function SectionLayout({ children, title, subtitle, excelMethod, showUnpaid, set
   const { selectedYear } = useSelector((state) => state.procedure)
   const isAdmin = activeUser.is_admin
   const location = useLocation()
+  const isCollapsed = useSelector((state) => state.shared.isSidebarCollapsed)
 
   const handleGenerateExcel = (startDate, endDate) => {
     dispatch(excelMethod({ activeToken, isAdmin, startDate, endDate }))
@@ -31,7 +32,11 @@ function SectionLayout({ children, title, subtitle, excelMethod, showUnpaid, set
     location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
 
   return (
-    <section className="h-full p-4 overflow-hidden md:p-8 md:ml-60" id="customerSection">
+    <section
+      className={`h-full p-4 overflow-hidden md:p-8 transition-all duration-300
+      ${isCollapsed ? 'md:ml-20' : 'md:ml-60'}`}
+      id="customerSection"
+    >
       <article className="">
         <div className="flex flex-col items-center justify-between h-full gap-2 text-center md:text-left md:flex-row">
           <header className="space-y-1">

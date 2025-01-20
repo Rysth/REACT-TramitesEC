@@ -111,6 +111,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     setSelectedStatusId,
     setSelectedProcedureTypeId,
     setHasLicenses,
+    hasLicenses,
     refetchEntities,
     handleDelete,
     startDate,

@@ -37,6 +37,7 @@ function ProcedurePage({ routeName }) {
     setEndDate,
     showUnpaid,
     setShowUnpaid,
+    hasLicenses,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
@@ -50,7 +51,7 @@ function ProcedurePage({ routeName }) {
 
   return (
     <SectionLayout
-      title="Trámites"
+      title={hasLicenses ? 'Trámites de Licencias' : 'Trámites Vehiculares'}
       subtitle="Gestión de Trámites"
       excelMethod={generateProcedureExcelFile}
       showUnpaid={showUnpaid}
