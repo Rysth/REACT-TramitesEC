@@ -225,6 +225,7 @@ const sharedSlice = createSlice({
       })
       .addCase(getAgencies.fulfilled, (state, action) => {
         state.agenciesOriginal = action.payload
+        console.log(action.payload)
       })
   },
 })

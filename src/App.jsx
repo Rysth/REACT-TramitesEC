@@ -16,13 +16,13 @@ import ProcessorProfilePage from './pages/ProcessorPage/ProcessorProfilePage'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import SupplierPage from './pages/SupplierPage/SupplierPage'
-import { getAgencies } from './redux/slices/AgencySlice'
 import {
   getLicenses,
   getLicenseTypes,
   getPaymentTypes,
   getProcedureTypes,
   getStatuses,
+  getAgencies,
 } from './redux/slices/SharedSlice'
 import { getUsers } from './redux/slices/UserSlice'
 
