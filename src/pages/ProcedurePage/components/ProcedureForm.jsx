@@ -16,11 +16,9 @@ import ProcedurePaymentForm from './ProcedurePaymentForm'
 function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal } = useSelector(
-    (store) => store.shared,
-  )
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal } =
+    useSelector((store) => store.shared)
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
-  const { agenciesArray } = useSelector((store) => store.agency)
   const [disableProcessor, setDisableProcessor] = useState()
   const {
     register,
@@ -233,7 +231,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     : []
 
   // Add filtered agencies based on procedure type
-  const filteredAgencies = agenciesArray.filter((agency) => agency.has_licenses === isRouteLicenses)
+  const filteredAgencies = agenciesOriginal.filter((agency) => agency.has_licenses === isRouteLicenses)
 
   const handleCancel = () => {
     reset()

@@ -15,6 +15,7 @@ const initialState = {
   selectedProcedureType: { id: 1 },
   selectedLicenseType: {},
   isSidebarCollapsed: false,
+  agenciesOriginal: [],
 }
 
 const handleRequestError = (error) => {
@@ -146,6 +147,22 @@ export const deletePayment = createAsyncThunk('shared/deletePayment', async ({ a
   }
 })
 
+// Add getAgencies thunk
+export const getAgencies = createAsyncThunk('shared/getAgencies', async ({ activeToken, full = false }) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/agencies`, {
+      params: { full },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data.agencies
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
 const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -205,6 +222,9 @@ const sharedSlice = createSlice({
       .addCase(deletePayment.fulfilled, (state, action) => {
         state.paymentsOriginal = state.paymentsOriginal.filter((payment) => payment.id !== action.payload)
         toast.success('¡Pago eliminado exitosamente!', { autoClose: 2000, theme: 'colored' })
+      })
+      .addCase(getAgencies.fulfilled, (state, action) => {
+        state.agenciesOriginal = action.payload
       })
   },
 })
