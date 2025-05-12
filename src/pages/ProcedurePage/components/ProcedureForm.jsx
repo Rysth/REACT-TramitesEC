@@ -40,6 +40,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const [selectedProcessor, setSelectedProcessor] = useState([])
   const [selectedCustomer, setSelectedCustomer] = useState([])
   const [selectedSupplier, setSelectedSupplier] = useState([])
+  const [hasPayments, setHasPayments] = useState(false)
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -196,6 +197,15 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, setValue])
 
+  // Check if the procedure has payments
+  useEffect(() => {
+    if (paymentsOriginal && paymentsOriginal.length > 0) {
+      setHasPayments(true)
+    } else {
+      setHasPayments(false)
+    }
+  }, [paymentsOriginal])
+
   // Handle procedureSelected changes
   useEffect(() => {
     if (procedureSelected) {
@@ -209,7 +219,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
             setValue(key, procedureSelected[key], { shouldValidate: true })
           }
         })
-        // ...rest of procedureSelected handling
       } catch (error) {
         console.error('Error setting procedure values:', error)
       }
@@ -218,7 +227,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   const isCompleted = procedureSelected?.status.id === 3 || procedureSelected?.status.id === 4
   const isNotPending = procedureSelected?.is_paid
-  const hasPayments = procedureSelected && paymentsOriginal.length > 0
   const shouldUsePlate = usePlate(selectedProcedureType)
 
   const routeName = useLocation().pathname
@@ -314,7 +322,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {...register('procedure_type_id', { required: true })}
                 defaultValue={newFilterArray[0]?.id}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                disabled={procedureSelected && (isCompleted || hasPayments)}
+                disabled={procedureSelected && (isCompleted || isNotPending)}
               >
                 {newFilterArray.map((procedure_type) => (
                   <option key={procedure_type.id} value={procedure_type.id}>
@@ -335,7 +343,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   id="license_id"
                   className="w-full select select-bordered "
                   {...register('license_id')}
-                  disabled={procedureSelected && (isCompleted || hasPayments)}
+                  disabled={procedureSelected && (isCompleted || isNotPending)}
                   required
                 >
                   {licensesOriginal.map((license) => (
@@ -358,7 +366,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               id="agency_id"
               className="w-full select select-bordered"
               {...register('agency_id')}
-              disabled={procedureSelected && (isCompleted || hasPayments)}
+              disabled={procedureSelected && (isCompleted || isNotPending)}
             >
               <option value="">Seleccionar Agencia</option>
               {filteredAgencies.map((agency) => (
@@ -388,7 +396,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 }}
                 value={selectedProcessor}
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted || hasPayments || disableProcessor}
+                isDisabled={isCompleted || isNotPending || disableProcessor}
                 required={!shouldUsePlate || !disableProcessor}
               />
             </div>
@@ -417,7 +425,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   }
                 }}
                 value={selectedCustomer}
-                isDisabled={isCompleted || hasPayments}
+                isDisabled={isCompleted || isNotPending}
                 className="text-sm shadow shadow-gray-200"
                 required={isRouteLicenses}
               />
@@ -436,6 +444,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.cost.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
+                {hasPayments && <span className="text-xs badge badge-warning">Tiene pagos</span>}
               </div>
               <input
                 id="cost"
@@ -473,6 +482,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.profit.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
+                {hasPayments && <span className="text-xs badge badge-warning">Tiene pagos</span>}
               </div>
               <input
                 id="profit"
@@ -480,7 +490,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {...register('profit', {
                   required: true,
                   pattern: /^[0-9.]+$/i,
-                  onChange: handleProfitChange, // Add onChange here as backup
+                  onChange: handleProfitChange,
                 })}
                 placeholder=""
                 disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
@@ -519,7 +529,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 className="w-full input input-bordered "
                 {...register('supplier_amount', { required: false, pattern: /^[0-9.]+$/i })}
                 placeholder=""
-                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
+                disabled={procedureSelected && (isCompleted || isNotPending)}
               />
             </div>
             <div className="space-y-2">
@@ -541,7 +551,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 }}
                 value={selectedSupplier}
                 className="text-sm shadow shadow-gray-200"
-                isDisabled={isCompleted || hasPayments}
+                isDisabled={isCompleted || isNotPending}
               />
             </div>
           </fieldset>
@@ -565,7 +575,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="plate"
                 className="w-full input input-bordered "
                 placeholder=""
-                disabled={isCompleted || isNotPending || hasPayments || isRouteLicenses}
+                disabled={isCompleted || isNotPending || isRouteLicenses}
                 {...register('plate', { required: !isRouteLicenses })}
               />
             </div>
