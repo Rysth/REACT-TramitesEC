@@ -41,24 +41,70 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const [selectedCustomer, setSelectedCustomer] = useState([])
   const [selectedSupplier, setSelectedSupplier] = useState([])
   const [hasPayments, setHasPayments] = useState(false)
+  // Add a state to track if the current procedure is "Primera Vez"
+  const [isPrimeraVez, setIsPrimeraVez] = useState(false)
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
-    const cost = e.target.value
-    setValue('cost_pending', cost)
+    const cost = parseFloat(e.target.value) || 0
+
+    // If there are payments, we need to calculate the pending cost differently
+    if (hasPayments && paymentsOriginal) {
+      const totalPayments = paymentsOriginal.reduce((sum, payment) => sum + parseFloat(payment.value || 0), 0)
+      const newCostPending = Math.max(0, cost - totalPayments).toFixed(2)
+      setValue('cost_pending', newCostPending)
+    } else {
+      setValue('cost_pending', cost.toFixed(2))
+    }
   }
 
   // Update handleProfitChange to be more robust
   const handleProfitChange = (e) => {
     try {
-      const profit = e.target.value
-      if (profit && !isNaN(profit)) {
-        setValue('profit_pending', profit, { shouldValidate: true })
+      const profit = parseFloat(e.target.value) || 0
+
+      // If there are payments, we need to calculate the pending profit differently
+      if (hasPayments && paymentsOriginal) {
+        const totalPayments = paymentsOriginal.reduce((sum, payment) => sum + parseFloat(payment.value || 0), 0)
+        const cost = parseFloat(getValues('cost') || 0)
+
+        // Calculate what percentage of the cost has been paid
+        const paymentRatio = cost === 0 ? 0 : totalPayments / cost
+
+        // Calculate pending profit based on the payment ratio
+        const pendingProfit = Math.max(0, profit * (1 - paymentRatio)).toFixed(2)
+        setValue('profit_pending', pendingProfit)
+      } else if (profit && !isNaN(profit)) {
+        setValue('profit_pending', profit.toFixed(2))
       }
     } catch (error) {
       console.error('Error updating profit_pending:', error)
     }
   }
+
+  // Function to check if the selected procedure type is "Primera Vez"
+  const checkIsPrimeraVez = (procedureTypeId) => {
+    if (!procedureTypeId || !typesOriginal || !Array.isArray(typesOriginal)) return false
+
+    const procedureType = typesOriginal.find((pt) => pt.id === parseInt(procedureTypeId))
+    return procedureType?.name === 'Primera Vez'
+  }
+
+  // Handle procedure type selection change
+  const handleProcedureSelectedChange = (e) => {
+    const procedureTypeID = parseInt(e.target.value)
+    dispatch(sharedActions.setProcedureTypeSelected(procedureTypeID))
+
+    // Check if the selected procedure type is "Primera Vez"
+    setIsPrimeraVez(checkIsPrimeraVez(procedureTypeID))
+  }
+
+  // Check if the procedure type is "Primera Vez" when the component mounts or when the selected procedure changes
+  useEffect(() => {
+    if (procedureSelected?.procedure_type_id) {
+      setIsPrimeraVez(checkIsPrimeraVez(procedureSelected.procedure_type_id))
+    }
+  }, [procedureSelected, typesOriginal])
 
   // Update onSubmit to validate required fields
   const onSubmit = (procedureData) => {
@@ -150,11 +196,6 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       })
       .catch(() => callback([]))
   }, 300)
-
-  const handleProcedureSelectedChange = (e) => {
-    const procedureTypeID = parseInt(e.target.value)
-    dispatch(sharedActions.setProcedureTypeSelected(procedureTypeID))
-  }
 
   useEffect(() => {
     if (procedureSelected) {
@@ -444,7 +485,9 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.cost.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
-                {hasPayments && <span className="text-xs badge badge-warning">Tiene pagos</span>}
+                {hasPayments && !isPrimeraVez && (
+                  <span className="text-xs badge badge-warning">Tiene pagos</span>
+                )}
               </div>
               <input
                 id="cost"
@@ -452,7 +495,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 onChange={handleCostChange}
-                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
+                disabled={
+                  procedureSelected &&
+                  (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -463,7 +509,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </div>
               <input
                 id="cost_pending"
-                className="w-full input input-bordered "
+                className="w-full input input-bordered"
                 {...register('cost_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled
@@ -482,18 +528,23 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.profit.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
-                {hasPayments && <span className="text-xs badge badge-warning">Tiene pagos</span>}
+                {hasPayments && !isPrimeraVez && (
+                  <span className="text-xs badge badge-warning">Tiene pagos</span>
+                )}
               </div>
               <input
                 id="profit"
-                className="w-full input input-bordered "
+                className="w-full input input-bordered"
                 {...register('profit', {
                   required: true,
                   pattern: /^[0-9.]+$/i,
                   onChange: handleProfitChange,
                 })}
                 placeholder=""
-                disabled={procedureSelected && (isCompleted || isNotPending || hasPayments)}
+                disabled={
+                  procedureSelected &&
+                  (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -504,7 +555,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </div>
               <input
                 id="profit_pending"
-                className="w-full input input-bordered "
+                className="w-full input input-bordered"
                 {...register('profit_pending', { required: true, pattern: /^[0-9.]+$/i })}
                 placeholder=""
                 disabled
