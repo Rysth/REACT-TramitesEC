@@ -38,7 +38,6 @@ export const getProcedureTypes = createAsyncThunk('shared/getProcedureTypes', as
     })
     return response.data.procedure_types // Adjusted to match the nested structure
   } catch (error) {
-    console.log(error)
     handleRequestError(error)
   }
 })
@@ -225,7 +224,6 @@ const sharedSlice = createSlice({
       })
       .addCase(getAgencies.fulfilled, (state, action) => {
         state.agenciesOriginal = action.payload
-        console.log(action.payload)
       })
   },
 })

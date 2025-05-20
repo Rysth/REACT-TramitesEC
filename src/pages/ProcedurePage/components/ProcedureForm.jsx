@@ -13,6 +13,7 @@ import { sharedActions } from '../../../redux/slices/SharedSlice'
 import { fetchSupplierOptions } from '../../../redux/slices/SupplierSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
 import { procedureActions } from '../../../redux/slices/ProcedureSlice'
+import { toast } from 'react-toastify'
 
 function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -20,13 +21,14 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal } =
     useSelector((store) => store.shared)
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
-  const [disableProcessor, setDisableProcessor] = useState()
+  const [disableProcessor, setDisableProcessor] = useState(false)
+  const [dataLoaded, setDataLoaded] = useState(false) // Add this state to track when data is fully loaded
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    getValues,  // Add this
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -37,6 +39,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       profit_pending: '',
       comments: '',
       plate: '',
+      // Don't set these default values here, we'll set them in the useEffect after data loading
+      // status_id: '',
+      // procedure_type_id: '',
+      // license_id: ''
     },
   })
   const [selectedProcessor, setSelectedProcessor] = useState([])
@@ -110,6 +116,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   // Update onSubmit to validate required fields
   const onSubmit = (procedureData) => {
+    // Check if necessary data is loaded
+    if (statusOriginal?.length === 0 || newFilterArray?.length === 0) {
+      toast.error('Por favor espere mientras se cargan los datos necesarios.', { theme: 'colored' });
+      return;
+    }
+
     if (procedureSelected) {
       // Check if the processorData is different from processorSelected
       const isDifferent = Object.keys(procedureSelected).some((key) => {
@@ -342,6 +354,67 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected]);
 
+  // Check when all required data is loaded
+  useEffect(() => {
+    const hasStatus = statusOriginal && statusOriginal.length > 0;
+    const hasTypes = typesOriginal && typesOriginal.length > 0;
+    const hasLicenses = licensesOriginal && licensesOriginal.length > 0;
+    const hasAgencies = agenciesOriginal && agenciesOriginal.length > 0;
+    
+    // Set dataLoaded when all required data is available
+    setDataLoaded(hasStatus && hasTypes && hasAgencies);
+  }, [statusOriginal, typesOriginal, licensesOriginal, agenciesOriginal]);
+
+  // Set default values when data is loaded and we're creating a new procedure
+  useEffect(() => {
+    if (!procedureSelected && dataLoaded) {
+      const routeName = location.pathname;
+      const isRouteLicenses = routeName.includes('licencias');
+      
+      // Filter procedure types based on license type
+      const filteredTypes = typesOriginal.filter(item => 
+        isRouteLicenses ? item.has_licenses : !item.has_licenses
+      );
+      
+      // Check if we have filtered types
+      if (filteredTypes.length > 0) {
+        // Set default procedure type
+        setValue('procedure_type_id', filteredTypes[0].id, { 
+          shouldValidate: true, 
+          shouldDirty: false 
+        });
+        
+        // Check if selected type is "Primera Vez"
+        setIsPrimeraVez(filteredTypes[0].name === 'Primera Vez');
+        
+        // Set the selected procedure type in the store
+        dispatch(sharedActions.setProcedureTypeSelected(filteredTypes[0].id));
+      }
+      
+      // Set default status
+      if (statusOriginal.length > 0) {
+        setValue('status_id', statusOriginal[0].id, { 
+          shouldValidate: true, 
+          shouldDirty: false 
+        });
+      }
+      
+      // Set default license for license procedures
+      if (isRouteLicenses && licensesOriginal.length > 0) {
+        setValue('license_id', licensesOriginal[0].id, { 
+          shouldValidate: true, 
+          shouldDirty: false 
+        });
+      }
+      
+      // Set today's date as the default created_at
+      setValue('created_at', new Date().toISOString().split('T')[0], {
+        shouldValidate: true,
+        shouldDirty: false
+      });
+    }
+  }, [procedureSelected, dataLoaded, statusOriginal, typesOriginal, licensesOriginal, setValue, dispatch, location.pathname]);
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -382,13 +455,17 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="status_id"
                 className="w-full select select-bordered"
                 {...register('status_id', { required: true })}
-                defaultValue={statusOriginal[0]?.id}
+                disabled={!dataLoaded}
               >
-                {statusOriginal.map((status) => (
-                  <option key={status.id} value={status.id}>
-                    {status.name}
-                  </option>
-                ))}
+                {!dataLoaded || !statusOriginal || statusOriginal.length === 0 ? (
+                  <option value="">Cargando estados...</option>
+                ) : (
+                  statusOriginal.map((status) => (
+                    <option key={status.id} value={status.id}>
+                      {status.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
           </fieldset>
@@ -404,15 +481,18 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 id="procedure_type_id"
                 className="w-full select select-bordered"
                 {...register('procedure_type_id', { required: true })}
-                defaultValue={newFilterArray[0]?.id}
                 onChange={(e) => handleProcedureSelectedChange(e)}
-                disabled={procedureSelected && (isCompleted || isNotPending)}
+                disabled={procedureSelected && (isCompleted || isNotPending) || !dataLoaded}
               >
-                {newFilterArray.map((procedure_type) => (
-                  <option key={procedure_type.id} value={procedure_type.id}>
-                    {procedure_type.name}
-                  </option>
-                ))}
+                {!dataLoaded || newFilterArray.length === 0 ? (
+                  <option value="">Cargando tipos de trámite...</option>
+                ) : (
+                  newFilterArray.map((procedure_type) => (
+                    <option key={procedure_type.id} value={procedure_type.id}>
+                      {procedure_type.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
             {isRouteLicenses && (
@@ -676,7 +756,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           </fieldset>
         </div>
         <fieldset className="flex items-center justify-end gap-2 px-0 pb-6 mt-4">
-          <button className="btn btn-success btn-sm" type="submit" disabled={loading}>
+          <button className="btn btn-success btn-sm" type="submit" disabled={loading || !dataLoaded}>
             Guardar
           </button>
           <button className="btn btn-error btn-sm" type="button" onClick={handleCancel}>
