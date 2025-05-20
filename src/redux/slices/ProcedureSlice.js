@@ -225,9 +225,9 @@ const proceduresSlice = createSlice({
       const content = action.payload
 
       if (content === '') {
-        state.procedureChange = false
-        state.procedureSelected = null
-        return
+        state.procedureChange = false;
+        state.procedureSelected = null;
+        return;
       }
 
       const procedureID = parseInt(content)

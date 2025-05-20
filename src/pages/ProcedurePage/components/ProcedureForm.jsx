@@ -12,6 +12,7 @@ import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
 import { sharedActions } from '../../../redux/slices/SharedSlice'
 import { fetchSupplierOptions } from '../../../redux/slices/SupplierSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
+import { procedureActions } from '../../../redux/slices/ProcedureSlice'
 
 function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -25,6 +26,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     handleSubmit,
     reset,
     setValue,
+    getValues,  // Add this
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -283,10 +285,22 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const filteredAgencies = agenciesOriginal.filter((agency) => agency.has_licenses === isRouteLicenses)
 
   const handleCancel = () => {
-    reset()
-    setSelectedProcessor([])
-    setSelectedCustomer([])
-    setSelectedSupplier([])
+    reset({
+      created_at: new Date().toISOString().split('T')[0],
+      cost: '',
+      cost_pending: '',
+      profit: '',
+      profit_pending: '',
+      comments: '',
+      plate: '',
+    });
+    setSelectedProcessor([]);
+    setSelectedCustomer([]);
+    setSelectedSupplier([]);
+    setDisableProcessor(false);
+    setHasPayments(false);
+    setIsPrimeraVez(false);
+    dispatch(procedureActions.setProcedureSelected(''));  // Make sure to clear this
     closeModal()
   }
 
@@ -298,6 +312,35 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       reset()
     }
   }, [reset])
+
+  // When procedureSelected is null (creating new procedure), fully reset the form
+  useEffect(() => {
+    if (!procedureSelected) {
+      reset({
+        created_at: new Date().toISOString().split('T')[0],
+        cost: '',
+        cost_pending: '',
+        profit: '',
+        profit_pending: '',
+        comments: '',
+        plate: '',
+        processor_id: '',
+        customer_id: '',
+        supplier_id: '',
+        supplier_amount: '',
+        status_id: statusOriginal?.[0]?.id || '',
+        procedure_type_id: newFilterArray?.[0]?.id || '',
+        license_id: licensesOriginal?.[0]?.id || '',
+        agency_id: '',
+      });
+      setSelectedProcessor([]);
+      setSelectedCustomer([]);
+      setSelectedSupplier([]);
+      setDisableProcessor(false);
+      setHasPayments(false);
+      setIsPrimeraVez(false);
+    }
+  }, [procedureSelected]);
 
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>

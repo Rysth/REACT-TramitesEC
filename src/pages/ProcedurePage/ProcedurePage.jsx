@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Card } from '@tremor/react'
 import Loading from '../../components/Loading/Loading'
@@ -15,6 +15,7 @@ import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 
 function ProcedurePage({ routeName }) {
+  const dispatch = useDispatch(); // Add this line to get the dispatch function
   const {
     entitiesArray: proceduresArray,
     totalPages,
@@ -48,6 +49,12 @@ function ProcedurePage({ routeName }) {
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
   }, [routeName])
+  
+  // Create a custom close modal function that also clears the selected procedure
+  const handleCloseModal = () => {
+    dispatch(procedureActions.setProcedureSelected(''));
+    closeModal();
+  }
 
   return (
     <SectionLayout
@@ -59,7 +66,7 @@ function ProcedurePage({ routeName }) {
     >
       <TableModal
         openModal={openModal}
-        closeModal={closeModal}
+        closeModal={handleCloseModal} // Use our custom close function
         formComponent={ProcedureForm}
         refetchFunction={refetchEntities}
         slice="procedure"
