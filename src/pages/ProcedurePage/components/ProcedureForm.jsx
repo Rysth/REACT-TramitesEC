@@ -54,7 +54,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
-    const cost = parseFloat(e.target.value) || 0
+    // Allow zero values by using Number() instead of parseFloat which treats empty string as NaN
+    const cost = Number(e.target.value)
 
     // If there are payments, we need to calculate the pending cost differently
     if (hasPayments && paymentsOriginal) {
@@ -62,6 +63,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       const newCostPending = Math.max(0, cost - totalPayments).toFixed(2)
       setValue('cost_pending', newCostPending)
     } else {
+      // Fixed to handle zero as valid value
       setValue('cost_pending', cost.toFixed(2))
     }
   }
@@ -69,12 +71,13 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   // Update handleProfitChange to be more robust
   const handleProfitChange = (e) => {
     try {
-      const profit = parseFloat(e.target.value) || 0
+      // Allow zero values by using Number() instead of parseFloat
+      const profit = Number(e.target.value)
 
       // If there are payments, we need to calculate the pending profit differently
       if (hasPayments && paymentsOriginal) {
         const totalPayments = paymentsOriginal.reduce((sum, payment) => sum + parseFloat(payment.value || 0), 0)
-        const cost = parseFloat(getValues('cost') || 0)
+        const cost = Number(getValues('cost') || 0)
 
         // Calculate what percentage of the cost has been paid
         const paymentRatio = cost === 0 ? 0 : totalPayments / cost
@@ -82,7 +85,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         // Calculate pending profit based on the payment ratio
         const pendingProfit = Math.max(0, profit * (1 - paymentRatio)).toFixed(2)
         setValue('profit_pending', pendingProfit)
-      } else if (profit && !isNaN(profit)) {
+      } else {
+        // Handle zero values properly
         setValue('profit_pending', profit.toFixed(2))
       }
     } catch (error) {
@@ -121,6 +125,15 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       toast.error('Por favor espere mientras se cargan los datos necesarios.', { theme: 'colored' });
       return;
     }
+    
+    // Ensure numeric fields are properly parsed as numbers
+    // This ensures that '0', 0, and '' are all treated correctly
+    const numericFields = ['cost', 'cost_pending', 'profit', 'profit_pending', 'supplier_amount'];
+    numericFields.forEach(field => {
+      if (procedureData[field] !== undefined) {
+        procedureData[field] = Number(procedureData[field] || 0);
+      }
+    });
 
     if (procedureSelected) {
       // Check if the processorData is different from processorSelected
@@ -611,12 +624,18 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {hasPayments && !isPrimeraVez && (
                   <span className="text-xs badge badge-warning">Tiene pagos</span>
                 )}
+                
               </div>
               <input
                 id="cost"
                 className="w-full input input-bordered"
-                {...register('cost', { required: true, pattern: /^[0-9.]+$/i })}
-                placeholder=""
+                {...register('cost', { 
+                  required: true, 
+                  pattern: /^[0-9.]+$/i,
+                  // Validate function that allows zero
+                  validate: (value) => Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
+                })}
+                placeholder="0.00"
                 onChange={handleCostChange}
                 disabled={
                   procedureSelected &&
@@ -662,8 +681,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   required: true,
                   pattern: /^[0-9.]+$/i,
                   onChange: handleProfitChange,
+                  // Validate function that allows zero
+                  validate: (value) => Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
                 })}
-                placeholder=""
+                placeholder="0.00"
                 disabled={
                   procedureSelected &&
                   (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
@@ -697,12 +718,17 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.supplier_amount.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
+                
               </div>
               <input
                 id="supplier_amount"
-                className="w-full input input-bordered "
-                {...register('supplier_amount', { required: false, pattern: /^[0-9.]+$/i })}
-                placeholder=""
+                className="w-full input input-bordered"
+                {...register('supplier_amount', { 
+                  required: false, 
+                  pattern: /^[0-9.]+$/i,
+                  validate: (value) => !value || Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
+                })}
+                placeholder="0.00"
                 disabled={procedureSelected && (isCompleted || isNotPending)}
               />
             </div>

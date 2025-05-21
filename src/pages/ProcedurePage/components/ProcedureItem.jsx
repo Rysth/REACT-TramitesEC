@@ -7,6 +7,7 @@ import { fetchProcedureDetails, procedureActions } from '../../../redux/slices/P
 function ProcedureItem({ index, procedure, showModal, showConfirmation, hasLicenses }) {
   const dispatch = useDispatch()
   const { activeToken, activeUser } = useSelector((store) => store.authentication)
+  const isAdmin = activeUser.is_admin
 
   const handleProcedureSelected = (procedureID) => {
     dispatch(fetchProcedureDetails({ activeToken, procedureId: procedureID }))
@@ -87,15 +88,18 @@ function ProcedureItem({ index, procedure, showModal, showConfirmation, hasLicen
         <button className="btn btn-sm btn-primary" onClick={() => handleProcedureSelected(procedure.id)}>
           <HiPencilSquare />
         </button>
-        <button
-          className="btn btn-sm btn-error"
-          onClick={() => {
-            dispatch(procedureActions.setProcedureSelected(procedure.id))
-            showConfirmation(true)
-          }}
-        >
-          <HiMiniTrash />
-        </button>
+        {/* Only show delete button if user is an admin */}
+        {isAdmin && (
+          <button
+            className="btn btn-sm btn-error"
+            onClick={() => {
+              dispatch(procedureActions.setProcedureSelected(procedure.id))
+              showConfirmation(true)
+            }}
+          >
+            <HiMiniTrash />
+          </button>
+        )}
       </td>
     </tr>
   )
