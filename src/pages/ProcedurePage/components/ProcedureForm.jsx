@@ -339,7 +339,18 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     closeModal()
   }
 
-  const onInvalid = (errors) => console.error(errors)
+  const onInvalid = (errors) => {
+    console.error(errors);
+    
+    // Show toast with specific validation errors
+    if (errors.cost?.type === 'validate') {
+      toast.error(errors.cost.message, { theme: 'colored' });
+    } else if (errors.cost) {
+      toast.error('El valor del trámite debe ser mayor que cero.', { theme: 'colored' });
+    } else {
+      toast.error('Por favor, complete todos los campos requeridos.', { theme: 'colored' });
+    }
+  }
 
   // Add cleanup effect
   useEffect(() => {
