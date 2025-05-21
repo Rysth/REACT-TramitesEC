@@ -88,3 +88,28 @@ h6 {
 .input:focus-within {
   @apply border-indigo-500 ring-1 ring-indigo-500;
 }
+
+/* Custom sidebar styles */
+.sidebar-menu {
+  @apply flex flex-col min-h-full bg-slate-800;
+}
+
+.sidebar-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-slate-300 hover:text-white hover:bg-indigo-600;
+}
+
+.sidebar-item.active {
+  @apply text-white bg-indigo-600;
+}
+
+.sidebar-item:not(.active) {
+  @apply hover:bg-slate-700;
+}
+
+.sidebar-icon {
+  @apply text-xl;
+}
+
+.drawer-side {
+  height: 100vh;
+}

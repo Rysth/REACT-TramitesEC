@@ -1,20 +1,16 @@
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
-import { FaChevronRight, FaCar, FaIdCard } from 'react-icons/fa' // Add these icons
+import { FaCar, FaIdCard } from 'react-icons/fa'
 import {
-  IoChevronDown,
-  IoChevronUp,
-  IoClose,
-  IoDocument,
-  IoMenu,
+  IoChevronBackOutline,
   IoPeople,
   IoPerson,
   IoBusiness,
   IoList,
-  IoChevronBackOutline,
-  IoHome, // Add this import
+  IoHome,
+  IoMenu
 } from 'react-icons/io5'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
 import SidebarLogout from './components/SidebarLogout'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,15 +18,32 @@ import { sharedActions } from '../../redux/slices/SharedSlice'
 
 function Sidebar() {
   const dispatch = useDispatch()
-  const [open, setOpen] = useState(false) // Initialize as false
-  const [showSubMenu, setShowSubMenu] = useState(false)
+  const location = useLocation()
+  const { activeUser } = useSelector((state) => state.authentication)
   const isCollapsed = useSelector((state) => state.shared.isSidebarCollapsed)
+  const isAdmin = activeUser.is_admin
+  const [open, setOpen] = useState(false) // Initialize as false
 
   const openSideBar = () => setOpen(true)
   const closeSideBar = () => setOpen(false)
   const toggleCollapse = () => {
     dispatch(sharedActions.toggleSidebar())
   }
+
+  // Get initials from username for avatar
+  const getInitials = (username) => {
+    if (!username) return 'U'
+    return username.substring(0, 2).toUpperCase()
+  }
+
+  // Check if route is active
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/'
+    }
+    return location.pathname.startsWith(path)
+  }
+
   return (
     <>
       <Button
@@ -44,11 +57,11 @@ function Sidebar() {
         {open ? <IoClose className="text-2xl" /> : <IoMenu className="text-2xl" />}
       </Button>
 
-      <div className={`${open && 'bg-black/50 inset-0 w-full fixed z-[100] md:w-60'}`} onClick={closeSideBar}>
+      <div className={`${open ? 'bg-black/50 inset-0 w-full fixed z-[100] md:w-60' : ''}`} onClick={closeSideBar}>
         <aside
           className={`fixed h-screen transition-all duration-300 inset-0 z-[100] bg-[var(--CL-primary)] shadow-lg md:translate-x-0 
             ${open ? 'translate-x-0' : '-translate-x-60'} 
-            ${isCollapsed ? 'w-20' : 'w-60'}`}
+            ${isCollapsed ? 'w-[4.25rem]' : 'w-60'}`}
         >
           <nav className="flex flex-col h-full px-3 py-5 overflow-y-auto">
             <div className="flex items-center h-12 sm:h-14">
@@ -64,74 +77,107 @@ function Sidebar() {
               </button>
             </div>
 
+            <div className="mb-0 border-b border-slate-600"></div>
+
             <ul className="flex flex-col flex-1 gap-1 mt-5 text-sm">
               <li>
                 <NavLink
                   to="/"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition w-full"
+                  className={`sidebar-item ${isActive("/") ? "active" : ""}`}
                 >
-                  <IoPerson className="text-xl" />
+                  <IoPerson className="sidebar-icon" />
                   {!isCollapsed && <span>Trámitadores</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/proveedores"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/proveedores") ? "active" : ""}`}
                 >
-                  <IoBusiness className="text-xl" />
+                  <IoBusiness className="sidebar-icon" />
                   {!isCollapsed && <span>Proveedores</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/clientes"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/clientes") ? "active" : ""}`}
                 >
-                  <IoPeople className="text-xl" />
+                  <IoPeople className="sidebar-icon" />
                   {!isCollapsed && <span>Clientes</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/tipo-tramites"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/tipo-tramites") ? "active" : ""}`}
                 >
-                  <IoList className="text-xl" />
+                  <IoList className="sidebar-icon" />
                   {!isCollapsed && <span>Tipos de Trámites</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/agencias"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/agencias") ? "active" : ""}`}
                 >
-                  <IoHome className="text-xl" />
+                  <IoHome className="sidebar-icon" />
                   {!isCollapsed && <span>Agencias</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/tramites/licencias"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/tramites/licencias") ? "active" : ""}`}
                 >
-                  <FaIdCard className="text-xl" />
-                  {!isCollapsed && 'Licencias'}
+                  <FaIdCard className="sidebar-icon" />
+                  {!isCollapsed && <span>Licencias</span>}
                 </NavLink>
               </li>
+              
               <li>
                 <NavLink
                   to="/tramites/vehiculares"
-                  className="btn btn-ghost !min-h-0 !h-[2.5rem] justify-start w-full text-slate-400 hover:!text-white hover:bg-[var(--CL-secondary)] transition"
+                  className={`sidebar-item ${isActive("/tramites/vehiculares") ? "active" : ""}`}
                 >
-                  <FaCar className="text-xl" />
-                  {!isCollapsed && 'Vehículares'}
+                  <FaCar className="sidebar-icon" />
+                  {!isCollapsed && <span>Vehículares</span>}
                 </NavLink>
               </li>
             </ul>
-            <footer className="grid gap-2">
-              <SidebarLogout isCollapsed={isCollapsed} />
-            </footer>
+
+            {/* User Profile at bottom */}
+            <div className="w-full mt-auto">
+              <div className="border-t border-slate-700 pt-4 mt-6 mb-1.5"></div>
+
+              <div className={`w-full transition-all duration-300`}>
+                <div className={`flex items-center gap-3 px-3 py-2 ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
+                  <div className="avatar placeholder">
+                    <div className="w-8 bg-indigo-600 rounded-full text-neutral-content">
+                      <span className="text-xs">{getInitials(activeUser.username)}</span>
+                    </div>
+                  </div>
+                  
+                  {!isCollapsed && (
+                    <div className="text-left space-y-0.5">
+                      <p className="text-sm font-medium leading-none text-white truncate">
+                        {activeUser.username}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {isAdmin ? 'Administrador' : 'Usuario'}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                
+                <SidebarLogout isCollapsed={isCollapsed} />
+              </div>
+            </div>
           </nav>
         </aside>
       </div>

@@ -44,7 +44,7 @@ function SectionLayout({
   return (
     <section
       className={`h-full p-4 overflow-hidden md:p-8 transition-all duration-300
-      ${isCollapsed ? 'md:ml-20' : 'md:ml-60'}`}
+      ${isCollapsed ? 'md:ml-[4.25rem]' : 'md:ml-60'}`}
       id="customerSection"
     >
       <article className="">

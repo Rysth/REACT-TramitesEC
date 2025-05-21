@@ -12,7 +12,7 @@ function SidebarLogout() {
   const closeUserSession = () => dispatch(destroySession(activeToken)).then(() => navigator('/session'))
 
   return (
-    <button className="w-full btn btn-error !min-h-0 !h-[2.5rem]" onClick={closeUserSession}>
+    <button className="w-full mt-2 btn btn-error !min-h-0 !h-[2.5rem]" onClick={closeUserSession}>
       {isCollapsed ? 'X' : 'Cerrar Sesión'}
     </button>
   )
