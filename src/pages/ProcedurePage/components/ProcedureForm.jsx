@@ -54,16 +54,16 @@ function ProcedureForm({ closeModal, refetchFunction }) {
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
-    // Allow zero values by using Number() instead of parseFloat which treats empty string as NaN
+    // Parse value as number but validate to ensure it's greater than zero
     const cost = Number(e.target.value)
-
+    
     // If there are payments, we need to calculate the pending cost differently
     if (hasPayments && paymentsOriginal) {
       const totalPayments = paymentsOriginal.reduce((sum, payment) => sum + parseFloat(payment.value || 0), 0)
       const newCostPending = Math.max(0, cost - totalPayments).toFixed(2)
       setValue('cost_pending', newCostPending)
     } else {
-      // Fixed to handle zero as valid value
+      // Set cost_pending to same as cost
       setValue('cost_pending', cost.toFixed(2))
     }
   }
@@ -123,6 +123,16 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     // Check if necessary data is loaded
     if (statusOriginal?.length === 0 || newFilterArray?.length === 0) {
       toast.error('Por favor espere mientras se cargan los datos necesarios.', { theme: 'colored' });
+      return;
+    }
+    
+    // More visible error for zero cost
+    if (Number(procedureData.cost) <= 0) {
+      toast.error('El valor del trámite debe ser mayor que cero.', { theme: 'colored' });
+      // Set a focus on the cost field to draw attention to it
+      document.getElementById('cost').focus();
+      // Trigger form validation explicitly
+      setValue('cost', procedureData.cost, { shouldValidate: true });
       return;
     }
     
@@ -615,16 +625,18 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 <label htmlFor="cost" className="label label-text">
                   Valor
                 </label>
+                {/* Improve error display to show all error types */}
                 {errors.cost && (
                   <span className="text-xs badge badge-error">
                     {errors.cost.type === 'required' && 'Campo requerido'}
                     {errors.cost.type === 'pattern' && 'Solo números'}
+                    {errors.cost.type === 'validate' && errors.cost.message}
                   </span>
                 )}
+                {/* Add a warning badge to always show the requirement */}
                 {hasPayments && !isPrimeraVez && (
-                  <span className="text-xs badge badge-warning">Tiene pagos</span>
+                  <span className="text-xs badge badge-info">Tiene pagos</span>
                 )}
-                
               </div>
               <input
                 id="cost"
@@ -632,8 +644,11 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {...register('cost', { 
                   required: true, 
                   pattern: /^[0-9.]+$/i,
-                  // Validate function that allows zero
-                  validate: (value) => Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
+                  validate: (value) => {
+                    const numValue = Number(value);
+                    // More explicit validation message and strict > 0 check
+                    return numValue > 0 || "Debe ser mayor que cero";
+                  }
                 })}
                 placeholder="0.00"
                 onChange={handleCostChange}
@@ -671,7 +686,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   </span>
                 )}
                 {hasPayments && !isPrimeraVez && (
-                  <span className="text-xs badge badge-warning">Tiene pagos</span>
+                  <span className="text-xs badge badge-info">Tiene pagos</span>
                 )}
               </div>
               <input
