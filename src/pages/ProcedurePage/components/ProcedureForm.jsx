@@ -449,6 +449,22 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, dataLoaded, statusOriginal, typesOriginal, licensesOriginal, setValue, dispatch, location.pathname]);
 
+  // Add this function for numbers-only input validation
+  const handleNumberInput = (e) => {
+    // Only allow digits and decimal point
+    const value = e.target.value;
+    
+    // Replace any character that is not a digit or dot
+    const sanitizedValue = value.replace(/[^0-9.]/g, '');
+    
+    // Prevent multiple decimal points
+    if ((sanitizedValue.match(/\./g) || []).length > 1) {
+      e.target.value = sanitizedValue.substr(0, sanitizedValue.lastIndexOf('.'));
+    } else {
+      e.target.value = sanitizedValue;
+    }
+  };
+
   return (
     <div className={`grid gap-4 ${procedureSelected && 'md:grid-cols-[42.5%_1fr]'}`}>
       <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -657,12 +673,29 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   pattern: /^[0-9.]+$/i,
                   validate: (value) => {
                     const numValue = Number(value);
-                    // More explicit validation message and strict > 0 check
                     return numValue > 0 || "Debe ser mayor que cero";
                   }
                 })}
                 placeholder="0.00"
-                onChange={handleCostChange}
+                onChange={(e) => {
+                  handleNumberInput(e); // Apply number validation first
+                  handleCostChange(e);  // Then apply your existing logic
+                }}
+                onKeyDown={(e) => {
+                  // Allow: backspace, delete, tab, escape, enter, decimal point
+                  if (![8, 46, 9, 27, 13, 110, 190].includes(e.keyCode) && 
+                      // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                      !(e.keyCode === 65 && e.ctrlKey === true) && 
+                      !(e.keyCode === 67 && e.ctrlKey === true) && 
+                      !(e.keyCode === 86 && e.ctrlKey === true) && 
+                      !(e.keyCode === 88 && e.ctrlKey === true) && 
+                      // Allow: home, end, left, right
+                      !(e.keyCode >= 35 && e.keyCode <= 39) &&
+                      // Allow numbers
+                      !/[0-9.]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 disabled={
                   procedureSelected &&
                   (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
@@ -706,11 +739,25 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {...register('profit', {
                   required: true,
                   pattern: /^[0-9.]+$/i,
-                  onChange: handleProfitChange,
-                  // Validate function that allows zero
+                  onChange: (e) => {
+                    handleNumberInput(e); // Apply number validation
+                    handleProfitChange(e); // Your existing handler
+                  },
                   validate: (value) => Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
                 })}
                 placeholder="0.00"
+                onKeyDown={(e) => {
+                  // Same key validation as above
+                  if (![8, 46, 9, 27, 13, 110, 190].includes(e.keyCode) && 
+                      !(e.keyCode === 65 && e.ctrlKey === true) && 
+                      !(e.keyCode === 67 && e.ctrlKey === true) && 
+                      !(e.keyCode === 86 && e.ctrlKey === true) && 
+                      !(e.keyCode === 88 && e.ctrlKey === true) && 
+                      !(e.keyCode >= 35 && e.keyCode <= 39) &&
+                      !/[0-9.]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 disabled={
                   procedureSelected &&
                   (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
@@ -755,6 +802,19 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   validate: (value) => !value || Number(value) >= 0 || "Valor debe ser mayor o igual a 0"
                 })}
                 placeholder="0.00"
+                onChange={handleNumberInput}
+                onKeyDown={(e) => {
+                  // Same key validation as above
+                  if (![8, 46, 9, 27, 13, 110, 190].includes(e.keyCode) && 
+                      !(e.keyCode === 65 && e.ctrlKey === true) && 
+                      !(e.keyCode === 67 && e.ctrlKey === true) && 
+                      !(e.keyCode === 86 && e.ctrlKey === true) && 
+                      !(e.keyCode === 88 && e.ctrlKey === true) && 
+                      !(e.keyCode >= 35 && e.keyCode <= 39) &&
+                      !/[0-9.]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 disabled={procedureSelected && (isCompleted || isNotPending)}
               />
             </div>
