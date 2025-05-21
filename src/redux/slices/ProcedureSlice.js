@@ -15,6 +15,7 @@ const initialState = {
   startDate: null,
   endDate: null,
   selectedYear: sessionStorage.getItem('selectedYear') || '',
+  showPrimeraVez: false, // Add this new state
 }
 
 const handleRequestError = (error) => {
@@ -65,7 +66,8 @@ export const getProcedures = createAsyncThunkWrapper(
     startDate,
     endDate,
     selectedYear,
-    showUnpaid, // Add this parameter
+    showUnpaid,
+    showPrimeraVez, // Add this parameter
   }) => {
     const params = { page }
 
@@ -78,7 +80,8 @@ export const getProcedures = createAsyncThunkWrapper(
     if (startDate) params.startDate = startDate
     if (endDate) params.endDate = endDate
     if (selectedYear) params.selectedYear = selectedYear
-    if (showUnpaid) params.showUnpaid = showUnpaid // Add this line
+    if (showUnpaid) params.showUnpaid = showUnpaid
+    if (showPrimeraVez) params.showPrimeraVez = showPrimeraVez // Add this line
 
     return axios.get(`${API_URL}/api/v1/procedures`, {
       params,
@@ -249,6 +252,13 @@ const proceduresSlice = createSlice({
 
       sessionStorage.setItem('selectedYear', action.payload)
     },
+    setShowPrimeraVez: (state, action) => {
+      state.showPrimeraVez = action.payload
+    },
+    resetFilters: (state) => {
+      state.showPrimeraVez = false;
+      // You could also reset other filters here if needed
+    }
   },
   extraReducers: (builder) => {
     builder

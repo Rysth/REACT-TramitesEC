@@ -10,7 +10,11 @@ import useEntityManagement from '../../hooks/useEntityManagement'
 import MainLayout from '../../layouts/MainLayout'
 import SectionLayout from '../../layouts/SectionLayout'
 import TableLayout from '../../layouts/TableLayout'
-import { generateProcedureExcelFile, getProcedures, procedureActions } from '../../redux/slices/ProcedureSlice'
+import { 
+  generateProcedureExcelFile, 
+  getProcedures, 
+  procedureActions 
+} from '../../redux/slices/ProcedureSlice'
 import ProcedureForm from './components/ProcedureForm'
 import ProcedureTable from './components/ProcedureTable'
 
@@ -38,6 +42,8 @@ function ProcedurePage({ routeName }) {
     setEndDate,
     showUnpaid,
     setShowUnpaid,
+    showPrimeraVez, // Add this
+    setShowPrimeraVez, // Add this
     hasLicenses,
   } = useEntityManagement(getProcedures, 'procedure', 'proceduresArray')
 
@@ -46,9 +52,17 @@ function ProcedurePage({ routeName }) {
   const isTramitesPage =
     location.pathname.includes('tramites/licencias') || location.pathname.includes('tramites/vehiculares')
 
+  // Effect to set hasLicenses based on routeName
   useEffect(() => {
     setHasLicenses(routeName === 'licencias')
-  }, [routeName])
+    
+    // Reset showPrimeraVez when switching routes
+    if (routeName !== 'licencias') {
+      setShowPrimeraVez(false)
+      // Also dispatch the reset action to ensure Redux state is reset
+      dispatch(procedureActions.resetFilters())
+    }
+  }, [routeName, setHasLicenses, setShowPrimeraVez, dispatch])
   
   // Create a custom close modal function that also clears the selected procedure
   const handleCloseModal = () => {
@@ -63,6 +77,8 @@ function ProcedurePage({ routeName }) {
       excelMethod={generateProcedureExcelFile}
       showUnpaid={showUnpaid}
       setShowUnpaid={setShowUnpaid}
+      showPrimeraVez={hasLicenses ? showPrimeraVez : undefined} // Only show in licencias view
+      setShowPrimeraVez={hasLicenses ? setShowPrimeraVez : undefined} // Only show in licencias view
     >
       <TableModal
         openModal={openModal}

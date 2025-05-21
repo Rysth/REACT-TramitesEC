@@ -19,6 +19,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [showUnpaid, setShowUnpaid] = useState(false)
+  const [showPrimeraVez, setShowPrimeraVez] = useState(false)
 
   const refetchEntities = () => {
     dispatch(
@@ -35,6 +36,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         endDate,
         selectedYear,
         showUnpaid,
+        showPrimeraVez,
       }),
     )
   }
@@ -44,9 +46,9 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   }, [
     dispatch,
     activeToken,
+    currentPage,
     search,
     selectedUserId,
-    currentPage,
     selectedProcessorId,
     selectedStatusId,
     selectedProcedureTypeId,
@@ -55,6 +57,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     endDate,
     selectedYear,
     showUnpaid,
+    showPrimeraVez,
   ])
 
   useEffect(() => {
@@ -121,6 +124,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     selectedYear,
     showUnpaid,
     setShowUnpaid,
+    showPrimeraVez,
+    setShowPrimeraVez,
   }
 }
 
