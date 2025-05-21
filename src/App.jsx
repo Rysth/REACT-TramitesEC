@@ -47,7 +47,7 @@ function App() {
       <ToastContainer position="bottom-right" />
 
       {active && <Sidebar />}
-      <main className="min-h-screen">
+      <main className={`min-h-screen ${active ? 'bg-white!' : 'bg-gradient-to-br from-indigo-500 via-indigo-600 to-indigo-800 '} rounded-xl`}>
         <Routes>
           <Route
             path="/session"
