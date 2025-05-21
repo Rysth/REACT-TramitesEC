@@ -4,9 +4,10 @@ import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-const getActiveUser = JSON.parse(sessionStorage.getItem('activeUser'))
-const getActiveToken = sessionStorage.getItem('activeToken')
-const getActiveSession = sessionStorage.getItem('active')
+// Change from sessionStorage to localStorage
+const getActiveUser = JSON.parse(localStorage.getItem('activeUser'))
+const getActiveToken = localStorage.getItem('activeToken')
+const getActiveSession = localStorage.getItem('active')
 
 const initialState = {
   activeUser: getActiveUser || {},
@@ -48,6 +49,10 @@ export const createSession = createAsyncThunk(
         withCredentials: true,
       })
 
+      // Store the login time
+      const loginTime = Date.now();
+      localStorage.setItem('loginTime', loginTime);
+      
       return [response.data, userResponse.data]
     } catch (error) {
       const errorMessage = handleRequestError(error);
@@ -105,10 +110,48 @@ export const getActualUser = createAsyncThunk(
   }
 )
 
+// New thunk to validate the token on app initialization
+export const validateToken = createAsyncThunk(
+  'authentication/validateToken',
+  async (_, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const { activeToken } = getState().authentication;
+      
+      if (!activeToken) {
+        return rejectWithValue('No token found');
+      }
+      
+      // Check token age - example: expire after 12 hours
+      const loginTime = parseInt(localStorage.getItem('loginTime') || '0');
+      const currentTime = Date.now();
+      const TOKEN_EXPIRY = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+      
+      if (currentTime - loginTime > TOKEN_EXPIRY) {
+        dispatch(AuthenticationActions.destroySession());
+        toast.error("Su sesión ha expirado. Por favor, inicie sesión nuevamente.", { theme: 'colored' });
+        return rejectWithValue('Token expired');
+      }
+      
+      const response = await axios.get(`${API_URL}/api/v1/users/1`, {
+        headers: {
+          Authorization: activeToken,
+        },
+        withCredentials: true,
+      });
+      
+      return response.data;
+    } catch (error) {
+      dispatch(AuthenticationActions.destroySession());
+      return rejectWithValue('Invalid token');
+    }
+  }
+);
+
+// Update the updateSessionStorage function to use localStorage
 const updateSessionStorage = (state) => {
-  sessionStorage.setItem('active', state.active)
-  sessionStorage.setItem('activeToken', state.activeToken)
-  sessionStorage.setItem('activeUser', JSON.stringify(state.activeUser))
+  localStorage.setItem('active', state.active)
+  localStorage.setItem('activeToken', state.activeToken)
+  localStorage.setItem('activeUser', JSON.stringify(state.activeUser))
 }
 
 export const AuthenticationSlice = createSlice({
@@ -122,9 +165,11 @@ export const AuthenticationSlice = createSlice({
       state.active = false
       state.activeUser = {}
       state.activeToken = ''
-      sessionStorage.removeItem('active')
-      sessionStorage.removeItem('activeUser')
-      sessionStorage.removeItem('activeToken')
+      // Update to clear localStorage instead of sessionStorage
+      localStorage.removeItem('active')
+      localStorage.removeItem('activeUser')
+      localStorage.removeItem('activeToken')
+      localStorage.removeItem('loginTime') // Clear login time
       toast.info('¡Muchas Gracias!', { autoClose: 2000, theme: 'colored' })
     },
   },
@@ -178,6 +223,16 @@ export const AuthenticationSlice = createSlice({
     builder.addCase(destroySession.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    });
+    
+    builder.addCase(validateToken.fulfilled, (state, action) => {
+      state.activeUser = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(validateToken.rejected, (state) => {
+      // Token is invalid, we already cleared the session in the thunk
+      state.loading = false;
     });
   },
 })

@@ -25,10 +25,19 @@ import {
   getAgencies,
 } from './redux/slices/SharedSlice'
 import { getUsers } from './redux/slices/UserSlice'
+// Import the validateToken function
+import { validateToken } from './redux/slices/AuthenticationSlice'
 
 function App() {
   const dispatch = useDispatch()
   const { active, activeToken } = useSelector((state) => state.authentication)
+
+  // Add token validation on app initialization
+  useEffect(() => {
+    if (localStorage.getItem('active') === 'true') {
+      dispatch(validateToken());
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (active) {
@@ -41,6 +50,21 @@ function App() {
       dispatch(getAgencies({ activeToken, full: true })) // Updated line
     }
   }, [dispatch, activeToken, active])
+
+  // Listen for storage events
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'active' && e.newValue === 'false' && active) {
+        // Another tab logged out, log out this tab too
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [active]);
 
   return (
     <BrowserRouter>
