@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { HiEye, HiEyeOff, HiMail, HiLockClosed } from 'react-icons/hi'
 import { createSession } from '../../redux/slices/AuthenticationSlice'
 import BrandImage from '../../assets/images/brands/brand_dark.svg'
 import BrandImageWhite from '../../assets/images/brands/brand.svg'
@@ -8,19 +10,50 @@ import RysthDesignLogo from '../../assets/images/rysthdesign/logo_dark.svg'
 
 function SessionPage() {
   const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.authentication)
+  const { loading, error } = useSelector((state) => state.authentication)
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(
+    localStorage.getItem('rememberEmail') === 'true'
+  )
+  
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm()
 
+  // Load remembered email if exists
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('userEmail')
+    if (savedEmail && rememberMe) {
+      setValue('email', savedEmail)
+    }
+  }, [setValue])
+
   const onSubmit = (userData) => {
+    // Save email if remember me is checked
+    if (rememberMe) {
+      localStorage.setItem('userEmail', userData.email)
+      localStorage.setItem('rememberEmail', 'true')
+    } else {
+      localStorage.removeItem('userEmail')
+      localStorage.setItem('rememberEmail', 'false')
+    }
+    
     dispatch(createSession(userData))
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked)
+  }
+
   return (
-    <section className="w-full min-h-full overflow-hidden auth-pattern ">
+    <section className="w-full min-h-full overflow-hidden auth-pattern">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* Form side */}
         <div className="relative flex flex-col items-center justify-center p-4 overflow-y-auto sm:p-10 lg:px-36">
@@ -47,14 +80,14 @@ function SessionPage() {
                   Correo Electrónico
                 </label>
                 <label className="flex items-center gap-2 input input-bordered">
-                  <i className="opacity-50 bx bx-envelope"></i>
+                  <HiMail className="w-5 h-5 opacity-70" />
                   <input
                     id="email"
                     type="email"
                     className="grow"
                     placeholder="usuario@dominio.com"
                     {...register('email', {
-                      required: true,
+                      required: "Campo requerido",
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                         message: "Correo electrónico inválido",
@@ -64,7 +97,7 @@ function SessionPage() {
                 </label>
                 {errors.email && (
                   <span className="text-xs font-bold text-red-600">
-                    {errors.email.message || "Campo requerido"}
+                    {errors.email.message}
                   </span>
                 )}
               </fieldset>
@@ -75,26 +108,50 @@ function SessionPage() {
                     Contraseña
                   </label>
                 </div>
-                <label className="flex items-center gap-2 input input-bordered">
-                  <i className="opacity-50 bx bx-lock-alt"></i>
+                <label className="relative flex items-center gap-2 input input-bordered">
+                  <HiLockClosed className="w-5 h-5 opacity-70" />
                   <input
                     id="password"
-                    type="password"
-                    className="grow"
+                    type={showPassword ? "text" : "password"}
+                    className="pr-10 grow"
                     placeholder="••••••••••••"
                     {...register('password', {
-                      required: true,
+                      required: "Campo requerido",
                     })}
                   />
+                  <button
+                    type="button"
+                    className="absolute text-gray-500 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-700 focus:outline-none"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <HiEyeOff className="w-5 h-5" />
+                    ) : (
+                      <HiEye className="w-5 h-5" />
+                    )}
+                  </button>
                 </label>
                 {errors.password && (
                   <span className="text-xs font-bold text-red-600">
-                    {errors.password.message || "Campo requerido"}
+                    {errors.password.message}
                   </span>
                 )}
               </fieldset>
+              
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  className="checkbox checkbox-primary checkbox-sm"
+                  checked={rememberMe}
+                  onChange={handleRememberMeChange}
+                />
+                <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
+                  Recordar correo electrónico
+                </label>
+              </div>
 
-              <div className="mt-4">
+              <div className="mt-2">
                 <button
                   type="submit"
                   className="w-full btn btn-primary"
@@ -103,7 +160,7 @@ function SessionPage() {
                   {loading ? (
                     <span className="loading loading-spinner"></span>
                   ) : (
-                    <i className="bx bx-log-in"></i>
+                    <HiMail className="w-5 h-5" />
                   )}
                   <span>
                     {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
