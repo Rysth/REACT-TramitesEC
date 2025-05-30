@@ -31,7 +31,20 @@ const handleRequestError = (error) => {
   }
 
   if (error.response.status === 422) {
-    toast.error('¡Se ha producido un problema de autorización!', { theme: 'colored' })
+    // Handle validation errors specifically
+    if (error.response.data?.field_errors?.plate) {
+      const plateError = error.response.data.field_errors.plate[0]
+      toast.error(plateError, { theme: 'colored', autoClose: 8000 }) // Increased autoClose time
+    } else if (error.response.data?.errors) {
+      // Handle general errors array
+      const errorMessage = error.response.data.errors[0] || 'Error de validación'
+      toast.error(errorMessage, { theme: 'colored', autoClose: 5000 })
+    } else {
+      toast.error('¡Se ha producido un problema de validación!', { theme: 'colored' })
+    }
+    
+    // Don't re-throw here, let the thunk handle it
+    return error.response.data
   }
 
   if (error.response.status === 500) {
@@ -102,24 +115,78 @@ export const fetchProcedureDetails = createAsyncThunkWrapper(
 )
 
 // Thunk for creating a new processor (POST)
-export const createProcedure = createAsyncThunkWrapper('createProcedure', async ({ activeToken, procedureData }) => {
-  return axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+export const createProcedure = createAsyncThunk(
+  'procedures/createProcedure', 
+  async ({ activeToken, procedureData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/api/v1/procedures/`, procedureData, {
+        headers: {
+          Authorization: activeToken,
+        },
+        withCredentials: true,
+      })
+      return response.data
+    } catch (error) {
+      if (error.response?.status === 422) {
+        // Show the toast error here
+        if (error.response.data?.field_errors?.plate) {
+          const plateError = error.response.data.field_errors.plate[0]
+          toast.error(plateError, { theme: 'colored', autoClose: 8000 })
+          // Return a special flag to indicate this is a plate validation error
+          return rejectWithValue({ 
+            ...error.response.data, 
+            shouldCloseModal: true,
+            isPlateError: true 
+          })
+        } else if (error.response.data?.errors) {
+          const errorMessage = error.response.data.errors[0] || 'Error de validación'
+          toast.error(errorMessage, { theme: 'colored', autoClose: 5000 })
+        }
+        // Return the validation errors so the component can handle them
+        return rejectWithValue(error.response.data)
+      }
+      // For other errors, use the existing handler
+      return rejectWithValue(handleRequestError(error))
+    }
+  }
+)
 
 // Thunk for updating an existing processor (PUT)
-export const updateProcedure = createAsyncThunkWrapper('updateProcedure', async ({ activeToken, procedureData }) => {
-  return axios.put(`${API_URL}/api/v1/procedures/${procedureData.id}`, procedureData, {
-    headers: {
-      Authorization: activeToken,
-    },
-    withCredentials: true,
-  })
-})
+export const updateProcedure = createAsyncThunk(
+  'procedures/updateProcedure', 
+  async ({ activeToken, procedureData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${API_URL}/api/v1/procedures/${procedureData.id}`, procedureData, {
+        headers: {
+          Authorization: activeToken,
+        },
+        withCredentials: true,
+      })
+      return response.data
+    } catch (error) {
+      if (error.response?.status === 422) {
+        // Show the toast error here
+        if (error.response.data?.field_errors?.plate) {
+          const plateError = error.response.data.field_errors.plate[0]
+          toast.error(plateError, { theme: 'colored', autoClose: 8000 })
+          // Return a special flag to indicate this is a plate validation error
+          return rejectWithValue({ 
+            ...error.response.data, 
+            shouldCloseModal: true,
+            isPlateError: true 
+          })
+        } else if (error.response.data?.errors) {
+          const errorMessage = error.response.data.errors[0] || 'Error de validación'
+          toast.error(errorMessage, { theme: 'colored', autoClose: 5000 })
+        }
+        // Return the validation errors so the component can handle them
+        return rejectWithValue(error.response.data)
+      }
+      // For other errors, use the existing handler
+      return rejectWithValue(handleRequestError(error))
+    }
+  }
+)
 
 // Thunk for deleting a processor (DELETE)
 export const destroyProcedure = createAsyncThunkWrapper('destroyProcedure', async ({ activeToken, procedureID }) => {
@@ -288,8 +355,12 @@ const proceduresSlice = createSlice({
         updateStateAndStats(state, action, '¡Trámite Registrado!')
       }
     })
-    builder.addCase(createProcedure.rejected, (state) => {
+    builder.addCase(createProcedure.rejected, (state, action) => {
       state.loading = false
+      // Handle validation errors in the state if needed
+      if (action.payload?.field_errors) {
+        console.log('Validation errors:', action.payload.field_errors)
+      }
     })
     builder.addCase(updateProcedure.fulfilled, (state, action) => {
       state.loading = true
@@ -297,6 +368,13 @@ const proceduresSlice = createSlice({
       if (action.payload) {
         state.loading = false
         updateStateAndStats(state, action, '¡Trámite Actualizado!')
+      }
+    })
+    builder.addCase(updateProcedure.rejected, (state, action) => {
+      state.loading = false
+      // Handle validation errors in the state if needed
+      if (action.payload?.field_errors) {
+        console.log('Validation errors:', action.payload.field_errors)
       }
     })
     builder.addCase(destroyProcedure.fulfilled, (state, action) => {

@@ -118,7 +118,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, typesOriginal])
 
-  // Update onSubmit to validate required fields
+  // Update onSubmit to handle validation errors
   const onSubmit = (procedureData) => {
     // Check if necessary data is loaded
     if (statusOriginal?.length === 0 || newFilterArray?.length === 0) {
@@ -129,15 +129,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     // More visible error for zero cost
     if (Number(procedureData.cost) <= 0) {
       toast.error('El valor del trámite debe ser mayor que cero.', { theme: 'colored' });
-      // Set a focus on the cost field to draw attention to it
       document.getElementById('cost').focus();
-      // Trigger form validation explicitly
       setValue('cost', procedureData.cost, { shouldValidate: true });
       return;
     }
     
     // Ensure numeric fields are properly parsed as numbers
-    // This ensures that '0', 0, and '' are all treated correctly
     const numericFields = ['cost', 'cost_pending', 'profit', 'profit_pending', 'supplier_amount'];
     numericFields.forEach(field => {
       if (procedureData[field] !== undefined) {
@@ -163,27 +160,69 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           return parseInt(procedureData[key]) !== parseInt(procedureSelected[key])
         }
 
-        // Check if the key exists in processorSelected and if their values are different
         return procedureSelected.hasOwnProperty(key) && procedureData[key] !== procedureSelected[key]
       })
 
       if (isDifferent) {
-        dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } })).then(
-          () => {
-            refetchFunction()
-            closeModal()
-            setDisableProcessor(false)
-          },
-        )
+        dispatch(updateProcedure({ activeToken, procedureData: { ...procedureData, id: procedureSelected.id } }))
+        .then(() => {
+          refetchFunction()
+          closeModal()
+          setDisableProcessor(false)
+        })
+        .catch((error) => {
+          console.error('Error updating procedure:', error)
+          
+          // If it's a plate validation error, close the modal
+          if (error?.shouldCloseModal && error?.isPlateError) {
+            setTimeout(() => {
+              closeModal()
+              refetchFunction() // Refresh the list
+            }, 2000) // Wait 2 seconds for user to read the error message
+            return
+          }
+          
+          // For other errors, focus on the plate field if there's a plate error
+          if (error?.field_errors?.plate) {
+            const plateField = document.getElementById('plate');
+            if (plateField) {
+              plateField.focus();
+              plateField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        })
       } else {
         closeModal()
       }
     } else {
-      dispatch(createProcedure({ activeToken, procedureData })).then(() => {
+      dispatch(createProcedure({ activeToken, procedureData }))
+      .unwrap()
+      .then(() => {
         refetchFunction()
         closeModal()
         reset()
         setDisableProcessor(false)
+      })
+      .catch((error) => {
+        console.error('Error creating procedure:', error)
+        
+        // If it's a plate validation error, close the modal
+        if (error?.shouldCloseModal && error?.isPlateError) {
+          setTimeout(() => {
+            closeModal()
+            refetchFunction() // Refresh the list
+          }, 2000) // Wait 2 seconds for user to read the error message
+          return
+        }
+        
+        // For other errors, focus on the plate field if there's a plate error
+        if (error?.field_errors?.plate) {
+          const plateField = document.getElementById('plate');
+          if (plateField) {
+            plateField.focus();
+            plateField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
       })
     }
     setSelectedProcessor([])
@@ -862,8 +901,19 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 className="w-full input input-bordered "
                 placeholder=""
                 disabled={isCompleted || isNotPending || isRouteLicenses}
-                {...register('plate', { required: !isRouteLicenses })}
+                {...register('plate', { 
+                  required: !isRouteLicenses,
+                  validate: {
+                    notEmpty: value => isRouteLicenses || value.trim() !== '' || 'La placa no puede estar vacía'
+                  }
+                })}
               />
+              {errors.plate && (
+                <div className="mt-1 text-xs text-red-600">
+                  {errors.plate.type === 'required' && 'Campo Requerido'}
+                  {errors.plate.type === 'validate' && errors.plate.message}
+                </div>
+              )}
             </div>
           </fieldset>
         </div>
