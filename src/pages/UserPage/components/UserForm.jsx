@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { HiMiniDocumentText, HiMiniEnvelope, HiMiniKey, HiMiniEye, HiMiniEyeSlash } from 'react-icons/hi2'
+import { HiMiniDocumentText, HiMiniEnvelope, HiMiniKey, HiMiniEye, HiMiniEyeSlash, HiMiniBell } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUser, updateUser, updateUserPassword } from '../../../redux/slices/UserSlice'
 
@@ -22,15 +22,22 @@ function UserForm({ closeModal, refetchFunction }) {
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: { active: true, is_admin: false },
+    defaultValues: { active: true, is_admin: false, notification_email: '' },
   })
+
+  const isAdmin = watch('is_admin')
 
   const onSubmit = (userData) => {
     userData.active = Boolean(userData.active)
     userData.is_admin = Boolean(userData.is_admin)
+    
+    // Clear notification_email if not admin
+    if (!userData.is_admin) {
+      userData.notification_email = null
+    }
 
     if (userSelected) {
-      const isDifferent = ['username', 'email', 'active', 'is_admin'].some(
+      const isDifferent = ['username', 'email', 'active', 'is_admin', 'notification_email'].some(
         (key) => userData[key] !== userSelected[key]
       )
 
@@ -49,7 +56,7 @@ function UserForm({ closeModal, refetchFunction }) {
       dispatch(createUser({ activeToken, userData }))
         .then(() => {
           refetchFunction()
-          reset({ username: '', email: '', password: '', active: true, is_admin: false })
+          reset({ username: '', email: '', password: '', active: true, is_admin: false, notification_email: '' })
         })
         .then(() => closeModal())
     }
@@ -89,7 +96,7 @@ function UserForm({ closeModal, refetchFunction }) {
       setShowPasswordSection(false)
       setPasswordData({ password: '', passwordConfirmation: '' })
     } else {
-      reset({ username: '', email: '', password: '', active: true, is_admin: false })
+      reset({ username: '', email: '', password: '', active: true, is_admin: false, notification_email: '' })
     }
   }, [userSelected, reset, setValue])
 
@@ -221,6 +228,39 @@ function UserForm({ closeModal, refetchFunction }) {
             )}
           </div>
         </fieldset>
+
+        {/* Notification email - only visible for admin users */}
+        {isAdmin && (
+          <fieldset className="grid gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="notification_email" className="label-text">
+                  🔔 Email para Notificaciones
+                </label>
+                {errors.notification_email && (
+                  <span className="badge-sm badge badge-error">
+                    {errors.notification_email.type === 'pattern' ? 'Email inválido' : 'Campo Requerido'}
+                  </span>
+                )}
+              </div>
+              <label className="flex items-center gap-2 input input-bordered">
+                <HiMiniBell className="w-4 h-4 opacity-70" />
+                <input
+                  id="notification_email"
+                  type="email"
+                  placeholder="notificaciones@ejemplo.com"
+                  {...register('notification_email', {
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  })}
+                  className="grow"
+                />
+              </label>
+              <p className="text-xs text-gray-500">
+                Email donde recibirás las notificaciones de trámites de licencias (Primera Vez)
+              </p>
+            </div>
+          </fieldset>
+        )}
 
         <fieldset className="flex items-center justify-end gap-2 p-4 px-0 pt-0">
           <button type="submit" className="btn btn-success">
