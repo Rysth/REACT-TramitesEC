@@ -39,6 +39,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       profit_pending: '',
       comments: '',
       plate: '',
+      notification_days: '',
       // Don't set these default values here, we'll set them in the useEffect after data loading
       // status_id: '',
       // procedure_type_id: '',
@@ -141,6 +142,13 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         procedureData[field] = Number(procedureData[field] || 0);
       }
     });
+
+    // Handle notification_days - convert to number or null
+    if (procedureData.notification_days === '' || procedureData.notification_days === undefined) {
+      procedureData.notification_days = null;
+    } else {
+      procedureData.notification_days = Number(procedureData.notification_days);
+    }
 
     if (procedureSelected) {
       // Check if the processorData is different from processorSelected
@@ -632,6 +640,41 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   </option>
                 ))}
               </select>
+            </div>
+          )}
+          {/* Notification selector - only visible for "Primera Vez" license procedures */}
+          {isRouteLicenses && isPrimeraVez && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="notification_days" className="label label-text">
+                  🔔 Notificar en
+                </label>
+                {procedureSelected?.notification_sent && (
+                  <span className="text-xs badge badge-success">
+                    ✓ Notificación enviada
+                  </span>
+                )}
+                {procedureSelected?.notification_scheduled_at && !procedureSelected?.notification_sent && (
+                  <span className="text-xs badge badge-warning">
+                    Programada: {new Date(procedureSelected.notification_scheduled_at).toLocaleDateString('es-EC')}
+                  </span>
+                )}
+              </div>
+              <select
+                id="notification_days"
+                className="w-full select select-bordered"
+                {...register('notification_days')}
+                disabled={procedureSelected && (isCompleted || isNotPending || procedureSelected?.notification_sent)}
+              >
+                <option value="">Sin notificación</option>
+                <option value="1">1 día</option>
+                <option value="7">7 días</option>
+                <option value="15">15 días</option>
+                <option value="30">1 mes</option>
+              </select>
+              {!procedureSelected?.customer?.email && procedureSelected && (
+                <p className="text-xs text-warning">⚠️ El cliente no tiene email registrado</p>
+              )}
             </div>
           )}
           <div className="space-y-2">
