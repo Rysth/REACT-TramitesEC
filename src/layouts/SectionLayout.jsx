@@ -5,6 +5,7 @@ import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import { RiRefreshLine } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import DateRangeModal from '../components/DateRangeModal/DateRangeModal'
 import { procedureActions } from '../redux/slices/ProcedureSlice'
 
@@ -24,6 +25,7 @@ function SectionLayout({
   const isAdmin = activeUser.is_admin
   const location = useLocation()
   const isCollapsed = useSelector((state) => state.shared.isSidebarCollapsed)
+  const [isExporting, setIsExporting] = useState(false)
 
   const currentYear = new Date().getFullYear()
   const years = Array.from({ length: currentYear - 2024 + 1 }, (_, idx) => (2024 + idx).toString())
@@ -39,6 +41,23 @@ function SectionLayout({
 
   const handleClearYear = () => {
     dispatch(procedureActions.setYear(''))
+  }
+
+  const handleExcelClick = async () => {
+    if (!excelMethod) return
+    try {
+      setIsExporting(true)
+      const result = dispatch(excelMethod({ activeToken, isAdmin }))
+      if (result?.finally) {
+        await result.finally(() => {})
+      } else if (result?.unwrap) {
+        await result.unwrap()
+      } else {
+        await result
+      }
+    } finally {
+      setIsExporting(false)
+    }
   }
 
   const isTramitesPage =
@@ -106,11 +125,13 @@ function SectionLayout({
               <Button
                 color="green"
                 size="xs"
-                onClick={() => dispatch(excelMethod({ activeToken }))}
+                onClick={handleExcelClick}
                 icon={HiOutlineDocumentDownload}
+                disabled={isExporting}
+                loading={isExporting}
                 className="text-xs"
               >
-                Generar Excel
+                {isExporting ? 'Generando...' : 'Generar Excel'}
               </Button>
             )}
           </div>
