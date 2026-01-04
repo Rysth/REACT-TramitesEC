@@ -16,6 +16,7 @@ const initialState = {
   selectedLicenseType: {},
   isSidebarCollapsed: false,
   agenciesOriginal: [],
+  coursesOriginal: [],
 }
 
 const handleRequestError = (error) => {
@@ -162,6 +163,21 @@ export const getAgencies = createAsyncThunk('shared/getAgencies', async ({ activ
   }
 })
 
+// Async thunk for fetching courses
+export const getCourses = createAsyncThunk('shared/getCourses', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/courses`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
 const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -224,6 +240,9 @@ const sharedSlice = createSlice({
       })
       .addCase(getAgencies.fulfilled, (state, action) => {
         state.agenciesOriginal = action.payload
+      })
+      .addCase(getCourses.fulfilled, (state, action) => {
+        state.coursesOriginal = action.payload
       })
   },
 })

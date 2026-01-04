@@ -23,6 +23,7 @@ import {
   getProcedureTypes,
   getStatuses,
   getAgencies,
+  getCourses,
 } from './redux/slices/SharedSlice'
 import { getUsers } from './redux/slices/UserSlice'
 // Import the validateToken function
@@ -48,6 +49,7 @@ function App() {
       dispatch(getProcedureTypes({ activeToken, full: true }))
       dispatch(getPaymentTypes(activeToken))
       dispatch(getAgencies({ activeToken, full: true })) // Updated line
+      dispatch(getCourses(activeToken))
     }
   }, [dispatch, activeToken, active])
 

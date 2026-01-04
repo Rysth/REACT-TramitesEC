@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal } =
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal, coursesOriginal } =
     useSelector((store) => store.shared)
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
   const [disableProcessor, setDisableProcessor] = useState(false)
@@ -367,6 +367,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       profit_pending: '',
       comments: '',
       plate: '',
+      course_id: '',
     });
     setSelectedProcessor([]);
     setSelectedCustomer([]);
@@ -417,6 +418,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         procedure_type_id: newFilterArray?.[0]?.id || '',
         license_id: licensesOriginal?.[0]?.id || '',
         agency_id: '',
+        course_id: '',
       });
       setSelectedProcessor([]);
       setSelectedCustomer([]);
@@ -608,6 +610,30 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </div>
             )}
           </fieldset>
+          {/* Course selector - only visible for "Primera Vez" license procedures */}
+          {isRouteLicenses && isPrimeraVez && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="course_id" className="label label-text">
+                  Curso
+                </label>
+                {errors.course_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
+              </div>
+              <select
+                id="course_id"
+                className="w-full select select-bordered"
+                {...register('course_id')}
+                disabled={procedureSelected && (isCompleted || isNotPending)}
+              >
+                <option value="">Seleccionar Curso</option>
+                {coursesOriginal && coursesOriginal.filter(course => course.active).map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label htmlFor="agency_id" className="label label-text">
