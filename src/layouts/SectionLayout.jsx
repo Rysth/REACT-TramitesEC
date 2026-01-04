@@ -25,6 +25,9 @@ function SectionLayout({
   const location = useLocation()
   const isCollapsed = useSelector((state) => state.shared.isSidebarCollapsed)
 
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: currentYear - 2024 + 1 }, (_, idx) => (2024 + idx).toString())
+
   const handleGenerateExcel = (startDate, endDate) => {
     dispatch(excelMethod({ activeToken, isAdmin, startDate, endDate }))
   }
@@ -60,8 +63,9 @@ function SectionLayout({
             <fieldset className="flex items-center gap-2">
             <select value={selectedYear} onChange={handleYearChange} className="select select-bordered select-sm">
               <option value="">Todos los Años</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
+              {years.map((year) => (
+                <option key={year} value={year}>{year}</option>
+              ))}
             </select>
             <button className="text-white btn btn-sm btn-primary" onClick={handleClearYear}>
               <RiRefreshLine className="" />
