@@ -498,6 +498,23 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, dataLoaded, statusOriginal, typesOriginal, licensesOriginal, setValue, dispatch, location.pathname]);
 
+  // Default notification to 1 mes (30 días) for nueva "Primera Vez"
+  useEffect(() => {
+    if (procedureSelected || !dataLoaded) return;
+
+    if (isRouteLicenses && isPrimeraVez) {
+      const currentNotification = getValues('notification_days');
+      if (!currentNotification) {
+        setValue('notification_days', '30', {
+          shouldValidate: true,
+          shouldDirty: false,
+        });
+      }
+    } else {
+      setValue('notification_days', '', { shouldDirty: false });
+    }
+  }, [procedureSelected, dataLoaded, isRouteLicenses, isPrimeraVez, getValues, setValue]);
+
   // Add this function for numbers-only input validation
   const handleNumberInput = (e) => {
     // Only allow digits and decimal point
