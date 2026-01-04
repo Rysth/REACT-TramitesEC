@@ -22,6 +22,8 @@ const handleRequestError = (error) => {
   if (error.response) {
     if (error.response.status === 401) {
       return "Credenciales incorrectas. Por favor, verifique su correo y contraseña.";
+    } else if (error.response.status === 403) {
+      return error.response.data?.error || "Tu cuenta ha sido desactivada. Contacta al administrador.";
     } else if (error.response.status === 400) {
       return "La cuenta no existe. Verifique su información.";
     } else if (error.response.status === 500) {
