@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import SupplierPage from './pages/SupplierPage/SupplierPage'
 import CoursePage from './pages/CoursePage/CoursePage'
+import UserPage from './pages/UserPage/UserPage'
 import {
   getLicenses,
   getLicenseTypes,
@@ -169,6 +170,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <CoursePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/usuarios"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <UserPage />
               </ProtectedRoute>
             }
           />

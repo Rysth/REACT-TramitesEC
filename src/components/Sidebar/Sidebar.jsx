@@ -9,7 +9,8 @@ import {
   IoList,
   IoHome,
   IoMenu,
-  IoSchool
+  IoSchool,
+  IoPersonCircle
 } from 'react-icons/io5'
 import { NavLink, useLocation } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -160,6 +161,19 @@ function Sidebar() {
                   {!isCollapsed && <span>Vehículares</span>}
                 </NavLink>
               </li>
+              
+              {/* Admin only: User management */}
+              {isAdmin && (
+                <li>
+                  <NavLink
+                    to="/usuarios"
+                    className={`sidebar-item ${isActive("/usuarios") ? "active" : ""}`}
+                  >
+                    <IoPersonCircle className="sidebar-icon" />
+                    {!isCollapsed && <span>Usuarios</span>}
+                  </NavLink>
+                </li>
+              )}
             </ul>
 
             {/* User Profile at bottom */}
