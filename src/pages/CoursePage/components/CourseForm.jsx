@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { HiMiniDocumentText } from 'react-icons/hi2'
 import { useDispatch, useSelector } from 'react-redux'
 import { createCourse, updateCourse } from '../../../redux/slices/CourseSlice'
+import { getCourses as getCoursesShared } from '../../../redux/slices/SharedSlice'
 
 function CourseForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
@@ -23,11 +24,14 @@ function CourseForm({ closeModal, refetchFunction }) {
   const onSubmit = (courseData) => {
     courseData.active = Boolean(courseData.active)
 
+    const refreshSharedCourses = () => dispatch(getCoursesShared(activeToken))
+
     if (courseSelected) {
       const isDifferent = ['name', 'active'].some((key) => courseData[key] !== courseSelected[key])
 
       if (isDifferent) {
         dispatch(updateCourse({ activeToken, courseData: { ...courseData, id: courseSelected.id } }))
+          .then(() => refreshSharedCourses())
           .then(() => refetchFunction())
           .then(() => closeModal())
       } else {
@@ -35,6 +39,9 @@ function CourseForm({ closeModal, refetchFunction }) {
       }
     } else {
       dispatch(createCourse({ activeToken, courseData }))
+        .then(() => {
+          return refreshSharedCourses()
+        })
         .then(() => {
           refetchFunction()
           reset({ name: '', active: true })
