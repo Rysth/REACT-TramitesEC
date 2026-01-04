@@ -9,6 +9,7 @@ import ProcedureReducer from './slices/ProcedureSlice'
 import ProcedureTypeReducer from './slices/ProcedureTypeSlice'
 import SharedReducer from './slices/SharedSlice'
 import AgencyReducer from './slices/AgencySlice'
+import CourseReducer from './slices/CourseSlice'
 
 const Store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const Store = configureStore({
     procedureType: ProcedureTypeReducer,
     shared: SharedReducer,
     agency: AgencyReducer,
+    course: CourseReducer,
   },
 })
 

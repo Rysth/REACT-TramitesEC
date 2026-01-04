@@ -8,7 +8,8 @@ import {
   IoBusiness,
   IoList,
   IoHome,
-  IoMenu
+  IoMenu,
+  IoSchool
 } from 'react-icons/io5'
 import { NavLink, useLocation } from 'react-router-dom'
 import BrandLogo from '../../assets/images/brands/brand.svg'
@@ -117,6 +118,16 @@ function Sidebar() {
                 >
                   <IoList className="sidebar-icon" />
                   {!isCollapsed && <span>Tipos de Trámites</span>}
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/cursos"
+                  className={`sidebar-item ${isActive("/cursos") ? "active" : ""}`}
+                >
+                  <IoSchool className="sidebar-icon" />
+                  {!isCollapsed && <span>Cursos</span>}
                 </NavLink>
               </li>
               

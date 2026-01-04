@@ -167,6 +167,7 @@ export const getAgencies = createAsyncThunk('shared/getAgencies', async ({ activ
 export const getCourses = createAsyncThunk('shared/getCourses', async (activeToken) => {
   try {
     const response = await axios.get(`${API_URL}/api/v1/courses`, {
+      params: { full: true, active_only: true },
       headers: {
         Authorization: activeToken,
       },
