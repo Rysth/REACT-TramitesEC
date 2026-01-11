@@ -50,8 +50,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const [selectedCustomer, setSelectedCustomer] = useState([])
   const [selectedSupplier, setSelectedSupplier] = useState([])
   const [hasPayments, setHasPayments] = useState(false)
-  // Add a state to track if the current procedure is "Primera Vez"
-  const [isPrimeraVez, setIsPrimeraVez] = useState(false)
+  // Track if the current procedure type requires course and notification fields (Primera Vez or Título)
+  const [showCourseAndNotification, setShowCourseAndNotification] = useState(false)
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
@@ -95,12 +95,12 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }
 
-  // Function to check if the selected procedure type is "Primera Vez"
-  const checkIsPrimeraVez = (procedureTypeId) => {
+  // Function to check if the selected procedure type requires course and notification (Primera Vez or Título)
+  const checkShowCourseAndNotification = (procedureTypeId) => {
     if (!procedureTypeId || !typesOriginal || !Array.isArray(typesOriginal)) return false
 
     const procedureType = typesOriginal.find((pt) => pt.id === parseInt(procedureTypeId))
-    return procedureType?.name === 'Primera Vez'
+    return procedureType?.name === 'Primera Vez' || procedureType?.name === 'Título'
   }
 
   // Handle procedure type selection change
@@ -108,14 +108,14 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     const procedureTypeID = parseInt(e.target.value)
     dispatch(sharedActions.setProcedureTypeSelected(procedureTypeID))
 
-    // Check if the selected procedure type is "Primera Vez"
-    setIsPrimeraVez(checkIsPrimeraVez(procedureTypeID))
+    // Check if the selected procedure type requires course and notification
+    setShowCourseAndNotification(checkShowCourseAndNotification(procedureTypeID))
   }
 
-  // Check if the procedure type is "Primera Vez" when the component mounts or when the selected procedure changes
+  // Check if the procedure type requires course/notification when component mounts or procedure changes
   useEffect(() => {
     if (procedureSelected?.procedure_type_id) {
-      setIsPrimeraVez(checkIsPrimeraVez(procedureSelected.procedure_type_id))
+      setShowCourseAndNotification(checkShowCourseAndNotification(procedureSelected.procedure_type_id))
     }
   }, [procedureSelected, typesOriginal])
 
@@ -382,7 +382,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     setSelectedSupplier([]);
     setDisableProcessor(false);
     setHasPayments(false);
-    setIsPrimeraVez(false);
+    setShowCourseAndNotification(false);
     dispatch(procedureActions.setProcedureSelected(''));  // Make sure to clear this
     closeModal()
   }
@@ -433,7 +433,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       setSelectedSupplier([]);
       setDisableProcessor(false);
       setHasPayments(false);
-      setIsPrimeraVez(false);
+      setShowCourseAndNotification(false);
     }
   }, [procedureSelected]);
 
@@ -467,8 +467,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
           shouldDirty: false 
         });
         
-        // Check if selected type is "Primera Vez"
-        setIsPrimeraVez(filteredTypes[0].name === 'Primera Vez');
+        // Check if selected type requires course and notification
+        setShowCourseAndNotification(filteredTypes[0].name === 'Primera Vez' || filteredTypes[0].name === 'Título');
         
         // Set the selected procedure type in the store
         dispatch(sharedActions.setProcedureTypeSelected(filteredTypes[0].id));
@@ -498,11 +498,11 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     }
   }, [procedureSelected, dataLoaded, statusOriginal, typesOriginal, licensesOriginal, setValue, dispatch, location.pathname]);
 
-  // Default notification to 1 mes (30 días) for nueva "Primera Vez"
+  // Default notification to 1 mes (30 días) for "Primera Vez" or "Título" procedures
   useEffect(() => {
     if (procedureSelected || !dataLoaded) return;
 
-    if (isRouteLicenses && isPrimeraVez) {
+    if (isRouteLicenses && showCourseAndNotification) {
       const currentNotification = getValues('notification_days');
       if (!currentNotification) {
         setValue('notification_days', '30', {
@@ -513,7 +513,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
     } else {
       setValue('notification_days', '', { shouldDirty: false });
     }
-  }, [procedureSelected, dataLoaded, isRouteLicenses, isPrimeraVez, getValues, setValue]);
+  }, [procedureSelected, dataLoaded, isRouteLicenses, showCourseAndNotification, getValues, setValue]);
 
   // Add this function for numbers-only input validation
   const handleNumberInput = (e) => {
@@ -635,8 +635,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </div>
             )}
           </fieldset>
-          {/* Course selector - only visible for "Primera Vez" license procedures */}
-          {isRouteLicenses && isPrimeraVez && (
+          {/* Course selector - only visible for "Primera Vez" or "Título" license procedures */}
+          {isRouteLicenses && showCourseAndNotification && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label htmlFor="course_id" className="label label-text">
@@ -659,8 +659,8 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               </select>
             </div>
           )}
-          {/* Notification selector - only visible for "Primera Vez" license procedures */}
-          {isRouteLicenses && isPrimeraVez && (
+          {/* Notification selector - only visible for "Primera Vez" or "Título" license procedures */}
+          {isRouteLicenses && showCourseAndNotification && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label htmlFor="notification_days" className="label label-text">
@@ -786,7 +786,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                   </span>
                 )}
                 {/* Add a warning badge to always show the requirement */}
-                {hasPayments && !isPrimeraVez && (
+                {hasPayments && !showCourseAndNotification && (
                   <span className="text-xs badge badge-info">Tiene pagos</span>
                 )}
               </div>
@@ -823,7 +823,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 }}
                 disabled={
                   procedureSelected &&
-                  (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
+                  (isCompleted || isNotPending || (hasPayments && !showCourseAndNotification))
                 }
               />
             </div>
@@ -854,7 +854,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                     {errors.profit.type === 'pattern' && 'Solo números'}
                   </span>
                 )}
-                {hasPayments && !isPrimeraVez && (
+                {hasPayments && !showCourseAndNotification && (
                   <span className="text-xs badge badge-info">Tiene pagos</span>
                 )}
               </div>
@@ -885,7 +885,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 }}
                 disabled={
                   procedureSelected &&
-                  (isCompleted || isNotPending || (hasPayments && !isPrimeraVez))
+                  (isCompleted || isNotPending || (hasPayments && !showCourseAndNotification))
                 }
               />
             </div>
