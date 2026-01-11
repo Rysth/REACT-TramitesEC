@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 function ProcedureForm({ closeModal, refetchFunction }) {
   const dispatch = useDispatch()
   const { activeToken } = useSelector((store) => store.authentication)
-  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal, coursesOriginal } =
+  const { typesOriginal, licensesOriginal, statusOriginal, selectedProcedureType, paymentsOriginal, agenciesOriginal, coursesOriginal, schoolsOriginal } =
     useSelector((store) => store.shared)
   const { procedureSelected, loading } = useSelector((store) => store.procedure)
   const [disableProcessor, setDisableProcessor] = useState(false)
@@ -392,6 +392,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       comments: '',
       plate: '',
       course_id: '',
+      school_id: '',
     });
     setSelectedProcessor([]);
     setSelectedCustomer([]);
@@ -443,6 +444,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         license_id: licensesOriginal?.[0]?.id || '',
         agency_id: '',
         course_id: '',
+        school_id: '',
       });
       setSelectedProcessor([]);
       setSelectedCustomer([]);
@@ -982,6 +984,30 @@ function ProcedureForm({ closeModal, refetchFunction }) {
               />
             </div>
           </fieldset>
+          {/* School selector - only visible for license procedures */}
+          {isRouteLicenses && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="school_id" className="label label-text">
+                  Escuela
+                </label>
+                {errors.school_id && <span className="text-xs badge badge-error">Campo Requerido</span>}
+              </div>
+              <select
+                id="school_id"
+                className="w-full select select-bordered"
+                {...register('school_id')}
+                disabled={procedureSelected && (isCompleted || isNotPending)}
+              >
+                <option value="">Seleccionar Escuela</option>
+                {schoolsOriginal && schoolsOriginal.filter(school => school.active).map((school) => (
+                  <option key={school.id} value={school.id}>
+                    {school.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <fieldset className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between">

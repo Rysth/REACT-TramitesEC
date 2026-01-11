@@ -10,6 +10,7 @@ import {
   IoHome,
   IoMenu,
   IoSchool,
+  IoLibrary,
   IoPersonCircle
 } from 'react-icons/io5'
 import { NavLink, useLocation } from 'react-router-dom'
@@ -129,6 +130,16 @@ function Sidebar() {
                 >
                   <IoSchool className="sidebar-icon" />
                   {!isCollapsed && <span>Cursos</span>}
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/escuelas"
+                  className={`sidebar-item ${isActive("/escuelas") ? "active" : ""}`}
+                >
+                  <IoLibrary className="sidebar-icon" />
+                  {!isCollapsed && <span>Escuelas</span>}
                 </NavLink>
               </li>
               

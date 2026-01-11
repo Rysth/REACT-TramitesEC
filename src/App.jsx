@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage'
 import SessionPage from './pages/SessionPage/SessionPage'
 import SupplierPage from './pages/SupplierPage/SupplierPage'
 import CoursePage from './pages/CoursePage/CoursePage'
+import SchoolPage from './pages/SchoolPage/SchoolPage'
 import UserPage from './pages/UserPage/UserPage'
 import {
   getLicenses,
@@ -26,6 +27,7 @@ import {
   getStatuses,
   getAgencies,
   getCourses,
+  getSchools,
 } from './redux/slices/SharedSlice'
 import { getUsers } from './redux/slices/UserSlice'
 // Import the validateToken function
@@ -52,6 +54,7 @@ function App() {
       dispatch(getPaymentTypes(activeToken))
       dispatch(getAgencies({ activeToken, full: true })) // Updated line
       dispatch(getCourses(activeToken))
+      dispatch(getSchools(activeToken))
     }
   }, [dispatch, activeToken, active])
 
@@ -170,6 +173,14 @@ function App() {
             element={
               <ProtectedRoute isAllowed={active} redirectTo="/session">
                 <CoursePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/escuelas"
+            element={
+              <ProtectedRoute isAllowed={active} redirectTo="/session">
+                <SchoolPage />
               </ProtectedRoute>
             }
           />

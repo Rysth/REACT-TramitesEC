@@ -17,6 +17,7 @@ const initialState = {
   isSidebarCollapsed: false,
   agenciesOriginal: [],
   coursesOriginal: [],
+  schoolsOriginal: [],
 }
 
 const handleRequestError = (error) => {
@@ -179,6 +180,22 @@ export const getCourses = createAsyncThunk('shared/getCourses', async (activeTok
   }
 })
 
+// Async thunk for fetching schools
+export const getSchools = createAsyncThunk('shared/getSchools', async (activeToken) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/v1/schools`, {
+      params: { full: true, active_only: true },
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+    return response.data
+  } catch (error) {
+    handleRequestError(error)
+  }
+})
+
 const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -244,6 +261,9 @@ const sharedSlice = createSlice({
       })
       .addCase(getCourses.fulfilled, (state, action) => {
         state.coursesOriginal = action.payload
+      })
+      .addCase(getSchools.fulfilled, (state, action) => {
+        state.schoolsOriginal = action.payload
       })
   },
 })
