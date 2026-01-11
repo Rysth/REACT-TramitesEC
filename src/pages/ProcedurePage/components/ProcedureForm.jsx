@@ -143,11 +143,27 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       }
     });
 
-    // Handle notification_days - convert to number or null
-    if (procedureData.notification_days === '' || procedureData.notification_days === undefined) {
-      procedureData.notification_days = null;
+    // Handle notification/course fields:
+    // - Only send them for Licencias when the type is "Primera Vez" or "Título"
+    // - Avoid Number(null) => 0 which breaks Rails inclusion validation
+    if (isRouteLicenses && showCourseAndNotification) {
+      if (
+        procedureData.notification_days === '' ||
+        procedureData.notification_days === undefined ||
+        procedureData.notification_days === null
+      ) {
+        procedureData.notification_days = null
+      } else {
+        procedureData.notification_days = Number(procedureData.notification_days)
+      }
+
+      if (procedureData.course_id === '' || procedureData.course_id === undefined) {
+        procedureData.course_id = null
+      }
     } else {
-      procedureData.notification_days = Number(procedureData.notification_days);
+      // Omit for any other procedure type
+      delete procedureData.notification_days
+      delete procedureData.course_id
     }
 
     if (procedureSelected) {
