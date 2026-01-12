@@ -15,14 +15,23 @@ const initialState = {
 }
 
 const handleRequestError = (error) => {
+  if (error?.response?.status === 403) {
+    toast.error('No autorizado.', { theme: 'colored' })
+    throw error
+  }
+
   if (error.response.status === 409) {
-    toast.error('El tipo de trámite tiene procedimientos asociados y no se puede eliminar.', { theme: 'colored' })
-    return
+    const msg = error.response.data?.errors?.[0] || 'El tipo de trámite tiene procedimientos asociados y no se puede eliminar.'
+    toast.error(msg, { theme: 'colored' })
+    throw error
   }
 
   if (error.response.status === 422) {
-    toast.error('El tipo de trámite ya está registrado.', { theme: 'colored' })
-    return
+    const nameError = error.response.data?.name?.[0]
+    const baseError = error.response.data?.base?.[0]
+    const msg = baseError || nameError || 'No se pudo procesar la solicitud.'
+    toast.error(msg, { theme: 'colored' })
+    throw error
   }
 
   if (error.response.status === 500) {

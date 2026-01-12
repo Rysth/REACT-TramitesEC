@@ -7,7 +7,7 @@ import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcedureType, procedureTypeActions } from '../../../redux/slices/ProcedureTypeSlice'
 import ProcedureTypeItem from './ProcedureTypeItem'
 
-function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete }) {
+function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete, isAdmin }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -15,9 +15,12 @@ function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal
   const [confirmationModal, setConfirmationModal] = useState(false)
 
   const confirmDelete = () => {
-    dispatch(destroyProcedureType({ activeToken, procedureTypeID: procedureTypeSelected.id })).then(() => {
-      dispatch(procedureTypeActions.setProcedureTypeSelected(''))
-      handleDelete() // Call the handleDelete function passed as a prop
+    if (!procedureTypeSelected?.id) return
+    dispatch(destroyProcedureType({ activeToken, procedureTypeID: procedureTypeSelected.id })).then((action) => {
+      if (action?.payload) {
+        dispatch(procedureTypeActions.setProcedureTypeSelected(''))
+        handleDelete() // Only refetch if deletion succeeded
+      }
     })
   }
 
@@ -57,6 +60,7 @@ function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal
                   procedureType={procedureType}
                   showModal={showModal}
                   showConfirmation={setConfirmationModal}
+                  isAdmin={isAdmin}
                 />
               )
             })}
@@ -73,6 +77,7 @@ ProcedureTypeTable.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 }
 
 export default ProcedureTypeTable

@@ -379,6 +379,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       : typesOriginal.filter((item) => !item.has_licenses)
     : []
 
+  const sortedProcedureTypes = [...newFilterArray].sort((a, b) =>
+    (a?.name || '').localeCompare(b?.name || '', 'es', { sensitivity: 'base' }),
+  )
+
   // Add filtered agencies based on procedure type
   const filteredAgencies = agenciesOriginal.filter((agency) => agency.has_licenses === isRouteLicenses)
 
@@ -440,7 +444,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
         supplier_id: '',
         supplier_amount: '',
         status_id: statusOriginal?.[0]?.id || '',
-        procedure_type_id: newFilterArray?.[0]?.id || '',
+        procedure_type_id: sortedProcedureTypes?.[0]?.id || '',
         license_id: licensesOriginal?.[0]?.id || '',
         agency_id: '',
         course_id: '',
@@ -472,10 +476,10 @@ function ProcedureForm({ closeModal, refetchFunction }) {
       const routeName = location.pathname;
       const isRouteLicenses = routeName.includes('licencias');
       
-      // Filter procedure types based on license type
-      const filteredTypes = typesOriginal.filter(item => 
-        isRouteLicenses ? item.has_licenses : !item.has_licenses
-      );
+      // Filter + order procedure types based on route
+      const filteredTypes = [...typesOriginal]
+        .filter(item => (isRouteLicenses ? item.has_licenses : !item.has_licenses))
+        .sort((a, b) => (a?.name || '').localeCompare(b?.name || '', 'es', { sensitivity: 'base' }));
       
       // Check if we have filtered types
       if (filteredTypes.length > 0) {
@@ -621,7 +625,7 @@ function ProcedureForm({ closeModal, refetchFunction }) {
                 {!dataLoaded || newFilterArray.length === 0 ? (
                   <option value="">Cargando tipos de trámite...</option>
                 ) : (
-                  newFilterArray.map((procedure_type) => (
+                  sortedProcedureTypes.map((procedure_type) => (
                     <option key={procedure_type.id} value={procedure_type.id}>
                       {procedure_type.name}
                     </option>

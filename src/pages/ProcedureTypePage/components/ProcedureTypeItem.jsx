@@ -1,18 +1,15 @@
 import PropTypes from 'prop-types'
 import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { procedureTypeActions } from '../../../redux/slices/ProcedureTypeSlice'
 
-function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation }) {
+function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, isAdmin }) {
   const dispatch = useDispatch()
-  const { activeUser } = useSelector((store) => store.authentication)
 
   const handleProcedureTypeSelected = (procedureTypeID) => {
     dispatch(procedureTypeActions.setProcedureTypeSelected(procedureTypeID))
     showModal()
   }
-
-  const isAdmin = activeUser.is_admin
 
   return (
     <tr className="hover *:py-1 *:text-[0.8rem]">
@@ -29,23 +26,24 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation }
         <span className="w-full uppercase">{procedureType.name}</span>
       </td>
       <td className="flex items-center gap-1">
-        <button
-          className="btn btn-sm btn-primary"
-          onClick={() => handleProcedureTypeSelected(procedureType.id)}
-          disabled={!isAdmin}
-        >
-          <HiPencilSquare />
-        </button>
-        <button
-          className="hidden btn btn-sm btn-error"
-          onClick={() => {
-            dispatch(procedureTypeActions.setProcedureTypeSelected(procedureType.id))
-            showConfirmation(true)
-          }}
-          disabled={!isAdmin}
-        >
-          <HiMiniTrash />
-        </button>
+        {isAdmin ? (
+          <>
+            <button className="btn btn-sm btn-primary" onClick={() => handleProcedureTypeSelected(procedureType.id)}>
+              <HiPencilSquare />
+            </button>
+            <button
+              className="btn btn-sm btn-error"
+              onClick={() => {
+                dispatch(procedureTypeActions.setProcedureTypeSelected(procedureType.id))
+                showConfirmation(true)
+              }}
+            >
+              <HiMiniTrash />
+            </button>
+          </>
+        ) : (
+          <span className="text-xs text-gray-400">—</span>
+        )}
       </td>
     </tr>
   )
@@ -60,6 +58,7 @@ ProcedureTypeItem.propTypes = {
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 }
 
 export default ProcedureTypeItem

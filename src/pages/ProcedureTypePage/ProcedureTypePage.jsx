@@ -10,8 +10,12 @@ import TableLayout from '../../layouts/TableLayout'
 import { getProcedureTypes, procedureTypeActions, generateExcelFile } from '../../redux/slices/ProcedureTypeSlice'
 import ProcedureTypeForm from './components/ProcedureTypeForm'
 import ProcedureTypeTable from './components/ProcedureTypeTable'
+import { useSelector } from 'react-redux'
 
 function ProcedureTypePage() {
+  const { activeUser } = useSelector((store) => store.authentication)
+  const isAdmin = Boolean(activeUser?.is_admin)
+
   const {
     entitiesArray: procedureTypesArray,
     totalPages,
@@ -29,6 +33,10 @@ function ProcedureTypePage() {
     endDate,
     setEndDate,
   } = useEntityManagement(getProcedureTypes, 'procedureType', 'procedureTypesArray')
+
+  const showModalIfAdmin = () => {
+    if (isAdmin) showModal()
+  }
 
   return (
     <SectionLayout
@@ -63,8 +71,9 @@ function ProcedureTypePage() {
                 currentItems={procedureTypesArray}
                 currentPage={currentPage}
                 itemsPerPage={15}
-                showModal={showModal}
+                showModal={showModalIfAdmin}
                 handleDelete={handleDelete}
+                isAdmin={isAdmin}
               />
             ) : (
               <Loading /> // Placeholder for loading or empty state
@@ -75,7 +84,7 @@ function ProcedureTypePage() {
             currentPage={currentPage - 1}
             pageCount={totalPages}
             handlePageChange={handlePageChange}
-            showModal={showModal}
+            showModal={showModalIfAdmin}
           />
         </Card>
       </MainLayout>
