@@ -9,7 +9,7 @@ import usePlate from '../../../hooks/usePlate'
 import { fetchCustomerOptions } from '../../../redux/slices/CustomerSlice'
 import { createProcedure, updateProcedure } from '../../../redux/slices/ProcedureSlice'
 import { fetchProcessorOptions } from '../../../redux/slices/ProcessorSlice'
-import { sharedActions } from '../../../redux/slices/SharedSlice'
+import { sharedActions, getProcedureTypes } from '../../../redux/slices/SharedSlice'
 import { fetchSupplierOptions } from '../../../redux/slices/SupplierSlice'
 import ProcedurePaymentForm from './ProcedurePaymentForm'
 import { procedureActions } from '../../../redux/slices/ProcedureSlice'
@@ -52,6 +52,11 @@ function ProcedureForm({ closeModal, refetchFunction }) {
   const [hasPayments, setHasPayments] = useState(false)
   // Track if the current procedure type requires course and notification fields (Primera Vez or Título)
   const [showCourseAndNotification, setShowCourseAndNotification] = useState(false)
+
+  // Refresh procedure types when component mounts to get latest data
+  useEffect(() => {
+    dispatch(getProcedureTypes({ activeToken, full: true }))
+  }, [dispatch, activeToken])
 
   // Function to handle changes in the cost field
   const handleCostChange = (e) => {
