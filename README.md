@@ -1,79 +1,69 @@
-# John Palacios - RysthCraft
-
 <div align="center">
-  <img src="./src/assets/personal/banner.png" alt="logo" height="auto" />
+  <h1>🖥️ TramitesEC - Frontend</h1>
+  <p><strong>Interfaz de usuario moderna desarrollada con React + Vite</strong></p>
+  <p>
+    <a href="https://www.rysthdesign.com">🌐 www.rysthdesign.com</a>
+  </p>
 </div>
 
-## Table of Contents
+---
 
-- [About the Project](#about-project)
-- [Built With](#built-with)
-- [Key Features](#key-features)
-- [Live Demo](#live-demo)
-- [Getting Started](#getting-started)
-- [Authors](#authors)
-- [License](#license)
+## 📖 Acerca del Proyecto
 
-## About the Project
+**TramitesEC Frontend** es una aplicación web SPA construida con React y Vite, que ofrece una interfaz intuitiva para la gestión de trámites vehiculares y de licencias. Se conecta con la API de Rails para proporcionar una experiencia completa.
 
-- **REACT PROJECT NAME:** ...
+---
 
-## Built With
+## 🛠️ Tecnologías
 
-- HTML
-- CSS
-- JavaScript
-- React
+| Tecnología | Descripción |
+|------------|-------------|
+| **React 18** | Biblioteca UI principal |
+| **Vite** | Build tool ultrarrápido |
+| **Redux Toolkit** | Gestión de estado global |
+| **TailwindCSS + DaisyUI** | Estilos y componentes UI |
+| **React Hook Form** | Manejo de formularios |
 
-## Key Features
+---
 
-- 🚀 Feature 1
-- 🌟 Feature 2
-- 🔍 Feature 3
+## ✨ Características Principales
 
-### Live Demo
+- 📱 **Diseño responsive** adaptado a todos los dispositivos
+- 🔍 **Búsqueda y filtros avanzados** en tiempo real
+- 📊 **Dashboard interactivo** con estadísticas
+- 📥 **Exportación a Excel** de reportes
+- 🔔 **Notificaciones** con React Toastify
 
-[Live Demo](https://react-bookstore-2060.onrender.com/)
+---
 
-## Getting Started
+## 🚀 Instalación
 
-1. Clone the repository:
+```bash
+# Clonar el repositorio
+git clone https://github.com/Rysth/REACT-TramitesEC.git
 
-   ```bash
-   git clone https://github.com/Rysth/REACT-Template.git
-   cd REACT-Template
-   code .  # To open VS Code Editor
-   ```
+# Instalar dependencias
+npm install
 
-2. Customize as needed.
+# Iniciar en desarrollo
+npm run dev
 
-### Commands
+# Build para producción
+npm run build
+```
 
-- **npm run dev:** Run the app in development mode.
-- **npm run lint:** Launch the eslint errors fixer.
-- **npm run build:** Build the app for production.
+---
 
-### Linters
+## 👤 Autor
 
-- CSS Checker:
+**John Palacios** - Desarrollador Full Stack
 
-  ```bash
-  npx stylelint "**/*.{css,scss}"
-  ```
+[![Portfolio](https://img.shields.io/badge/Portfolio-rysthdesign.com-blue?style=flat-square)](https://www.rysthdesign.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Rysth-181717?style=flat-square&logo=github)](https://github.com/Rysth)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-John%20Palacios-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/john-palacios-rysthcraft)
 
-- ESLint Checker:
+---
 
-  ```bash
-  npx eslint "**/*.{js,jsx}"
-  ```
-
-### Authors
-
-- John Palacios
-
-  - [LinkedIn](https://www.linkedin.com/in/john-rysthcraft/)
-  - [GitHub](https://github.com/Rysth)
-
-### License
-
-This project is [MIT](./LICENSE.md) licensed.
+<div align="center">
+  <p>📝 Licencia MIT © 2024-2026</p>
+</div>
