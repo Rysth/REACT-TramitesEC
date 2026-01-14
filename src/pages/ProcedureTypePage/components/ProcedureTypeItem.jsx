@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import { HiMiniTrash, HiPencilSquare } from 'react-icons/hi2'
+import { HiMiniTrash, HiPencilSquare, HiArchiveBox, HiArchiveBoxXMark } from 'react-icons/hi2'
 import { useDispatch } from 'react-redux'
 import { procedureTypeActions } from '../../../redux/slices/ProcedureTypeSlice'
 
-function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, isAdmin }) {
+function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, isAdmin, handleToggleArchive }) {
   const dispatch = useDispatch()
 
   const handleProcedureTypeSelected = (procedureTypeID) => {
@@ -12,7 +12,7 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, 
   }
 
   return (
-    <tr className="hover *:py-1 *:text-[0.8rem]">
+    <tr className={`hover *:py-1 *:text-[0.8rem] ${procedureType.archived ? 'opacity-60 bg-gray-100' : ''}`}>
       <th>{index}</th>
 
       <td>
@@ -23,6 +23,13 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, 
         )}
       </td>
       <td>
+        {procedureType.archived ? (
+          <span className="badge badge-warning badge-sm">Archivado</span>
+        ) : (
+          <span className="badge badge-success badge-sm">Activo</span>
+        )}
+      </td>
+      <td>
         <span className="w-full uppercase">{procedureType.name}</span>
       </td>
       <td className="flex items-center gap-1">
@@ -30,6 +37,13 @@ function ProcedureTypeItem({ index, procedureType, showModal, showConfirmation, 
           <>
             <button className="btn btn-sm btn-primary" onClick={() => handleProcedureTypeSelected(procedureType.id)}>
               <HiPencilSquare />
+            </button>
+            <button
+              className={`btn btn-sm ${procedureType.archived ? 'btn-success' : 'btn-warning'}`}
+              onClick={() => handleToggleArchive(procedureType.id)}
+              title={procedureType.archived ? 'Desarchivar' : 'Archivar'}
+            >
+              {procedureType.archived ? <HiArchiveBoxXMark /> : <HiArchiveBox />}
             </button>
             <button
               className="btn btn-sm btn-error"
@@ -55,10 +69,12 @@ ProcedureTypeItem.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     has_licenses: PropTypes.bool.isRequired,
+    archived: PropTypes.bool,
   }),
   showModal: PropTypes.func.isRequired,
   showConfirmation: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  handleToggleArchive: PropTypes.func.isRequired,
 }
 
 export default ProcedureTypeItem

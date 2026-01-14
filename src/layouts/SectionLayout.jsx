@@ -17,7 +17,9 @@ function SectionLayout({
   showUnpaid, 
   setShowUnpaid,
   showPrimeraVez,
-  setShowPrimeraVez 
+  setShowPrimeraVez,
+  showArchived,
+  setShowArchived 
 }) {
   const dispatch = useDispatch()
   const { activeToken, activeUser } = useSelector((state) => state.authentication)
@@ -119,6 +121,19 @@ function SectionLayout({
                 />
               </div>
             )}
+
+            {/* Show Archived Toggle */}
+            {setShowArchived !== undefined && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm whitespace-nowrap">Ver Archivados</span>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-warning toggle-sm"
+                  checked={showArchived}
+                  onChange={(e) => setShowArchived(e.target.checked)}
+                />
+              </div>
+            )}
             
             {/* Excel Download Button */}
             {excelMethod && (
@@ -152,6 +167,8 @@ SectionLayout.propTypes = {
   setShowUnpaid: PropTypes.func,
   showPrimeraVez: PropTypes.bool,
   setShowPrimeraVez: PropTypes.func,
+  showArchived: PropTypes.bool,
+  setShowArchived: PropTypes.func,
 }
 
 export default SectionLayout

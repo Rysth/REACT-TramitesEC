@@ -12,6 +12,7 @@ const initialState = {
   currentPage: 1,
   totalPages: 0,
   totalProcedureTypes: 0,
+  showArchived: false, // New state for showing archived items
 }
 
 const handleRequestError = (error) => {
@@ -55,12 +56,13 @@ const createAsyncThunkWrapper = (type, requestFn) =>
 // Thunk for retrieving procedure types (GET)
 export const getProcedureTypes = createAsyncThunkWrapper(
   'getProcedureTypes',
-  async ({ activeToken, page, search, startDate, endDate }) => {
+  async ({ activeToken, page, search, startDate, endDate, showArchived }) => {
     const params = {
       page,
       search,
       start_date: startDate ? startDate.toISOString() : null,
       end_date: endDate ? endDate.toISOString() : null,
+      show_archived: showArchived ? 'true' : 'false',
     }
 
     return axios.get(`${API_URL}/api/v1/procedure_types`, {
@@ -104,6 +106,19 @@ export const destroyProcedureType = createAsyncThunkWrapper(
   'destroyProcedureType',
   async ({ activeToken, procedureTypeID }) => {
     return axios.delete(`${API_URL}/api/v1/procedure_types/${procedureTypeID}`, {
+      headers: {
+        Authorization: activeToken,
+      },
+      withCredentials: true,
+    })
+  },
+)
+
+// Thunk for toggling archive status (PATCH)
+export const toggleArchiveProcedureType = createAsyncThunkWrapper(
+  'toggleArchiveProcedureType',
+  async ({ activeToken, procedureTypeID }) => {
+    return axios.patch(`${API_URL}/api/v1/procedure_types/${procedureTypeID}/toggle_archive`, {}, {
       headers: {
         Authorization: activeToken,
       },
@@ -188,6 +203,10 @@ const procedureTypeSlice = createSlice({
       const procedureTypeFound = state.procedureTypesArray.find((procedureType) => procedureType.id === procedureTypeID)
       state.procedureTypeSelected = procedureTypeFound
     },
+    // Set the showArchived state
+    setShowArchived: (state, action) => {
+      state.showArchived = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getProcedureTypes.pending, (state) => {
@@ -211,6 +230,11 @@ const procedureTypeSlice = createSlice({
     builder.addCase(destroyProcedureType.fulfilled, (state, action) => {
       state.loading = false
       updateState(state, action, '¡Tipo de Trámite Eliminado!')
+    })
+    builder.addCase(toggleArchiveProcedureType.fulfilled, (state, action) => {
+      state.loading = false
+      const message = action.payload?.message || '¡Estado de archivo actualizado!'
+      toast.success(message, { autoClose: 2000, theme: 'colored' })
     })
     builder.addCase(generateExcelFile.fulfilled, (state) => {
       state.loading = false

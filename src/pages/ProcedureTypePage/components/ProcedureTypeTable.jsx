@@ -7,7 +7,7 @@ import TableDelete from '../../../components/Table/TableDelete'
 import { destroyProcedureType, procedureTypeActions } from '../../../redux/slices/ProcedureTypeSlice'
 import ProcedureTypeItem from './ProcedureTypeItem'
 
-function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete, isAdmin }) {
+function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal, handleDelete, isAdmin, handleToggleArchive }) {
   const dispatch = useDispatch()
   const quantity = currentItems.length
   const { activeToken } = useSelector((store) => store.authentication)
@@ -45,7 +45,8 @@ function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal
             <tr>
               <th style={{ width: '5%' }}>#</th>
               <th style={{ width: '12%' }}>Tipo de Trámite</th>
-              <th style={{ width: '65%' }}>Nombre</th>
+              <th style={{ width: '10%' }}>Estado</th>
+              <th style={{ width: '53%' }}>Nombre</th>
               <th style={{ width: '20%' }}>Acciones</th>
             </tr>
           </thead>
@@ -61,6 +62,7 @@ function ProcedureTypeTable({ currentItems, currentPage, itemsPerPage, showModal
                   showModal={showModal}
                   showConfirmation={setConfirmationModal}
                   isAdmin={isAdmin}
+                  handleToggleArchive={handleToggleArchive}
                 />
               )
             })}
@@ -78,6 +80,7 @@ ProcedureTypeTable.propTypes = {
   currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  handleToggleArchive: PropTypes.func.isRequired,
 }
 
 export default ProcedureTypeTable

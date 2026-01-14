@@ -20,6 +20,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
   const [endDate, setEndDate] = useState(null)
   const [showUnpaid, setShowUnpaid] = useState(false)
   const [showPrimeraVez, setShowPrimeraVez] = useState(false)
+  const [showArchived, setShowArchived] = useState(false)
 
   const refetchEntities = () => {
     dispatch(
@@ -37,6 +38,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
         selectedYear,
         showUnpaid,
         showPrimeraVez,
+        showArchived,
       }),
     )
   }
@@ -58,6 +60,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     selectedYear,
     showUnpaid,
     showPrimeraVez,
+    showArchived,
   ])
 
   useEffect(() => {
@@ -70,7 +73,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
       startDate ||
       endDate ||
       selectedYear ||
-      showUnpaid
+      showUnpaid ||
+      showArchived
     ) {
       setCurrentPage(1)
     }
@@ -84,6 +88,7 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     endDate,
     selectedYear,
     showUnpaid,
+    showArchived,
   ])
 
   const handlePageChange = (selectedItem) => {
@@ -126,6 +131,8 @@ function useEntityManagement(getEntitiesAction, entitySlice, arraysName) {
     setShowUnpaid,
     showPrimeraVez,
     setShowPrimeraVez,
+    showArchived,
+    setShowArchived,
   }
 }
 
